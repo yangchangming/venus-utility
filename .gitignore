@@ -1,0 +1,16 @@
+.DS_*
+.idea
+.classpath
+.project
+.svn
+bin
+build
+*.class
+.settings
+*.iml
+target
+*.log*
+out
+dist/*
+overlays
+rebel.xml

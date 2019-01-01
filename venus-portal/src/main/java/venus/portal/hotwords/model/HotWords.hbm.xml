@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="udp.ewp.hotwords.model.HotWords" table="ewp_hot_words">
+    <id name="id" column="ID" type="java.lang.String" length="19">
+      <generator class="assigned"/>
+    </id>
+    <version name="version" column="VERSION" type="long" />
+	<property name="name" column="NAME" type="java.lang.String" length="100"/>
+    <property name="link" column="LINK" type="java.lang.String" length="100"/>
+    <property name="enableStatus" column="ENABLE_STATUS" type="java.lang.String" length="1"/>
+    <property name="createDate"  column="CREATE_DATE"  type="java.sql.Timestamp" />
+    <property name="modifyDate"  column="MODIFY_DATE"  type="java.sql.Timestamp" />
+    <property name="enableDate"  column="ENABLE_DATE"  type="java.sql.Timestamp" />
+
+</class>
+</hibernate-mapping>

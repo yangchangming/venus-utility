@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="udp.ewp.au.model.RoleDoctypeRelation" table="EWP_ROLE_DOCTYPE_RELATION">
+        <composite-id>
+            <key-property name="roleID"     column="ROLE_ID"     type="java.lang.String"  length="19" />
+            <key-property name="docTypeID"     column="DOCTYPE_ID"     type="java.lang.String"  length="19"/>
+        </composite-id>
+        <property name="websiteID"     column="WEBSITE_ID"     type="java.lang.String"  length="19"/>
+    </class>
+</hibernate-mapping>

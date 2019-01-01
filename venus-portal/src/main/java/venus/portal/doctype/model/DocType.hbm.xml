@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="udp.ewp.doctype.model.DocType" table="ewp_doctype">
+    <id name="id" column="ID" type="java.lang.String" length="19">
+      <generator class="assigned"/>
+    </id>
+    <version name="version" column="VERSION" type="long" />
+	<property name="name" column="NAME" type="java.lang.String" length="100"/>
+	<property name="parentID" column="PARENTID" type="java.lang.String"  length="19"/>
+	<property name="imagePath" column="IMAGEPATH" type="java.lang.String"  length="100"/>
+	<property name="isValid"  column="ISVALID"  type="java.lang.String"  length="5" />
+      <property name="keywords" column="KEYWORDS" type="java.lang.String" length="255"/>
+      <property name="sortNum" column="SORTNUM" type="java.lang.Long"/>
+      <set name="parent" table="ewp_doctype_relation" inverse="false" lazy="false" cascade="save-update"><key column="CHILD_ID" /><many-to-many class="udp.ewp.doctype.model.DocType" column="PARENT_ID" /></set>
+    <set name="children" table="ewp_doctype_relation" sort="udp.ewp.doctype.util.DocTypeComparator"  inverse="true" lazy="false" cascade="save-update"><key column="PARENT_ID" /><many-to-many class="udp.ewp.doctype.model.DocType" column="CHILD_ID" /></set>
+    <many-to-one name="template" class="udp.ewp.template.model.EwpTemplate" column="TEMPLATE_ID" ></many-to-one>
+    <many-to-one name="docTemplate" class="udp.ewp.template.model.EwpTemplate" column="DOC_TEMPLATE_ID" ></many-to-one>
+    <property name="docTypeCode"  column="DOCTYPECODE"  type="java.lang.String"  />
+    <many-to-one name="site" column="SITEID"  class="udp.ewp.website.model.Website" lazy="false"></many-to-one>
+    <property name="isNavigateMenu"  column="ISNAVIGATEMENU"  type="java.lang.String"  length="1" />
+
+	<!--oracle-->
+	<property name="description" column="DESCRIPTION" type="org.springframework.orm.hibernate3.support.ClobStringType" length="1048576000"/>
+	<!--mysql/sqlserver/db2-->
+	<!--
+	<property name="description" column="DESCRIPTION" type="java.lang.String"/>
+	-->
+
+</class>
+</hibernate-mapping>

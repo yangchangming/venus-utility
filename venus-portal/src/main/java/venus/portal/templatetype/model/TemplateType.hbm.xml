@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="udp.ewp.templatetype.model.TemplateType" table="ewp_template_type">
+    <id name="id" column="ID" type="java.lang.String" length="19">
+      <generator class="assigned"/>
+    </id>
+    <version name="version" column="VERSION" type="long" />
+    <property name="typeName" column="TYPENAME" type="java.lang.String" length="100"/>
+    <property name="description" column="DESCRIPTION" type="java.lang.String" length="255"/>
+    <property name="createTime" column="CREATETIME" />
+</class>
+</hibernate-mapping>

@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="udp.ewp.posts.user.model.EwpUsrInfoEntity" table="ewp_usr_info">
+        <id name="id" column="ID" type="java.lang.String" length="36">
+            <generator class="assigned"/>
+        </id>
+        <property name="realName" column="REAL_NAME" type="java.lang.String" length="100"/>
+        <property name="birthday" column="BIRTHDAY" type="java.sql.Timestamp"/>
+        <property name="email" column="EMAIL" type="java.lang.String" length="100"/>
+        <property name="phone" column="PHONE" type="java.lang.String" length="20"/>
+        <property name="gender" column="GENDER" type="java.lang.String" length="1"/>
+    </class>
+</hibernate-mapping>

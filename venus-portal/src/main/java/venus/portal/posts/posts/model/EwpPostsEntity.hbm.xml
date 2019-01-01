@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="udp.ewp.posts.posts.model.EwpPostsEntity" table="ewp_posts">
+        <id name="id" column="ID" type="java.lang.String" length="36"/>
+        <property name="websiteID" column="WEBSITE_ID" type="java.lang.String" length="19"/>
+        <property name="websiteName" column="WEBSITE_NAME" type="java.lang.String" length="100"/>
+        <property name="websiteCode" column="WEBSITE_CODE" type="java.lang.String" length="255"/>
+        <property name="docId" column="DOC_ID" type="java.lang.String" length="19"/>
+        <property name="usrId" column="USR_ID" type="java.lang.String" length="36"/>
+        <property name="usrName" column="USR_NAME" type="java.lang.String" length="50"/>
+        <property name="pubdate" column="PUBDATE" type="java.sql.Timestamp"/>
+        <property name="replyto" column="REPLYTO" type="java.lang.String" length="36"/>
+        <property name="isreply" column="ISREPLY" type="java.lang.String" length="1"/>
+        <property name="replytoUserName" column="REPLYTO_USERNAME" type="java.lang.String" length="50"/>
+
+        <!--oracle-->
+        <property name="content" column="CONTENT" type="org.springframework.orm.hibernate3.support.ClobStringType"
+                  length="1048576000"/>
+        <!--mysql/sqlserver/db2-->
+        <!--
+        <property name="content"  column="CONTENT" type="java.lang.String"/>
+        -->
+
+    </class>
+</hibernate-mapping>

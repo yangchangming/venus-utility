@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="udp.ewp.website.model.Website" table="ewp_website">
+        <id name="id" column="ID" type="java.lang.String" length="19">
+            <generator class="assigned"/>
+        </id>
+        <version name="version" column="VERSION" type="long"/>
+        <property name="websiteName" column="WEBSITE_NAME" type="java.lang.String" length="100"/>
+        <property name="websiteCode" column="WEBSITE_CODE" type="java.lang.String" length="255"/>
+        <property name="description" column="DESCRIPTION" type="java.lang.String" length="100"/>
+        <property name="language" column="LANGUAGE" type="java.lang.String" length="4"/>
+        <property name="isDefault" column="ISDEFAULT" type="java.lang.String" length="1"/>
+        <property name="nameIsUnique" column="NAMEISUNIQUE" type="java.lang.String" length="1"/>
+        <property name="keywords" column="KEYWORDS" type="java.lang.String" length="255"/>
+        <property name="hotWordsSwitcher" column="HOTWORDS_SWITCHER" type="java.lang.String" length="1"/>
+        <property name="linkTarget" column="LINK_TARGET" type="java.lang.String" length="255"/>
+        <many-to-one column="ROOTCHANNEL" name="rootChannel" class="udp.ewp.doctype.model.DocType"></many-to-one>
+    </class>
+</hibernate-mapping>

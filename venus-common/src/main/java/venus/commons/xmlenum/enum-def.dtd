@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+DTD for the AO MetaData Configuration File, Version 1.0
+
+To support validation of your configuration file, include the following
+DOCTYPE element at the beginning (after the "xml" declaration)-->
+<!--=======================================================-->
+<!-- Enum Definition                                       -->
+<!--=======================================================-->
+<!ELEMENT EnumDef (name,resource,enums)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT resource (#PCDATA)>
+<!ELEMENT enums (enum*)>
+<!--=======================================================-->
+<!-- Attribute Definition                                  -->
+<!--=======================================================-->
+<!ELEMENT enum EMPTY>
+<!ATTLIST enum
+label CDATA #REQUIRED
+value CDATA #REQUIRED
+>

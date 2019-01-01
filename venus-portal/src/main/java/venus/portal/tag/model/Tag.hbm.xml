@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="udp.ewp.tag.model.Tag" table="ewp_tag">
+    <id name="id" column="ID" type="java.lang.String" length="19">
+      <generator class="assigned"/>
+    </id>
+    <version name="version" column="VERSION" type="long" />
+	<property name="name" column="NAME" type="java.lang.String" length="100"/>
+</class>
+</hibernate-mapping>

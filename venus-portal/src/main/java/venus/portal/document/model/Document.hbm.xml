@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="udp.ewp.document.model.Document" table="EWP_DOCUMENT">
+        <id name="id" column="ID" type="java.lang.String" length="19">
+            <generator class="assigned"/>
+        </id>
+        <property name="title" column="TITLE" type="java.lang.String" length="256"/>
+        <property name="shortTitle" column="SHORTTITLE" type="java.lang.String" length="128"/>
+        <property name="docTypeID" column="DOCTYPEID" type="java.lang.String" length="19"/>
+        <property name="picture" column="PICTURE" type="java.lang.String" length="128"/>
+        <property name="titelAbstract" column="ABSTRACT" type="java.lang.String" length="200"/>
+        <property name="status" column="STATUS" type="java.lang.String" length="1"/>
+        <property name="seoKeyWord" column="SEOKEYWORD" type="java.lang.String" length="128"/>
+        <property name="source" column="SOURCE" type="java.lang.String" length="128"/>
+        <property name="thumbnail" column="THUMBNAIL" type="java.lang.String" length="128"/>
+        <property name="createBy" column="CREATEBY" type="java.lang.String" length="64"/>
+        <property name="createTime" column="CREATETIME" type="java.sql.Timestamp"/>
+        <property name="editBy" column="EDITBY" type="java.lang.String" length="64"/>
+        <property name="editTime" column="EDITTIME" type="java.sql.Timestamp"/>
+        <property name="tag" column="TAG" type="java.lang.String" length="64"/>
+        <property name="permissions" column="PERMISSIONS" type="java.lang.String" length="128"/>
+        <property name="isComment" column="ISCOMMENT" type="java.lang.String" length="1"/>
+        <property name="isShowHotWords" column="ISSHOWHOTWORDS" type="java.lang.String" length="1"/>
+        <property name="visitCount" column="VISITCOUNT" type="java.lang.Long" length="4"/>
+        <property name="recommend" column="RECOMMEND" type="java.lang.String" length="1"/>
+        <property name="publishTime" column="PUBLISHTIME" type="java.sql.Timestamp" length="256"/>
+        <property name="sortNum" column="SORTNUM" type="java.lang.Long" length="4"/>
+        <property name="isValid" column="ISVALID" type="java.lang.String" length="1"/>
+
+        <!--oracle-->
+        <property name="content" column="CONTENT" type="org.springframework.orm.hibernate3.support.ClobStringType"
+                  length="1048576000"/>
+        <property name="url" column="URL" type="org.springframework.orm.hibernate3.support.ClobStringType"
+                  length="1048576000"/>
+        <property name="spare1" column="SPARE1" type="org.springframework.orm.hibernate3.support.ClobStringType"
+                  length="1048576000"/>
+        <property name="spare2" column="SPARE2" type="org.springframework.orm.hibernate3.support.ClobStringType"
+                  length="1048576000"/>
+        <!--mysql/sqlserver/db2-->
+        <!--
+        <property name="content"  column="CONTENT" type="java.lang.String"/>
+        <property name="url"  column="URL" type="java.lang.String"/>
+        <property name="spare1"  column="SPARE1" type="java.lang.String"/>
+        <property name="spare2"  column="SPARE2" type="java.lang.String"/>
+        -->
+
+        <!-- Document和docType的关系，但由于原有代码中未使用hibernate的方式来维持表之间的关系（使用人工方式维持Document和docType的关系），
+        故注释掉，使用hibernate的方法维持关系的话，原有代码出错。 -->
+        <!--
+        <set name="docTypeRelationsList" table="EWP_DOCUMENT_TYPE_RELATION" cascade="all">
+           <key column="DOCUMENTID" />
+           <one-to-many class="udp.ewp.documenttyperelation.model.DocumentTypeRelation"/>
+        </set>
+
+            <set name="docTypes" table="ewp_document_type_relation" inverse="false" lazy="false" cascade="all">
+                <key column="DOCUMENTID" />
+                <many-to-many class="udp.ewp.doctype.model.DocType" column="DOCTYPEID" />
+         </set>
+             -->
+    </class>
+</hibernate-mapping>
