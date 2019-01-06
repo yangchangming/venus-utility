@@ -58,8 +58,7 @@ public class BeanInitialization implements Initialization {
             ApplicationContext rootApplicationContext = buildRootApplicationContext();
             if (VenusPathUtil.isAppEnv()) {
                 subContext = buildFileSystemXmlApplicationContext(rootApplicationContext);
-            }
-            if (VenusPathUtil.isWebEnv()){
+            }else if (VenusPathUtil.isWebEnv()){
                 if (VenusPathUtil.getServletContext()==null){
                     logger.error("ServletContext must not be null!");
                     throw new VenusFrameworkException("ServletContext must not be null!");
@@ -69,7 +68,6 @@ public class BeanInitialization implements Initialization {
             if (subContext==null){
                 subContext = rootApplicationContext;
             }
-
             BeanFactoryHelper.setBeanFactory(subContext);
 
             // TODO: 18/5/28 all bean initial has order? such as datasource bean must before other business bean?
@@ -81,14 +79,13 @@ public class BeanInitialization implements Initialization {
             logger.info("");
 
         }catch (Exception e){
-            logger.error("Initial root ApplicationContext failure. [" + e.getMessage() + "]");
+            logger.error("Initial Root ApplicationContext failure. [" + e.getMessage() + "]");
             throw new VenusFrameworkException(e.getMessage());
         }
     }
 
     /**
-     * Build Root ApplicationContext of Venus
-     * has inject beans: dataSource | defaultLobHandler | nativeJdbcExtractor
+     * Build Root ApplicationContext of Venus, just including datasource bean
      *
      * @return
      */
@@ -175,7 +172,13 @@ public class BeanInitialization implements Initialization {
         return _configNames;
     }
 
-
+    /**
+     * Build bean of datasource into spring by code
+     * including beans: dataSource | defaultLobHandler | nativeJdbcExtractor
+     *
+     * @param context
+     * @return
+     */
     private ApplicationContext initDataSource(ApplicationContext context){
         GenericApplicationContext _context = null;
         if (context!=null && context instanceof GenericApplicationContext){

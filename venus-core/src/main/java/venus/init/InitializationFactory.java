@@ -35,15 +35,15 @@ public class InitializationFactory {
 
     private static final Logger logger = Logger.getLogger(InitializationFactory.class);
 
-    private static List<Initialization> initializations = new ArrayList<Initialization>();
+    private static List<Initialization> initializations = new ArrayList<>();
 
     public static List<Initialization> fetchInitializations(){
-        List<Initialization> initializations = new ArrayList<Initialization>();
+        List<Initialization> initializations = new ArrayList<>();
         ConcurrentMap<String, Class<Initialization>> _initializations = ExtensionLoader.getExtensionLoader(Initialization.class).loadExtensions();
         if (_initializations==null || _initializations.size()==0){
             return Collections.emptyList();
         }
-        // TODO: 18/5/25 initializations must order?
+        // TODO: 18/5/25 initializations must order by logic?
         for (Class<Initialization> initializationClass : _initializations.values()) {
             try {
                 Initialization initialization = initializationClass.newInstance();

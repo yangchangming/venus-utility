@@ -51,9 +51,9 @@ public class ConfigFactory {
     private static boolean initialized = false;
 
     /**
-     * initial all configuration at default position
+     * Initial all configuration at default position
      */
-    public static void init(){
+    public synchronized static void init(){
         if (initialized){
             return;
         }
@@ -69,7 +69,7 @@ public class ConfigFactory {
     }
 
     /**
-     * load current application all configuration at classpath
+     * Load current application all configuration at classpath
      */
     private static void loadCurrentConfig(){
         List<File> configFiles = ResourceLoader.defaultLoadConfig();
@@ -104,7 +104,7 @@ public class ConfigFactory {
 
 
     /**
-     * load configuration specified by url, and assemble to ConfigFactory.configs
+     * Load configuration specified by url, and assemble to ConfigFactory.configs
      * the type of configuration is just spi name
      *
      * @param url config url
@@ -160,7 +160,7 @@ public class ConfigFactory {
 
 
     /**
-     * fetch all spring configuration that start with "spring"
+     * Fetch all spring configuration that start with "spring"
      *
      * @return
      */
