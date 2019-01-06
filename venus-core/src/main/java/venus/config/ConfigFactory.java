@@ -46,7 +46,7 @@ public class ConfigFactory {
 
     public static final String DEFAULT_CONFIG_PREFIX_PATH = "WEB-INF/conf/";
 
-    private static ConcurrentMap<URL, Config> configs = new ConcurrentHashMap<URL, Config>();
+    private static ConcurrentMap<URL, Config> configs = new ConcurrentHashMap<>();
 
     private static boolean initialized = false;
 
