@@ -32,12 +32,6 @@ public class ConfigInitialization implements Initialization {
 
     public void init() {
         ConfigFactory.init();
-
-        logger.info("");
-        logger.info("------------------------------------------------------------------------");
-        logger.info("Configuration initial Success!");
-        logger.info("------------------------------------------------------------------------");
-        logger.info("");
-
+        venus.log.Logger.keyInfo(logger, "Configuration initial Success!");
     }
 }

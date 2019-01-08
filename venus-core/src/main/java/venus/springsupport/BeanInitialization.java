@@ -72,11 +72,7 @@ public class BeanInitialization implements Initialization {
 
             // TODO: 18/5/28 all bean initial has order? such as datasource bean must before other business bean?
 
-            logger.info("");
-            logger.info("------------------------------------------------------------------------");
-            logger.info("RootApplicationContext initial Success![" + VenusPathUtil.getSystemEnv() + "]");
-            logger.info("------------------------------------------------------------------------");
-            logger.info("");
+            venus.log.Logger.keyInfo(logger, "RootApplicationContext initial Success![" + VenusPathUtil.getSystemEnv() + "]");
 
         }catch (Exception e){
             logger.error("Initial Root ApplicationContext failure. [" + e.getMessage() + "]");
