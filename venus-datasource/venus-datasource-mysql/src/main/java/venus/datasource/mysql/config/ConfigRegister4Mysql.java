@@ -36,7 +36,7 @@ public class ConfigRegister4Mysql implements ConfigRegister {
     public void register() {
         java.net.URL url = this.getClass().getResource("/" + DATASOURCE_CONFIG_NAME);
         if (url==null){
-            logger.warn(DATASOURCE_CONFIG_NAME + "not find.");
+            logger.warn(DATASOURCE_CONFIG_NAME + " is not find.");
         }else {
             ConfigFactory.loadConfig(new URL(url));
         }
