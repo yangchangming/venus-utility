@@ -1,7 +1,3 @@
-/*
- * 创建日期 2007-3-19
- * CreateBy zhangbaoyu
- */
 package venus.cron.action;
 
 import org.quartz.*;
@@ -23,10 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author zhangbaoyu
- *  
- */
+
 public class CreateTriggerAction extends BaseAction {
     private static ILog log = LogMgr.getLogger(CreateTriggerAction.class);
 
@@ -249,7 +242,6 @@ public class CreateTriggerAction extends BaseAction {
                 runTime = sdf.parse(beginDate
                         + sdf.format(runTime).substring(10));
             }
-
         }
         quartzDate[0] = runTime;
         if (endDate != null && !endDate.equals("") && endTime != null

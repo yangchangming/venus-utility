@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <name>venus</name>
-    <description>A development framework base on JAVA</description>
+    <description>A development tools base on JAVA</description>
     <url>https://github.com/yangchangming/venus</url>
 
     <modules>

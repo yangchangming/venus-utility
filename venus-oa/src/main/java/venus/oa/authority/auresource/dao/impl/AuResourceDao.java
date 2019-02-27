@@ -1,14 +1,3 @@
-/*
- * 系统名称:PlatForm
- * 
- * 文件名称: venus.authority.au.auresource.dao.impl --> AuResourceDao.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2006-06-09 15:32:17.2 创建1.0.0版 (甘硕)
- *  
- */
-
 package venus.oa.authority.auresource.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -26,15 +15,6 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see
- * @since 1.0.0
- */
 
 public class AuResourceDao extends BaseTemplateDao implements IAuResourceDao, IAuResourceConstants {
 

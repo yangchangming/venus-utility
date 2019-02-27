@@ -1,16 +1,4 @@
-/*
- * 系统名称:PlatForm
- * 
- * 文件名称: venus.authority.au.auuser.bs.impl --> AuUserBs.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2006-06-09 15:32:04.438 创建1.0.0版 (甘硕)
- *  
- */
-
 package venus.oa.authority.auuser.bs.impl;
-
 
 import venus.oa.authority.auuser.adaptor.InitLoginAndPwd;
 import venus.oa.authority.auuser.bs.IAuUserBs;
@@ -38,15 +26,6 @@ import venus.pub.lang.OID;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
 
 public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserConstants {
     private static ILog log = LogMgr.getLogger(AuUserBs.class);
