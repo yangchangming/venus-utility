@@ -35,10 +35,10 @@ public class InitializationFactory {
 
     private static final Logger logger = Logger.getLogger(InitializationFactory.class);
 
-    private static List<Initialization> initializations = new ArrayList<>();
+    private static List<Initialization> initializations = new ArrayList<Initialization>();
 
     public static List<Initialization> fetchInitializations(){
-        List<Initialization> initializations = new ArrayList<>();
+        List<Initialization> initializations = new ArrayList<Initialization>();
         ConcurrentMap<String, Class<Initialization>> _initializations = ExtensionLoader.getExtensionLoader(Initialization.class).loadExtensions();
         if (_initializations==null || _initializations.size()==0){
             return Collections.emptyList();
