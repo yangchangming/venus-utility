@@ -101,7 +101,7 @@ public class ExtensionLoader<T> {
     }
 
     /**
-     * initial extension from configuration
+     * initial all extension class specified by extension class from configuration
      *
      * @return
      */
@@ -306,11 +306,7 @@ public class ExtensionLoader<T> {
      * @return
      */
     public T loadExtensionInstance(String spiName){
-        if (spiName==null || "".equals(spiName)){
-            return null;
-        }
-        checkInit();
-        Class<T> clazz = this.extensionClazzes.get(spiName);
+        Class<T> clazz = loadExtension(spiName);
         if (clazz==null){
             return null;
         }
