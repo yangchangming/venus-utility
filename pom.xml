@@ -19,8 +19,8 @@
         <module>venus-datasource</module>
         <module>venus-demo</module>
         <module>venus-oa</module>
-        <module>venus-portal</module>
-        <module>venus-cron</module>
+        <!--<module>venus-portal</module>-->
+        <!--<module>venus-cron</module>-->
     </modules>
 
     <properties>
@@ -48,6 +48,12 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
+                <version>${spring-framework.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
                 <version>${spring-framework.version}</version>
             </dependency>
 
@@ -571,6 +577,12 @@
             <dependency>
                 <groupId>com.weibo</groupId>
                 <artifactId>motan-transport-netty</artifactId>
+                <version>${motan.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.weibo</groupId>
+                <artifactId>motan-protocol-restful</artifactId>
                 <version>${motan.version}</version>
             </dependency>
 
