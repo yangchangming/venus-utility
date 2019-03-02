@@ -92,10 +92,7 @@
     <!--系统错误-->
     <motan:service interface="venus.oa.syserror.bs.ISysErrorBs" ref="sysErrorBs" basicService="serviceBasicConfig" />
 
-
-
-
-
-
+    <!--登录日志-->
+    <motan:service interface="venus.oa.loginlog.bs.ILoginLogBs" ref="loginLogBs" basicService="serviceBasicConfig" />
 
 </beans>

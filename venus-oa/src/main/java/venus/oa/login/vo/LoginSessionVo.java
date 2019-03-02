@@ -1,18 +1,3 @@
-// 代码生成时,文件路径: file:///C:/venustools/workspace/HR_II/src/com/use/comm/auuser/vo/LoginSessionVo.java
-//代码生成时,系统时间: 2006-06-09 15:32:04.668
-//代码生成时,操作系统用户: lidonghong
-
-/*
- * 系统名称:单表模板 --> HR_II
- * 
- * 文件名称: com.use.comm.auuser.vo --> LoginSessionVo.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2006-06-09 15:32:04.658 创建1.0.0版 (甘硕)
- *  
- */
-
 package venus.oa.login.vo;
 
 import venus.frames.base.vo.BaseValueObject;
@@ -21,20 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
-
 public class LoginSessionVo extends BaseValueObject {
 
-    //开始属性
-
-    //团体ID 
+    //团体ID
     private String party_id;
     
     //登陆ID 

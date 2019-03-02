@@ -1,18 +1,17 @@
 /*
  * 系统名称:单表模板 --> sample
  * 
- * 文件名称: venus.authority.login.loginlog.bs --> ILoginLogBs.java
+ * 文件名称: venus.authority.login.loginlog.dao --> ILoginLogDao.java
  * 
  * 功能描述:
  * 
- * 版本历史: 2007-10-16 10:29:59.77 创建1.0.0版 (甘硕)
+ * 版本历史: 2007-10-16 10:29:59.989 创建1.0.0版 (甘硕)
  *  
  */
 
-package venus.oa.login.loginlog.bs;
+package venus.oa.loginlog.dao;
 
-import venus.oa.login.loginlog.dao.ILoginLogDao;
-import venus.oa.login.loginlog.vo.LoginLogVo;
+import venus.oa.loginlog.vo.LoginLogVo;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.util.SqlBuilder;
 import venus.pub.lang.OID;
@@ -28,24 +27,10 @@ import java.util.List;
  * @since 1.0.0
  */
 
-public interface ILoginLogBs {
-
+public interface ILoginLogDao {
+    
     /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public ILoginLogDao getDao();
-
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(ILoginLogDao dao);
-
-    /**
-     * 插入单条记录
+     * 插入单条记录，用Oid作主键，把null全替换为""
      * 
      * @param vo 用于添加的VO对象
      * @return 若添加成功，返回新生成的Oid
@@ -72,7 +57,7 @@ public interface ILoginLogBs {
      * 删除全部记录
      * @return 成功删除的记录数
      */
-    public int deleteAll();    
+    public int deleteAll();
 
     /**
      * 根据Id进行查询
@@ -107,7 +92,7 @@ public interface ILoginLogBs {
      * @return 总记录数
      */
     public int getRecordCount(SqlBuilder sql);
-    
+
     /**
      * 不带条件查询，也即查询获得所有的VO对象列表，不带翻页，默认排序
      *
@@ -148,7 +133,7 @@ public interface ILoginLogBs {
      * @param queryCondition 查询条件
      * @return 查询到的VO列表
      */
-    public List queryByCondition(int no, int size, String queryCondition, LoginSessionVo authorizedContext);
+    public List queryByCondition(int no, int size, String queryCondition, LoginSessionVo AuthorizedContext);
     
     /**
      * 通过查询条件获得所有的VO对象列表，带翻页，带排序字符
@@ -156,11 +141,11 @@ public interface ILoginLogBs {
      * @param no 当前页数
      * @param size 每页记录数
      * @param queryCondition 查询条件
-     * @param orderStr 排序字符
+     * @param orderStr 排序字符 
      * @return 查询到的VO列表
      */
-    public List queryByCondition(int no, int size, String queryCondition, String orderStr, LoginSessionVo authorizedContext);
-    
+    public List queryByCondition(int no, int size, String queryCondition, String orderStr, LoginSessionVo AuthorizedContext);
+
     /**
      * 通用的方法，执行更新，返回更新的记录条数
      *

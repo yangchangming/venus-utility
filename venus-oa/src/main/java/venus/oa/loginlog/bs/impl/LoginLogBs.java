@@ -1,20 +1,10 @@
-/*
- * 系统名称:单表模板 --> sample
- * 
- * 文件名称: venus.authority.login.loginlog.bs.impl --> LoginLogBs.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2007-10-16 10:29:59.645 创建1.0.0版 (甘硕)
- *  
- */
+package venus.oa.loginlog.bs.impl;
 
-package venus.oa.login.loginlog.bs.impl;
-
-import venus.oa.login.loginlog.bs.ILoginLogBs;
-import venus.oa.login.loginlog.dao.ILoginLogDao;
-import venus.oa.login.loginlog.util.ILoginLogConstants;
-import venus.oa.login.loginlog.vo.LoginLogVo;
+import org.springframework.stereotype.Service;
+import venus.oa.loginlog.bs.ILoginLogBs;
+import venus.oa.loginlog.dao.ILoginLogDao;
+import venus.oa.loginlog.util.ILoginLogConstants;
+import venus.oa.loginlog.vo.LoginLogVo;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.util.SqlBuilder;
 import venus.frames.base.bs.BaseBusinessService;
@@ -22,40 +12,18 @@ import venus.pub.lang.OID;
 
 import java.util.List;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
-
+@Service
 public class LoginLogBs extends BaseBusinessService implements ILoginLogBs, ILoginLogConstants {
     
-    /**
-     * dao 表示: 数据访问层的实例
-     */
     private ILoginLogDao dao = null;
 
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
     public ILoginLogDao getDao() {
         return dao;
     }
 
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
     public void setDao(ILoginLogDao dao) {
         this.dao = dao;
     }
-
 
     /**
      * 插入单条记录

@@ -1,38 +1,10 @@
-/*
- * 系统名称:单表模板 --> sample
- * 
- * 文件名称: venus.authority.login.loginlog.vo --> LoginLogVo.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2007-10-16 10:30:00.473 创建1.0.0版 (甘硕)
- *  
- */
-
-package venus.oa.login.loginlog.vo;
+package venus.oa.loginlog.vo;
 
 import venus.frames.base.vo.BaseValueObject;
-
 import java.sql.Timestamp;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
-
 public class LoginLogVo extends BaseValueObject implements Cloneable {
-    
-	//开始AU_LOGIN_LOG的属性
-			
-	/**
-     * id 表示: 主键
-	 * 数据库中的注释: 
-     */
-     
+
 	private String id;
 		
 	/**

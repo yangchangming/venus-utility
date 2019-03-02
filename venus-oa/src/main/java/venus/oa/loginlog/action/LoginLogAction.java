@@ -9,13 +9,13 @@
  *  
  */
 
-package venus.oa.login.loginlog.action;
+package venus.oa.loginlog.action;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import venus.oa.login.loginlog.bs.ILoginLogBs;
-import venus.oa.login.loginlog.util.ILoginLogConstants;
-import venus.oa.login.loginlog.vo.LoginLogVo;
+import venus.oa.loginlog.bs.ILoginLogBs;
+import venus.oa.loginlog.util.ILoginLogConstants;
+import venus.oa.loginlog.vo.LoginLogVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.QueryBuilder;
 import venus.oa.util.SqlBuilder;

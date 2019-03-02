@@ -9,13 +9,13 @@
  *  
  */
 
-package venus.oa.login.loginlog.dao.impl;
+package venus.oa.loginlog.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
 import venus.oa.helper.AuHelper;
-import venus.oa.login.loginlog.dao.ILoginLogDao;
-import venus.oa.login.loginlog.util.ILoginLogConstants;
-import venus.oa.login.loginlog.vo.LoginLogVo;
+import venus.oa.loginlog.dao.ILoginLogDao;
+import venus.oa.loginlog.util.ILoginLogConstants;
+import venus.oa.loginlog.vo.LoginLogVo;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.util.SqlBuilder;
 import venus.oa.util.StringHelperTools;

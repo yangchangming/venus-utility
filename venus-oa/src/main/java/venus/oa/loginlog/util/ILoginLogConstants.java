@@ -1,29 +1,7 @@
-/*
- * 系统名称:VENUS 组织权限系统
- * 
- * 文件名称: venus.authority.login.loginlog.util --> ILoginLogConstants.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2007-10-16 10:30:00.333 创建1.0.0版 (甘硕)
- *  
- */
-
-package venus.oa.login.loginlog.util;
-
-
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
+package venus.oa.loginlog.util;
 
 public interface ILoginLogConstants {
 
-    //BS的规划化名称
     String BS_KEY = "ILoginLogBs";
 
     //struts页面跳转

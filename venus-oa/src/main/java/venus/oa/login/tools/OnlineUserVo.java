@@ -1,6 +1,6 @@
 package venus.oa.login.tools;
 
-import venus.oa.login.loginlog.vo.LoginLogVo;
+import venus.oa.loginlog.vo.LoginLogVo;
 
 import javax.servlet.http.HttpSession;
 
