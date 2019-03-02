@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:motan="http://api.weibo.com/schema/motan"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://api.weibo.com/schema/motan http://api.weibo.com/schema/motan.xsd">
+
+    <!--<motan:registry  regProtocol="local" name="registry" />-->
+    <motan:registry regProtocol="zookeeper" name="registry" address="127.0.0.1:2181" connectTimeout="2000"/>
+
+    <!--<motan:protocol name="injvm" id="venus-motan-protocol" default="true" maxServerConnection="80000" maxContentLength="1048576" maxWorkerThread="2000" minWorkerThread="20"/>-->
+    <motan:protocol name="motan" id="venus-motan-protocol" default="true" maxServerConnection="80000" maxContentLength="1048576" maxWorkerThread="2000" minWorkerThread="20"/>
+
+    <motan:protocol name="restful" id="venus-restful-protocol" endpointFactory="netty"/>
+
+    <motan:basicService export="venus-motan-protocol:20040" group="venus-oa-group" accessLog="false" shareChannel="true" module="venus-oa-group"
+                        application="venus-oa" registry="registry" id="serviceBasicConfig"/>
+
+    <!--公司-->
+    <motan:service interface="venus.oa.organization.company.bs.ICompanyBs" ref="companyBs" basicService="serviceBasicConfig" />
+    <motan:service interface="venus.oa.organization.company.bs.ICompanyFacadeBs" ref="companyFacadeBs" basicService="serviceBasicConfig" />
+
+    <!--部门-->
+    <motan:service interface="venus.oa.organization.department.bs.IDepartmentBs" ref="departmentBs" basicService="serviceBasicConfig" />
+    <motan:service interface="venus.oa.organization.department.bs.IDepartmentFacadeBs" ref="departmentFacadeBs" basicService="serviceBasicConfig" />
+
+    <!--员工-->
+    <motan:service interface="venus.oa.organization.employee.bs.IEmployeeBs" ref="employeeBs" basicService="serviceBasicConfig" />
+    <motan:service interface="venus.oa.organization.employee.bs.IEmployeeFacadeBs" ref="employeeFacadeBs" basicService="serviceBasicConfig" />
+
+    <!--岗位-->
+    <motan:service interface="venus.oa.organization.position.bs.IPositionBs" ref="positionBs" basicService="serviceBasicConfig" />
+    <motan:service interface="venus.oa.organization.position.bs.IPositionFacadeBs" ref="positionFacadeBs" basicService="serviceBasicConfig" />
+
+    <!--组织机构树-->
+    <motan:service interface="venus.oa.organization.relation.bs.IRelationBs" ref="relationBs" basicService="serviceBasicConfig" />
+
+    <!--团体-->
+    <motan:service interface="venus.oa.organization.auparty.bs.IAuPartyBs" ref="auPartyBs" basicService="serviceBasicConfig" />
+
+    <!--团体类型-->
+    <motan:service interface="venus.oa.organization.aupartytype.bs.IAuPartyTypeBS" ref="auPartyTypeBS" basicService="serviceBasicConfig" />
+
+    <!--团体关系类型-->
+    <motan:service interface="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" ref="AuPartyRelationTypeBS" basicService="serviceBasicConfig" />
+
+    <!--团体关系-->
+    <motan:service interface="venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs" ref="auPartyRelationBs" basicService="serviceBasicConfig" />
+
+    <!--团体连接规则-->
+    <motan:service interface="venus.oa.organization.auconnectrule.bs.IAuConnectRuleBS" ref="auConnectRuleBS" basicService="serviceBasicConfig" />
+
+    <!--权限附加数据-->
+    <motan:service interface="venus.oa.authority.appenddata.bs.IAppendDataBs" ref="appendDataBs" basicService="serviceBasicConfig" />
+
+    <!--授权-->
+    <motan:service interface="venus.oa.authority.auauthorize.bs.IAuAuthorizeBS" ref="auAuthorizeBS" basicService="serviceBasicConfig" />
+
+    <!--授权日志-->
+    <motan:service interface="venus.oa.authority.auauthorizelog.bs.IAuAuthorizeLogBS" ref="auAuthorizeLogBS" basicService="serviceBasicConfig" />
+
+    <!--权限树-->
+    <motan:service interface="venus.oa.authority.aufunctree.bs.IAuFunctreeBs" ref="auFunctreeBs" basicService="serviceBasicConfig" />
+
+    <!--代理-->
+    <motan:service interface="venus.oa.authority.auproxy.bs.IAuProxyBs" ref="auProxyBs" basicService="serviceBasicConfig" />
+
+    <!--代理历史-->
+    <motan:service interface="venus.oa.authority.auproxy.bs.IProxyHistoryBs" ref="proxyHistoryBs" basicService="serviceBasicConfig" />
+
+    <!--资源-->
+    <motan:service interface="venus.oa.authority.auresource.bs.IAuResourceBs" ref="auResourceBs" basicService="serviceBasicConfig" />
+
+    <!--用户-->
+    <motan:service interface="venus.oa.authority.auuser.bs.IAuUserBs" ref="auUserBs" basicService="serviceBasicConfig" />
+
+    <!--visitor-->
+    <motan:service interface="venus.oa.authority.auvisitor.bs.IAuVisitorBS" ref="auVisitorBS" basicService="serviceBasicConfig" />
+
+    <!--机构调级-->
+    <motan:service interface="venus.oa.orgadjust.bs.IAdjustOrganizeBs" ref="adjustOrganizeBs" basicService="serviceBasicConfig" />
+
+    <!--验证码-->
+    <motan:service interface="venus.oa.checkcode.bs.ICheckCodeBs" ref="checkCodeBs" basicService="serviceBasicConfig" />
+
+    <!--历史日志-->
+    <motan:service interface="venus.oa.history.bs.IHistoryLogBs" ref="historyLogBs" basicService="serviceBasicConfig" />
+
+    <!--系统参数-->
+    <motan:service interface="venus.oa.sysparam.bs.ISysParamsBs" ref="sysParamsBs" basicService="serviceBasicConfig" />
+
+    <!--系统错误-->
+    <motan:service interface="venus.oa.syserror.bs.ISysErrorBs" ref="sysErrorBs" basicService="serviceBasicConfig" />
+
+
+
+
+
+
+
+</beans>

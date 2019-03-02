@@ -1,5 +1,6 @@
 package venus.oa.organization.auconnectrule.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.organization.auconnectrule.bs.IAuConnectRuleBS;
 import venus.oa.organization.auconnectrule.dao.IAuConnectRuleDao;
 import venus.oa.organization.auconnectrule.util.IConstants;
@@ -17,6 +18,7 @@ import java.util.List;
  * @author wumingqiang
  *
  */
+@Service
 public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRuleBS, IConstants {
 
     private static ILog log = LogMgr.getLogger(AuConnectRuleBS.class);

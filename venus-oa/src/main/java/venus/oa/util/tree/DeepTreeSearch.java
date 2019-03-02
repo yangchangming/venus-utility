@@ -6,7 +6,7 @@ package venus.oa.util.tree;
 import org.springframework.jdbc.core.RowMapper;
 import venus.oa.helper.OrgHelper;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
-import venus.oa.service.sys.vo.SysParamVo;
+import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.GlobalConstants;
 import venus.frames.base.dao.BaseTemplateDao;
 import venus.frames.mainframe.util.Helper;

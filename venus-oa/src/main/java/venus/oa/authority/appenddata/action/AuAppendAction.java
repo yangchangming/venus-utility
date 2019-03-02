@@ -22,11 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-/**
- * 
- * 团体类型维护ACTION
- *  
- */
 @Controller
 @RequestMapping("/auAppend")
 public class AuAppendAction implements IConstantsimplements {
@@ -39,7 +34,6 @@ public class AuAppendAction implements IConstantsimplements {
     public IAppendDataBs getBs() {
         return (IAppendDataBs) Helper.getBean(BS_KEY);
     }   
-    
 
 	@RequestMapping("/saveFunOrgAuByRelId")
     public String saveFunOrgAuByRelId(HttpServletRequest request, HttpServletResponse response) throws Exception {

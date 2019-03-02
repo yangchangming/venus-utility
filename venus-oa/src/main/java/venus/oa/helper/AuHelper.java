@@ -24,7 +24,7 @@ import venus.oa.authority.auresource.dao.IAuResourceDao;
 import venus.oa.authority.auresource.util.IAuResourceConstants;
 import venus.oa.authority.auresource.vo.AuResourceVo;
 import venus.oa.login.vo.LoginSessionVo;
-import venus.oa.service.sys.vo.SysParamVo;
+import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
 import venus.oa.util.StringHelperTools;

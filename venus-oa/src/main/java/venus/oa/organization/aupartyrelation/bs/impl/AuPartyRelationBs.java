@@ -6,6 +6,7 @@ package venus.oa.organization.aupartyrelation.bs.impl;
 
 import gap.commons.digest.DigestLoader;
 import gap.license.exception.NoSuchModuleException;
+import org.springframework.stereotype.Service;
 import venus.oa.authority.auvisitor.bs.IAuVisitorBS;
 import venus.oa.authority.auvisitor.vo.AuVisitorVo;
 import venus.oa.organization.auconnectrule.vo.AuConnectRuleVo;
@@ -36,6 +37,7 @@ import java.util.Map;
  * @author maxiao
  *
  */
+@Service
 public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRelationBs,IConstants {
     private IAuPartyRelationDao dao=null;
     private static ILog log = LogMgr.getLogger(AuPartyRelationBs.class);

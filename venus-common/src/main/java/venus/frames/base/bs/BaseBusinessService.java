@@ -2,8 +2,6 @@ package venus.frames.base.bs;
 
 import venus.frames.base.IGlobalsKeys;
 import venus.frames.jdbc.datasource.ConfDataSource;
-import venus.frames.mainframe.log.ILog;
-import venus.frames.mainframe.log.LogMgr;
 
 import javax.sql.DataSource;
 
@@ -19,7 +17,7 @@ import javax.sql.DataSource;
 public abstract class BaseBusinessService implements IGlobalsKeys {
 	
 	//	日志
-	protected final ILog logger = LogMgr.getLogger(this);
+//	protected final ILog logger = LogMgr.getLogger(this);
 	
 	/**
 	 * 获取数据源

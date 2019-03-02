@@ -1,5 +1,7 @@
 package venus.oa.organization.department.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import venus.oa.helper.OrgHelper;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
@@ -9,7 +11,7 @@ import venus.oa.organization.department.bs.IDepartmentBs;
 import venus.oa.organization.department.bs.IDepartmentFacadeBs;
 import venus.oa.organization.department.util.IDepartmentConstants;
 import venus.oa.organization.department.vo.DepartmentVo;
-import venus.oa.service.history.bs.IHistoryLogBs;
+import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.frames.mainframe.util.Helper;
@@ -17,8 +19,10 @@ import venus.frames.mainframe.util.Helper;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConstants {
 
+	@Autowired
 	private IDepartmentBs departmentBs;
 	
 	/**

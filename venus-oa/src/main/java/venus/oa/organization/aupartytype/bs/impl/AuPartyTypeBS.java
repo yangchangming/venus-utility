@@ -5,6 +5,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.springframework.stereotype.Service;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
 import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
@@ -34,6 +35,7 @@ import java.util.List;
  * @author wumingqiang
  *
  */
+@Service
 public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS,
         IConstants {
 

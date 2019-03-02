@@ -1,5 +1,6 @@
 package venus.oa.authority.auauthorizelog.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
 import venus.oa.authority.auauthorizelog.bs.IAuAuthorizeLogBS;
 import venus.oa.authority.auauthorizelog.dao.IAuAuthorizeLogDao;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @author zangjian
  *
  */
+@Service
 public class AuAuthorizeLogBS extends BaseBusinessService implements IAuAuthorizeLogBS,IConstants {
 
     private IAuAuthorizeLogDao dao = null;

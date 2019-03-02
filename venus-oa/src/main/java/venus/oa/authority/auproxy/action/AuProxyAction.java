@@ -12,7 +12,7 @@ import venus.oa.organization.auparty.util.IConstants;
 import venus.oa.organization.auparty.vo.PartyVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
-import venus.oa.service.history.bs.IHistoryLogBs;
+import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.VoHelperTools;

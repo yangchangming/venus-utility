@@ -1,5 +1,6 @@
 package venus.oa.organization.employee.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.helper.OrgHelper;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
@@ -9,7 +10,7 @@ import venus.oa.organization.employee.bs.IEmployeeBs;
 import venus.oa.organization.employee.bs.IEmployeeFacadeBs;
 import venus.oa.organization.employee.util.IEmployeeConstants;
 import venus.oa.organization.employee.vo.EmployeeVo;
-import venus.oa.service.history.bs.IHistoryLogBs;
+import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.frames.mainframe.util.Helper;
@@ -17,6 +18,7 @@ import venus.frames.mainframe.util.Helper;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class EmployeeFacadeBs implements IEmployeeFacadeBs,IEmployeeConstants {
   
 	private IEmployeeBs employeeBs;

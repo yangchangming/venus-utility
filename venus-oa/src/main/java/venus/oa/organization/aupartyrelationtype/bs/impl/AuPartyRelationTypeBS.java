@@ -1,5 +1,6 @@
 package venus.oa.organization.aupartyrelationtype.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.organization.auconnectrule.dao.IAuConnectRuleDao;
 import venus.oa.organization.auconnectrule.vo.AuConnectRuleVo;
 import venus.oa.organization.aupartyrelation.dao.IAuPartyRelationDao;
@@ -22,6 +23,7 @@ import java.util.List;
  * @author wumingqiang
  *
  */
+@Service
 public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPartyRelationTypeBS,
         IConstants {
 

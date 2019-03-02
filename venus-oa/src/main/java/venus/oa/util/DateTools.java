@@ -3,7 +3,7 @@
  */
 package venus.oa.util;
 
-import venus.oa.service.sys.vo.SysParamVo;
+import venus.oa.sysparam.vo.SysParamVo;
 
 import java.sql.Timestamp;
 import java.util.Calendar;

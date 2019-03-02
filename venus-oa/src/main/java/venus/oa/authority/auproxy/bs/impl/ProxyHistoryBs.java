@@ -3,6 +3,7 @@
  */
 package venus.oa.authority.auproxy.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.authority.auproxy.bs.IProxyHistoryBs;
 import venus.oa.authority.auproxy.dao.IProxyHistoryDao;
 import venus.oa.authority.auproxy.vo.ProxyHistoryVo;
@@ -13,6 +14,7 @@ import java.util.List;
  * @author changming.Y <changming.yang.ah@gmail.com>
  *
  */
+@Service
 public class ProxyHistoryBs implements IProxyHistoryBs {
     
     /**

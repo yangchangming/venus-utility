@@ -11,6 +11,7 @@
 
 package venus.oa.authority.auresource.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.authority.auauthorize.dao.IAuAuthorizeDao;
 import venus.oa.authority.auresource.bs.IAuResourceBs;
 import venus.oa.authority.auresource.dao.IAuResourceDao;
@@ -31,7 +32,7 @@ import java.util.List;
  * @see 需要参见的其它类
  * @since 1.0.0
  */
-
+@Service
 public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, IAuResourceConstants {
 
     /**

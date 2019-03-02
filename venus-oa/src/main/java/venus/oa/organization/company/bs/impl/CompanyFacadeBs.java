@@ -1,5 +1,7 @@
 package venus.oa.organization.company.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import venus.oa.helper.OrgHelper;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
@@ -9,7 +11,7 @@ import venus.oa.organization.company.bs.ICompanyBs;
 import venus.oa.organization.company.bs.ICompanyFacadeBs;
 import venus.oa.organization.company.util.ICompanyConstants;
 import venus.oa.organization.company.vo.CompanyVo;
-import venus.oa.service.history.bs.IHistoryLogBs;
+import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
@@ -18,10 +20,12 @@ import venus.frames.mainframe.util.Helper;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
 
+	@Autowired
 	private ICompanyBs companyBs;
-	
+
 	/**
 	 * @param companyBs 要设置的 companyBs。
 	 */

@@ -1,5 +1,6 @@
 package venus.oa.authority.appenddata.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.authority.appenddata.bs.IAppendDataBs;
 import venus.oa.authority.appenddata.dao.IAuAppendDataDao;
 import venus.oa.authority.appenddata.vo.AuAppendVo;
@@ -24,6 +25,7 @@ import java.util.*;
  *  2008-9-26
  * @author changming.Y <changming.yang.ah@gmail.com>
  */
+@Service
 public class AppendDataBs implements IAppendDataBs {
 	
 	private IAuAppendDataDao dao;

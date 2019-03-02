@@ -1,6 +1,6 @@
 package venus.oa.organization.company.bs.impl;
 
-import com.weibo.api.motan.config.springsupport.annotation.MotanService;
+import org.springframework.stereotype.Service;
 import venus.oa.helper.OrgHelper;
 import venus.oa.organization.auparty.vo.PartyVo;
 import venus.oa.organization.company.bs.ICompanyBs;
@@ -12,9 +12,7 @@ import venus.frames.base.bs.BaseBusinessService;
 
 import java.util.List;
 
-/**
- * company service
- */
+@Service
 public class CompanyBs extends BaseBusinessService implements ICompanyBs, ICompanyConstants {
     
     private ICompanyDao dao = null;

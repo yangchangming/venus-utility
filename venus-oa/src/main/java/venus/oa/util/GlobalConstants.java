@@ -7,8 +7,8 @@ import org.dom4j.io.SAXReader;
 import venus.oa.organization.aupartytype.bs.IAuPartyTypeBS;
 import venus.oa.organization.aupartytype.util.IConstants;
 import venus.oa.organization.aupartytype.vo.AuPartyTypeVo;
-import venus.oa.service.sys.bs.ISysParamsBs;
-import venus.oa.service.sys.vo.SysParamVo;
+import venus.oa.sysparam.bs.ISysParamsBs;
+import venus.oa.sysparam.vo.SysParamVo;
 import venus.frames.base.exception.BaseApplicationException;
 import venus.frames.mainframe.util.Helper;
 import venus.frames.mainframe.util.PathMgr;
@@ -90,7 +90,7 @@ public class GlobalConstants {
      * 功能: 读取所有系统配置项
      */
     public static void loadSysParas(){
-    	ISysParamsBs bs = (ISysParamsBs) Helper.getBean(venus.oa.service.sys.util.IConstants.BS_KEY);
+    	ISysParamsBs bs = (ISysParamsBs) Helper.getBean(venus.oa.sysparam.util.IConstants.BS_KEY);
     	List list=bs.queryByCondition(" ENABLE='1' ");
     	if(list!=null || list.size()>0) {
     		mSysParas = new HashMap();

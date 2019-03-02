@@ -14,6 +14,8 @@ package venus.oa.organization.company.bs;
 import venus.oa.organization.company.dao.ICompanyDao;
 import venus.oa.organization.company.vo.CompanyVo;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 import java.util.List;
 
 /**
@@ -25,6 +27,7 @@ import java.util.List;
  * @since 1.0.0
  */
 
+@Path("/company")
 public interface ICompanyBs {
     /**
      * 设置数据访问接口
@@ -80,6 +83,8 @@ public interface ICompanyBs {
      * @param id 用于查找的id
      * @return 查询到的VO对象
      */
+    @GET
+    @Path("/find")
     public CompanyVo find(String id);
 
     /**

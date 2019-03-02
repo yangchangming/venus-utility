@@ -3,6 +3,7 @@ package venus.oa.authority.auauthorize.bs.impl;
 import gap.commons.digest.DigestLoader;
 import gap.license.exception.InvalidLicenseException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Service;
 import venus.oa.authority.appenddata.bs.IAppendDataBs;
 import venus.oa.authority.appenddata.util.IConstantsimplements;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
@@ -41,6 +42,7 @@ import java.util.*;
  * @author ganshuo
  *
  */
+@Service
 public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS, IConstants {
 
     private static ILog log = LogMgr.getLogger(AuAuthorizeBS.class);

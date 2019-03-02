@@ -16,15 +16,10 @@
 package venus.oa.boot;
 
 import com.weibo.api.motan.common.MotanConstants;
-import com.weibo.api.motan.config.springsupport.AnnotationBean;
-import com.weibo.api.motan.config.springsupport.BasicServiceConfigBean;
-import com.weibo.api.motan.config.springsupport.ProtocolConfigBean;
-import com.weibo.api.motan.config.springsupport.RegistryConfigBean;
 import com.weibo.api.motan.util.MotanSwitcherUtil;
 import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 
 /**
@@ -44,51 +39,55 @@ public class VenusOABooter {
         app.setWebEnvironment(false);
         app.run(args);
         MotanSwitcherUtil.setSwitcherValue(MotanConstants.REGISTRY_HEARTBEAT_SWITCHER, true);
-        venus.log.Logger.keyInfo(logger, "venus oa server start success!");
+        venus.log.Logger.keyInfo(logger, "Venus OA server start success!");
     }
 
-    @Bean
-    public AnnotationBean motanAnnotationBean(){
-        AnnotationBean motanAnnotationBean = new AnnotationBean();
-        motanAnnotationBean.setPackage("venus.oa.test.impl");
-        return motanAnnotationBean;
-    }
-
-
-    @Bean(name = "venus-oa-motan")
-    public ProtocolConfigBean protocolConfig() {
-        ProtocolConfigBean config = new ProtocolConfigBean();
-        config.setDefault(true);
-//        config.setName(MotanConstants.PROTOCOL_MOTAN);
-
-        // Injvm 协议是一个伪协议，它不开启端口，不发起远程调用，只在 JVM 内直接关联，但执行 Motan 的 Filter 链
-        config.setName(MotanConstants.PROTOCOL_INJVM);
-        config.setMaxContentLength(1048576);
-        config.setMaxServerConnection(80000);
-        config.setMaxWorkerThread(2000);
-        config.setMinWorkerThread(20);
-        return config;
-    }
-
-    @Bean(name = "registryConfig")
-    public RegistryConfigBean registryConfig() {
-        RegistryConfigBean config = new RegistryConfigBean();
-        config.setRegProtocol(MotanConstants.REGISTRY_PROTOCOL_LOCAL);
-        return config;
-    }
-
-    @Bean
-    public BasicServiceConfigBean baseServiceConfig() {
-        BasicServiceConfigBean config = new BasicServiceConfigBean();
-        config.setExport("venus-oa-motan:8002");
-        config.setGroup("venus-oa-group");
-        config.setAccessLog(true);
-        config.setShareChannel(true);
-        config.setModule("venus-oa-rpc");
-        config.setApplication("venus-oa-app");
-        config.setRegistry("registryConfig");
-        return config;
-    }
+    /**
+     * 注解方式实现motan的配置，都会被扫描到
+     * @return
+     */
+//    @Bean
+//    public AnnotationBean motanAnnotationBean(){
+//        AnnotationBean motanAnnotationBean = new AnnotationBean();
+////        motanAnnotationBean.setPackage("venus.oa.test.impl");
+//        return motanAnnotationBean;
+//    }
+//
+//
+//    @Bean(name = "venus-oa-motan")
+//    public ProtocolConfigBean protocolConfig() {
+//        ProtocolConfigBean config = new ProtocolConfigBean();
+//        config.setDefault(true);
+////        config.setName(MotanConstants.PROTOCOL_MOTAN);
+//
+//        // Injvm 协议是一个伪协议，它不开启端口，不发起远程调用，只在 JVM 内直接关联，但执行 Motan 的 Filter 链
+//        config.setName(MotanConstants.PROTOCOL_INJVM);
+//        config.setMaxContentLength(1048576);
+//        config.setMaxServerConnection(80000);
+//        config.setMaxWorkerThread(2000);
+//        config.setMinWorkerThread(20);
+//        return config;
+//    }
+//
+//    @Bean(name = "registryConfig")
+//    public RegistryConfigBean registryConfig() {
+//        RegistryConfigBean config = new RegistryConfigBean();
+//        config.setRegProtocol(MotanConstants.REGISTRY_PROTOCOL_LOCAL);
+//        return config;
+//    }
+//
+//    @Bean
+//    public BasicServiceConfigBean baseServiceConfig() {
+//        BasicServiceConfigBean config = new BasicServiceConfigBean();
+//        config.setExport("venus-oa-motan:8002");
+//        config.setGroup("venus-oa-group");
+//        config.setAccessLog(true);
+//        config.setShareChannel(true);
+//        config.setModule("venus-oa-rpc");
+//        config.setApplication("venus-oa-app");
+//        config.setRegistry("registryConfig");
+//        return config;
+//    }
 
 
 }

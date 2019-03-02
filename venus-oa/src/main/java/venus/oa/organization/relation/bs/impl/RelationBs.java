@@ -3,6 +3,7 @@
  */
 package venus.oa.organization.relation.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.helper.OrgHelper;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
@@ -12,7 +13,7 @@ import venus.oa.organization.employee.bs.IEmployeeBs;
 import venus.oa.organization.employee.util.IEmployeeConstants;
 import venus.oa.organization.employee.vo.EmployeeVo;
 import venus.oa.organization.relation.bs.IRelationBs;
-import venus.oa.service.history.bs.IHistoryLogBs;
+import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.frames.base.bs.BaseBusinessService;
@@ -21,10 +22,7 @@ import venus.frames.mainframe.util.Helper;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author zangjian
- *
- */
+@Service
 public class RelationBs extends BaseBusinessService implements IRelationBs {
 
     public void addRelation(String[] partyIds, String parentRelId, String relType,LoginSessionVo vo) {

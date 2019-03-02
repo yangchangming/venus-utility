@@ -1,8 +1,8 @@
 package venus.oa.organization.employee.adaptor;
 
 import venus.oa.organization.employee.vo.EmployeeVo;
-import venus.oa.service.history.model.adaptor.HistoryAdaptor;
-import venus.oa.service.history.vo.HistoryLogVo;
+import venus.oa.history.model.adaptor.HistoryAdaptor;
+import venus.oa.history.vo.HistoryLogVo;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.transform.TransformStrategy;
 import venus.oa.util.transform.json.JsonDataTools;

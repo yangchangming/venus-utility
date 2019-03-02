@@ -1,5 +1,6 @@
 package venus.oa.authority.auvisitor.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.authority.auauthorize.dao.IAuAuthorizeDao;
 import venus.oa.authority.auvisitor.bs.IAuVisitorBS;
 import venus.oa.authority.auvisitor.dao.IAuVisitorDao;
@@ -25,6 +26,7 @@ import java.util.List;
  * @author wumingqiang
  *  
  */
+@Service
 public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IConstants {
 
     private static ILog log = LogMgr.getLogger(AuVisitorBS.class);

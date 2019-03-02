@@ -3,6 +3,7 @@
  */
 package venus.oa.authority.auproxy.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.authority.auauthorizelog.bs.IAuAuthorizeLogBS;
 import venus.oa.authority.auauthorizelog.vo.AuAuthorizeLogVo;
 import venus.oa.authority.auproxy.bs.IAuProxyBs;
@@ -14,8 +15,8 @@ import venus.oa.organization.auparty.vo.PartyVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
 import venus.oa.organization.aupartyrelation.util.IConstants;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
-import venus.oa.service.history.bs.IHistoryLogBs;
-import venus.oa.service.history.vo.HistoryLogVo;
+import venus.oa.history.bs.IHistoryLogBs;
+import venus.oa.history.vo.HistoryLogVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.frames.base.bs.BaseBusinessService;
@@ -32,6 +33,7 @@ import java.util.Map;
  * @author zangjian
  * 
  */
+@Service
 public class AuProxyBs extends BaseBusinessService implements IAuProxyBs,
         venus.oa.authority.auproxy.util.IConstants {
 

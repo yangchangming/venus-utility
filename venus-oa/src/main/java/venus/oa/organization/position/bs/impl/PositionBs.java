@@ -12,6 +12,7 @@
 package venus.oa.organization.position.bs.impl;
 
 
+import org.springframework.stereotype.Service;
 import venus.oa.helper.OrgHelper;
 import venus.oa.organization.auparty.vo.PartyVo;
 import venus.oa.organization.position.bs.IPositionBs;
@@ -32,6 +33,7 @@ import java.util.List;
  * @since 1.0.0
  */
 
+@Service
 public class PositionBs extends BaseBusinessService implements IPositionBs, IPositionConstants {
     
     /**

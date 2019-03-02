@@ -1,5 +1,6 @@
 package venus.oa.authority.auuser.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.authority.auuser.adaptor.InitLoginAndPwd;
 import venus.oa.authority.auuser.bs.IAuUserBs;
 import venus.oa.authority.auuser.dao.IAuUserDao;
@@ -10,7 +11,7 @@ import venus.oa.organization.auparty.bs.IAuPartyBs;
 import venus.oa.organization.auparty.util.IConstants;
 import venus.oa.organization.auparty.vo.PartyVo;
 import venus.oa.service.profile.model.UserProfileModel;
-import venus.oa.service.sys.vo.SysParamVo;
+import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.Encode;
 import venus.oa.util.GlobalConstants;
@@ -19,16 +20,22 @@ import venus.commons.xmlenum.EnumRepository;
 import venus.commons.xmlenum.EnumValueMap;
 import venus.frames.base.bs.BaseBusinessService;
 import venus.frames.base.exception.BaseApplicationException;
-import venus.frames.mainframe.log.ILog;
-import venus.frames.mainframe.log.LogMgr;
+//import venus.frames.mainframe.log.ILog;
+//import venus.frames.mainframe.log.LogMgr;
 import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserConstants {
-    private static ILog log = LogMgr.getLogger(AuUserBs.class);
+
+//    private static ILog log = LogMgr.getLogger(AuUserBs.class);
+
+
+
+
     /**
      * dao 表示: 数据访问层的实例
      */
@@ -76,10 +83,6 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
     /**
      * 
      * 功能: 同步portal帐户信息
-     *
-     * @param old_login_id
-     * @param new_login_id
-     * @param password
      *
     private void updatePortalUser(String old_login_id, String new_login_id, String password) {
         try{
@@ -496,7 +499,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
     
     /**
      * 账号是否存在
-     * @param partyName
+     * @param loginId
      * @return
      */
     public boolean hasLoginId(String loginId) {
@@ -521,7 +524,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
         try{
             userVo = (AuUserVo)getDao().findByLoginId(loginId);
         }catch(Exception e){
-            log.warn("账户"+loginId+"验证失败！");
+//            log.warn("账户"+loginId+"验证失败！");
         }
         if(null==userVo){
             return -2;  //"帐号不存在

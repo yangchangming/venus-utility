@@ -5,6 +5,7 @@
 package venus.oa.organization.auparty.bs.impl;
 
 
+import org.springframework.stereotype.Service;
 import venus.oa.authority.auuser.bs.IAuUserBs;
 import venus.oa.authority.auuser.util.IAuUserConstants;
 import venus.oa.authority.auuser.vo.AuUserVo;
@@ -17,7 +18,7 @@ import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.organization.aupartytype.dao.IAuPartyTypeDao;
 import venus.oa.organization.aupartytype.vo.AuPartyTypeVo;
 import venus.oa.service.profile.model.UserProfileModel;
-import venus.oa.service.sys.vo.SysParamVo;
+import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
@@ -34,6 +35,7 @@ import java.util.Map;
  * @author maxiao
  *
  */
+@Service
 public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
     
     private IAuPartyDao dao = null;

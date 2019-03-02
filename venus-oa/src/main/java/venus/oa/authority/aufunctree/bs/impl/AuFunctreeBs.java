@@ -1,5 +1,6 @@
 package venus.oa.authority.aufunctree.bs.impl;
 
+import org.springframework.stereotype.Service;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
 import venus.oa.authority.aufunctree.dao.IAuFunctreeDao;
 import venus.oa.authority.aufunctree.util.AuFunctreeConstants;
@@ -18,9 +19,6 @@ import venus.pub.lang.OID;
 import java.util.Iterator;
 import java.util.List;
 
-//import venus.authority.service.virtualsite.bs.IVirtualSiteBs;
-//import venus.authority.service.virtualsite.util.IConstant;
-
 /**
  * 功能、用途、现存BUG:
  * 
@@ -30,6 +28,7 @@ import java.util.List;
  * @since 1.0.0
  */
 
+@Service
 public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, IAuFunctreeConstants {
     
     /**

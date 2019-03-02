@@ -1,5 +1,6 @@
 package venus.oa.organization.company.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.oa.helper.AuHelper;
@@ -22,9 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-/**
- * company controller
- */
 @Controller
 @RequestMapping("/company")
 public class CompanyAction implements ICompanyConstants {
@@ -37,7 +35,11 @@ public class CompanyAction implements ICompanyConstants {
     public ICompanyBs getBs() {
         return (ICompanyBs) Helper.getBean(BS_KEY);  //得到BS对象,受事务控制
     }
-    
+
+    @Autowired
+    private ICompanyBs companyBs;
+
+
     /**
      * 得到Facade BS对象
      * 
