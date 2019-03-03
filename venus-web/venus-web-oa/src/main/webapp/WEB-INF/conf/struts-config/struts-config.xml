@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+	<!-- 全局异常处理定义 -->
+	<global-exceptions>
+		<exception handler="venus.frames.util.exception.GlobalExceptionHandlerWithMessageAgent" key="GLOBAL_ERROR_CODE" path="/jsp/common/common_error.jsp" type="java.lang.Exception" />
+	</global-exceptions>
+
+	<!-- 全局转向定义 -->
+	<global-forwards>
+		<forward name="error" path="/jsp/common/common_error.jsp" />
+		<forward name="MessageAgentError" path="/jsp/common/common_error.jsp" />
+		<forward name="GoToPath" path="/jsp/common/goToPath.jsp" />
+	</global-forwards>
+
+	<!-- 全局action-mapping定义 -->
+	<action-mappings type="org.apache.struts.config.SecureActionConfig"/>
+
+	<!-- 应用控制器定义 -->
+	<controller processorClass="org.apache.struts.action.SecureRequestProcessor" />
+
+	<!-- 国际化资源文件定义 -->
+	<message-resources parameter="ApplicationResources" />
+
+	<plug-in className="org.apache.struts.action.SecurePlugIn">
+    	<set-property property="httpPort" value="9999"/>
+    	<set-property property="httpsPort" value="8443"/>
+    	<set-property property="enable" value="false"/>
+	</plug-in>
+
+</struts-config>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>ViewMode</name>
+    <resource></resource>
+    <enums>
+        <enum label="列表"  value="0"/>
+        <enum label="视图"  value="1"/>
+    </enums>
+</EnumDef>

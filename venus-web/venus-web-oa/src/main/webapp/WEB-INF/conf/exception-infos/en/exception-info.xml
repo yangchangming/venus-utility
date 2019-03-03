@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean id="info1001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>venus.frames.base.exception.BaseDataAccessException</value></property>
+    <property name="code"><value>1001</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>An exception occurred when access data </value></property>
+  </bean>
+
+  <bean id="info1002" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.CleanupFailureDataAccessException</value></property>
+    <property name="code"><value>1002</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Data manipulation successful, but an exception occurred when cleaning up resources</value></property>
+  </bean>
+
+  <bean id="info1003" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.ConcurrencyFailureException</value></property>
+    <property name="code"><value>1003</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Occurs  concurrent exception when data manipulation</value></property>
+  </bean>
+
+  <bean id="info1004" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.CannotAcquireLockException</value></property>
+    <property name="code"><value>1004</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>During insert, update, delete operation to obtain the database lock failed.</value></property>
+  </bean>
+
+  <bean id="info1005" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.DataIntegrityViolationException</value></property>
+    <property name="code"><value>1005</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Insert or update the database record, in violation of data integrity constraints or integrity constraints, or can not insert a null value</value></property>
+  </bean>
+  
+  <bean id="info1006" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.CannotSerializeTransactionException</value></property>
+    <property name="code"><value>1006</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Database update operation result can not be accomplished by transaction sequence</value></property>
+  </bean>
+  
+  <bean id="info1010" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.OptimisticLockingFailureException</value></property>
+    <property name="code"><value>1010</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Database optimistic locking anomaly</value></property>
+  </bean>
+  
+  <bean id="info1011" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.orm.ObjectOptimisticLockingFailureException</value></property>
+    <property name="code"><value>1011</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>ORM mapped against the database optimistic locking mechanism</value></property>
+  </bean>  
+  
+  <bean id="info1012" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException</value></property>
+    <property name="code"><value>1012</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Hibernate object-relational database insinuations against the optimistic locking mechanism</value></property>
+  </bean>
+  
+  <bean id="info1014" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.DataAccessResourceFailureException</value></property>
+    <property name="code"><value>1014</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Occurs  an exception  when request resources, such as a request for a database connection</value></property>
+  </bean>          
+  
+  <bean id="info1015" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.jdbc.CannotGetJdbcConnectionException</value></property>
+    <property name="code"><value>1015</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Occurs an exception    when request for the database connection</value></property>
+  </bean>    
+
+  <bean id="info1016" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.transaction.CannotCreateTransactionException</value></property>
+    <property name="code"><value>1016</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Can not create a database transaction ,may be due to occur an exception when  request for   the database connection/value></value></property>
+  </bean>    
+  
+  <bean id="info1017" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.DataRetrievalFailureException</value></property>
+    <property name="code"><value>1017</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>An exception occurs when retrieve the desired data from database</value></property>
+  </bean>    
+  
+  <bean id="info1018" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.jdbc.LobRetrievalFailureException</value></property>
+    <property name="code"><value>1018</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>An exception occurs when retrieving large objects.</value></property>
+  </bean>
+
+  <bean id="info1019" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.orm.ObjectRetrievalFailureException</value></property>
+    <property name="code"><value>1019</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Retrieved through the ID of the object mapping occurs an exception.</value></property>
+  </bean>
+  
+  <bean id="info1020" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException</value></property>
+    <property name="code"><value>1020</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Hibernate mapping objects retrieved through the ID occurs  an exception.</value></property>
+  </bean>
+
+  
+  <bean id="info1022" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.DeadlockLoserDataAccessException</value></property>
+    <property name="code"><value>1022</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>A database deadlock, transaction rolled back</value></property>
+  </bean>
+ 
+  <bean id="info1023" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.InvalidDataAccessApiUsageException</value></property>
+    <property name="code"><value>1023</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>The use of an invalid data access API</value></property>
+  </bean>  
+  
+  <bean id="info1024" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.InvalidDataAccessResourceUsageException</value></property>
+    <property name="code"><value>1024</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>With an invalid way to access resources</value></property>
+  </bean>  
+  
+  <bean id="info1025" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.jdbc.BadSqlGrammarException</value></property>
+    <property name="code"><value>1025</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Invalid SQL syntax.</value></property>
+  </bean>  
+  
+  <bean id="info1026" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.orm.hibernate3.HibernateQueryException</value></property>
+    <property name="code"><value>1026</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Invalid HQL syntax.</value></property>
+  </bean>    
+  
+  <bean id="info1027" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.IncorrectUpdateSemanticsDataAccessException</value></property>
+    <property name="code"><value>1027</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Update statement error</value></property>
+  </bean>    
+  
+  <bean id="info1028" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.TypeMismatchDataAccessException</value></property>
+    <property name="code"><value>1028</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Type mismatch</value></property>
+  </bean>    
+  
+  <bean id="info1029" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.DataAccessException</value></property>
+    <property name="code"><value>1029</value></property>
+    <property name="type"><value>Data Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Data Access Exception</value></property>
+  </bean>
+  
+  <bean id="info2001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>venus.frames.base.exception.BaseApplicationException</value></property>
+    <property name="code"><value>2001</value></property>
+    <property name="type"><value>Business Logic</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Business logic exceptions, in violation of business rules</value></property>
+  </bean>
+  
+  <bean id="info3001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.remoting.RemoteAccessException</value></property>
+    <property name="code"><value>3001</value></property>
+    <property name="type"><value>Remote Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Access the remote object when an exception</value></property>
+  </bean>
+
+  <bean id="info3002" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.remoting.RemoteConnectFailureException</value></property>
+    <property name="code"><value>3002</value></property>
+    <property name="type"><value>Remote Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Can not connect to the remote service</value></property>
+  </bean>
+
+  <bean id="info3003" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.remoting.RemoteLookupFailureException</value></property>
+    <property name="code"><value>3003</value></property>
+    <property name="type"><value>Remote Access</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Can not find the remote object</value></property>
+  </bean>
+
+  <bean id="info4001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>venus.frames.base.exception.BaseFrontException</value></property>
+    <property name="code"><value>4001</value></property>
+    <property name="type"><value> User Interface</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Front-end anomaly, Web front-end or Client front-end.</value></property>
+  </bean>
+  
+  <bean id="info5001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>java.lang.NullPointerException</value></property>
+    <property name="code"><value>5001</value></property>
+    <property name="type"><value>Run-time Exception</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Null pointer exception, please check the system log information to locate the error</value></property>
+  </bean>
+
+  <bean id="info6001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>venus.frames.base.exception.BaseCheckedException</value></property>
+    <property name="code"><value>6001</value></property>
+    <property name="type"><value>System Error</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Should be caught exception is not caught, if do not want to be caught this exception, please use the run-time exception.</value></property>
+  </bean>
+
+  <bean id="info9001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>java.lang.Throwable</value></property>
+    <property name="code"><value>9001</value></property>
+    <property name="type"><value>Unclassified</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Can not find the information describing this exception</value></property>
+  </bean>
+
+</beans>

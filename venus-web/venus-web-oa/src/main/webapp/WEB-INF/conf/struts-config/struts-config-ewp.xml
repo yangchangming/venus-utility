@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+	<action-mappings>
+
+		<!-- 文档 -->
+		<action type="udp.ewp.document.action.DocumentAction" scope="request" path="/document" parameter="cmd">
+		  <forward name="documentList" path="/jsp/ewp/document/documentList.jsp"  />
+		  <forward name="queryDocuments" path="/document.do?cmd=listDocumentsByType&amp;docTypeID=${docTypeID}"  redirect="true"   />
+		  <forward name="documentManager" path="/jsp/ewp/document/document.jsp" />
+		  <forward name="preEditor" path="/jsp/ewp/document/addDocumentNew.jsp" />
+		  <forward name="toFront" path="/views/ui/docList.ftl" />
+          <forward name="toQueryAll" path="/jsp/ewp/document/document.jsp" />
+          <forward name="toNoPowerPage" path="/jsp/ewp/au/no_power.jsp" />
+		</action>
+		
+		<!-- 栏目 -->
+		<action type="udp.ewp.doctype.action.DocTypeAction" scope="request" path="/docTypeAction" parameter="cmd">
+            <forward name="toQueryAll" path="/jsp/ewp/docType/docType.jsp" />
+            <forward name="toNoPowerPage" path="/jsp/ewp/au/no_power.jsp" />
+        </action>
+
+        <!-- 模板 -->
+        <action type="udp.ewp.template.action.EwpTemplateAction" scope="request" path="/EwpTemplateAction" parameter="cmd">
+            <forward name="toQueryAll" path="/EwpTemplateAction.do?cmd=queryAll" redirect="true"/>
+            <forward name="listPage" path="/jsp/ewp/template/listTemplate.jsp"/>
+            <forward name="insertPage" path="/jsp/ewp/template/insertTemplate.jsp"/>
+            <forward name="updatePage" path="/jsp/ewp/template/insertTemplate.jsp?isModify=1"/>
+            <forward name="detailPage" path="/jsp/ewp/template/detailTemplate.jsp"/>
+            <forward name="referencePage" path="/jsp/ewp/template/referenceTemplate.jsp"/>
+        </action>
+
+        <!-- 网站 -->
+        <action type="udp.ewp.website.action.WebsiteAction" scope="request" path="/WebsiteAction" parameter="cmd">
+            <forward name="toQueryAll" path="/WebsiteAction.do?cmd=queryAll" redirect="true"/>
+            <forward name="listPage" path="/jsp/ewp/website/listWebsite.jsp"/>
+            <forward name="updatePage" path="/jsp/ewp/website/insertWebsite.jsp?isModify=1"/>
+            <forward name="detailPage" path="/jsp/ewp/website/detailWebsite.jsp"/>
+            <forward name="referencePage" path="/jsp/ewp/website/referenceWebsite.jsp"/>
+            <forward name="selectWebSite" path="/jsp/ewp/website/selectWebsite.jsp"/>
+        </action>
+
+        <!-- 热词 -->
+        <action type="udp.ewp.hotwords.action.HotWordsAction" scope="request" path="/HotWordsAction" parameter="cmd">
+            <forward name="toQueryAll" path="/HotWordsAction.do?cmd=queryAll" redirect="true"/>
+            <forward name="listPage" path="/jsp/ewp/hotWords/listHotWords.jsp"/>
+            <forward name="updatePage" path="/jsp/ewp/hotWords/insertHotWords.jsp?isModify=1"/>
+            <forward name="detailPage" path="/jsp/ewp/hotWords/detailHotWords.jsp"/>
+            <forward name="tablePage" path="/jsp/ewp/hotWords/tableHotWords.jsp"/>
+        </action>
+
+        <action type="udp.ewp.au.action.AuRelationAction" scope="request" path="/auRelationAction" parameter="cmd">
+        </action>
+
+	</action-mappings>
+	
+	<!-- 国际化资源文件定义 -->
+	<message-resources parameter="ApplicationResources" />
+
+</struts-config>

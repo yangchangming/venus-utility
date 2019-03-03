@@ -1,0 +1,21 @@
+<!DOCTYPE dwr PUBLIC
+    "-//GetAhead Limited//DTD Direct Web Remoting 1.0//EN"
+    "http://www.getahead.ltd.uk/dwr/dwr10.dtd">
+
+<dwr>
+	<allow>
+		<convert match="java.lang.Exception" converter="exception"/>
+		<convert match="java.lang.StackTraceElement" converter="bean"/>
+		<convert converter="map" match="java.util.Map"/>
+		<!--<convert converter="bean" match="udp.ajax.vo.OrderVo"/>-->
+		<convert converter="bean" match="venus.frames.mainframe.web.tags.PageVo"/>
+	</allow>
+
+	<signatures>
+		<![CDATA[
+			import java.util.List;
+			import java.util.Map;
+		]]>
+	</signatures>
+
+</dwr>

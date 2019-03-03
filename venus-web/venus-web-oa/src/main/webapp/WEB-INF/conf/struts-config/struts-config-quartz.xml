@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+	<action-mappings>
+		<action path="/checkJobDefine" scope="request" type="udp.quartz.action.CheckJobDefineAction">
+			<forward name="errorInfo" path="/jsp/quartz/errorInfo.jsp" />
+		</action>
+
+		<action path="/createJobForm" scope="request" type="udp.quartz.action.CreateJobForm" parameter="cmd">
+			<forward name="createJobForm" path="/jsp/quartz/createJobForm.jsp" />
+			<forward name="chooseJobDefines" path="/jsp/quartz/choosejobdefine.jsp" />
+			<forward name="createCronExpression" path="/jsp/quartz/createCronExpression.jsp" />
+			<forward name="schedulerStateError" path="/jsp/quartz/errorInfo.jsp" />
+		</action>
+		
+		<action path="/createJob" scope="request"
+			type="udp.quartz.action.CreateJobAction">
+			<forward name="createJob" path="/jsp/quartz/createJob.jsp" />
+			<forward name="listJobs" path="/jsp/quartz/jobschedules.jsp" />
+			<forward name="classNotFoundException" path="/jsp/quartz/errorInfo.jsp" />
+		</action>
+
+		<action path="/createTrigger" scope="request" type="udp.quartz.action.CreateTriggerAction">
+			<forward name="listJobs" path="/queryJobSchedules.do" />
+			<forward name="objectAlreadyExistsException"
+				path="/jsp/quartz/errorInfo.jsp" />
+		</action>
+
+		<action path="/queryJobSchedules" scope="request" type="udp.quartz.action.QueryJobSchedulesAction">
+			<forward name="listJobs" path="/jsp/quartz/jobschedules.jsp" />
+			<forward name="schedulerStateError" path="/jsp/quartz/errorInfo.jsp" />
+		</action>
+		
+		<action path="/queryJobDefines" scope="request" type="udp.quartz.action.QueryJobDefinesAction">
+			<forward name="listJobDefines" path="/jsp/quartz/jobdefines.jsp" />
+			<forward name="schedulerStateError" path="/jsp/quartz/errorInfo.jsp" />
+		</action>
+
+		<action path="/scheduleInfoForm" scope="request" type="udp.quartz.action.ScheduleInfoForm">
+			<forward name="scheduleInfo" path="/jsp/quartz/scheduleInfoForm.jsp" />
+		</action>
+
+		<action path="/scheduleJobManager" scope="request" type="udp.quartz.action.ScheduleJobManagerAction">
+			<forward name="listJobs" path="/queryJobSchedules.do" />
+		</action>
+		<action path="/quartzLog"  scope="request" type="udp.quartz.action.QuartzLogAction">
+			<forward name="quartzLog" path="/logs/ShortResults.html"/>
+		</action>
+	</action-mappings>
+
+	<!-- 国际化资源文件定义 -->
+	<message-resources parameter="ApplicationResources" />
+
+</struts-config>

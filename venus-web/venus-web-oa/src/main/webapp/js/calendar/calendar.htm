@@ -1,0 +1,53 @@
+<HTML><HEAD>
+<TITLE>日期参照</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK href="calendar.css" rel=stylesheet type=text/css>
+<script language="javascript" src="../jquery/jquery-1.3.min.js" ></script>
+<script language="javascript" src="calendar.js" ></script>
+<SCRIPT ID=clientEventHandlersJS LANGUAGE=javascript>
+
+	var uniqueID = "";
+	function cal_ondblclick() {
+		window.returnValue =fnGetValue();//cal.value
+		self.close()
+	}
+	function button1_onclick(){
+		window.returnValue=fnGetValue();
+		self.close()
+	}
+	function window_onload() {
+		//if (isSpace(window.dialogArguments)==false)
+		//	cal.value=window.dialogArguments
+	}
+	function ok_onkeydown(){
+	    if (event.keyCode==13){
+		      cal_ondblclick();
+		}
+	}
+	jQuery(function(){
+	    element = jQuery(".calendarDiv")[0];
+	    jQuery(element).bind("selectstart",fnOnSelectStart).bind("click",fnOnClick);
+	    fnGetPropertyDefaults();
+		fnCreateCalendarHTML();
+		fnUpdateTitle();
+		fnUpdateDayTitles();
+		fnBuildMonthSelect();
+		fnBuildYearSelect();
+		fnFillInCells();
+	})
+
+</SCRIPT>
+
+</HEAD>
+
+<BODY scroll="no"  LANGUAGE=javascript border="0"  onload="return window_onload()" onkeydown="return ok_onkeydown()">
+
+<CENTER>
+<div class="calendarDiv" id="cal" style="width:100%;height:100%" ondblclick="return cal_ondblclick()">
+</div>
+</CENTER>
+<P></P>
+
+</BODY>
+
+</HTML>

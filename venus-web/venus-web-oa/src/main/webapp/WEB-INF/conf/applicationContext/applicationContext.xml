@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="venus,udp">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <bean id="dataSource" class="venus.frames.jdbc.datasource.ConfDataSource">
+        <property name="dbUsr">
+            <value>MAIN_SRC</value>
+        </property>
+        <!-- 如使用非Oracle数据库，请把下面一行注释掉 -->
+        <!--<property name="pageSqlProvider"><ref local="pageSqlProvider"/></property>-->
+    </bean>
+
+    <!-- 数据库分页 -->
+    <bean id="pageSqlProvider" class="venus.frames.jdbc.core.support.MySQLPageSqlProvider"/>
+    <!-- 
+    <bean id="pageSqlProvider" class="venus.frames.jdbc.core.support.OraclePageSqlProvider"/>
+     -->
+
+    <!-- Transaction manager for a simple table -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource">
+            <ref local="dataSource"/>
+        </property>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource">
+            <ref local="dataSource"/>
+        </property>
+        <property name="mappingResources">
+            <list>
+                <!--ewp-->
+                <value>udp/ewp/document/model/Document.hbm.xml</value>
+                <value>udp/ewp/doctype/model/DocType.hbm.xml</value>
+                <value>udp/ewp/documenttyperelation/model/DocumentTypeRelation.hbm.xml</value>
+                <value>udp/ewp/template/model/EwpTemplate.hbm.xml</value>
+                <value>udp/ewp/website/model/Website.hbm.xml</value>
+                <value>udp/ewp/templatetype/model/TemplateType.hbm.xml</value>
+                <value>udp/ewp/tag/model/Tag.hbm.xml</value>
+                <value>udp/ewp/requests/model/Requests.hbm.xml</value>
+                <value>udp/ewp/link/model/Link.hbm.xml</value>
+                <value>udp/ewp/timerelease/model/EwpDocumentTimeRelease.hbm.xml</value>
+                <value>udp/ewp/timerelease/model/EwpDocumentTimeReleaseLog.hbm.xml</value>
+                <value>udp/ewp/hotwords/model/HotWords.hbm.xml</value>
+                <value>udp/ewp/au/model/RoleDoctypeRelation.hbm.xml</value>
+                <value>udp/ewp/au/model/UserDoctypeRelation.hbm.xml</value>
+                <value>udp/ewp/posts/posts/model/EwpPostsEntity.hbm.xml</value>
+                <value>udp/ewp/posts/user/model/EwpLoginEntity.hbm.xml</value>
+                <value>udp/ewp/posts/user/model/EwpUsrInfoEntity.hbm.xml</value>
+
+                <!--示例-->
+                <value>udp/template/bookstore/model/Account.hbm.xml</value>
+                <value>udp/template/bookstore/model/Order.hbm.xml</value>
+                <value>udp/template/bookstore/vo/BookVO.hbm.xml</value>
+                <value>udp/template/bookstore/vo/DiscountVO.hbm.xml</value>
+                <value>udp/template/bookstore/vo/ItemVO.hbm.xml</value>
+            </list>
+        </property>
+        <property name="lobHandler">
+            <ref bean="defaultLobHandler"/>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <!-- 
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.DB2Dialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle9Dialect</prop>
+                -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.use_outer_join">true</prop>
+                <prop key="hibernate.jdbc.batch_size">25</prop>
+                <prop key="hibernate.use_outer_join">true</prop>
+                <!-- 在Hibernate系统参数中hibernate.use_outer_join被打开的情况下,该参数用来允许使用outer join来载入此集合的数据。 -->
+                <prop key="hibernate.max_fetch_depth">5</prop>
+                <!-- 设置外连接抓取树的最大深度 -->
+                <prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
+                <prop key="hibernate.query.substitutions">true '1', false '0', yes 'Y', no 'N'</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManagerHibernate" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+            <ref local="sessionFactory"/>
+        </property>
+    </bean>
+
+    <!-- 定义了所有事务处理方面的公共属性 -->
+    <bean id="baseTxProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+          lazy-init="true">
+        <property name="transactionManager">
+            <ref local="transactionManagerHibernate"/>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="update*">PROPAGATION_REQUIRED</prop>
+                <prop key="insert*">PROPAGATION_REQUIRED</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED</prop>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <alias name="otherDbLobHandler" alias="defaultLobHandler"/>
+
+    <!-- oracle数据库Lob处理 -->
+    <bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler" lazy-init="true">
+        <property name="nativeJdbcExtractor">
+            <ref local="nativeJdbcExtractor"/>
+        </property>
+    </bean>
+
+    <!-- 非oracle数据库Lob处理 -->
+    <bean id="otherDbLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true"/>
+
+    <!-- 对应的JDBC抽取器 -->
+    <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.SimpleNativeJdbcExtractor" lazy-init="true"/>
+    <!--
+    <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor" lazy-init="true" />
+    <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.WebSphereNativeJdbcExtractor" lazy-init="true" />
+    <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.WebLogicNativeJdbcExtractor" lazy-init="true" />
+    <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.JBossNativeJdbcExtractor" lazy-init="true" />
+    <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.XAPoolNativeJdbcExtractor" lazy-init="true" />
+    -->
+
+</beans>

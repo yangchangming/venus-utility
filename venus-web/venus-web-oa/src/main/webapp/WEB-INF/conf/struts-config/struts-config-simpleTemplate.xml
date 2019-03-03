@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+	<!-- 列表模块action-mapping定义 -->
+	<action-mappings>
+
+		<action type="udp.template.simple.action.TemplateAction" scope="request" path="/TemplateAction" parameter="cmd">
+			<forward name="queryAll" path="/TemplateAction.do?cmd=queryAll" redirect="true" />
+			<forward name="listPage" path="/jsp/venusPage/simpleTemplate/template.jsp" />
+			<forward name="detailPage" path="/jsp/venusPage/simpleTemplate/detail.jsp" />
+			<forward name="updatePage" path="/jsp/venusPage/simpleTemplate/insertRoom.jsp?isModify=1" />
+			<forward name="buildPage" path="/jsp/venusPage/simpleTemplate/build.jsp" />
+		</action>
+
+	</action-mappings>
+
+	<!-- 国际化资源文件定义 -->
+	<message-resources parameter="ApplicationResources" />
+
+</struts-config>

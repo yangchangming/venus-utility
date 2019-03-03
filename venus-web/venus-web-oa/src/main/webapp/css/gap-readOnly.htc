@@ -1,0 +1,13 @@
+<PUBLIC:COMPONENT>
+<PUBLIC:ATTACH EVENT="ondocumentready" ONEVENT="doInit()" />
+
+<script>
+function doInit(){
+	try {
+		this.readOnly = true;
+	} catch(e) {
+		alert(e.message);
+	}
+}
+</script>
+</PUBLIC:COMPONENT>

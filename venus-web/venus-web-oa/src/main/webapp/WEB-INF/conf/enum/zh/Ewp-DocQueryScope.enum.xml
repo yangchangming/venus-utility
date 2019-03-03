@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>DocumentQueryScope</name>
+    <resource></resource>
+    <enums>
+        <enum label="栏目" value="1"/>
+        <enum label="站点" value="0"/>
+    </enums>
+</EnumDef>

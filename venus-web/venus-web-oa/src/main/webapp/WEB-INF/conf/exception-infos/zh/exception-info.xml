@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean id="info1001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>venus.frames.base.exception.BaseDataAccessException</value></property>
+    <property name="code"><value>1001</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>在数据存取发生了异常</value></property>
+  </bean>
+
+  <bean id="info1002" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.CleanupFailureDataAccessException</value></property>
+    <property name="code"><value>1002</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>数据操作成功，但清理资源时发生了异常</value></property>
+  </bean>
+
+  <bean id="info1003" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.ConcurrencyFailureException</value></property>
+    <property name="code"><value>1003</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>数据操作时，发生并发异常</value></property>
+  </bean>
+
+  <bean id="info1004" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.CannotAcquireLockException</value></property>
+    <property name="code"><value>1004</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>在进行插入、更新、删除操作时,获取数据库锁失败.</value></property>
+  </bean>
+
+  <bean id="info1005" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.DataIntegrityViolationException</value></property>
+    <property name="code"><value>1005</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>插入或更新数据库记录时,违反了数据一致性约束</value></property>
+  </bean>
+  
+  <bean id="info1006" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.CannotSerializeTransactionException</value></property>
+    <property name="code"><value>1006</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>数据库更新操作导致不能以序列方式完成事务</value></property>
+  </bean>
+  
+  <bean id="info1010" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.OptimisticLockingFailureException</value></property>
+    <property name="code"><value>1010</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>数据库乐观锁异常</value></property>
+  </bean>
+  
+  <bean id="info1011" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.orm.ObjectOptimisticLockingFailureException</value></property>
+    <property name="code"><value>1011</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>ORM影射违背了数据库乐观锁机制</value></property>
+  </bean>  
+  
+  <bean id="info1012" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException</value></property>
+    <property name="code"><value>1012</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Hibernate对象关系影射违背了数据库乐观锁机制</value></property>
+  </bean>
+  
+  <bean id="info1014" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.DataAccessResourceFailureException</value></property>
+    <property name="code"><value>1014</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>请求资源时发生了异常，例如请求数据库连接</value></property>
+  </bean>          
+  
+  <bean id="info1015" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.jdbc.CannotGetJdbcConnectionException</value></property>
+    <property name="code"><value>1015</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>请求数据库连接时发生异常</value></property>
+  </bean>    
+
+  <bean id="info1016" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.transaction.CannotCreateTransactionException</value></property>
+    <property name="code"><value>1016</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>不能创建数据库事务，可能原因是请求数据库连接时发生异常</value></property>
+  </bean>    
+  
+  <bean id="info1017" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.DataRetrievalFailureException</value></property>
+    <property name="code"><value>1017</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>从数据库中检索期望的数据时发生了异常。</value></property>
+  </bean>    
+  
+  <bean id="info1018" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.jdbc.LobRetrievalFailureException</value></property>
+    <property name="code"><value>1018</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>检索大对象时发生异常。</value></property>
+  </bean>
+
+  <bean id="info1019" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.orm.ObjectRetrievalFailureException</value></property>
+    <property name="code"><value>1019</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>通过ID检索映射的对象时发生异常。</value></property>
+  </bean>
+  
+  <bean id="info1020" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException</value></property>
+    <property name="code"><value>1020</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>Hibernate通过ID检索映射的对象时发生异常。</value></property>
+  </bean>
+
+  
+  <bean id="info1022" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.DeadlockLoserDataAccessException</value></property>
+    <property name="code"><value>1022</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>数据库死锁，事务被回滚</value></property>
+  </bean>
+ 
+  <bean id="info1023" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.InvalidDataAccessApiUsageException</value></property>
+    <property name="code"><value>1023</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>使用了无效的数据存取API</value></property>
+  </bean>  
+  
+  <bean id="info1024" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.InvalidDataAccessResourceUsageException</value></property>
+    <property name="code"><value>1024</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>以无效的方式存取资源</value></property>
+  </bean>  
+  
+  <bean id="info1025" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.jdbc.BadSqlGrammarException</value></property>
+    <property name="code"><value>1025</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>无效的SQL语法。</value></property>
+  </bean>  
+  
+  <bean id="info1026" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.orm.hibernate3.HibernateQueryException</value></property>
+    <property name="code"><value>1026</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>无效的HQL语法。</value></property>
+  </bean>    
+  
+  <bean id="info1027" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.IncorrectUpdateSemanticsDataAccessException</value></property>
+    <property name="code"><value>1027</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>错误的Update语句</value></property>
+  </bean>    
+  
+  <bean id="info1028" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.TypeMismatchDataAccessException</value></property>
+    <property name="code"><value>1028</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>类型不匹配</value></property>
+  </bean>    
+  
+  <bean id="info1029" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.dao.DataAccessException</value></property>
+    <property name="code"><value>1029</value></property>
+    <property name="type"><value>数据存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>数据存取异常</value></property>
+  </bean>
+  
+  <bean id="info2001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>venus.frames.base.exception.BaseApplicationException</value></property>
+    <property name="code"><value>2001</value></property>
+    <property name="type"><value>业务逻辑</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>业务逻辑异常，违反了业务规则</value></property>
+  </bean>
+  
+  <bean id="info3001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.remoting.RemoteAccessException</value></property>
+    <property name="code"><value>3001</value></property>
+    <property name="type"><value>远程存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>存取远程对象时发生异常</value></property>
+  </bean>
+
+  <bean id="info3002" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.remoting.RemoteConnectFailureException</value></property>
+    <property name="code"><value>3002</value></property>
+    <property name="type"><value>远程存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>不能连接到远程服务</value></property>
+  </bean>
+
+  <bean id="info3003" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>org.springframework.remoting.RemoteLookupFailureException</value></property>
+    <property name="code"><value>3003</value></property>
+    <property name="type"><value>远程存取</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>不能查找到远程对象</value></property>
+  </bean>
+
+  <bean id="info4001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>venus.frames.base.exception.BaseFrontException</value></property>
+    <property name="code"><value>4001</value></property>
+    <property name="type"><value>用户界面</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>前端异常，Web前端或Client前端。</value></property>
+  </bean>
+  
+  <bean id="info5001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>java.lang.NullPointerException</value></property>
+    <property name="code"><value>5001</value></property>
+    <property name="type"><value>运行时异常</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>空指针异常，请检查系统日志信息以定位错误</value></property>
+  </bean>
+
+  <bean id="info6001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>venus.frames.base.exception.BaseCheckedException</value></property>
+    <property name="code"><value>6001</value></property>
+    <property name="type"><value>系统错误</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>应该被捕获的异常没有被捕获，如果不想此异常被捕获，请使用运行时异常。</value></property>
+  </bean>
+
+  <bean id="info9001" class="venus.frames.util.exception.ExceptionInfo">
+    <property name="clazz"><value>java.lang.Throwable</value></property>
+    <property name="code"><value>9001</value></property>
+    <property name="type"><value>未分类</value></property>
+	<property name="severity"><value>1</value></property>
+	<property name="description"><value>找不到描述信息的异常</value></property>
+  </bean>
+
+</beans>

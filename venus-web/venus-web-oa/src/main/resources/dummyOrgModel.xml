@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Role ID="1000000400000000001" Name="北京用友科技股份有限公司" Type="ORGANIZATIONAL_UNIT">
+	<Role ID="1000000000000000001" Name="郭鹏" Email="guopeng2@use.com.cn" Type="HUMAN">
+	</Role>
+	<Role ID="1000000000000000002" Name="马子华" Email="mazihua@use.com.cn" Type="HUMAN">
+	</Role>
+	<Role ID="1000000000000000003" Name="夏金鑫" Email="xiajinxin@use.com.cn" Type="HUMAN">
+	</Role>
+	<Role ID="1000000000000000004" Name="张宝玉" Email="zhangxx@use.com.cn" Type="HUMAN">
+	</Role>
+	<Role ID="1000000000000000005" Name="马啸" Email="maxiao@use.com.cn" Type="HUMAN">
+	</Role>
+	<Role ID="1000000000000000006" Name="刘国华" Email="liuguohua@use.com.cn" Type="HUMAN">
+	</Role>
+	<Role ID="1000000000000000007" Name="Alexander" Email="xiajinxin@use.com.cn" Type="HUMAN">
+	</Role>
+	<Role ID="1000000000000000008" Name="向琼" Email="xiangqiong@use.com.cn" Type="HUMAN">
+	</Role>
+	<Role ID="1990000000000000001" Name="中冶京诚公司" Type="ORGANIZATIONAL_UNIT">
+		<Role ID="1990000000000000002" Name="分公司1" Type="ORGANIZATIONAL_UNIT" />
+		<Role ID="1990000000000000003" Name="杨蕾" Email="" Type="HUMAN">
+		</Role>
+		<Role ID="1990000000000000004" Name="行政部" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1990000000000000014" Name="主任" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1990000000000000114" Name="吴存东" Email="" Type="HUMAN">
+				</Role>
+			</Role>
+			<Role ID="1990000000000000024" Name="秘书" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1990000000000000124" Name="赵军" Email="" Type="HUMAN">
+				</Role>
+			</Role>
+		</Role>
+		<Role ID="1990000000000000005" Name="总裁会" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1990000000000000015" Name="总裁" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1990000000000000115" Name="施设" Email="" Type="HUMAN">
+				</Role>
+			</Role>
+			<Role ID="1990000000000000025" Name="副总裁" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1990000000000000125" Name="胡锦涛" Email="" Type="HUMAN">
+				</Role>
+			</Role>
+			<Role ID="1990000000000000035" Name="运营总监" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1990000000000000135" Name="胡晓东" Email="" Type="HUMAN">
+					<Relation ID="00001" Type="Relation" ChildID="id" Name="直接上级" />
+					<Relation ID="00002" Type="Relation" ChildID="id" Name="所属直接部门" />
+				</Role>
+			</Role>
+		</Role>
+		<Role ID="1990000000000000006" Name="其他部门" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1990000000000000016" Name="经理" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1990000000000000116" Name="王经理" Email="" Type="HUMAN">
+				</Role>
+			</Role>
+			<Role ID="1990000000000000026" Name="干事" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1990000000000000126" Name="刘干事" Email="" Type="HUMAN">
+				</Role>
+				<Role ID="1990000000000000226" Name="赵干事" Email="" Type="HUMAN">
+				</Role>
+			</Role>
+		</Role>
+		<Role ID="1990000000000000007" Name="人力资源部" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1990000000000000117" Name="李总管" Email="" Type="HUMAN">
+			</Role>
+		</Role>
+	</Role>
+	<Role ID="1200000000000000001" Name="河北网通集团" Type="ORGANIZATIONAL_UNIT">
+		<Role ID="1200000000000000002" Name="省公司本部" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1200000000000000005" Name="公司领导" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1200000000000000006" Name="副总经理" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1200000000000000016" Name="范福州" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+			</Role>
+			<Role ID="1200000000000000003" Name="综合部" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1200000000000000004" Name="综合部主任" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1200000000000000014" Name="李志兴" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1200000000000000015" Name="陈尘" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+			</Role>
+			<Role ID="1200000000000000007" Name="企业信息化部" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1200000000000000008" Name="企业信息化部主任" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1200000000000000018" Name="陈灿强" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+			</Role>
+			<Role ID="1200000000000000009" Name="监督与法律事务部" Type="ORGANIZATIONAL_UNIT" />
+		</Role>
+		<Role ID="1210000000000000002" Name="石家庄分公司" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1210000000000000003" Name="石家庄市公司本部" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1210000000000000004" Name="综合部" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1210000000000000005" Name="综合部主任" Type="ORGANIZATIONAL_UNIT">
+						<Role ID="1210000000000000015" Name="刘卫平" Email="" Type="HUMAN">
+						</Role>
+					</Role>
+				</Role>
+			</Role>
+		</Role>
+	</Role>
+	<Role ID="1000000200000000001" Name="用友软件集团" Type="ORGANIZATIONAL_UNIT">
+		<Role ID="1000010200000000034" Name="用友致远" Type="ORGANIZATIONAL_UNIT" />
+		<Role ID="1000010200000000035" Name="用友房地产" Type="ORGANIZATIONAL_UNIT" />
+		<Role ID="1000000200000000002" Name="用友软件工程有限公司" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1000000200000000005" Name="用友软件工程日本分公司" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1006010200000000031" Name="腹部半涨" Email="" Type="HUMAN">
+				</Role>
+				<Role ID="1006010200000000040" Name="猿飞左助" Email="" Type="HUMAN">
+				</Role>
+				<Role ID="1006010200000000040" Name="前田玄以" Email="" Type="HUMAN">
+				</Role>
+			</Role>
+			<Role ID="1000000200000000006" Name="用友软件工程上海分公司" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000000200000000007" Name="用友软件工程西安分公司" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000000200000000008" Name="中国营销部" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1000010200000000038" Name="客户经理" Type="ORGANIZATIONAL_UNIT" />
+				<Role ID="1008010200000000032" Name="经理" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1008010200000000029" Name="黄庆莉" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1006010200000000038" Name="霍元甲" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+				<Role ID="1008010200000000033" Name="助理" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1008010200000000030" Name="王晶" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+			</Role>
+			<Role ID="1000000200000000009" Name="电信事业部" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000000200000000010" Name="欧美事业部" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000000200000000011" Name="平台研发部" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1000000200000000019" Name="平台研发部部门经理" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1006010200000000002" Name="张山" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1006010200000000003" Name="李斯" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+				<Role ID="1000000200000000020" Name="平台研发部系统工程师" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1000000200000000026" Name="系统工程师1" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1000000200000000027" Name="系统工程师2" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+				<Role ID="1000000200000000021" Name="高级系统架构师" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1000000200000000030" Name="高级系统架构师1" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1000000200000000031" Name="高级系统架构师2" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1000000200000000032" Name="高级系统架构师3" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+				<Role ID="1000000200000000022" Name="平台研发部程序员" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1000000200000000035" Name="程序员1" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1000000200000000036" Name="程序员2" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+			</Role>
+			<Role ID="1000000200000000012" Name="技术方案部" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1002010200000000002" Name="部门1" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1000010200000000042" Name="程序员" Type="ORGANIZATIONAL_UNIT" />
+					<Role ID="1008010200000000016" Name="顾问" Type="ORGANIZATIONAL_UNIT" />
+				</Role>
+			</Role>
+			<Role ID="1000000200000000013" Name="质量保证部" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000000200000000014" Name="过程改进部" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000000200000000015" Name="人力资源部" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1008010200000000034" Name="合同章管理员" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1008010200000000031" Name="庄丽" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+			</Role>
+			<Role ID="1000000200000000016" Name="信息技术部" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000000200000000017" Name="北京开发中心" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000000200000000018" Name="北京开发中心 项目一部" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1008010200000000026" Name="董事会" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1008010200000000027" Name="总经理" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1008010200000000025" Name="邵总" Email="yaoweiwei@use.com.cn" Type="HUMAN">
+					</Role>
+					<Role ID="1002010200000000021" Name="龙爷" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+			</Role>
+			<Role ID="1008010200000000024" Name="用友软件工程北京总部" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1008010200000000028" Name="销售部" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000010200000000002" Name="第一分公司" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000010200000000003" Name="第二分公司" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000010200000000005" Name="第三分公司" Type="ORGANIZATIONAL_UNIT" />
+			<Role ID="1000010200000000009" Name="第四分公司" Type="ORGANIZATIONAL_UNIT" />
+		</Role>
+		<Role ID="1000000200000000003" Name="用友金融有限公司" Type="ORGANIZATIONAL_UNIT" />
+		<Role ID="1000000200000000004" Name="用友华表有限公司" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1000010200000000004" Name="技术部" Type="ORGANIZATIONAL_UNIT" />
+		</Role>
+	</Role>
+	<Role ID="1100000000000000001" Name="方恒房地产" Type="ORGANIZATIONAL_UNIT">
+		<Role ID="1100000000000001000" Name="总经理" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1100000000000001001" Name="吴立" Email="" Type="HUMAN">
+			</Role>
+		</Role>
+		<Role ID="1100000000000002000" Name="副总经理" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1100000000000002001" Name="王文生" Email="" Type="HUMAN">
+			</Role>
+			<Role ID="1100000000000002002" Name="刘明杰" Email="" Type="HUMAN">
+			</Role>
+			<Role ID="1100000000000002003" Name="孙  宇" Email="" Type="HUMAN">
+			</Role>
+		</Role>
+		<Role ID="1100000000000003000" Name="项目" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1100000000000003100" Name="项目经理" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1100000000000003101" Name="王  培" Email="" Type="HUMAN">
+				</Role>
+				<Role ID="1100000000000003102" Name="唐轶瑛" Email="" Type="HUMAN">
+				</Role>
+				<Role ID="1100000000000003103" Name="王  钧" Email="" Type="HUMAN">
+				</Role>
+				<Role ID="1100000000000003104" Name="徐  华" Email="" Type="HUMAN">
+				</Role>
+				<Role ID="1100000000000003105" Name="于晓东" Email="" Type="HUMAN">
+				</Role>
+			</Role>
+			<Role ID="1100000000000003200" Name="工程负责人" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1100000000000003210" Name="于晓东项目工程负责人" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1100000000000003211" Name="房永林" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+				<Role ID="1100000000000003220" Name="唐轶瑛项目工程负责人" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1100000000000003221" Name="姜海涛" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+			</Role>
+			<Role ID="1100000000000003300" Name="项目工程师" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1100000000000003310" Name="王培项目工程师" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1100000000000003311" Name="潘毅刚" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000003312" Name="王根成" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+				<Role ID="1100000000000003320" Name="于晓东项目工程师" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1100000000000003321" Name="汤  勇" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000003322" Name="万起洁" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000003323" Name="蔚向军" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000003324" Name="周  洲" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000003325" Name="盛  莉" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000003326" Name="赵颖涛" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+				<Role ID="1100000000000003330" Name="唐轶瑛项目工程师" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1100000000000000016" Name="葛  亮" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000000017" Name="张  轩" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000000018" Name="侯明波" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000000019" Name="程伟江" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+				<Role ID="1100000000000003340" Name="徐华项目工程师" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1100000000000003341" Name="王  刚" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+			</Role>
+		</Role>
+		<Role ID="1100000000000004000" Name="部门" Type="ORGANIZATIONAL_UNIT">
+			<Role ID="1100000000000004100" Name="部门经理" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1100000000000004101" Name="白建新" Email="" Type="HUMAN">
+				</Role>
+				<Role ID="1100000000000004102" Name="吴  萍" Email="" Type="HUMAN">
+				</Role>
+				<Role ID="1100000000000004103" Name="张利华" Email="" Type="HUMAN">
+				</Role>
+				<Role ID="1100000000000004104" Name="黄广生" Email="" Type="HUMAN">
+				</Role>
+			</Role>
+			<Role ID="1100000000000004200" Name="部门工作人员" Type="ORGANIZATIONAL_UNIT">
+				<Role ID="1100000000000004210" Name="白建新部门工作人员" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1100000000000004211" Name="史立军" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000004212" Name="闫  岩" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000004213" Name="毛  迪" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+				<Role ID="1100000000000004220" Name="吴萍部门工作人员" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1100000000000004221" Name="陈雅娜" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000004222" Name="王晓柳" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000004223" Name="张红燕" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000004224" Name="李  涛" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+				<Role ID="1100000000000004230" Name="张利华部门工作人员" Type="ORGANIZATIONAL_UNIT">
+					<Role ID="1100000000000004231" Name="张海生" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000004232" Name="卢金玉" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000004233" Name="田  蕾" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000004234" Name="宋曦巍" Email="" Type="HUMAN">
+					</Role>
+					<Role ID="1100000000000004235" Name="张  菁" Email="" Type="HUMAN">
+					</Role>
+				</Role>
+			</Role>
+		</Role>
+	</Role>		
+</Role>

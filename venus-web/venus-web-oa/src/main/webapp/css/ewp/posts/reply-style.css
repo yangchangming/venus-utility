@@ -1,0 +1,233 @@
+@charset "UTF-8";
+/* CSS Document */
+
+h2 {
+    margin: 40px 0 10px 10px;
+
+}
+.control-label span{
+    color:#ff0000;
+}
+
+.featuresspan {
+    font-size: 14px;
+    color: #AAA;
+    margin: 0 10px;
+}
+
+.comment-body {
+    font-size: 12px;
+    color: #000000;
+    font-family: "Helvetica Neue","微软雅黑","华文细黑","黑体", "Arial","Lucida Grande", Verdana, sans-serif;
+}
+
+.reply-user {
+    margin: 10px 0;
+    font-size: 14px;
+    float: left;
+}
+
+.reply-time {
+    color: #AAA;
+    font-style: normal;
+    float: right;
+    line-height: 35px;
+    margin: 10px 0;
+}
+
+.content {
+    width: 800px;
+
+    margin: 0 auto;
+}
+
+.review {
+    background-color: #f7f7f7;
+    margin: 10px 0;
+    padding: 3px 10px;
+}
+
+.review p {
+    font-size: 12px;
+    line-height: 24px;
+    clear: both;
+}
+
+.list {
+    background-color: #f2fafb;
+    height: 40px;
+    line-height: 40px;
+}
+
+.list a {
+    text-align: center;
+    display: block;
+}
+
+.zm-comment-form .zm-comment-textarea, .zm-comment-form .zm-comment-editable {
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset;
+    color: #222222;
+    cursor: text;
+    font-size: 13px;
+    line-height: 22px;
+    min-height: 22px;
+    padding: 7px 8px;
+    white-space: pre-wrap;
+}
+
+.zg-btn-blue {
+    background-color: #28a8d8;
+    border: 1px solid #1c93c0;
+    color: #FFFFFF !important;
+}
+
+.zm-comment-form.expanded .zm-command {
+    line-height: 33px;
+}
+
+.zm-command {
+    text-align: right;
+}
+
+.zg-btn-blue, .zg-btn-green, .zg-btn-red, .zg-btn-white, .zg-btn-disabled {
+    -moz-box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 1.3;
+    padding: 4px 10px;
+    text-align: center;
+    text-decoration: none !important;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.zm-command {
+    padding: 10px 0;
+    text-align: right;
+}
+
+.np-btn {
+    background-color: #428bca;
+    border: 1px solid #1c93c0;
+    float: right;
+    color: #ffffff;
+    display: inline-block;
+    padding: 0 10px;
+    border-radius: 5px;
+}
+
+.np-btn:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.np-user {
+    font-size: 100%;
+    color: #28a7d9;
+}
+
+.np-user span {
+    font-size: 14px;
+    color: #AAA;
+}
+
+.reply {
+    margin: 0 10px 0 0;
+}
+
+.reply a {
+    color: #999999;
+}
+
+.reply a:hover {
+    color: #09F;
+}
+
+.post-comment {
+    line-height: inherit;
+}
+
+.modal-form {
+    margin: 0 auto;
+}
+
+.control-describe {
+    margin-left: 196px;
+}
+
+.flex-text-wrap {
+    position: relative;
+
+    *zoom: 1;
+}
+
+textarea,
+.flex-text-wrap {
+    outline: 0;
+    margin: 0;
+    border: none;
+    padding: 0;
+
+    *padding-bottom: 0 !important;
+}
+
+.flex-text-wrap textarea,
+.flex-text-wrap pre {
+    white-space: pre-wrap;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    *white-space: pre;
+    *word-wrap: break-word;
+}
+
+.flex-text-wrap textarea {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 10px 10px 10px 10px;
+    width: 100%;
+    resize: none;
+     /* IE7 box-sizing fudge factor */
+    *height: 94%;
+    *width: 94%;
+}
+
+.flex-text-wrap pre {
+    display: block;
+    visibility: hidden;
+}
+
+.comment_area,
+.comment_form .flex-text-wrap pre {
+    /*
+     * Add custom styling here
+     * Ensure that typography, padding, border-width (and optionally min-height) are identical across textarea & pre
+     */
+    font-size: 100%;
+    padding: 10px 10px 0;
+    line-height: 20px;
+    min-height: 125px;
+    border: 1px solid #c6c8ce;
+}
+
+.reply_area,
+.zm-comment-form .flex-text-wrap pre {
+    /*
+     * Add custom styling here
+     * Ensure that typography, padding, border-width (and optionally min-height) are identical across textarea & pre
+     */
+    font-size: 100%;
+    padding: 10px 10px 0;
+    line-height: 20px;
+    min-height: 20px;
+    border: 1px solid #c6c8ce;
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:motan="http://api.weibo.com/schema/motan"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://api.weibo.com/schema/motan http://api.weibo.com/schema/motan.xsd">
+
+    <!--<motan:registry regProtocol="local" name="registry"/>-->
+    <motan:registry regProtocol="zookeeper" name="registry" address="127.0.0.1:2181" connectTimeout="2000"/>
+
+    <motan:protocol default="true" id="motan-protocol" name="motan" haStrategy="failover" loadbalance="roundrobin" maxClientConnection="10" minClientConnection="2"/>
+
+    <motan:basicReferer requestTimeout="200" accessLog="false" retries="2" group="venus-oa-group" module="venus-oa-group"
+                        application="venus-oa" protocol="motan-protocol" registry="registry" id="basicRefererConfig" throwException="true" check="true"/>
+
+    <motan:referer id="companyBs" interface="venus.oa.organization.company.bs.ICompanyBs" connectTimeout="1000" requestTimeout="1000" basicReferer="basicRefererConfig"/>
+
+
+
+
+
+
+
+
+</beans>

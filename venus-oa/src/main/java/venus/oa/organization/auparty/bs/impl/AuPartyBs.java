@@ -17,7 +17,7 @@ import venus.oa.organization.aupartyrelation.util.IConstants;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.organization.aupartytype.dao.IAuPartyTypeDao;
 import venus.oa.organization.aupartytype.vo.AuPartyTypeVo;
-import venus.oa.service.profile.model.UserProfileModel;
+import venus.oa.profile.model.UserProfileModel;
 import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;

@@ -1,0 +1,227 @@
+<PUBLIC:COMPONENT>
+<PUBLIC:ATTACH EVENT="ondocumentready" ONEVENT="doInit()" />
+<PUBLIC:ATTACH EVENT="onmouseover" ONEVENT="doMouseOver()" />
+<PUBLIC:ATTACH EVENT="onmouseout" ONEVENT="doMouseOut()" />
+<PUBLIC:ATTACH EVENT="onmousedown" ONEVENT="doMouseDown()" />
+<PUBLIC:ATTACH EVENT="onmouseup" ONEVENT="doMouseUp()" />
+<PUBLIC:ATTACH EVENT="onclick" ONEVENT="doClick()" />
+<PUBLIC:ATTACH EVENT="ondblclick" ONEVENT="doDblClick()" />
+
+<PUBLIC:EVENT NAME="onPush" ID="push"  />
+
+<PUBLIC:METHOD NAME="showMessage" />
+
+<script language="javascript">
+
+var config={
+	defaultColor:"DEE5F0",	//默认列表颜色
+	focusColor:"b8e2f6",	//默认聚焦颜色
+	selectedColor:"72b9f1",	//默认单击颜色
+	theadColor:"B8D5F5",	//默认表头颜色
+	oddColor:"ffffff",	//默认表体奇数行颜色
+	evenColor:"daeaf6"	//默认表体偶数行颜色  //E9E9E6
+}
+
+var cache={
+	tempColor1:"",
+	tempColor2:""
+}
+
+function doInit() {  //处理文档载入事件
+   getTbodyColor();
+}
+
+function doInit_() {  //处理文档载入事件
+	var thisTable = getElementsByTagName("table");
+	var thisObj = null;
+	for (var i=0; i<thisTable.length; i++) {
+		var thisTh = getThFromTable(thisTable[i]);  //thisTable[i].getElementsByTagName("th")
+		if (thisTh != undefined && thisTh != null && thisTh != "") {
+			if (thisTh.className == "listCss") {
+				thisObj = thisTable[i];
+			}
+		}
+	}
+	var thisThead = null;
+	if(thisObj != null) {
+		thisThead = getThFromTable(thisObj);  //thisObj.getElementsByTagName("th")
+	}
+	if (thisThead != undefined && thisThead != null && thisThead != "") {
+		var thisTr = thisThead.parentElement;
+		thisTr.style.backgroundColor = config.theadColor;
+	}
+	getTbodyColor();
+	initThead(thisObj);
+}
+
+function initThead (eTable) {
+	//TODO 初始化表头
+}
+
+function doMouseOver() {  //处理鼠标进入事件
+    
+	var thisObj = getEventObj(event);
+	var thisParentObj = thisObj.parentElement.parentElement.parentElement.parentElement;
+	if (thisObj.tagName.toLowerCase() == "td" && thisObj.className != null && thisObj.className != "" ) {
+		thisObj.style.cursor = "hand";
+		var thisTr = thisObj.parentElement;
+		if(thisTr.tagName.toLowerCase() != "tr") {
+			thisTr = thisTr.parentElement;
+		}
+		thisTr.style.backgroundColor = config.focusColor;
+	} else {
+		push.fire();
+	}
+}
+
+function doMouseOut() {  //处理鼠标离开事件
+	var thisObj = getEventObj(event);
+	var thisParentObj = thisObj.parentElement.parentElement.parentElement.parentElement;
+	if (thisObj.tagName.toLowerCase() == "td") {
+		getTbodyColor();
+	} else {
+	
+	}
+}
+
+function doMouseDown() {  //处理鼠标按下事件
+	var thisObj = getEventObj(event);
+}
+
+function doMouseUp() {  //处理鼠标放开事件
+	var thisObj = getEventObj(event);
+}
+
+function doClick() {  //处理鼠标单击事件
+	var thisObj = getEventObj(event);
+	var thisTag = undefined;
+	if (thisObj.tagName.toLowerCase() != "input" && thisObj.tagName.toLowerCase() != "img") {
+		if (thisObj.firstChild != null && thisObj.firstChild != "") {
+			thisTag = thisObj.firstChild.tagName;
+		}
+	}
+	if(thisObj.tagName.toLowerCase() == "input" && thisObj.type == "checkbox" && thisObj.pdType == "control") {
+		var tempControl = thisObj.control;
+		var aCheckbox = getObjectByName(tempControl);
+		if(aCheckbox == null) {
+		
+		} else if(aCheckbox.length == null) {
+			aCheckbox.checked = thisObj.checked;
+		} else {
+			for(var i=0; i<aCheckbox.length; i++) {
+				aCheckbox[i].checked = thisObj.checked;
+			}
+		}
+	} else if(thisObj.tagName.toLowerCase() == "td" && (thisTag == undefined || thisTag != undefined && thisTag.toLowerCase() != "table")
+	  && thisObj.parentElement.parentElement.parentElement.parentElement.tagName.toLowerCase() != "th") {
+		var thisTr = thisObj.parentElement;
+		thisTr.style.backgroundColor = config.selectedColor;
+		var thisCheckbox = getCheckboxFromTr(thisTr);
+		if(thisCheckbox != undefined && thisCheckbox != null) {
+			thisCheckbox.checked = !thisCheckbox.checked;
+		}
+	} else {
+	
+	}
+	getTbodyColor();
+	event.cancelBubble = true;
+}
+
+function doDblClick() {  //处理鼠标双击事件
+	var thisObj = getEventObj(event);
+}
+
+function showMessage(message) {  //处理事件
+
+}
+
+function getEventObj(thisEvent) {
+	if(thisEvent == undefined || thisEvent == null ) {
+		alert("当前的对象为空!");
+		return null;
+	} else {
+		return thisEvent.srcElement;
+	}
+}
+
+function getCheckboxFromTr(thisTr) {
+	if(thisTr.childNodes.length == 0) {
+		return null;
+	} else {
+		for(var i=0; i<thisTr.childNodes.length; i++) {
+			var thisChild = thisTr.childNodes[i];
+			if(thisChild.type == "checkbox" || thisChild.type == "radio") {
+				return thisChild;
+			} else {
+				var tempResult = getCheckboxFromTr(thisChild);
+				if(tempResult != null) {
+					return tempResult;
+				}
+			}
+		}
+	}
+}
+
+function getObjectByName(name) {
+	return window.document.getElementsByName(name);
+}
+
+function getObjectById(id) {
+	return window.document.getElementById(id);
+}
+
+//获得表体颜色（奇数和偶数行）
+function getTbodyColor() {
+	var thisDivCheckbox = getObjectByName("checkbox_template");
+	for (var i=0; i<thisDivCheckbox.length; i++) {
+		var thisDivTr = thisDivCheckbox[i].parentElement.parentElement;
+		//选中后保留颜色
+		if (thisDivCheckbox[i].checked) {
+			thisDivTr.style.backgroundColor = config.selectedColor;
+		} else if (i%2 == 1) {
+			thisDivTr.style.backgroundColor = config.evenColor;
+		} else {
+			thisDivTr.style.backgroundColor = config.oddColor;
+		}
+	}
+	if(thisDivCheckbox.length == 0) {
+		var hiddenObject_template = getObjectByName("hiddenObject_template");
+		for (var i=0; i<hiddenObject_template.length; i++) {
+			var thisDivTr = hiddenObject_template[i].parentElement.parentElement;
+			//选中后保留颜色
+			if (hiddenObject_template[i].isSelected == "1") {
+				thisDivTr.style.backgroundColor = config.selectedColor;
+			} else if (i%2 == 1) {
+				thisDivTr.style.backgroundColor = config.evenColor;
+			} else {
+				thisDivTr.style.backgroundColor = config.oddColor;
+			}
+		}
+	}
+}
+
+//从Table标签里面发现Th标签
+function getThFromTable(thisObj) {
+	if (thisObj != undefined && thisObj != null && (typeof thisObj == "object") ) {
+		if (!thisObj.hasChildNodes()) {
+			return null;
+		} else {
+			for(var i=0; i<thisObj.childNodes.length; i++) {
+				var thisChild = thisObj.childNodes[i];
+				if (thisChild.tagName != undefined) {
+					if (thisChild.tagName.toLowerCase() == "th") {
+						return thisChild;
+					} else {
+						var tempResult = getThFromTable(thisChild);
+						if (tempResult != null) {
+							return tempResult;
+						}
+					}
+				}
+			
+			}
+		}
+	}
+}
+</script>
+</PUBLIC:COMPONENT>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+	<name>RoomType</name>
+	<resource></resource>
+	<enums>
+		<enum label="普通住宅" value="1"/>
+		<enum label="商业住宅" value="2"/>
+		<enum label="公寓" value="3"/>
+		<enum label="酒店" value="4"/>
+		<enum label="其他" value="5"/>
+	</enums>
+</EnumDef>

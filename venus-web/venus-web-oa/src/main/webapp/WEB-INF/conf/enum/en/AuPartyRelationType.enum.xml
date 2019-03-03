@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>RelationTypeStatus</name>
+    <resource></resource>
+    <enums>
+    	<enum label="Other" value="4"/>
+        <enum label="Role" value="2"/>
+		<enum label="Organization" value="3"/>
+    </enums>
+</EnumDef>

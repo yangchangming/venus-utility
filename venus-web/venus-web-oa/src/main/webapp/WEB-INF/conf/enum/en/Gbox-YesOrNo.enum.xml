@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+	<name>YesOrNo</name>
+	<resource></resource>
+	<enums>
+		<enum label="Yes"  value="1"/>
+		<enum label="No"  value="0"/>
+	</enums>
+</EnumDef>

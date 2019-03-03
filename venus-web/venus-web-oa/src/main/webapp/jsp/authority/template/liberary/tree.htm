@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>TreeTemplate</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel='stylesheet' type='text/css' href='../../../../css/jquery/ztree/zTreeStyle.css' />
+<link rel='stylesheet' type='text/css' href='../../../../css/jquery/ztree/zTreeIcons.css' />
+<script type='text/javascript' src='../../../../js/au/jquery/jquery.js'></script>
+<script type='text/javascript' src='../../../../js/au/jquery/ztree/jquery-ztree-2.5.min.js'></script>
+<script type='text/javascript' src='./tree/setting.js'></script>
+<script type="text/javascript">
+//通过工具，将任何格式转换为ztree格式数据的集合。
+//ztree的功能足够使用，请参考帮助文档。
+var simplejson = [
+    {id:1, pId:0, name:"test1"},
+    {id:11, pId:1, name:"test11"},
+    {id:12, pId:1, name:"test12"},
+    {id:111, pId:11, name:"test111"}
+];
+
+var json = [
+    { name:"google", url:"http://g.cn", target:"_blank"},
+    { name:"baidu", url:"http://baidu.com", target:"_blank"},
+    { name:"sina", url:"http://www.sina.com.cn", target:"_blank"}
+];
+
+json = [
+    {id:1, name:"tony", nodes:[
+      {id:11, name:"king", nodes:[
+        {id:111, name:"queen"}
+      ]},
+      {id:12, name:"isadola"}
+    ]}
+];
+
+jQuery(document).ready(function(){
+    var jsonToHtml = function(data){
+        jQuery('#debug').addClass('tree');    
+        jQuery('#debug').zTree(setting, json);
+        //jQuery('#debug').zTree(simplesetting, simplejson);
+    };
+    jsonToHtml(json);
+});
+</script>
+</head>
+<body>
+<div id="debug"></div>
+</body>
+</html>

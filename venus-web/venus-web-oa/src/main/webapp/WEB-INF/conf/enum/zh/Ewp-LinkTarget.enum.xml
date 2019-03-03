@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>LinkTarget</name>
+    <resource></resource>
+    <enums>
+        <enum label="在新窗口中打开" value="_blank"/>
+        <enum label="在当前窗口中打开" value="_self"/>
+    </enums>
+</EnumDef>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+	<!-- 全局action-mapping定义 -->
+	<action-mappings >
+		<action type="udp.searchengine.action.SearchEngineAction" scope="request" path="/SearchEngineAction" parameter="cmd">
+			<forward name="modifypage" path="/jsp/searchEngine/initsuccess.jsp" />
+			<forward name="resultpage" path="/jsp/searchEngine/searchsuccess.jsp" />
+			<forward name="success" path="/jsp/searchEngine/operateFile.jsp" />
+			<forward name="addNewFile" path="/jsp/searchEngine/operateFile.jsp" />
+			<forward name="operateFile" path="/SearchEngineAction.do?cmd=onQueryFileIndex" redirect="true"/>
+		</action>
+		<action path="/SearchEngineDownLoad" type="org.apache.struts.actions.ForwardAction" parameter="/jsp/searchEngine/downloadFile.jsp" />
+	</action-mappings>
+</struts-config>

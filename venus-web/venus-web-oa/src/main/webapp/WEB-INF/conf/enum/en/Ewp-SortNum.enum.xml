@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+	<name>SortNum</name>
+	<resource></resource>
+	<enums>
+	    <enum label="0" value="0"/>
+		<enum label="1" value="1"/>
+		<enum label="2" value="2"/>
+		<enum label="3" value="3"/>
+		<enum label="4" value="4"/>
+		<enum label="5" value="5"/>
+		<enum label="6" value="6"/>
+		<enum label="7" value="7"/>
+		<enum label="8" value="8"/>
+		<enum label="9" value="9"/>
+		<enum label="10" value="10"/>
+		<enum label="11" value="11"/>
+		<enum label="12" value="12"/>
+		<enum label="13" value="13"/>
+	</enums>
+</EnumDef>
+

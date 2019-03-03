@@ -1,0 +1,837 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+         default-lazy-init="true">
+
+	 <!-- 通用BS配置开始 -->
+	 <bean id="au_common_bs" parent="baseTxProxy"> 
+		<property name="target"><ref local="au_common_target"></ref></property>
+	</bean> 
+	<bean id="au_common_target" class="venus.authority.util.common.bs.impl.CommonBs">
+		<property name="dao"><ref local="au_common_dao"/></property>
+	</bean>
+	<bean id="au_common_dao" class="venus.authority.util.common.dao.impl.CommonDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+	<!-- 团体连接规则BS配置开始 -->
+	<bean id="au_connectrule_bs" parent="baseTxProxy"> 
+		<property name="target"><ref local="au_connectrule_target"></ref></property>
+	</bean>
+
+	<bean id="au_connectrule_target" class="venus.authority.org.auconnectrule.bs.impl.AuConnectRuleBS">
+		<property name="dao"><ref local="au_connectrule_dao"/></property>
+	</bean>
+
+	<bean id="au_connectrule_dao" class="venus.authority.org.auconnectrule.dao.impl.AuConnectRuleDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+	<!-- 团体关系类型BS配置开始 -->
+	<bean id="aupartyrelationtype_bs" parent="baseTxProxy"> 
+		<property name="target"><ref local="aupartyrelationtype_target"></ref></property>
+	</bean> 
+	<bean id="aupartyrelationtype_target" class="venus.authority.org.aupartyrelationtype.bs.impl.AuPartyRelationTypeBS">
+		<property name="dao"><ref local="aupartyrelationtype_dao"/></property>
+	</bean>
+	<bean id="aupartyrelationtype_dao" class="venus.authority.org.aupartyrelationtype.dao.impl.AuPartyRelationTypeDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	<!-- 团体关系类型BS配置结束 -->
+	
+	<!-- 团体类型BS配置开始 -->
+	<bean id="aupartytype_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="aupartytype_target"></ref>
+		</property>
+	</bean> 
+	<bean id="aupartytype_target" class="venus.authority.org.aupartytype.bs.impl.AuPartyTypeBS">
+		<property name="dao"><ref local="aupartytype_dao"/></property>
+	</bean>
+	<bean id="aupartytype_dao" class="venus.authority.org.aupartytype.dao.impl.AuPartyTypeDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	<!-- 团体类型BS配置结束 -->
+	
+	<!-- 团体BS配置开始 -->
+	<bean id="auparty_bs" parent="baseTxProxy"> 
+		<property name="target"><ref local="auparty_target"></ref></property>
+	</bean> 
+	<bean id="auparty_target" 
+		class="venus.authority.org.auparty.bs.impl.AuPartyBs">
+		<property name="dao"><ref local="auparty_dao"/></property>
+	</bean>
+	<bean id="auparty_dao" 
+		class="venus.authority.org.auparty.dao.impl.AuPartyDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	<!-- 团体BS配置结束 -->
+	
+	<!-- 团体关系BS配置开始 -->
+	<bean id="aupartyrelation_bs" parent="baseTxProxy"> 
+		<property name="target"><ref local="aupartyrelation_target"></ref></property>
+	</bean> 
+	<bean id="aupartyrelation_target" class="venus.authority.org.aupartyrelation.bs.impl.AuPartyRelationBs">
+		<property name="dao"><ref local="aupartyrelation_dao"/></property>
+	</bean>
+	<bean id="aupartyrelation_dao" class="venus.authority.org.aupartyrelation.dao.impl.AuPartyRelationDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	<!-- 团体关系BS配置结束 -->
+	
+	<!--开始 配置AuFunctree的bean-->
+		<!--AuFunctree的业务层，带事务-->
+		<bean id="AuFunctree_bs" parent="baseTxProxy"> 
+		<property name="target"><ref local="AuFunctree_bs_target"></ref></property>
+	</bean> 
+	<!--AuFunctree的业务层，不带事务-->
+	<bean id="AuFunctree_bs_target" class="venus.authority.au.aufunctree.bs.impl.AuFunctreeBs">
+		<property name="dao"><ref local="AuFunctree_dao"/></property>
+	</bean>
+	<!--AuFunctree的数据访问层-->
+	<bean id="AuFunctree_dao" class="venus.authority.au.aufunctree.dao.impl.AuFunctreeDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	<!--结束 配置AuFunctree的bean-->
+	
+	<!--开始 配置AuUser的bean-->
+	<!--AuUser的业务层，带事务-->
+	<bean id="AuUser_bs" parent="baseTxProxy">
+		<property name="target"><ref local="AuUser_bs_target"></ref></property>
+	</bean> 
+	<!--AuUser的业务层，不带事务-->
+	<bean id="AuUser_bs_target" class="venus.authority.au.auuser.bs.impl.AuUserBs">
+		<property name="dao"><ref local="AuUser_dao"/></property>
+	</bean>
+	<!--AuUser的数据访问层-->
+	<bean id="AuUser_dao" class="venus.authority.au.auuser.dao.impl.AuUserDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	<!--结束 配置AuUser的bean-->
+	
+	<!--开始 配置AuResource的bean-->
+		<!--AuResource的业务层，带事务-->
+		<bean id="AuResource_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="AuResource_bs_target"></ref>
+		</property>
+	</bean> 
+	<!--AuResource的业务层，不带事务-->
+	<bean id="AuResource_bs_target" class="venus.authority.au.auresource.bs.impl.AuResourceBs">
+		<property name="dao"><ref local="AuResource_dao"/></property>
+	</bean>
+	<!--AuResource的数据访问层-->
+	<bean id="AuResource_dao" class="venus.authority.au.auresource.dao.impl.AuResourceDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	
+	<!-- 从数据字典中取数据 -->
+	<!--<bean id="AuResource_dao" class="venus.authority.au.auresource.dao.impl.AuResourceDao4DD">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>-->
+	<!-- 数据字典提供的接口 -->
+	<!--<bean id="IAuResourceProvider" class="gap.dd.service.impl.AuResourceProviderImpl">
+	</bean>
+	<bean id="metadata_bs" 
+		class="gap.dd.metadata.bs.impl.MetadataBs">
+		<property name="dmlDao">
+			<ref local="dmlDao"/>
+		</property>
+	</bean>
+	<bean id="dmlDao" 
+		class="gap.dd.metadata.dao.impl.MetadataDMLDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	-->
+	<!--结束 配置AuResource的bean-->
+
+	<!-- 授权情况BS配置开始 -->
+	<bean id="auauthorize_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="auauthorize_target"></ref>
+		</property>
+	</bean> 
+	<bean id="auauthorize_target" 
+		class="venus.authority.au.auauthorize.bs.impl.AuAuthorizeBS">
+		<property name="dao">
+			<ref local="auauthorize_dao"/>
+		</property>
+		<property name="logdao">
+			<ref local="auauthorizeLog_dao"/>
+		</property>
+	</bean>
+	<bean id="auauthorize_dao" 
+		class="venus.authority.au.auauthorize.dao.impl.AuAuthorizeDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<!--授权情况BS结束-->
+
+	<!-- 授权日志情况BS配置开始 -->
+	<bean id="auauthorizeLog_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="auauthorizeLog_target"></ref>
+		</property>
+	</bean> 
+	<bean id="auauthorizeLog_target" 
+		class="venus.authority.au.auauthorizelog.bs.impl.AuAuthorizeLogBS">
+		<property name="dao">
+			<ref local="auauthorizeLog_dao"/>
+		</property>
+	</bean>
+	<bean id="auauthorizeLog_dao" 
+		class="venus.authority.au.auauthorizelog.dao.impl.AuAuthorizeLogDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<!--授权日志情况BS结束-->	
+	
+	<!-- 访问者BS配置开始 -->
+	<bean id="auvisitor_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="auvisitor_target"></ref>
+		</property>
+	</bean> 
+	<bean id="auvisitor_target" 
+		class="venus.authority.au.auvisitor.bs.impl.AuVisitorBS">
+		<property name="dao">
+			<ref local="auvisitor_dao"/>
+		</property>
+	</bean>
+	<bean id="auvisitor_dao" 
+		class="venus.authority.au.auvisitor.dao.impl.AuVisitorDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<!--访问者BS结束-->
+
+	<!-- 测试BS配置开始 -->
+	<bean id="test_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="test_target"></ref>
+		</property>
+	</bean> 
+	<bean id="test_target" 
+		class="venus.authority.service.test.bs.impl.TestBs">
+		<property name="dao">
+			<ref local="test_dao"/>
+		</property>
+	</bean>
+	<bean id="test_dao" 
+		class="venus.authority.service.test.dao.impl.TestDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<!-- 测试BS配置结束 -->
+	
+	<!--开始 配置Position的bean-->
+		<!--Position的业务层，带事务-->
+		<bean id="Position_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="Position_bs_target"></ref>
+		</property>
+	</bean> 
+	<!--Position的业务层，不带事务-->
+	<bean id="Position_bs_target" class="venus.authority.sample.position.bs.impl.PositionBs">
+		<property name="dao">
+			<ref local="Position_dao"/>
+		</property>
+	</bean>
+	<!--Position的数据访问层-->
+	<bean id="Position_dao" class="venus.authority.sample.position.dao.impl.PositionDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<!--结束 配置Position的bean-->
+	<!--开始 配置Employee的bean-->
+		<!--Employee的业务层，带事务-->
+		<bean id="Employee_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="Employee_bs_target"></ref>
+		</property>
+	</bean> 
+	<!--Employee的业务层，不带事务-->
+	<bean id="Employee_bs_target" class="venus.authority.sample.employee.bs.impl.EmployeeBs">
+		<property name="dao">
+			<ref local="Employee_dao"/>
+		</property>
+	</bean>
+	<!--Employee的数据访问层-->
+	<bean id="Employee_dao" class="venus.authority.sample.employee.dao.impl.EmployeeDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<!--结束 配置Employee的bean-->
+	<!--开始 配置Department的bean-->
+		<!--Department的业务层，带事务-->
+		<bean id="Department_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="Department_bs_target"></ref>
+		</property>
+	</bean> 
+	<!--Department的业务层，不带事务-->
+	<bean id="Department_bs_target" class="venus.authority.sample.department.bs.impl.DepartmentBs">
+		<property name="dao">
+			<ref local="Department_dao"/>
+		</property>
+	</bean>
+	<!--Department的数据访问层-->
+	<bean id="Department_dao" class="venus.authority.sample.department.dao.impl.DepartmentDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<!--结束 配置Department的bean-->
+	<!--开始 配置Company的bean-->
+		<!--Company的业务层，带事务-->
+		<bean id="Company_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="Company_bs_target"></ref>
+		</property>
+	</bean> 
+	<!--Company的业务层，不带事务-->
+	<bean id="Company_bs_target" class="venus.authority.sample.company.bs.impl.CompanyBs">
+		<property name="dao">
+			<ref local="Company_dao"/>
+		</property>
+	</bean>
+	<!--Company的数据访问层-->
+	<bean id="Company_dao" class="venus.authority.sample.company.dao.impl.CompanyDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<!--结束 配置Company的bean-->
+
+	<!-- 开始配置Relation的bean -->
+	<bean id="Relation_bs" parent="baseTxProxy">
+        <property name="target">
+            <ref local="Relation_bs_target"></ref>
+        </property>	
+	</bean>
+	<bean id="Relation_bs_target" class = "venus.authority.sample.relation.bs.impl.RelationBs"/>
+	<!-- 结束配置Relation的bean -->
+	
+	<!--开始 配置LoginLog的bean-->
+	<!--Company的业务层，带事务-->
+	<bean id="ILoginLogBs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="ILoginLogBs_target"></ref>
+		</property>
+	</bean> 
+	<!--LoginLog的业务层，不带事务-->
+	<bean id="ILoginLogBs_target"
+		class="venus.authority.login.loginlog.bs.impl.LoginLogBs">
+		<property name="dao">
+			<ref local="ILoginLogDao" />
+		</property>
+	</bean>
+	<!--LoginLog的数据访问层-->
+	<bean id="ILoginLogDao" class="venus.authority.login.loginlog.dao.impl.LoginLogDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<!--结束 配置LoginLog的bean-->
+	<!-- 系统配置项 , 不带事务 -->
+	<bean id="sysparams_bs" 
+		class="venus.authority.service.sys.bs.impl.SysParamsBs">
+		<property name="dao">
+			<ref local="sysparams_dao"/>
+		</property>
+	</bean>
+	<bean id="sysparams_dao" 
+		class="venus.authority.service.sys.dao.impl.SysParamDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<!--系统配置项结束 -->
+	<!-- 系统错误信息配置开始 -->
+	<bean id="syserror_bs" parent="baseTxProxy">
+        <property name="target">
+            <ref local="syserror_bs_target"></ref>
+        </property>	
+	</bean>
+    <bean id="syserror_bs_target" 
+        class="venus.authority.service.syserror.bs.impl.SysErrorBs">
+        <property name="dao">
+            <ref local="syserror_dao"/>
+        </property>
+    </bean>
+    <bean id="syserror_dao" 
+        class="venus.authority.service.syserror.dao.impl.SysErrorDao">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <property name="lobHandler">
+            <ref bean="defaultLobHandler"/>
+        </property>         
+    </bean>	
+	<!-- 系统错误信息配置结束 -->
+	<!--开始 配置AuAppendData的bean-->
+		<!--Company的业务层，带事务-->
+	<bean id="AuAppendData_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="AuAppendData_bs_target"></ref>
+		</property>
+	</bean> 
+	<!--Company的业务层，不带事务-->
+	<bean id="AuAppendData_bs_target" class="venus.authority.au.appenddata.bs.impl.AppendDataBs">
+		<property name="dao">
+			<ref local="AuAppendData_dao"/>
+		</property>
+	</bean>
+	<!--Company的数据访问层-->
+	<bean id="AuAppendData_dao" class="venus.authority.au.appenddata.dao.impl.AuAppendDataDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<!--结束 配置AuAppendData的bean-->
+
+	<!--人员管理Bs对象，带事物-->
+	<bean id="employeeFacadeBs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="employeeFacadeBs_target"></ref>
+		</property>
+	</bean>
+	<!--人员管理的业务层，不带事务-->
+	<bean id="employeeFacadeBs_target" class="venus.authority.sample.employee.bs.impl.EmployeeFacadeBs">
+		<property name="employeeBs">
+			<ref local="Employee_bs"/>
+		</property>
+	</bean>
+	<!--记录日志的业务层，带事务-->
+	<bean id="employeeLogBs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="employeeLogBs_target"></ref>
+		</property>
+	</bean> 
+	<!--记录日志的业务层，不带事务-->
+	<bean id="employeeLogBs_target" class="venus.authority.service.history.bs.impl.HistoryLogBs">
+		<property name="dao">
+			<ref local="historyLog_dao"/>
+		</property>
+		<property name="model">
+			<ref local="employeeLogModel"/>
+		</property>		
+	</bean>
+	<!-- 记录日志的模块层 -->
+	<bean id="employeeLogModel" class="venus.authority.service.history.model.HistoryLogModel">
+		<property name="adaptor">
+			<ref local="employeeLogAdaptor"/>
+		</property>
+	</bean>
+	<!-- 日志适配器 -->
+	<bean id="employeeLogAdaptor" class="venus.authority.sample.employee.adaptor.EmployeeAdaptor"/>
+	
+	<!--岗位管理Bs对象，带事物-->
+	<bean id="positionFacadeBs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="positionFacadeBs_target"></ref>
+		</property>
+	</bean> 
+	<!--岗位管理的业务层，不带事务-->
+	<bean id="positionFacadeBs_target" class="venus.authority.sample.position.bs.impl.PositionFacadeBs">
+		<property name="positionBs">
+			<ref local="Position_bs"/>
+		</property>
+	</bean>
+	<!--记录日志的业务层，带事务-->
+	<bean id="positionLogBs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="positionLogBs_target"></ref>
+		</property>
+	</bean> 
+	<!--记录日志的业务层，不带事务-->
+	<bean id="positionLogBs_target" class="venus.authority.service.history.bs.impl.HistoryLogBs">
+		<property name="dao">
+			<ref local="historyLog_dao"/>
+		</property>
+		<property name="model">
+			<ref local="positionLogModel"/>
+		</property>		
+	</bean>
+	<!-- 记录日志的模块层 -->
+	<bean id="positionLogModel" class="venus.authority.service.history.model.HistoryLogModel">
+		<property name="adaptor">
+			<ref local="positionLogAdaptor"/>
+		</property>
+	</bean>
+	<!-- 日志适配器 -->
+	<bean id="positionLogAdaptor" class="venus.authority.sample.position.adaptor.PositionAdaptor"/>
+	
+	<!--部门管理Bs对象，带事物-->
+	<bean id="departmentFacadeBs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="departmentFacadeBs_target"></ref>
+		</property>
+	</bean> 
+	<!--部门管理的业务层，不带事务-->
+	<bean id="departmentFacadeBs_target" class="venus.authority.sample.department.bs.impl.DepartmentFacadeBs">
+		<property name="departmentBs">
+			<ref local="Department_bs"/>
+		</property>
+	</bean>
+	<!--记录日志的业务层，带事务-->
+	<bean id="departmentLogBs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="departmentLogBs_target"></ref>
+		</property>
+	</bean> 
+	<!--记录日志的业务层，不带事务-->
+	<bean id="departmentLogBs_target" class="venus.authority.service.history.bs.impl.HistoryLogBs">
+		<property name="dao">
+			<ref local="historyLog_dao"/>
+		</property>
+		<property name="model">
+			<ref local="departmentLogModel"/>
+		</property>		
+	</bean>
+	<!-- 记录日志的模块层 -->
+	<bean id="departmentLogModel" class="venus.authority.service.history.model.HistoryLogModel">
+		<property name="adaptor">
+			<ref local="departmentLogAdaptor"/>
+		</property>
+	</bean>
+	<!-- 日志适配器 -->
+	<bean id="departmentLogAdaptor" class="venus.authority.sample.department.adaptor.DepartmentAdaptor"/>
+	
+	<!--公司管理Bs对象，带事物-->
+	<bean id="companyFacadeBs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="companyFacadeBs_target"></ref>
+		</property>
+	</bean> 
+	<!--公司管理的业务层，不带事务-->
+	<bean id="companyFacadeBs_target" class="venus.authority.sample.company.bs.impl.CompanyFacadeBs">
+		<property name="companyBs">
+			<ref local="Company_bs"/>
+		</property>
+	</bean>
+	<!--记录日志的业务层，带事务-->
+	<bean id="companyLogBs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="companyLogBs_target"></ref>
+		</property>
+	</bean> 
+	<!--记录日志的业务层，不带事务-->
+	<bean id="companyLogBs_target" class="venus.authority.service.history.bs.impl.HistoryLogBs">
+		<property name="dao">
+			<ref local="historyLog_dao"/>
+		</property>
+		<property name="model">
+			<ref local="companyLogModel"/>
+		</property>		
+	</bean>
+	<!-- 记录日志的模块层 -->
+	<bean id="companyLogModel" class="venus.authority.service.history.model.HistoryLogModel">
+		<property name="adaptor">
+			<ref local="companyLogAdaptor"/>
+		</property>
+	</bean>
+	<!-- 日志适配器 -->
+	<bean id="companyLogAdaptor" class="venus.authority.sample.company.adaptor.CompanyAdaptor"/>
+	
+	<!--机构调整Bs对象，带事物-->
+	<bean id="adjustOrganizeBs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="adjustOrganizeBs_target"></ref>
+		</property>
+	</bean> 
+	<!--调级的业务层，不带事务-->
+	<bean id="adjustOrganizeBs_target" class="venus.authority.service.adjustorg.bs.impl.AdjustOrganizeBs">
+		<property name="relationBs">
+			<ref local="aupartyrelation_bs"/>
+		</property>
+	</bean>
+	<!--记录日志Bs对象，带事物-->
+	<bean id="adjustOrgLogBs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="adjustOrgLogBs_target"></ref>
+		</property>
+	</bean> 
+	<!--记录日志的业务层，不带事务-->
+	<bean id="adjustOrgLogBs_target" class="venus.authority.service.history.bs.impl.HistoryLogBs">
+		<property name="dao">
+			<ref local="historyLog_dao"/>
+		</property>
+		<property name="model">
+			<ref local="adjustOrgLogModel"/>
+		</property>			
+	</bean>
+	
+	<bean id="adjustOrgLogModel" class="venus.authority.service.history.model.HistoryLogModel">
+		<property name="adaptor">
+			<ref local="adjustOrgLogAdaptor"/>
+		</property>
+	</bean>
+	
+	<bean id="adjustOrgLogAdaptor" class="venus.authority.service.adjustorg.logadaptor.AdjustOrgLogAdaptor">
+		<property name="partyBs">
+			<ref local="auparty_target"/>
+		</property>
+	</bean>
+	<!--日志的数据访问层-->
+	<bean id="historyLog_dao" class="venus.authority.service.history.dao.impl.HistoryLogDao">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+		<property name="lobHandler">
+			<ref bean="defaultLobHandler"/>
+		</property>		
+	</bean>
+
+	<!--开始 配置profile的bean-->
+    <!--profile的业务层，带事务-->
+        <bean id="profile_bs" parent="baseTxProxy"> 
+        <property name="target">
+            <ref local="profile_bs_target"></ref>
+        </property>
+    </bean> 
+    <!--profile的业务层，不带事务-->
+    <bean id="profile_bs_target" class="venus.authority.service.profile.bs.impl.UserProfileBs">
+        <property name="dao">
+            <ref local="profile_dao"/>
+        </property>
+    </bean>
+    <!--profile的数据访问层-->
+    <bean id="profile_dao" class="venus.authority.service.profile.dao.impl.UserProfileDao">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
+    <!--profile的数据访问层-->
+    <!--<bean id="common_function_util" class="venus.authority.util.sql.function.oracle.OracleCommonFunction">-->
+        <!--<property name="dao">-->
+            <!--<ref bean="profile_dao"/>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--结束 配置profile的bean-->
+
+	<!--SQL构建组织权限扩展-->
+	<bean id="historyLogOrgPrivilege" class="venus.authority.util.sql.OrgPrivilege"  scope="prototype"/>
+	
+	<!--记录日志的业务层，带事务-->
+    <bean id="proxyLogBs" parent="baseTxProxy"> 
+        <property name="target">
+            <ref local="proxyLogBs_target"></ref>
+        </property>
+    </bean> 
+    <!--记录日志的业务层，不带事务-->
+    <bean id="proxyLogBs_target" class="venus.authority.service.history.bs.impl.HistoryLogBs">
+        <property name="dao">
+            <ref local="historyLog_dao"/>
+        </property>
+        <property name="model">
+            <ref local="proxyLogModel"/>
+        </property>     
+    </bean>
+
+    <!-- 记录日志的模块层 -->
+    <bean id="proxyLogModel" class="venus.authority.service.history.model.HistoryLogModel">
+        <property name="adaptor">
+            <ref local="proxyLogAdaptor"/>
+        </property>
+    </bean>
+    <!-- 日志适配器 -->
+    <bean id="proxyLogAdaptor" class="venus.authority.au.auproxy.adaptor.ProxyAdaptor"/>
+    
+	<!-- 代理BS配置开始 -->
+	<bean id="auproxy_bs" parent="baseTxProxy"> 
+		<property name="target">
+			<ref local="auproxy_target"></ref>
+		</property>
+	</bean> 
+	<bean id="auproxy_target" class="venus.authority.au.auproxy.bs.impl.AuProxyBs"/>
+	<!--代理BS结束-->	
+	<!--开始 配置ProxyHistory的bean-->
+     <!--ProxyHistory的业务层，带事务-->
+     <bean id="proxyHistoryBs" parent="baseTxProxy"> 
+        <property name="target">
+            <ref local="proxyHistoryBs_target"></ref>
+        </property>
+    </bean> 
+    <!--ProxyHistory的业务层，不带事务-->
+    <bean id="proxyHistoryBs_target" class="venus.authority.au.auproxy.bs.impl.ProxyHistoryBs">
+        <property name="dao">
+            <ref local="proxyHistoryDao"/>
+        </property>
+    </bean>
+    <!--ProxyHistory的数据访问层-->
+    <bean id="proxyHistoryDao" class="venus.authority.au.auproxy.dao.impl.ProxyHistoryDao">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
+    <!--结束 配置ProxyHistory的bean-->
+
+    <!-- 密码工具类 -->
+    <bean id="Encode" class="venus.pub.util.Encode"/><!--  venus.authority.util.Encode$MD5-->
+    <!-- 密码工具类结束 -->
+
+	<!--AOP-->
+
+    <!-- 登陆日志AOP 开始 -->
+    <!-- 创建通知 -->
+    <bean id="loginLogAdvice" class="venus.authority.service.aop.AuthorityAdvice" >
+        <property name="notifyManager">
+           <value>BlackListNotifyManager</value>
+        </property>
+        <property name="position">
+            <value>2</value><!-- 1-前通知，2-后通知，3-环绕通知 -->
+        </property>
+    </bean>
+    <!-- 自动代理 -->
+    <bean id="loginLogAop" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>ILoginLogBs_target</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>loginLogAdvisor</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 定义切入点 -->
+    <bean id="loginLogAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="advice"><ref local="loginLogAdvice"/></property>
+        <property name="mappedNames">
+            <list>
+                <value>insert</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 登陆日志AOP 结束 -->
+
+    <!-- 业务通知组件 -->
+    <bean id="BlackListNotifyManager" class="venus.authority.service.notify.impl.AuNofifyManager" >
+        <property name="auNotifies">
+            <list>
+                <value>logNotifyDecorator</value>
+                <!--<value>blackListNotifyDecorator</value>-->
+            </list>
+        </property>
+    </bean>
+
+    <!-- 通知组件示例：日志方式记录 -->
+    <bean id="logNotifyDecorator" class="venus.authority.sample.notify.AuLogNotifyDecorator"/>
+
+    <!-- 通知组件：加入黑名单 -->
+    <!--<bean id="blackListNotifyDecorator" class="venus.authority.service.blacklist.model.notify.AddBlackListNotifyDecorator"/>-->
+
+	<!-- 业务通知组件 结束 -->
+    
+    <!-- 系统配置项AOP 开始 -->
+    <!-- 创建通知 -->
+    <bean id="SysParameterAdvice" class="venus.authority.service.aop.AuthorityAdvice">
+        <property name="notifyManager">
+           <value>SysParameterNotifyManager</value>
+        </property>
+        <property name="position">
+            <value>2</value><!-- 1-前通知，2-后通知，3-环绕通知 -->
+        </property>
+    </bean>
+    <!-- 自动代理 -->
+    <bean id="SysParameterAop" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>sysparams_bs</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>SysParameterAdvisor</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 定义切入点 -->
+    <bean id="SysParameterAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="advice"><ref local="SysParameterAdvice"/></property>
+        <property name="mappedNames">
+            <list>
+                <value>update</value>
+                <value>delete</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 登陆日志AOP 结束 -->
+
+    <!-- 业务通知组件 -->
+    <bean id="SysParameterNotifyManager" class="venus.authority.service.notify.impl.AuNofifyManager">
+        <property name="auNotifies">
+            <list>
+                <value>pwdLifeCycleNotifyDecorator</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 通知组件：禁用PWDLIFECYCLE后撤销过期时间 -->
+    <bean id="pwdLifeCycleNotifyDecorator" class="venus.authority.service.sys.model.notify.PwdLifeCycleNotifyDecorator"/>
+    <!-- 系统配置项AOP 结束 -->
+    
+    <!-- 组织权限黑名单删除AOP 开始 -->
+    <!-- 创建通知 -->
+    <bean id="auLoginLogAdvice" class="venus.authority.service.aop.AuthorityAdvice" >
+        <property name="notifyManager">
+           <value>auLoginLogNotifyManager</value>
+        </property>
+        <property name="position">
+            <value>1</value><!-- 1-前通知，2-后通知，3-环绕通知 -->
+        </property>
+    </bean>
+    <!-- 自动代理 -->
+    <bean id="auLoginLogAop" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>blackListBs_target</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>auLoginLogAdvisor</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 定义切入点 -->
+    <bean id="auLoginLogAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="advice"><ref local="auLoginLogAdvice"/></property>
+        <property name="mappedNames">
+            <list>
+                <value>delete</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 组织权限黑名单删除AOP 结束 -->
+
+    <!-- 业务通知组件 -->
+    <bean id="auLoginLogNotifyManager" class="venus.authority.service.notify.impl.AuNofifyManager">
+        <property name="auNotifies">
+            <list>
+                <!--<value>removeBlackListNotifyDecorator</value>-->
+            </list>
+        </property>
+    </bean>
+
+	<!-- 通知组件：加入黑名单 -->
+    <!--<bean id="removeBlackListNotifyDecorator" class="venus.authority.service.blacklist.model.notify.RemoveBlackListNotifyDecorator"/>-->
+    <!-- 业务通知组件 结束 -->
+
+    <!--开始 配置 生成帐户策略：拼音-->
+    <bean id="loginIdAndPwd" class="venus.authority.au.auuser.adaptor.impl.InitLoginAndPwdDefault"/>
+    <!--结束 配置 生成帐户策略：拼音-->
+
+</beans>

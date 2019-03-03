@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>TypeStatus</name>
+    <resource></resource>
+    <enums>
+    	<enum label="其它" value="4"/>
+        <enum label="人员" value="1"/>
+        <enum label="角色" value="2"/>
+		<enum label="机构" value="3"/>
+    </enums>
+</EnumDef>

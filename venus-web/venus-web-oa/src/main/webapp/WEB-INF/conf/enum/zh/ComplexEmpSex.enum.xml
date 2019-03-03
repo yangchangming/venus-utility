@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+	<name>EmpSex</name>
+	<resource></resource>
+	<enums>
+		<enum label="男" value="M"/>
+		<enum label="女" value="F"/>
+	</enums>
+</EnumDef>

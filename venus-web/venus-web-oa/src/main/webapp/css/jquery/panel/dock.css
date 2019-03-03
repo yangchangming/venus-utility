@@ -1,0 +1,58 @@
+﻿span.dock_image
+{
+    position:absolute;
+    background-repeat: no-repeat;
+    border:solid 1px transparent;
+    z-index:1000;
+}
+
+span.dock_image_hover
+{
+    border:solid 1px #4170ca;
+}
+
+span.top
+{
+    background-image :url('top.bmp');
+    width:29px;
+    height:32px;    
+}  
+
+span.bottom
+{
+    background-image :url('bottom.bmp');
+    width:29px;
+    height:32px;  
+}
+
+span.right
+{
+    background-image :url('right.bmp');
+    height:29px;
+    width:32px;    
+}
+
+span.left
+{
+    background-image :url('left.bmp');
+    height:29px;
+    width:32px;    
+}
+
+span.dock
+{
+    background-image :url('dock.gif');
+}
+
+span.transparent
+{
+    background-image :url('transparent.gif');
+}
+
+div.ui-draggable-dragging
+{	
+	width :50px!important;
+	height:50px!important;
+	border:solid 1px Black!important;
+	background-color:White!important;
+}

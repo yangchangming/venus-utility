@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>NavigateMenu</name>
+    <resource></resource>
+    <enums>
+        <enum label="是导航栏目" value="1"/>
+        <enum label="不是导航栏目" value="0"/>
+    </enums>
+</EnumDef>

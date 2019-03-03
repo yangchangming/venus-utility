@@ -1,0 +1,38 @@
+<PUBLIC:COMPONENT>
+<PUBLIC:ATTACH EVENT="ondocumentready" ONEVENT="doOnInit()" />
+<PUBLIC:ATTACH EVENT="onmousedown" ONEVENT="doOnMouseDown()" />
+
+<PUBLIC:EVENT NAME="onPush" ID="push"  />
+
+<script>
+function doOnInit() {
+	try {
+		this.readOnly = true;
+	} catch(e) {
+		alert(e.message);
+	}
+}
+
+function doOnMouseDown() {
+	if(event.button == 2 && confirm("确定要清除内容吗？")) {
+		this.value = "";
+		try {
+			if(this.hiddenInputId != null) {
+				var aHidden = this.hiddenInputId.split(",");
+				for(var i=0; i<aHidden.length; i++) {
+					if(window.document.getElementById(aHidden[i]) != null) {
+						window.document.getElementById(aHidden[i]).value = "";
+					}
+				}
+			}
+		} catch(e) {
+			alert(e.message);
+		}
+		window.event.cancelBubble = true;
+		return false;
+	}
+	push.fire();
+}
+
+</script>
+</PUBLIC:COMPONENT>

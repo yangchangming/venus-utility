@@ -1,0 +1,57 @@
+.tree_node_onfocus {
+    font-weight: bold;
+    background-color: #6ab5ff;
+    color: black;
+}
+
+.tree_control_image {
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 0px;
+}
+
+ul.rootNode {
+    CURSOR: default;
+    MARGIN-LEFT: 5px;
+    MARGIN-RIGHT: 5px;
+    MARGIN-TOP: 5px;
+    padding-top: 0px;
+    padding-left: 0px;
+}
+
+ul.baseNode {
+    MARGIN-LEFT: 0px;
+    MARGIN-RIGHT: 0px;
+    MARGIN-TOP: 0px;
+    MARGIN-BOTTOM: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+}
+
+LI {
+    MARGIN-LEFT: 15px;
+    LIST-STYLE: none;
+    MARGIN-BOTTOM: 0px;
+    MARGIN-TOP: 0px;
+    VERTICAL-ALIGN: middle;
+}
+
+.ztree li span.button.node_ico_open {
+    margin-right: 2px;
+    background: url(../../images/tree/parentopen.gif) no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+}
+
+.ztree li span.button.node_ico_close {
+    margin-right: 2px;
+    background: url(../../images/tree/parent.gif) no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+}
+
+.ztree li span.button.node_ico_docu {
+    margin-right: 2px;
+    background: url(../../images/tree/leaf.gif) no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+}

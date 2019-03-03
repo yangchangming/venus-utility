@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>MultiToneCharacter</name>
+    <resource></resource>
+    <!-- 姓氏多音字列表 -->
+    <enums>
+		<enum label="单" value="shan"/>
+    	<enum label="区" value="ou"/>
+        <enum label="冼" value="xian"/>
+        <enum label="解" value="xie"/>
+        <enum label="朴" value="piao"/>
+        <enum label="仇" value="qiu"/>
+        <enum label="翟" value="zhai"/>
+        <enum label="重" value="chong"/>
+    </enums>
+</EnumDef>

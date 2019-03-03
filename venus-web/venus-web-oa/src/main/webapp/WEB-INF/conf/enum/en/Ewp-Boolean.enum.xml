@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>LogicBoolean</name>
+    <resource></resource>
+    <enums>
+        <enum label="Yes" value="Y"/>
+        <enum label="No" value="N"/>
+    </enums>
+</EnumDef>

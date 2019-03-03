@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+	<name>EmpCareer</name>
+	<resource></resource>
+	<enums>
+		<enum label="IT"     value="1"/>
+		<enum label="Finance" value="2"/>
+		<enum label="Building Trade" value="3"/>
+		<enum label="Tourism" value="4"/>
+		<enum label="Dining" value="5"/>
+		<enum label="Other" value="6"/>
+	</enums>
+</EnumDef>

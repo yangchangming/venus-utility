@@ -19,6 +19,7 @@
         <module>venus-datasource</module>
         <module>venus-demo</module>
         <module>venus-oa</module>
+        <module>venus-web</module>
         <!--<module>venus-portal</module>-->
         <!--<module>venus-cron</module>-->
     </modules>

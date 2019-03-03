@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>EnableStatus</name>
+    <resource></resource>
+    <enums>
+		<!-- 显示全部状态,取消注释即可,默认状态为第一个-->
+		<enum label="全部" value=""/>
+		<enum label="启用" value="1"/>
+        <enum label="禁用" value="0"/>
+    </enums>
+</EnumDef>

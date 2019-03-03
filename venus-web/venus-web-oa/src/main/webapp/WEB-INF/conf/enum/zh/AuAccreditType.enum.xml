@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>AccreditType</name>
+    <resource></resource>
+    <enums>
+    	<enum label="全部" value=""/>
+    	<enum label="授权" value="0"/>
+        <enum label="代理" value="1"/>
+    </enums>
+</EnumDef>

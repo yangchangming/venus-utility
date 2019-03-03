@@ -23,5 +23,11 @@ package venus.oa.checkcode.bs;
  */
 public interface ICheckCodeBs {
 
-    byte[] buildCheckCode();
+    /**
+     * build different checkcode, and return byte array
+     *
+     * @param captchaId
+     * @return
+     */
+    byte[] buildCheckCode(String captchaId);
 }

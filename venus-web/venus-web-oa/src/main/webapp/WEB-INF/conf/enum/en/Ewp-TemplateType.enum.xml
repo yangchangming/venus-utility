@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>TemplateType</name>
+    <resource></resource>
+    <enums>
+        <enum label="layout Template" value="layout"/>
+        <enum label="doctype Template" value="hang"/>
+        <enum label="document Template" value="doc"/>
+        <enum label="common Template" value="common"/>
+        <enum label="nested Template" value="nested"/>
+    </enums>
+</EnumDef>
+

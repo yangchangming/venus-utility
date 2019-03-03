@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+           version="3.0">
+
+<display-name>Venus Application Platform</display-name>
+<context-param>
+    <param-name>webAppRootKey</param-name>
+    <param-value>venus.root</param-value>
+</context-param>
+<context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>/WEB-INF/conf/log4j.properties</param-value>
+</context-param>
+<context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/conf/applicationContext/applicationContext.xml,
+        /WEB-INF/conf/applicationContext/applicationContext-authority.xml,
+        /WEB-INF/conf/applicationContext/applicationContext-i18n.xml
+    </param-value>
+</context-param>
+
+<filter>
+    <filter-name>Set Character Encoding</filter-name>
+    <filter-class>venus.frames.web.filter.SetEncodingFilter</filter-class>
+    <init-param>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
+    </init-param>
+</filter>
+
+<filter>
+    <filter-name>NoCache</filter-name>
+    <filter-class>venus.frames.web.filter.ResponseHeaderFilter</filter-class>
+    <init-param>
+        <param-name>Cache-Control</param-name>
+        <param-value>no-cache, must-revalidate</param-value>
+    </init-param>
+</filter>
+
+<filter>
+    <filter-name>CacheForWeek</filter-name>
+    <filter-class>venus.frames.web.filter.ResponseHeaderFilter</filter-class>
+    <init-param>
+        <param-name>Cache-Control</param-name>
+        <param-value>max-age=604800, public</param-value>
+    </init-param>
+</filter>
+
+<filter>
+    <filter-name>Locale Filter</filter-name>
+    <filter-class>venus.frames.i18n.filter.LocalFilter</filter-class>
+</filter>
+
+<filter>
+    <filter-name>Au Filter</filter-name>
+    <filter-class>venus.authority.filter.AuthorityFilter</filter-class>
+</filter>
+<filter>
+    <filter-name>FunOrgAu Filter</filter-name>
+    <filter-class>venus.authority.filter.FunOrgAuFilter</filter-class>
+</filter>
+<filter>
+    <filter-name>SQLInjection Filter</filter-name>
+    <filter-class>venus.authority.filter.SQLInjectionFilter</filter-class>
+    <init-param>
+        <param-name>regularExpression</param-name>
+        <param-value>.*([;]+|(--)+).*</param-value>
+    </init-param>
+</filter>
+
+<filter-mapping>
+    <filter-name>Set Character Encoding</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+<filter-mapping>
+    <filter-name>Locale Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+<filter-mapping>
+    <filter-name>NoCache</filter-name>
+    <url-pattern>*.jsp</url-pattern>
+</filter-mapping>
+<filter-mapping>
+    <filter-name>NoCache</filter-name>
+    <url-pattern>*.do</url-pattern>
+</filter-mapping>
+
+<filter-mapping>
+    <filter-name>CacheForWeek</filter-name>
+    <url-pattern>*.gif</url-pattern>
+</filter-mapping>
+<filter-mapping>
+    <filter-name>CacheForWeek</filter-name>
+    <url-pattern>*.css</url-pattern>
+</filter-mapping>
+<filter-mapping>
+    <filter-name>CacheForWeek</filter-name>
+    <url-pattern>*.js</url-pattern>
+</filter-mapping>
+<filter-mapping>
+    <filter-name>CacheForWeek</filter-name>
+    <url-pattern>*.gif</url-pattern>
+</filter-mapping>
+<filter-mapping>
+    <filter-name>CacheForWeek</filter-name>
+    <url-pattern>*.jpg</url-pattern>
+</filter-mapping>
+<filter-mapping>
+    <filter-name>CacheForWeek</filter-name>
+    <url-pattern>*.png</url-pattern>
+</filter-mapping>
+<filter-mapping>
+    <filter-name>CacheForWeek</filter-name>
+    <url-pattern>*.bmp</url-pattern>
+</filter-mapping>
+
+<!-- global authority filter -->
+<filter-mapping>
+    <filter-name>Au Filter</filter-name>
+    <url-pattern>*.do</url-pattern>
+</filter-mapping>
+<filter-mapping>
+    <filter-name>Au Filter</filter-name>
+    <url-pattern>*.jsp</url-pattern>
+</filter-mapping>
+
+<filter-mapping>
+    <filter-name>FunOrgAu Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+<!--<filter-mapping>-->
+<!--<filter-name>FunOrgAu Filter</filter-name>-->
+<!--<url-pattern>*.jsp</url-pattern>-->
+<!--</filter-mapping>-->
+
+<filter-mapping>
+    <filter-name>SQLInjection Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+<!-- Venus-udp core servlet -->
+<servlet>
+    <servlet-name>action</servlet-name>
+    <servlet-class>venus.frames.base.action.DefaultServlet</servlet-class>
+
+    <init-param>
+        <param-name>CLASS_CAN_NO_FOUND</param-name>
+        <param-value>true</param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>USE_VENUS_ROOT</param-name>
+        <param-value>/</param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>WAR_NAME</param-name>
+        <param-value>cms</param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>init-classes</param-name>
+        <param-value>
+            venus.frames.mainframe.util.InitPathPlugIn;
+            venus.frames.mainframe.util.InitBeanFactoryPlugIn;
+            venus.frames.mainframe.taskmgr.ServiceKeeperStartPlugIn;
+            venus.frames.mainframe.util.InitEnumLoaderPlugin;
+            venus.frames.mainframe.ncache.InitCachePlugin
+        </param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>config</param-name>
+        <param-value>
+            /WEB-INF/conf/struts-config/struts-config.xml,
+
+            /WEB-INF/conf/struts-config/struts-config-bookstore.xml,
+            /WEB-INF/conf/struts-config/struts-config-simpleTemplate.xml,
+
+            /WEB-INF/conf/struts-config/struts-config-ewp-ext.xml,
+            /WEB-INF/conf/struts-config/struts-config-ewp.xml,
+
+            /WEB-INF/conf/struts-config/struts-config-searchEngine.xml,
+            /WEB-INF/conf/struts-config/struts-config-quartz.xml
+        </param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>USE_VENUS_TMP</param-name>
+        <param-value>/tmp/</param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>detail</param-name>
+        <param-value>2</param-value>
+    </init-param>
+
+    <load-on-startup>0</load-on-startup>
+</servlet>
+
+<!--这个启动顺序必须在action servlet后面，否则spring和springmvc之间的bean无法共享-->
+<servlet>
+    <servlet-name>springmvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/conf/applicationContextSpringMVC/applicationContext*.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+</servlet>
+
+<!--<servlet>-->
+    <!--<servlet-name>dwr-invoker</servlet-name>-->
+    <!--<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>-->
+    <!--<init-param>-->
+        <!--<param-name>debug</param-name>-->
+        <!--<param-value>false</param-value>-->
+    <!--</init-param>-->
+    <!--<init-param>-->
+        <!--<param-name>pollAndCometEnabled</param-name>-->
+        <!--<param-value>true</param-value>-->
+    <!--</init-param>-->
+    <!--<init-param>-->
+        <!--<param-name>config-ajax</param-name>-->
+        <!--<param-value>/WEB-INF/conf/dwr/dwr.xml</param-value>-->
+    <!--</init-param>-->
+    <!--<load-on-startup>2</load-on-startup>-->
+<!--</servlet>-->
+
+<!--<servlet>-->
+    <!--<servlet-name>dwr-ewp-invoker</servlet-name>-->
+    <!--<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>-->
+    <!--<init-param>-->
+        <!--<param-name>debug</param-name>-->
+        <!--<param-value>false</param-value>-->
+    <!--</init-param>-->
+    <!--<init-param>-->
+        <!--<param-name>pollAndCometEnabled</param-name>-->
+        <!--<param-value>true</param-value>-->
+    <!--</init-param>-->
+    <!--<init-param>-->
+        <!--<param-name>config-ajax</param-name>-->
+        <!--<param-value>/WEB-INF/conf/dwr/dwr-ewp.xml</param-value>-->
+    <!--</init-param>-->
+    <!--<init-param>-->
+        <!--<param-name>crossDomainSessionSecurity</param-name>-->
+        <!--<param-value>false</param-value>-->
+    <!--</init-param>-->
+    <!--<load-on-startup>3</load-on-startup>-->
+<!--</servlet>-->
+
+<!-- no servlet Mapping -->
+
+<servlet>
+    <servlet-name>DefinitionInitializer</servlet-name>
+    <servlet-class>udp.quartz.action.DefinitionInitializer</servlet-class>
+    <init-param>
+        <param-name>definition-file</param-name>
+        <param-value>/WEB-INF/conf/JobDefinitions.xml</param-value>
+        <!--
+            if (PATH_TO_DEFINITIONS_FILE) is left as such, definitions are loaded from
+             /WEB-INF/classes/JobDefinitions.xml
+         -->
+    </init-param>
+    <init-param>
+        <param-name>config-file</param-name>
+        <param-value>/WEB-INF/conf/quartz.properties</param-value>
+    </init-param>
+    <load-on-startup>4</load-on-startup>
+</servlet>
+
+<!--<servlet>-->
+    <!--<servlet-name>OutPutImageServlet</servlet-name>-->
+    <!--<servlet-class>udp.ewp.servlet.OutPutImageServlet</servlet-class>-->
+<!--</servlet>-->
+
+ udp.ewp.fckeditor.ConnectorServlet (net.fckeditor.connector.ConnectorServlet extension,limit Upload file size,unit K)
+ net.fckeditor.connector.ConnectorServlet (fckeditor,without limit Upload file size)
+<servlet>
+    <servlet-name>Connector</servlet-name>
+    <servlet-class>tong.fckeditor.ConnectorServlet</servlet-class>
+    <init-param>
+        <param-name>maxSize</param-name>
+        <param-value>1024</param-value>
+    </init-param>
+    <load-on-startup>5</load-on-startup>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>action</servlet-name>
+    <url-pattern>*.do</url-pattern>
+</servlet-mapping>
+
+<!--<servlet-mapping>-->
+    <!--<servlet-name>dwr-invoker</servlet-name>-->
+    <!--<url-pattern>/dwr/*</url-pattern>-->
+<!--</servlet-mapping>-->
+
+<!--<servlet-mapping>-->
+    <!--<servlet-name>dwr-ewp-invoker</servlet-name>-->
+    <!--<url-pattern>/dwrewp/*</url-pattern>-->
+<!--</servlet-mapping>-->
+
+<!--<servlet-mapping>-->
+    <!--<servlet-name>OutPutImageServlet</servlet-name>-->
+    <!--<url-pattern>/servlet/OutPutImageServlet</url-pattern>-->
+<!--</servlet-mapping>-->
+
+<servlet-mapping>
+    <servlet-name>Connector</servlet-name>
+    <url-pattern>/fckeditor/editor/filemanager/connectors/*</url-pattern>
+</servlet-mapping>
+
+<servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <url-pattern>/</url-pattern>
+</servlet-mapping>
+
+<!--Session Timeout Configuration-->
+<session-config>
+    <session-timeout>480</session-timeout>
+</session-config>
+
+<!--mime type for htc,rar,css,wsdl,xsd-->
+<mime-mapping>
+    <extension>htc</extension>
+    <mime-type>text/x-component</mime-type>
+</mime-mapping>
+<mime-mapping>
+    <extension>rar</extension>
+    <mime-type>application/octet-stream</mime-type>
+</mime-mapping>
+<mime-mapping>
+    <extension>css</extension>
+    <mime-type>text/css</mime-type>
+</mime-mapping>
+<mime-mapping>
+    <extension>wsdl</extension>
+    <mime-type>text/xml</mime-type>
+</mime-mapping>
+<mime-mapping>
+    <extension>xsd</extension>
+    <mime-type>text/xml</mime-type>
+</mime-mapping>
+
+<welcome-file-list>
+    <welcome-file>/data-portal/index.html</welcome-file>
+</welcome-file-list>
+
+<!--Struts Tag Library Descriptors-->
+<jsp-config>
+
+    <taglib>
+        <taglib-uri>/WEB-INF/struts-bean.tld</taglib-uri>
+        <taglib-location>/WEB-INF/tld/struts-bean.tld</taglib-location>
+    </taglib>
+    <taglib>
+        <taglib-uri>/WEB-INF/struts-html.tld</taglib-uri>
+        <taglib-location>/WEB-INF/tld/struts-html.tld</taglib-location>
+    </taglib>
+    <taglib>
+        <taglib-uri>/WEB-INF/struts-logic.tld</taglib-uri>
+        <taglib-location>/WEB-INF/tld/struts-logic.tld</taglib-location>
+    </taglib>
+    <taglib>
+        <taglib-uri>/WEB-INF/struts-template.tld</taglib-uri>
+        <taglib-location>/WEB-INF/tld/struts-template.tld</taglib-location>
+    </taglib>
+    <taglib>
+        <taglib-uri>/WEB-INF/struts-layout.tld</taglib-uri>
+        <taglib-location>/WEB-INF/tld/struts-layout.tld</taglib-location>
+    </taglib>
+    <taglib>
+        <taglib-uri>/WEB-INF/gap-html.tld</taglib-uri>
+        <taglib-location>/WEB-INF/tld/gap-html.tld</taglib-location>
+    </taglib>
+    <taglib>
+        <taglib-uri>/WEB-INF/gap-i18n.tld</taglib-uri>
+        <taglib-location>/WEB-INF/tld/gap-i18n.tld</taglib-location>
+    </taglib>
+    <taglib>
+        <taglib-uri>/WEB-INF/gap-authority.tld</taglib-uri>
+        <taglib-location>/WEB-INF/tld/gap-authority.tld</taglib-location>
+    </taglib>
+    <taglib>
+        <taglib-uri>/WEB-INF/sslext.tld</taglib-uri>
+        <taglib-location>/WEB-INF/tld/sslext.tld</taglib-location>
+    </taglib>
+
+</jsp-config>
+
+<error-page>
+    <error-code>500</error-code>
+    <location>/500.jsp</location>
+</error-page>
+<error-page>
+    <error-code>404</error-code>
+    <location>/404.jsp</location>
+</error-page>
+
+</web-app>
+
+

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>ParamType</name>
+    <resource></resource>
+    <enums>
+		<enum label="系统默认" value="0"/>
+        <enum label="自定义" value="1"/>
+    </enums>
+</EnumDef>

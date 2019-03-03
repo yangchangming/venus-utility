@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+	<name>RoomIsEmpty</name>
+	<resource></resource>
+	<enums>
+		<enum label="No" value="0"/>
+		<enum label="Yes" value="1"/>
+	</enums>
+</EnumDef>

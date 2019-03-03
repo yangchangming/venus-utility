@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>MessageResource</name>
+    <resource></resource>
+    <enums>
+		<enum label="User permissions to use function menu" value="funcDesc"/>
+    	<enum label="User permissions to view the body of data" value="orgDataDesc"/>
+        <enum label="Users to view data on the role of authority relations" value="roleDataDesc"/>
+        <enum label="Users view the agent's authority data" value="agentDataDesc"/>
+        <enum label="User permissions to view the history log data" value="hisDataDesc"/>
+        <enum label="User has permissions to view the body functions of the authority data" value="funcDataDesc"/>
+        <enum label="User to view database data in form fields under the authority" value="charDataDesc"/>
+    	<enum label="User to view database records permission form data" value="recordDataDesc"/>
+    	<enum label="View all authorized users results" value="viewAuDesc"/>   
+    </enums>
+</EnumDef>

@@ -1,0 +1,111 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+    margin:0 auto;
+    background-color:#f4f4f4;
+}
+div, ul, li, ol, dt, dd, dl, p, span {
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+}
+ul, li {
+    list-style: none outside none;
+}
+
+.header {
+    background-image:url(../../images/index/head-bj.png);
+    height:39px;
+    width:100%;
+}
+.logo {
+    float:left;
+    height: 39px;
+    width: 268px;
+}
+.menu {
+    display: inline;
+    float: left;
+    margin-left: 20px;
+}
+.nav {
+    clear: both;
+    height: 39px;
+    width: 100%;
+}
+.nav_content {
+    width: 100%;
+    float:left;
+}
+.nav_content li {
+    color: #FFFFFF;
+    display: inline;
+    float: left;
+    font-size: 14px;
+    
+    height: 39px;
+    line-height: 32px;
+    padding-right: 1px;
+}
+.nav_content li a {
+    color: #FFFFFF;
+    display: inline;
+    float: left;
+    height: 32px;
+    padding: 3px 25px;
+    text-decoration: none;
+    font-size:14px;
+     font-family:"宋体", "黑体", "新宋体", Arial;
+}
+
+.main{ width:100%; height:100%;margin-left:14px;}
+p {
+    color:#089ec4;
+    font-size:13px;
+    font-family:"宋体", "黑体", "新宋体", Arial;
+    width:100%;
+    padding-left:10px;
+    height:25px;
+    padding-top:10px;
+    margin-top:10px;
+    background-color:#ededed;
+    font-weight:bold;
+    border-bottom:solid 1px #f4f3f3;
+}
+
+.menu_list {
+    width:100%;
+    
+}
+.menu_head {
+    cursor: pointer;
+    position: relative;
+
+    background-repeat:repeat-x;
+    height:25px;
+    
+}
+.menu_head a{color:#000; text-decoration:none;}
+.menu_body{ width:100%;}
+.menu_body a {
+    
+    width:100%;
+    
+    display:block;
+    color:#111111;
+    background-color:#ededed;
+    padding-left:35px;
+    font-size:12px;
+    text-decoration:none;
+    height:30px;
+    line-height:30px;
+}
+.menu_body a:hover {
+    color: #111111;
+    text-decoration:underline;
+    background-color:#ededed;
+}
+
+.control{ width:16px;float:right; background-image:url(../../images/index/control.png); background-repeat:repeat-y; background-position:top bottom; position:absolute; top:0px; bottom:0px; right:0px; padding-top:200px;}
+.content{ background-color:#ff0000;}

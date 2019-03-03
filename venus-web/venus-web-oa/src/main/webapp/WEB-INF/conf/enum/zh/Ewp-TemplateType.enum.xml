@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>TemplateType</name>
+    <resource></resource>
+    <enums>
+        <enum label="布局模板" value="layout"/>
+        <enum label="栏目模板" value="hang"/>
+        <enum label="文档模板" value="doc"/>
+        <enum label="公共模板" value="common"/>
+        <enum label="嵌套模板" value="nested"/>
+    </enums>
+</EnumDef>
+

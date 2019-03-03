@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+    <name>AuthorityType</name>
+    <resource></resource>
+    <enums>
+    	<enum label="All" value=""/>
+    	<enum label="Turn Level" value="123"/>
+        <enum label="Remove" value="011"/>
+    </enums>
+</EnumDef>

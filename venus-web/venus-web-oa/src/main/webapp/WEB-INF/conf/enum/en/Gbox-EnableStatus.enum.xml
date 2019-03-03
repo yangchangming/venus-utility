@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+	<name>EnableStatus</name>
+	<resource></resource>
+	<enums>
+		<enum label="enable"  value="1"/>
+		<enum label="disable"  value="0"/>
+	</enums>
+</EnumDef>

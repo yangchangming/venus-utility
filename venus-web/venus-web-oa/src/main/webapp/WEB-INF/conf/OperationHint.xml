@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<venus.frames.mainframe.action.OperationHintUtil isPushOperationHint="1">
+	<hint forward="success" msg="操作成功" />
+	<hint forward="failure" msg="操作失败" />
+	<hint forward="error" msg="操作出错" />
+</venus.frames.mainframe.action.OperationHintUtil>

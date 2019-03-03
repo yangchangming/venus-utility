@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<venus.frames.mainframe.oid.TableInfoDM4Xml>
+
+	<table table_code="2001" table_name="ALEX_LOG" oid_name="ID" src_name="MAIN_SRC" />
+	<table table_code="2002" table_name="ALEX_LOGTYPE" oid_name="TYPEID" src_name="MAIN_SRC" />
+
+</venus.frames.mainframe.oid.TableInfoDM4Xml>

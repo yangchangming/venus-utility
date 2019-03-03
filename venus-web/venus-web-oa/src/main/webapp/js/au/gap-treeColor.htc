@@ -1,0 +1,101 @@
+<PUBLIC:COMPONENT>
+<PUBLIC:ATTACH EVENT="onmouseover" ONEVENT="doMouseOver()" />
+<PUBLIC:ATTACH EVENT="onmouseout" ONEVENT="doMouseOut()" />
+<PUBLIC:ATTACH EVENT="onmousedown" ONEVENT="doMouseDown()" />
+<PUBLIC:ATTACH EVENT="onmouseup" ONEVENT="doMouseUp()" />
+<PUBLIC:ATTACH EVENT="onclick" ONEVENT="doClick()" />
+<PUBLIC:ATTACH EVENT="ondblclick" ONEVENT="doDblClick()" />
+
+<PUBLIC:EVENT NAME="onPush" ID="push"  />
+
+<PUBLIC:METHOD NAME="showMessage" />
+
+<script language="javascript">
+
+var selectedColor="#c1dbef"  	//默认单击颜色
+
+function doMouseOver() {  //处理鼠标进入事件
+	var thisObj = getEventObj(event);
+}
+
+function doMouseOut() {  //处理鼠标离开事件
+	var thisObj = getEventObj(event);
+}
+
+function doMouseDown() {  //处理鼠标按下事件
+	var thisObj = getEventObj(event);
+}
+
+function doMouseUp() {  //处理鼠标放开事件
+	var thisObj = getEventObj(event);
+}
+
+function doClick() {  //处理鼠标单击事件
+	var thisObj = getEventObj(event);
+	var thisTd = thisObj.parentElement;
+	var thisTrImg=thisTd.parentElement.parentElement;
+	if(thisObj.tagName.toLowerCase() == "a" && thisTd.tagName.toLowerCase() == "td"){//文字链接
+	  if(oldOpenItem != ""){
+	    oldOpenItem.style.backgroundColor = thisTd.style.backgroundColor;
+	  }
+	  thisTd.style.backgroundColor = selectedColor;
+	  oldOpenItem = thisTd;
+	}else if(thisObj.tagName.toLowerCase() == "img" && thisTrImg.tagName.toLowerCase() == "tr"){//图形链接
+	  var thisTdImg=getTdFromTable(thisTrImg);
+	  if(oldOpenItem != ""){
+	    oldOpenItem.style.backgroundColor = thisTdImg.style.backgroundColor;
+	  }
+	  thisTdImg.style.backgroundColor = selectedColor;
+	  oldOpenItem = thisTdImg;
+	}
+}
+
+function doDblClick() {  //处理鼠标双击事件
+	var thisObj = getEventObj(event);
+}
+
+function showMessage(message) {  //处理事件
+
+}
+
+function getEventObj(thisEvent) {
+	if(thisEvent == undefined || thisEvent == null ) {
+		alert("当前的对象为空!");
+		return null;
+	} else {
+		return thisEvent.srcElement;
+	}
+}
+
+function getObjectByName(name) {
+	return window.document.getElementsByName(name);
+}
+
+function getObjectById(id) {
+	return window.document.getElementById(id);
+}
+//从Table标签里面发现Td标签
+function getTdFromTable(thisObj) {
+	if (thisObj != undefined && thisObj != null && (typeof thisObj == "object") ) {
+		if (!thisObj.hasChildNodes()) {
+			return null;
+		} else {
+			for(var i=1; i<thisObj.childNodes.length; i++) {//略过第一个Td标签
+				var thisChild = thisObj.childNodes[i];
+				if (thisChild.tagName != undefined) {
+					if (thisChild.tagName.toLowerCase() == "td") {
+						return thisChild;
+					} else {
+						var tempResult = getThFromTable(thisChild);
+						if (tempResult != null) {
+							return tempResult;
+						}
+					}
+				}
+			
+			}
+		}
+	}
+}
+</script>
+</PUBLIC:COMPONENT>

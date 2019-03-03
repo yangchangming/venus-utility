@@ -1,0 +1,74 @@
+﻿/*container*/
+#ym-window{
+    background:#FFFFFF;overflow:hidden;
+    font-size:12px;font-family:'宋体';
+    border: 1px solid #BBBABA;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/*header*/
+.ym-tl{padding-left:0px;}
+.ym-tr{padding-right:0px;}
+.ym-tc{ background-color:#E8E8E8;overflow:hidden;height:25px;line-height:25px;}
+.ym-ttc{height:3px}
+.ym-header-text{font-size:12px;font-weight:bold;color:#595959;margin-left:5px;float:left}
+.ym-header-tools{float:right;margin-top:5px}
+.ym-header-tools strong{display:none}
+
+/*body*/
+.ym-ml{0padding-left:0px;}
+.ym-mr{0padding-right:0px;}
+.ym-mc{ background-color:#ffffff;padding:0}
+.ym-body{overflow:auto;padding:0;font-size:12px;}
+
+/*button*/
+.ym-btn{text-align:center}
+
+/*footer*/
+.ym-bl{padding-left:0px}
+.ym-br{padding-right:0px}
+.ym-bc{height:0px;font-size:3px}
+
+/*icon*/
+.ymPrompt_alert{
+    padding-left:90px;
+    background:url(images/info.gif) no-repeat 20px 50%
+}
+.ymPrompt_succeed{
+    padding-left:90px;
+    background:url(images/right.gif) no-repeat 20px 50%
+}
+.ymPrompt_error{
+    padding-left:90px;
+    
+}
+.ymPrompt_confirm{
+    padding-left:90px;
+}
+.ymPrompt_alert .ym-content,.ymPrompt_succeed .ym-content,.ymPrompt_error .ym-content,.ymPrompt_confirm .ym-content{padding:40px 10px 5px}
+/*图标公共定义*/
+.ym-header-tools div{
+    cursor:pointer;
+    width:16px;height:16px;float:left;margin:0 1px;
+    background:url(images/ico.gif) no-repeat 0 0;
+}
+.ymPrompt_close{
+    background-position:-16px 0 !important;
+}
+.ymPrompt_max{
+    background-position:0 -16px !important;
+}
+.ymPrompt_min{
+    background-position:0 0 !important;
+}
+.ymPrompt_normal{
+    background-position:-16px -16px !important;
+}
+
+/*取消确认按钮样式*/
+input.btnStyle{
+    background:url(images/btn_bg.gif) no-repeat;
+    width:80px;height:21px;line-height:21px;
+    font-size:12px;color:#183C94;border:0;margin:10px 0
+}

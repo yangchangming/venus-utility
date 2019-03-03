@@ -1,0 +1,32 @@
+<!DOCTYPE dwr PUBLIC
+    "-//GetAhead Limited//DTD Direct Web Remoting 1.0//EN"
+    "http://www.getahead.ltd.uk/dwr/dwr10.dtd">
+
+<dwr>
+	<allow>
+		<!-- ewp 树 ajax实现 -->
+		<create javascript="EwpTreeControl" creator="spring">
+		  <param name="beanName" value="ewpTreeControl" />
+		</create>
+		
+		<!-- AJAX实现 文档工具类 -->
+        <create javascript="DocumentUtilAjax" creator="spring">
+          <param name="beanName" value="documentUtilAjax" />
+        </create>
+		
+		<convert match="java.lang.Exception" converter="exception"/>
+		<convert match="java.lang.StackTraceElement" converter="bean"/>
+		<convert converter="map" match="java.util.Map"/>
+		<!--<convert converter="bean" match="udp.ajax.vo.OrderVo"/>-->
+		<convert converter="bean" match="venus.frames.mainframe.web.tags.PageVo"/>
+		<convert converter="bean" match="udp.ewp.document.model.Document"/>
+	</allow>
+
+	<signatures>
+		<![CDATA[
+			import java.util.List;
+			import java.util.Map;
+		]]>
+	</signatures>
+
+</dwr>

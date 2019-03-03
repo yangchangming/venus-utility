@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnumDef>
+	<name>RoomType</name>
+	<resource></resource>
+	<enums>
+		<enum label="Ordinary Residence" value="1"/>
+		<enum label="Commercial Residential" value="2"/>
+		<enum label="Boarding House " value="3"/>
+		<enum label="Rummery " value="4"/>
+		<enum label="Other" value="5"/>
+	</enums>
+</EnumDef>

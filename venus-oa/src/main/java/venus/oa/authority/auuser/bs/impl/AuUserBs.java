@@ -10,7 +10,7 @@ import venus.oa.helper.OrgHelper;
 import venus.oa.organization.auparty.bs.IAuPartyBs;
 import venus.oa.organization.auparty.util.IConstants;
 import venus.oa.organization.auparty.vo.PartyVo;
-import venus.oa.service.profile.model.UserProfileModel;
+import venus.oa.profile.model.UserProfileModel;
 import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.Encode;
