@@ -52,7 +52,7 @@
 
 	<venus.frames.util.exception.GlobalExceptionHandlerWithMessageAgent MassageStyle="ALERT_AND_BACK"  DisplayRealError="1"/>
 
-	<venus.frames.mainframe.action.OperationHintUtil link="frmConf://OperationHint.xml" />
+	<!--<venus.frames.mainframe.action.OperationHintUtil link="frmConf://OperationHint.xml" />-->
 
 	<!-- DefaultProfileSizeForCache: 1 forCluster -1 forCommon -->
 	<venus.frames.mainframe.currentlogin.ProfileMgr DefaultProfileLifeTime="0" 

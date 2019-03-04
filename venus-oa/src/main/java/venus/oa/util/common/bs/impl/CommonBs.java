@@ -1,31 +1,14 @@
-/*
- * 系统名称: acl
- * 
- * 文件名称: venus.authority.util.common.bs.impl --> CommonBs.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2006-10-24 15:25:23 创建1.0.0版 (ganshuo)
- *  
- */
 package venus.oa.util.common.bs.impl;
 
-
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Service;
 import venus.oa.util.common.bs.ICommonBs;
 import venus.oa.util.common.dao.ICommonDao;
 import venus.frames.base.bs.BaseBusinessService;
 
 import java.util.List;
 
-/**
- * 功能、用途、现存BUG: 通用的BS，可以对任何数据库表进行操作
- * 
- * @author ganshuo
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
+@Service
 public class CommonBs extends BaseBusinessService implements ICommonBs {
     
     /**

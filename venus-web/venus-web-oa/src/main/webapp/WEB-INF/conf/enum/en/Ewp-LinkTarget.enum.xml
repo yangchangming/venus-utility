@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<EnumDef>
-    <name>LinkTarget</name>
-    <resource></resource>
-    <enums>
-        <enum label="Open in a new window" value="_blank"/>
-        <enum label="Open in the current window" value="_self"/>
-    </enums>
-</EnumDef>

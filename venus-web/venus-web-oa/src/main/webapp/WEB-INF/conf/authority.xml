@@ -1,4 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--GlobalConstants 会用到-->
+
 <authority>
 	<const>
 		<rTypeComp>1099100400000000001</rTypeComp><!-- table:AU_PARTYRELATIONTYPE, column:ID, meaning: administrative relation-->

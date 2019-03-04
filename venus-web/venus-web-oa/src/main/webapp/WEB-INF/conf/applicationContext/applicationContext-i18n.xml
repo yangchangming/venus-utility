@@ -10,14 +10,6 @@
                 <value>ApplicationResources</value>
                 <value>venus.authority.authority_resource</value>
                 <value>venus.frames.venusframes</value>
-                
-                <value>udp.template.simple.resource</value>
-                <value>udp.template.bookstore.resource</value>
-                <value>udp.template.complex.resource</value>
-                <value>udp.ewp.ewp_resource</value>
-
-                <value>udp.quartz.quartz_resource</value>
-                <value>udp.searchengine.searchengine_resource</value>
             </list>
         </property>
     </bean>

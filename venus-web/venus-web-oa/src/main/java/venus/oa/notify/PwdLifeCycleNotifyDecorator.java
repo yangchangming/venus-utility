@@ -1,5 +1,6 @@
 package venus.oa.notify;
 
+import org.springframework.stereotype.Service;
 import venus.frames.mainframe.util.Helper;
 import venus.oa.notify.impl.AbstractNotifyDecorator;
 import venus.oa.sysparam.vo.SysParamVo;
@@ -13,6 +14,7 @@ import java.lang.reflect.Method;
  * @author changming.Y <changming.yang.ah@gmail.com>
  *
  */
+@Service
 public class PwdLifeCycleNotifyDecorator extends AbstractNotifyDecorator {
 
 //    private static ILog log = LogMgr.getLogger(PwdLifeCycleNotifyDecorator.class);

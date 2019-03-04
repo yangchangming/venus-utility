@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<EnumDef>
-    <name>Language</name>
-    <resource></resource>
-    <enums>
-        <enum label="中文" value="zh_CN"/>
-        <enum label="英文" value="en_US"/>
-    </enums>
-</EnumDef>

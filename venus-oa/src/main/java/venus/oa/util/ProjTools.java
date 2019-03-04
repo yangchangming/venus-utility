@@ -146,13 +146,13 @@ public class ProjTools {
      * @return 编码数组
      */
     public static String[] splitTreeCode(String code) {
-        
 		return splitTreeCode(code, 19, 5);
     }
     
     public static ICommonBs getCommonBsInstance() {
         return (ICommonBs) Helper.getBean("au_common_bs");
     }
+
     /**
      * 
      * 功能:判断参数1是否可以通过乘积拆分成参数2 

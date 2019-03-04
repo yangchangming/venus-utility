@@ -3,16 +3,14 @@
  */
 package venus.oa.authority.auuser.adaptor.impl;
 
+import org.springframework.stereotype.Component;
+import venus.frames.mainframe.util.Helper;
 import venus.oa.authority.auuser.adaptor.InitLoginAndPwd;
 import venus.oa.authority.auuser.bs.IAuUserBs;
 import venus.oa.authority.auuser.util.IAuUserConstants;
 import venus.oa.util.PinYinTools;
-import venus.frames.mainframe.util.Helper;
 
-/**
- * @author changming.Y <changming.yang.ah@gmail.com>
- *
- */
+@Component("loginIdAndPwd")
 public class InitLoginAndPwdDefault implements InitLoginAndPwd {
 
     /* (non-Javadoc)

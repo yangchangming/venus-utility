@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<EnumDef>
-    <name>NavigateMenu</name>
-    <resource></resource>
-    <enums>
-        <enum label="is the navigate menu" value="1"/>
-        <enum label="is not the navigate menu" value="0"/>
-    </enums>
-</EnumDef>

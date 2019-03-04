@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<EnumDef>
-    <name>LogicTrueFalse</name>
-    <resource></resource>
-    <enums>
-        <enum label="启用" value="1"/>
-        <enum label="停用" value="0"/>
-    </enums>
-</EnumDef>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<EnumDef>
-    <name>DocumentQueryScope</name>
-    <resource></resource>
-    <enums>
-        <enum label="DocType" value="1"/>
-        <enum label="WebSite" value="0"/>
-    </enums>
-</EnumDef>

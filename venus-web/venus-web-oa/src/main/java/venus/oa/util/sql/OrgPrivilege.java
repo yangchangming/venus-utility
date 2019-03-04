@@ -1,5 +1,6 @@
 package venus.oa.util.sql;
 
+import org.springframework.stereotype.Component;
 import venus.oa.helper.LoginHelper;
 import venus.oa.util.SqlBuilder;
 

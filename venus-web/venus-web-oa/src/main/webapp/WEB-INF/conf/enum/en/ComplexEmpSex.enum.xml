@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<EnumDef>
-	<name>EmpSex</name>
-	<resource></resource>
-	<enums>
-		<enum label="Male" value="M"/>
-		<enum label="Female" value="F"/>
-	</enums>
-</EnumDef>
