@@ -1,18 +1,9 @@
-/*
- * 系统名称:PlatForm
- * 
- * 文件名称: venus.authority.helper --> AuHelper.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2005-6-28 13:04:51 创建1.0.0版 (ganshuo)
- *  
- */
 package venus.oa.helper;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.jdbc.core.RowMapper;
+import venus.frames.mainframe.util.Helper;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
 import venus.oa.authority.auauthorize.util.IConstants;
 import venus.oa.authority.auauthorize.vo.AuAuthorizeVo;
@@ -20,7 +11,6 @@ import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
 import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
 import venus.oa.authority.auresource.bs.IAuResourceBs;
-import venus.oa.authority.auresource.dao.IAuResourceDao;
 import venus.oa.authority.auresource.util.IAuResourceConstants;
 import venus.oa.authority.auresource.vo.AuResourceVo;
 import venus.oa.login.vo.LoginSessionVo;
@@ -28,7 +18,6 @@ import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
 import venus.oa.util.StringHelperTools;
-import venus.frames.mainframe.util.Helper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
@@ -36,23 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
 public class AuHelper {
-
-    /**
-     * 构造函数:
-     *  
-     */
-    public AuHelper() {
-
-    }
 
     /**
      *
@@ -329,7 +302,6 @@ public class AuHelper {
      * 功能: 在sql语句中过滤记录数据权限
      * 
      * @param strSql 要过滤权限的sql语句
-     * @param request HttpServletRequest
      * @return
      */
     public static String filterRecordPrivInSQL(String strSql, LoginSessionVo authorizedContext) {
@@ -384,10 +356,10 @@ public class AuHelper {
         }//map里放置别名和表名序列
         //获取该用户的记录权限Vo
         Map recordMap = authorizedContext.getOwner_recd_map();
-        //获取resource表的DAO
-        IAuResourceDao auResourceDao = (IAuResourceDao) Helper.getBean("AuResource_dao");
+
         Set valueSet = map.keySet();
         Iterator valueIt = valueSet.iterator();
+
         //每一个表都去查它在resource表对应的记录权限设置
         int orderbyIndex = strSql.indexOf("order");
         String strSqlBeforeOrderby = orderbyIndex==-1?strSql:strSql.substring(0, orderbyIndex);
@@ -399,7 +371,13 @@ public class AuHelper {
             AuResourceVo auResourceVo = new AuResourceVo();
             auResourceVo.setTable_name(nameOfTable.toUpperCase());
             auResourceVo.setResource_type("4");
-            List IdList = auResourceDao.queryIdByTableNameAndResourceType(auResourceVo);
+
+//            IAuResourceDao auResourceDao = (IAuResourceDao) Helper.getBean("AuResource_dao");
+//            List IdList = auResourceDao.queryIdByTableNameAndResourceType(auResourceVo);
+
+            IAuResourceBs auResourceBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
+            List IdList = auResourceBs.queryIdByTableNameAndResourceType(auResourceVo);
+
             //每一个resource表对应的记录权限设置都去拼装sql
             for (int i = 0; i < IdList.size(); i++) {
                 AuResourceVo auResourceVoForSQL = (AuResourceVo) IdList.get(i);
@@ -411,6 +389,7 @@ public class AuHelper {
         strSql = strSqlBeforeOrderby + " " + strSqlAfterOrderby;
         return strSql;
     }
+
     public static String sqlAssembly(AuResourceVo auResourceVoForSQL, String strSqlBeforeOrderby, String nameOfName, String nameOfTable){
         String value = auResourceVoForSQL.getValue();
         //判断用户是否设置了记录权限

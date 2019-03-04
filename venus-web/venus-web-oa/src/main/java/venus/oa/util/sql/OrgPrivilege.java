@@ -44,7 +44,7 @@ public final class OrgPrivilege  implements SqlBuilder.Expression{
 		String[] arrayDataPriv = LoginHelper.getOwnerFunOrg(request);//功能数据优先
         if(arrayDataPriv==null)//如果存在功能数据权限则屏蔽数据权限
         	arrayDataPriv = LoginHelper.getOwnerOrg(request);
-        int iLen = 0;
+		int iLen = 0;
         if (arrayDataPriv != null) {
             iLen = arrayDataPriv.length;
         }

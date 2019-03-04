@@ -7,8 +7,8 @@ import venus.oa.organization.auconnectrule.util.IConstants;
 import venus.oa.organization.auconnectrule.vo.AuConnectRuleVo;
 import venus.frames.base.bs.BaseBusinessService;
 import venus.frames.base.exception.BaseApplicationException;
-import venus.frames.mainframe.log.ILog;
-import venus.frames.mainframe.log.LogMgr;
+//import venus.frames.mainframe.log.ILog;
+//import venus.frames.mainframe.log.LogMgr;
 import venus.pub.lang.OID;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRuleBS, IConstants {
 
-    private static ILog log = LogMgr.getLogger(AuConnectRuleBS.class);
+//    private static ILog log = LogMgr.getLogger(AuConnectRuleBS.class);
 
     private IAuConnectRuleDao dao = null;
 
@@ -91,13 +91,13 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
 
     /**
      *  添加
-     * @param rvo
+     *
      * @return
      */
     public OID insert(Object objVo) {
         List list = getDao().queryByName(objVo);
         if (list.size()>0) {
-            log.error(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit_")+((AuConnectRuleVo) objVo).getName());
+//            log.error(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit_")+((AuConnectRuleVo) objVo).getName());
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit"));
         }
         return getDao().insert(objVo);
@@ -120,13 +120,13 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
     public int update(Object objVo) {
         List list = getDao().queryByName(objVo);
         if (list.size()>1) {
-            log.error(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit_")+((AuConnectRuleVo) objVo).getName());
+//            log.error(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit_")+((AuConnectRuleVo) objVo).getName());
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit"));
         }
         else if (list.size()==1){
             AuConnectRuleVo vo = (AuConnectRuleVo)list.get(0);
             if (!vo.getId().equals(((AuConnectRuleVo) objVo).getId())) {
-                log.error(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit_")+((AuConnectRuleVo) objVo).getName());
+//                log.error(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit_")+((AuConnectRuleVo) objVo).getName());
                 throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit"));
             }
         }

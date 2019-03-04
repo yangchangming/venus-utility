@@ -7,8 +7,8 @@ import net.sf.json.processors.JsonValueProcessor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import venus.oa.util.transform.TransformStrategy;
-import venus.frames.mainframe.log.ILog;
-import venus.frames.mainframe.log.LogMgr;
+//import venus.frames.mainframe.log.ILog;
+//import venus.frames.mainframe.log.LogMgr;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class JsonDataTools extends TransformStrategy {
 	private final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
-	private static ILog log = LogMgr.getLogger(JsonDataTools.class);
+//	private static ILog log = LogMgr.getLogger(JsonDataTools.class);
 	private final Object[] types = {
 			Class.class,
 			String.class,
@@ -74,7 +74,7 @@ public class JsonDataTools extends TransformStrategy {
 				}
 			}
 		} catch (Exception e) {
-			log.equals(this.getClass() + " mapToBean : " + e.getMessage());
+//			log.equals(this.getClass() + " mapToBean : " + e.getMessage());
 			return false;
 		}
 		return true;
@@ -104,7 +104,7 @@ public class JsonDataTools extends TransformStrategy {
 		try {
 			return JSONObject.fromObject(vo,initJsonConfig()).toString();
 		} catch (JSONException je) {
-			log.equals(this.getClass() + " transform : " + je.getMessage());
+//			log.equals(this.getClass() + " transform : " + je.getMessage());
 			throw je;
 		}
 	}
@@ -122,7 +122,7 @@ public class JsonDataTools extends TransformStrategy {
 			Map map = (Map)JSONObject.toBean(JSONObject.fromObject(data,initJsonConfig()),Map.class);
 			return mapToBean(map,vo);
 		} catch (JSONException je) {
-			log.equals(this.getClass() + " parse : " + je.getMessage());
+//			log.equals(this.getClass() + " parse : " + je.getMessage());
 			throw je;
 		}
 	}
@@ -138,7 +138,7 @@ public class JsonDataTools extends TransformStrategy {
 		try {
 			return  (Map)JSONObject.toBean(JSONObject.fromObject(data,initJsonConfig()),Map.class);
 		} catch (JSONException je) {
-			log.equals(this.getClass() + " parse : " + je.getMessage());
+//			log.equals(this.getClass() + " parse : " + je.getMessage());
 			throw je;
 		}
 	}
@@ -173,7 +173,7 @@ public class JsonDataTools extends TransformStrategy {
 				writeMethod.invoke(vo, parameter);
 			}
 		} catch(Exception e) {
-			log.equals(this.getClass() + " mapToBean : " + e.getMessage());
+//			log.equals(this.getClass() + " mapToBean : " + e.getMessage());
 			return null;
 		} 
 		return vo;
@@ -221,10 +221,10 @@ public class JsonDataTools extends TransformStrategy {
 				return  new BigDecimal(String.valueOf(obj));			
 			
 		} catch (ParseException pe) {
-			log.equals(this.getClass() + " formatTransform : " + pe.getMessage());
+//			log.equals(this.getClass() + " formatTransform : " + pe.getMessage());
 			return null;
 		} catch (Exception e) {
-			log.equals(this.getClass() + " formatTransform : " + e.getMessage());
+//			log.equals(this.getClass() + " formatTransform : " + e.getMessage());
 			return null;
 		}
 		return obj;

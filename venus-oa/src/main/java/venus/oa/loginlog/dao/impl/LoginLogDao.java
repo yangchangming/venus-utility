@@ -1,41 +1,21 @@
-/*
- * 系统名称:单表模板 --> sample
- * 
- * 文件名称: venus.authority.login.loginlog.dao.impl --> LoginLogDao.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2007-10-16 10:29:59.895 创建1.0.0版 (甘硕)
- *  
- */
-
 package venus.oa.loginlog.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
-import venus.oa.helper.AuHelper;
+import venus.frames.base.dao.BaseTemplateDao;
+import venus.frames.mainframe.util.Helper;
+import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.loginlog.dao.ILoginLogDao;
 import venus.oa.loginlog.util.ILoginLogConstants;
 import venus.oa.loginlog.vo.LoginLogVo;
-import venus.oa.login.vo.LoginSessionVo;
+import venus.oa.util.AuHelper;
 import venus.oa.util.SqlBuilder;
 import venus.oa.util.StringHelperTools;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.dao.BaseTemplateDao;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
 
 public class LoginLogDao extends BaseTemplateDao implements ILoginLogDao, ILoginLogConstants {
 
@@ -194,7 +174,8 @@ public class LoginLogDao extends BaseTemplateDao implements ILoginLogDao, ILogin
             strsql += ORDER_BY_SYMBOL + orderStr;
         }
         if(null!=AuthorizedContext)
-            strsql= AuHelper.filterRecordPrivInSQL(strsql,AuthorizedContext);
+            strsql = AuHelper.filterRecordPrivInSQL(strsql, AuthorizedContext);
+
         if(no <= 0 || size <= 0) {
             return query(strsql, new RowMapper() {
                 public Object mapRow(ResultSet rs, int i) throws SQLException {

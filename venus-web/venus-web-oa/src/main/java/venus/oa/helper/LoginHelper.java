@@ -1,13 +1,3 @@
-/*
- * 系统名称:PlatForm
- * 
- * 文件名称: venus.authority.helper --> LoginHelper.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2005-6-28 13:04:51 创建1.0.0版 (ganshuo)
- *  
- */
 package venus.oa.helper;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,18 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
-
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
 public class LoginHelper {
+
     /**
-     * 
      * 功能: 获取LoginSessionVo
      * 
      * @param req HttpServletRequest
@@ -56,8 +37,8 @@ public class LoginHelper {
         }
         return vo;
     }
+
     /**
-     * 
      * 功能: 获取LoginSessionVo
      *
      * @param session HttpSession
@@ -390,6 +371,7 @@ public class LoginHelper {
     
     /**
      * 获得公共菜单树
+     *
      * @return
      */
     public static List getPublicFuncTree(){

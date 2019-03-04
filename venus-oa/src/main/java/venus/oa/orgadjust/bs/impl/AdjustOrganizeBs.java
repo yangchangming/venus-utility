@@ -1,23 +1,21 @@
 package venus.oa.orgadjust.bs.impl;
 
 import org.springframework.stereotype.Service;
-import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
-import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
+import venus.frames.base.bs.BaseBusinessService;
+import venus.frames.mainframe.util.Helper;
+import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.orgadjust.bs.IAdjustOrganizeBs;
 import venus.oa.orgadjust.util.IContants;
-import venus.oa.history.bs.IHistoryLogBs;
+import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
+import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.util.DateTools;
-import venus.frames.base.bs.BaseBusinessService;
-import venus.frames.mainframe.log.ILog;
-import venus.frames.mainframe.log.LogMgr;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.util.*;
 
 @Service
 public class AdjustOrganizeBs extends BaseBusinessService implements IAdjustOrganizeBs,IContants {
-	private static ILog log = LogMgr.getLogger(AdjustOrganizeBs.class);
+//	private static ILog log = LogMgr.getLogger(AdjustOrganizeBs.class);
 	private IAuPartyRelationBs relationBs;
 	private AuPartyRelationVo destVo;
 	private List list;
@@ -58,7 +56,7 @@ public class AdjustOrganizeBs extends BaseBusinessService implements IAdjustOrga
 			//获取父级关系
 			List parList = relationBs.queryParentRelation(vo.getParent_code());
 			vo.setAll_parent_vo(parList);
-			log.debug(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Tone_class_Delete_") + vo.getName());
+//			log.debug(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Tone_class_Delete_") + vo.getName());
 			relationBs.deletePartyRelation(vo.getId()); //根据机构ID从删除机构
 		}
 	}
@@ -78,7 +76,7 @@ public class AdjustOrganizeBs extends BaseBusinessService implements IAdjustOrga
 		for (int i = nodeCount ; i >=  0; i--) {//从枝向叶挂接
 			AuPartyRelationVo vo = (AuPartyRelationVo) list.get(i);
 			destVo = (AuPartyRelationVo)relationVoList.get(0);
-			log.debug(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Transfer_level_increase_") + vo.getName());
+//			log.debug(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Transfer_level_increase_") + vo.getName());
 			OID oid = relationBs.addPartyRelation(vo.getPartyid(),nodeCount==i?destVo.getId():partyId2Oid.get(vo.getParent_partyid()).toString(),vo.getRelationtype_id(),vo.getRelationtype_keyword());
 			partyId2Oid.put(vo.getPartyid(),oid.toString());
 		}

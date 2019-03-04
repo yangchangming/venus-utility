@@ -4,16 +4,6 @@ import venus.oa.loginlog.vo.LoginLogVo;
 
 import javax.servlet.http.HttpSession;
 
-
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
-
 public class OnlineUserVo extends LoginLogVo {
     
 	private String session_id;

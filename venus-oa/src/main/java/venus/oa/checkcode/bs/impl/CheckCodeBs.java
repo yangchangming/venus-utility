@@ -19,6 +19,7 @@ import com.octo.captcha.service.CaptchaServiceException;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import org.springframework.stereotype.Service;
+import venus.exception.VenusFrameworkException;
 import venus.oa.checkcode.CaptchaServiceSingleton;
 import venus.oa.checkcode.bs.ICheckCodeBs;
 
@@ -61,5 +62,17 @@ public class CheckCodeBs implements ICheckCodeBs {
         }
         captchaChallengeAsJpeg = jpegOutputStream.toByteArray();
         return captchaChallengeAsJpeg;
+    }
+
+    @Override
+    public boolean validateResponse(String captchaId, String j_captcha_response) {
+        Boolean isResponseCorrect = Boolean.FALSE;
+        try {
+            isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, j_captcha_response);
+        } catch (CaptchaServiceException e) {
+            throw new VenusFrameworkException(e.getMessage());
+        } finally {
+            return isResponseCorrect;
+        }
     }
 }

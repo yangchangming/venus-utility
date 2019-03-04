@@ -26,8 +26,8 @@ import venus.oa.util.ProjTools;
 import venus.oa.util.StringHelperTools;
 import venus.oa.util.common.bs.ICommonBs;
 import venus.frames.base.bs.BaseBusinessService;
-import venus.frames.mainframe.log.ILog;
-import venus.frames.mainframe.log.LogMgr;
+//import venus.frames.mainframe.log.ILog;
+//import venus.frames.mainframe.log.LogMgr;
 import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 import venus.pub.util.ReflectionUtils;
@@ -45,7 +45,7 @@ import java.util.*;
 @Service
 public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS, IConstants {
 
-    private static ILog log = LogMgr.getLogger(AuAuthorizeBS.class);
+//    private static ILog log = LogMgr.getLogger(AuAuthorizeBS.class);
 
     private IAuAuthorizeDao dao = null;
     private IAuAuthorizeLogDao logdao = null;
@@ -1053,7 +1053,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
     		throw new InvalidLicenseException();
     	} else {
     		loader.setValid(true);
-    		log.info( "venus.platform: check au successfully!" );
+//    		log.info( "venus.platform: check au successfully!" );
     	}
     }
 

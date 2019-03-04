@@ -338,5 +338,10 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
     public List queryTableField(String  tableName,String queryCondition) {
         return getDao().queryTableField( tableName,queryCondition);
     }
+
+    @Override
+    public List queryIdByTableNameAndResourceType(AuResourceVo vo) {
+        return getDao().queryIdByTableNameAndResourceType(vo);
+    }
 }
 

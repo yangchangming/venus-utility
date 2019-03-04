@@ -42,7 +42,7 @@
     <motan:service interface="venus.oa.organization.aupartytype.bs.IAuPartyTypeBS" ref="auPartyTypeBS" basicService="serviceBasicConfig" />
 
     <!--团体关系类型-->
-    <motan:service interface="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" ref="AuPartyRelationTypeBS" basicService="serviceBasicConfig" />
+    <motan:service interface="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" ref="auPartyRelationTypeBS" basicService="serviceBasicConfig" />
 
     <!--团体关系-->
     <motan:service interface="venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs" ref="auPartyRelationBs" basicService="serviceBasicConfig" />

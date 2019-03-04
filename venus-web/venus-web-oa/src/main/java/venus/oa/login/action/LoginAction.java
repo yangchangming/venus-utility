@@ -1,8 +1,10 @@
 package venus.oa.login.action;
 
-import com.octo.captcha.service.CaptchaServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import venus.frames.base.action.DefaultServletException;
+import venus.frames.mainframe.util.Helper;
 import venus.oa.authority.appenddata.bs.IAppendDataBs;
 import venus.oa.authority.appenddata.util.IConstantsimplements;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
@@ -13,6 +15,7 @@ import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
 import venus.oa.authority.auuser.bs.IAuUserBs;
 import venus.oa.authority.auuser.util.IAuUserConstants;
 import venus.oa.authority.auuser.vo.AuUserVo;
+import venus.oa.checkcode.bs.ICheckCodeBs;
 import venus.oa.helper.LoginHelper;
 import venus.oa.login.tools.OnLineUser;
 import venus.oa.login.tools.OnlineUserVo;
@@ -20,20 +23,16 @@ import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
 import venus.oa.organization.aupartyrelation.util.IConstants;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
-import venus.oa.checkcode.CaptchaServiceSingleton;
 import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.Encode;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
-import venus.frames.base.action.DefaultServletException;
-import venus.frames.mainframe.util.Helper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
-
 
 @Controller
 @RequestMapping("/")
@@ -43,6 +42,10 @@ public class LoginAction implements IAuUserConstants {
     private static final String SUCCESS = "main";
     private static final String NOTICE = "login/pwdnofity";
     private static final String MESSAGE_AGENT_ERROR = "common/common_error";
+
+    @Autowired
+    private ICheckCodeBs checkCodeBs;
+
 
     @RequestMapping("/login")
     public String service(HttpServletRequest request, HttpServletResponse response) throws DefaultServletException {
@@ -62,19 +65,12 @@ public class LoginAction implements IAuUserConstants {
         if("true".equals(checkCode) && tempLoginSessionVo==null){
             String captchaId = session.getId();
             String j_captcha_response = request.getParameter("j_captcha_response");
-            Boolean isResponseCorrect = Boolean.FALSE;
-            try {
-                isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, j_captcha_response);
-            } catch (CaptchaServiceException e) {
-                 //should not happen, may be thrown if the id is not valid
-            }
+            Boolean isResponseCorrect = checkCodeBs.validateResponse(captchaId, j_captcha_response);
             if(!isResponseCorrect.booleanValue()){
                 message = venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Checksum_error_please_re_fill_");
                 request.setAttribute("Message", message);
 //                return request.findForward("login");
-                // fuck want to record log
                 return LOGIN_LOG;
-
             }
         }
 

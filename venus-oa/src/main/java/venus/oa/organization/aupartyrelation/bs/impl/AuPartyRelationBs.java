@@ -21,8 +21,8 @@ import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
 import venus.frames.base.bs.BaseBusinessService;
 import venus.frames.base.exception.BaseApplicationException;
-import venus.frames.mainframe.log.ILog;
-import venus.frames.mainframe.log.LogMgr;
+//import venus.frames.mainframe.log.ILog;
+//import venus.frames.mainframe.log.LogMgr;
 import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 import venus.pub.util.ReflectionUtils;
@@ -33,14 +33,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author maxiao
- *
- */
 @Service
 public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRelationBs,IConstants {
     private IAuPartyRelationDao dao=null;
-    private static ILog log = LogMgr.getLogger(AuPartyRelationBs.class);
+//    private static ILog log = LogMgr.getLogger(AuPartyRelationBs.class);
    
     /**
      * @return 返回 dao。
@@ -215,9 +211,9 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
     public void addPartyRelation(AuPartyRelationVo vo) {
         getDao().addAuPartyRelation(vo);
     }
+
     /**
      * 查询团体表
-     * @param parentId
      * @return
      */
     private PartyVo queryAuPartyForId(String id){
@@ -429,7 +425,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
     		throw new NoSuchModuleException (NoSuchModuleException.class.getName());
     	} else {
     		loader.setValid(true);
-    		log.info( "venus.platform: check relation successfully!" );
+//    		log.info( "venus.platform: check relation successfully!" );
     	}
     }
     /* (non-Javadoc)

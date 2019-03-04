@@ -1,17 +1,10 @@
-/*
- * 创建日期 2007-8-31
- *
- * TODO 要更改此生成的文件的模板，请转至
- * 窗口 － 首选项 － Java － 代码样式 － 代码模板
- */
 package venus.oa.login.tools;
 
+import venus.frames.mainframe.util.Helper;
 import venus.oa.loginlog.bs.ILoginLogBs;
 import venus.oa.loginlog.util.ILoginLogConstants;
 import venus.oa.loginlog.vo.LoginLogVo;
 import venus.oa.util.DateTools;
-import venus.frames.mainframe.log.LogMgr;
-import venus.frames.mainframe.util.Helper;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
@@ -58,7 +51,7 @@ public class OnLineUser implements HttpSessionBindingListener {
      */
     public static void logout(String session_id) {
         OnlineUserVo vo  = (OnlineUserVo)users.get(session_id);
-        LogMgr.getLogger("venus.authority.login.tools.OnLineUser").info("valueUnbound OnlineUserVO:" + vo);
+//        LogMgr.getLogger("venus.authority.login.tools.OnLineUser").info("valueUnbound OnlineUserVO:" + vo);
         recordLogoutTime(vo.getId());//登记退出时间
         deleteOnlineUserBySessionId(session_id);//删除在线用户信息
     }
@@ -94,7 +87,7 @@ public class OnLineUser implements HttpSessionBindingListener {
     public void valueBound(HttpSessionBindingEvent e) {        
         HttpSession session = e.getSession();
         OnlineUserVo vo = (OnlineUserVo)session.getAttribute("OnlineUserVo");
-        LogMgr.getLogger("venus.authority.login.tools.OnLineUser").info("valueBound OnlineUserVO:" + vo);
+//        LogMgr.getLogger("venus.authority.login.tools.OnLineUser").info("valueBound OnlineUserVO:" + vo);
         String session_id = vo.getSession_id();        
         if(isNewLogin(session_id)){//只有新的session_id才能存入map中
             getBs().insert(vo);//插入新的登录日志

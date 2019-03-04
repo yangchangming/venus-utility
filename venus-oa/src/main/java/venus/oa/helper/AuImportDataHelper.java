@@ -24,14 +24,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: maxiao
- * Date: 13-4-24
- * Time: 上午10:07
- * To change this template use File | Settings | File Templates.
- */
 public class AuImportDataHelper {
+
     private static Logger logger=Logger.getLogger(AuImportDataHelper.class);
 
     /**

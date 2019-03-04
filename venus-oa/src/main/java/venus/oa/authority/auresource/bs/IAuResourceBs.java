@@ -188,5 +188,14 @@ public interface IAuResourceBs {
      * @return 查询到的VO列表
      */
     public List queryTableField(String tableName, String queryCondition);
+
+    /**
+     * 通过资源url和资源类型查询所有资源对象
+     *
+     * @param vo
+     * @return
+     */
+    List queryIdByTableNameAndResourceType(AuResourceVo vo);
+
 }
 

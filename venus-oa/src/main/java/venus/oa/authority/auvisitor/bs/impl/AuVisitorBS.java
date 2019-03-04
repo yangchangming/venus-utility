@@ -13,8 +13,8 @@ import venus.oa.util.GlobalConstants;
 import venus.oa.util.tree.DeepTreeSearch;
 import venus.frames.base.bs.BaseBusinessService;
 import venus.frames.base.exception.BaseApplicationException;
-import venus.frames.mainframe.log.ILog;
-import venus.frames.mainframe.log.LogMgr;
+//import venus.frames.mainframe.log.ILog;
+//import venus.frames.mainframe.log.LogMgr;
 import venus.frames.mainframe.util.Helper;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import java.util.List;
 @Service
 public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IConstants {
 
-    private static ILog log = LogMgr.getLogger(AuVisitorBS.class);
+//    private static ILog log = LogMgr.getLogger(AuVisitorBS.class);
 
     private IAuVisitorDao dao = null;
 
@@ -174,7 +174,7 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      * @return
      */
     public AuVisitorVo queryByRelationId(String relId, String pType) {
-        log.debug("根据团体关系ID和团体类型查询相应的访问者Vo，如果查不到则自动生成一个访问者vo并添加到访问者表中，然后返回新添加的访问者vo");
+//        log.debug("根据团体关系ID和团体类型查询相应的访问者Vo，如果查不到则自动生成一个访问者vo并添加到访问者表中，然后返回新添加的访问者vo");
         AuVisitorVo vo = (AuVisitorVo) getDao().findByOrgId(relId, GlobalConstants.getVisiTypeByPartyType(pType));
         if (vo == null) {
             IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper

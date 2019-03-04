@@ -30,4 +30,13 @@ public interface ICheckCodeBs {
      * @return
      */
     byte[] buildCheckCode(String captchaId);
+
+    /**
+     * validate response
+     *
+     * @param captchaId
+     * @param j_captcha_response
+     * @return
+     */
+    boolean validateResponse(String captchaId, String j_captcha_response);
 }

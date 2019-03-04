@@ -23,8 +23,8 @@ import venus.oa.util.DataBaseDescription;
 import venus.oa.util.DateTools;
 import venus.frames.base.bs.BaseBusinessService;
 import venus.frames.base.exception.BaseApplicationException;
-import venus.frames.mainframe.log.ILog;
-import venus.frames.mainframe.log.LogMgr;
+//import venus.frames.mainframe.log.ILog;
+//import venus.frames.mainframe.log.LogMgr;
 import venus.frames.mainframe.util.Helper;
 
 import java.sql.SQLException;
@@ -39,7 +39,7 @@ import java.util.List;
 public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS,
         IConstants {
 
-    private static ILog log = LogMgr.getLogger(AuPartyTypeBS.class);
+//    private static ILog log = LogMgr.getLogger(AuPartyTypeBS.class);
 
     private IAuPartyTypeDao dao = null;
 
@@ -129,7 +129,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
     public String insert(Object objVo) {
         List list = getDao().queryByName(objVo);
         if (list.size()>0) {
-            log.equals(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit_")+((AuPartyTypeVo) objVo).getName());
+//            log.equals(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit_")+((AuPartyTypeVo) objVo).getName());
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit"));
         }
         return getDao().insert(objVo);
@@ -152,13 +152,13 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
     public int update(Object objVo) {
         List list = getDao().queryByName(objVo);
         if (list.size()>1) {
-            log.equals(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit_")+((AuPartyTypeVo) objVo).getName());
+//            log.equals(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit_")+((AuPartyTypeVo) objVo).getName());
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit"));
         }
         else if (list.size()==1){
             AuPartyTypeVo vo = (AuPartyTypeVo)list.get(0);
             if (!vo.getId().equals(((AuPartyTypeVo) objVo).getId())) {
-                log.equals(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit_")+((AuPartyTypeVo) objVo).getName());
+//                log.equals(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit_")+((AuPartyTypeVo) objVo).getName());
                 throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit"));
             }
         }
@@ -189,7 +189,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
 	        for(int i=0;i<list.size();i++){
 	            PartyVo tmp = (PartyVo)list.get(i);
 	            if ("1".equals(tmp.getEnable_status())) {
-	                log.equals(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_of_this_type_have_been_used_Please_delete_the_relevant_data_")+tmp.getId()+venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority._1")+tmp.getName());
+//	                log.equals(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_of_this_type_have_been_used_Please_delete_the_relevant_data_")+tmp.getId()+venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority._1")+tmp.getName());
 	                throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_of_this_type_have_been_used_Please_delete_the_relevant_data"));
 	            }	            
 	        }	        
