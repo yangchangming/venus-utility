@@ -4,14 +4,13 @@ package venus.oa.util;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import venus.frames.base.exception.BaseApplicationException;
+import venus.frames.mainframe.util.PathMgr;
 import venus.oa.organization.aupartytype.bs.IAuPartyTypeBS;
-import venus.oa.organization.aupartytype.util.IConstants;
 import venus.oa.organization.aupartytype.vo.AuPartyTypeVo;
 import venus.oa.sysparam.bs.ISysParamsBs;
 import venus.oa.sysparam.vo.SysParamVo;
-import venus.frames.base.exception.BaseApplicationException;
-import venus.frames.mainframe.util.Helper;
-import venus.frames.mainframe.util.PathMgr;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.io.File;
 import java.util.HashMap;
@@ -90,7 +89,7 @@ public class GlobalConstants {
      * 功能: 读取所有系统配置项
      */
     public static void loadSysParas(){
-    	ISysParamsBs bs = (ISysParamsBs) Helper.getBean(venus.oa.sysparam.util.IConstants.BS_KEY);
+		ISysParamsBs bs = (ISysParamsBs) BeanFactoryHelper.getBean("sysParamsBs");
     	List list=bs.queryByCondition(" ENABLE='1' ");
     	if(list!=null || list.size()>0) {
     		mSysParas = new HashMap();
@@ -104,7 +103,7 @@ public class GlobalConstants {
      * 功能: 读取所有启用状态的团体类型
      */
     public static void loadPartyType() {
-        IAuPartyTypeBS bs = (IAuPartyTypeBS) Helper.getBean(IConstants.BS_KEY);
+        IAuPartyTypeBS bs = (IAuPartyTypeBS) BeanFactoryHelper.getBean("auPartyTypeBS");
         List list = bs.queryAllEnable(-1,-1,null);
         if(list!=null || list.size()>0) {
             mPartyType = new HashMap();

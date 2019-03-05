@@ -4,6 +4,7 @@
 package venus.oa.util;
 
 import venus.frames.mainframe.util.Helper;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -186,7 +187,8 @@ public class SqlBuilder {
 		for(int i=0;i<value.length;i++){
 			data.add(value[i]);
 		}
-		return (Expression) Helper.getBean(beanName);
+//		return (Expression) Helper.getBean(beanName);
+		return (Expression) BeanFactoryHelper.getBean(beanName);
 	}
 	
 	public interface Expression{

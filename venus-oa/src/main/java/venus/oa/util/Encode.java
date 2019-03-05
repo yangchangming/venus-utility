@@ -4,7 +4,6 @@
 package venus.oa.util;
 
 import venus.frames.base.exception.BaseApplicationException;
-import venus.frames.mainframe.util.Helper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
@@ -17,10 +16,12 @@ import java.security.NoSuchAlgorithmException;
 public class Encode {
     private static Object codeTool;
     static{
-        codeTool = Helper.getBean("Encode");
+//        codeTool = Helper.getBean("Encode");
+        codeTool = new venus.pub.util.Encode();
     }
     public static String decode(String s){
         try {
+
             return (String) codeTool.getClass().getMethod("decode",new Class[]{String.class}).invoke(codeTool, s);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();

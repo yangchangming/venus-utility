@@ -7,8 +7,9 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import venus.frames.base.bs.BaseBusinessService;
+import venus.frames.base.exception.BaseApplicationException;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
-import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
 import venus.oa.organization.auconnectrule.dao.IAuConnectRuleDao;
 import venus.oa.organization.auconnectrule.vo.AuConnectRuleVo;
@@ -22,14 +23,12 @@ import venus.oa.organization.aupartytype.util.TypeMapper;
 import venus.oa.organization.aupartytype.vo.AuPartyTypeVo;
 import venus.oa.util.DataBaseDescription;
 import venus.oa.util.DateTools;
-import venus.frames.base.bs.BaseBusinessService;
-import venus.frames.base.exception.BaseApplicationException;
-//import venus.frames.mainframe.log.ILog;
-//import venus.frames.mainframe.log.LogMgr;
-import venus.frames.mainframe.util.Helper;
 
 import java.sql.SQLException;
 import java.util.List;
+
+//import venus.frames.mainframe.log.ILog;
+//import venus.frames.mainframe.log.LogMgr;
 
 /**
  * 团体类型BS
@@ -41,6 +40,15 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
 
     @Autowired
     private IAuPartyTypeDao auPartyTypeDao;
+
+    @Autowired
+    private IAuPartyDao auPartyDao;
+
+    @Autowired
+    private IAuConnectRuleDao auConnectRuleDao;
+
+    @Autowired
+    private IAuFunctreeBs auFunctreeBs;
 
     /**
      * 查询所有
@@ -162,7 +170,6 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
 	public int disable(String id) {
-	    IAuPartyDao auPartyDao = (IAuPartyDao) Helper.getBean("auparty_dao");
 	    PartyVo vo = new PartyVo();
 	    List list = auPartyDao.simpleQuery(1,1,null,id,vo);
 	    if (list.size()>0) {
@@ -174,7 +181,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
 	            }	            
 	        }	        
 	    }
-	    IAuConnectRuleDao auConnectRuleDao = (IAuConnectRuleDao) Helper.getBean("au_connectrule_dao");
+
 	    AuConnectRuleVo tvo = new AuConnectRuleVo();
 	    tvo.setParent_partytype_id(id);
 	    list = auConnectRuleDao.queryByType(tvo);
@@ -231,7 +238,6 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
 
         //设置菜单 TODO 如果考虑机构和权限分离，这部分代码耦合就重了
         AuFunctreeVo vo = new AuFunctreeVo();
-        IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
         vo.setParent_code("101003");
         vo.setType("0");
         vo.setIs_leaf("1");
@@ -240,7 +246,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
         vo.setName(obj.getName()+venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Management"));
         vo.setUrl("/"+String.valueOf(catalogue.charAt(0))+catalogue.substring(1).toLowerCase()+(isGenerateCode?"Organize":"Collective")+"Action.do?cmd=queryAll");
         vo.setCreate_date(DateTools.getSysTimestamp());  //打创建时间
-        bs.insert(vo);
+        auFunctreeBs.insert(vo);
         return null;
     }
 

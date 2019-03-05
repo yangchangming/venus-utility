@@ -41,6 +41,15 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
 
     @Autowired
     private IAuPartyDao auPartyDao;
+
+    @Autowired
+    private IAuPartyTypeDao auPartyTypeDao;
+
+    @Autowired
+    private IAuPartyRelationBs auPartyRelationBs;
+
+    @Autowired
+    private IAuUserBs auUserBs;
     
     /**
      * 新增团体
@@ -66,7 +75,6 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
         //添加新的团体 
         String partyId = addParty(vo);
         //添加团体关系
-        IAuPartyRelationBs relationBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
         if(parentRelId==null || parentRelId.length()==0 || "null".equals(parentRelId)) {
 	        //添加团体关系根节点
 	        AuPartyRelationVo relationVo=new AuPartyRelationVo();
@@ -84,10 +92,10 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
 	        relationVo.setIs_leaf("1");
 	        relationVo.setType_is_leaf("1");
 	        relationVo.setEmail(vo.getEmail());
-	        relationBs.addPartyRelation(relationVo);
+            auPartyRelationBs.addPartyRelation(relationVo);
         }else {
             //添加新的团体关系
-            relationBs.addPartyRelation(partyId, parentRelId, relTypeId);
+            auPartyRelationBs.addPartyRelation(partyId, parentRelId, relTypeId);
         }
 		return partyId;
     }
@@ -116,19 +124,17 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
         auPartyDao.updateParty(oldVo);
         
         //更新用户表
-        IAuUserBs userBs = (IAuUserBs) Helper.getBean(IAuUserConstants.BS_KEY);
-        AuUserVo userVo = userBs.getByPartyId(vo.getId());
+        AuUserVo userVo = auUserBs.getByPartyId(vo.getId());
         if(userVo!=null && !userVo.getName().equals(vo.getName())) {
             userVo.setName(vo.getName());
             userVo.setModify_date(DateTools.getSysTimestamp());
-            userBs.update(userVo);
+            auUserBs.update(userVo);
         }
         
         //更新相应的团体关系
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
         AuPartyRelationVo relVo = new AuPartyRelationVo();
         relVo.setPartyid(vo.getId());
-        List list = relBs.queryAuPartyRelation(relVo);
+        List list = auPartyRelationBs.queryAuPartyRelation(relVo);
         if(list!=null && list.size()>0) {
 	        for(int i=0; i<list.size(); i++) {
 	            AuPartyRelationVo oldRelVo = (AuPartyRelationVo)list.get(i);
@@ -141,7 +147,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
 	            if(!(vo.getIs_inherit()==null || vo.getIs_inherit().length()==0)){
 	                oldRelVo.setIs_inherit(vo.getIs_inherit());
 	            }
-		        relBs.update(oldRelVo);
+                auPartyRelationBs.update(oldRelVo);
 	        }
         }
         
@@ -156,18 +162,16 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
         //禁用团体
         auPartyDao.disableParty(partyId);
         //查询相应的团体关系
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
         AuPartyRelationVo queryVo = new AuPartyRelationVo();
         queryVo.setPartyid(partyId);
-        List result = relBs.queryAuPartyRelation(queryVo);
+        List result = auPartyRelationBs.queryAuPartyRelation(queryVo);
         if (result.size()>0){
             throw new BaseApplicationException("该团体已被使用,不允许禁用！");
         }
         //删除账户
-        IAuUserBs useBs = (IAuUserBs) Helper.getBean(IAuUserConstants.BS_KEY);
-        AuUserVo userVo = useBs.getByPartyId(partyId);
+        AuUserVo userVo = auUserBs.getByPartyId(partyId);
         if(userVo!=null && userVo.getId()!=null){
-            useBs.delete(userVo.getId());
+            auUserBs.delete(userVo.getId());
         }
         return true;
     }
@@ -181,20 +185,18 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      */
     public boolean delete(String partyId) {
         //删除相应的团体关系
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
         AuPartyRelationVo queryVo = new AuPartyRelationVo();
         queryVo.setPartyid(partyId);
-        List result = relBs.queryAuPartyRelation(queryVo);
+        List result = auPartyRelationBs.queryAuPartyRelation(queryVo);
         Iterator it = result.iterator();
         while(it.hasNext()){
             AuPartyRelationVo vo=(AuPartyRelationVo)it.next();
-            relBs.deletePartyRelation(vo.getId());
+            auPartyRelationBs.deletePartyRelation(vo.getId());
         }
         //删除账户
-        IAuUserBs useBs = (IAuUserBs) Helper.getBean(IAuUserConstants.BS_KEY);
-        AuUserVo userVo = useBs.getByPartyId(partyId);
+        AuUserVo userVo = auUserBs.getByPartyId(partyId);
         if(userVo!=null && userVo.getId()!=null){
-            useBs.delete(userVo.getId());
+            auUserBs.delete(userVo.getId());
         }
         new UserProfileModel(partyId).removeProfile();
         //删除团体
@@ -221,7 +223,6 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      */
 	public int enableParty(String id) {
 	    PartyVo vo = (PartyVo) find(id);
-	    IAuPartyTypeDao auPartyTypeDao = (IAuPartyTypeDao) Helper.getBean("aupartytype_dao");
 	    AuPartyTypeVo tvo = (AuPartyTypeVo) auPartyTypeDao.find(vo.getPartytype_id());
 	    if (!"1".equals(tvo.getEnable_status())) {
 	        throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_has_been_disabled_"));

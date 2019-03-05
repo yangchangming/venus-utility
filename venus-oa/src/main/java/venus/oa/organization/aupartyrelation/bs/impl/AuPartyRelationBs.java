@@ -8,6 +8,8 @@ import gap.commons.digest.DigestLoader;
 import gap.license.exception.NoSuchModuleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import venus.frames.base.bs.BaseBusinessService;
+import venus.frames.base.exception.BaseApplicationException;
 import venus.oa.authority.auvisitor.bs.IAuVisitorBS;
 import venus.oa.authority.auvisitor.vo.AuVisitorVo;
 import venus.oa.organization.auconnectrule.vo.AuConnectRuleVo;
@@ -20,11 +22,6 @@ import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
-import venus.frames.base.bs.BaseBusinessService;
-import venus.frames.base.exception.BaseApplicationException;
-//import venus.frames.mainframe.log.ILog;
-//import venus.frames.mainframe.log.LogMgr;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 import venus.pub.util.ReflectionUtils;
 
@@ -34,11 +31,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+//import venus.frames.mainframe.log.ILog;
+//import venus.frames.mainframe.log.LogMgr;
+
 @Service
 public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRelationBs,IConstants {
 
     @Autowired
     private IAuPartyRelationDao auPartyRelationDao;
+
+    @Autowired
+    private IAuPartyBs auPartyBs;
+
+    @Autowired
+    private IAuVisitorBS auVisitorBS;
 
     /**
      * 
@@ -50,8 +56,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      */
     public boolean initRoot(String partyId, String partyRelationTypeId) { 
         //查询团体
-        IAuPartyBs partyBs = (IAuPartyBs) Helper.getBean(venus.oa.organization.auparty.util.IConstants.BS_KEY);
-        PartyVo vo = (PartyVo)partyBs.find(partyId);
+        PartyVo vo = (PartyVo)auPartyBs.find(partyId);
         //添加团体关系根节点
         AuPartyRelationVo rvo=new AuPartyRelationVo();
         rvo.setPartyid(vo.getId());
@@ -242,8 +247,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
             throw new BaseApplicationException(vo.getName()+venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Not_a_leaf_node_is_not_allowed_to_delete_"));
         }
         //级联删除权限相关的数据
-        IAuVisitorBS auBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
-        auBs.deleteByOrigId(id);
+        auVisitorBS.deleteByOrigId(id);
         //删除当前节点
         auPartyRelationDao.deleteAuPartyRelation(id);
         //查询父节点Vo
@@ -310,12 +314,11 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      */
     public int update(AuPartyRelationVo vo) {
         //同步更新相应的访问者表记录
-        IAuVisitorBS visiBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
-        AuVisitorVo visiVo = visiBs.queryByRelationId(vo.getId(), vo.getPartytype_id());
+        AuVisitorVo visiVo = auVisitorBS.queryByRelationId(vo.getId(), vo.getPartytype_id());
         if(visiVo!=null && ! visiVo.getName().equals(vo.getName())) {
             visiVo.setName(vo.getName());
             visiVo.setModify_date(DateTools.getSysTimestamp());
-            visiBs.update(visiVo);
+            auVisitorBS.update(visiVo);
         }
         //更新团体关系表记录
         return auPartyRelationDao.update(vo);
@@ -340,10 +343,8 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
 		return sum;
     }
     /**
-     * 
      * 功能: 查询当前节点的所有上级节点，一直到根节点
      *
-     * @param code 当前节点的父节点编号
      * @return
      */
     public List queryParentRelation(String parentCode) {

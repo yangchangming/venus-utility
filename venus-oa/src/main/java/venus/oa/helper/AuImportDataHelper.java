@@ -2,11 +2,10 @@ package venus.oa.helper;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
+import venus.frames.base.exception.BaseApplicationException;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
-import venus.oa.authority.auauthorize.util.IConstants;
 import venus.oa.authority.auauthorize.vo.AuAuthorizeVo;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
-import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
 import venus.oa.authority.auvisitor.bs.IAuVisitorBS;
 import venus.oa.authority.auvisitor.vo.AuVisitorVo;
@@ -16,8 +15,7 @@ import venus.oa.organization.auparty.vo.PartyVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
-import venus.frames.base.exception.BaseApplicationException;
-import venus.frames.mainframe.util.Helper;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -134,7 +132,8 @@ public class AuImportDataHelper {
      */
     public static void saveAuByVisitor(String relId, String pType, String sIds, String sCodes, String sTypes, String sStatus, String sAccess){
         //将团体关系id转化成访问者vo
-        IAuVisitorBS visiBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
+
+        IAuVisitorBS visiBs = (IAuVisitorBS)BeanFactoryHelper.getBean("auVisitorBS");
         AuVisitorVo visiVo = visiBs.queryByRelationId(relId, pType);
 
         //分析表单值
@@ -192,7 +191,7 @@ public class AuImportDataHelper {
         }
 
         //将团体关系id转化成访问者vo
-        IAuVisitorBS visiBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
+        IAuVisitorBS visiBs = (IAuVisitorBS)BeanFactoryHelper.getBean("auVisitorBS");
         AuVisitorVo visiVo = visiBs.queryByRelationId(relId, pType);
 
         //接着取到所有真正取消打勾的节点的编号（即不包括后来又勾上的）
@@ -214,17 +213,16 @@ public class AuImportDataHelper {
         return sessionVo;
     }
 
-
     private static IAuAuthorizeBS getAuAuthorizeBS(){
-        return (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY); //"auauthorize_bs"
+        return (IAuAuthorizeBS)BeanFactoryHelper.getBean("auAuthorizeBS");
     }
 
     private static IAuFunctreeBs getAuFunctreeBs() {
-        return (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);  //"AuFunctree_bs"
+        return (IAuFunctreeBs)BeanFactoryHelper.getBean("auFunctreeBs");
     }
 
     private static IAuPartyBs getAuPartyBs() {
-        return (IAuPartyBs) Helper.getBean(venus.oa.organization.auparty.util.IConstants.BS_KEY);//"auparty_bs"
+        return (IAuPartyBs)BeanFactoryHelper.getBean("auPartyBs");
     }
 
 }

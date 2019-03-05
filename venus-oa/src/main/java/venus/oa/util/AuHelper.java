@@ -15,10 +15,10 @@
  */
 package venus.oa.util;
 
-import venus.frames.mainframe.util.Helper;
 import venus.oa.authority.auresource.dao.IAuResourceDao;
 import venus.oa.authority.auresource.vo.AuResourceVo;
 import venus.oa.login.vo.LoginSessionVo;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.util.*;
 
@@ -82,7 +82,8 @@ public class AuHelper {
         }//map里放置别名和表名序列
         //获取该用户的记录权限Vo
         Map recordMap = authorizedContext.getOwner_recd_map();
-        IAuResourceDao auResourceDao = (IAuResourceDao) Helper.getBean("AuResource_dao");
+        IAuResourceDao auResourceDao = (IAuResourceDao)BeanFactoryHelper.getBean("auResourceDao");
+
         Set valueSet = map.keySet();
         Iterator valueIt = valueSet.iterator();
 

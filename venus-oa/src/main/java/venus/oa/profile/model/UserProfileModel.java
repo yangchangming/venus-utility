@@ -3,11 +3,13 @@
  */
 package venus.oa.profile.model;
 
+import org.springframework.context.annotation.Bean;
 import venus.oa.authority.auuser.bo.AuUserBo;
 import venus.oa.profile.bs.IUserProfileBs;
 import venus.oa.profile.util.IContants;
 import venus.oa.profile.vo.UserProfileVo;
 import venus.frames.mainframe.util.Helper;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,7 +29,7 @@ public class UserProfileModel {
      * @return
      */
     public IUserProfileBs getBs(){
-        return (IUserProfileBs) Helper.getBean(IContants.BS_KEY);
+        return (IUserProfileBs) BeanFactoryHelper.getBean("userProfileBs");
     }
     
     public UserProfileModel(String partyid){

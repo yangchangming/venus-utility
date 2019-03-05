@@ -41,12 +41,6 @@
 
         <dependency>
             <groupId>com.datavens</groupId>
-            <artifactId>venus-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.datavens</groupId>
             <artifactId>venus-core</artifactId>
             <version>${project.version}</version>
         </dependency>

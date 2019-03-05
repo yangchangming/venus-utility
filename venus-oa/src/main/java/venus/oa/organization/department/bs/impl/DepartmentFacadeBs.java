@@ -3,18 +3,16 @@ package venus.oa.organization.department.bs.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.helper.OrgHelper;
+import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
-import venus.oa.organization.aupartyrelation.util.IConstants;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.organization.department.bs.IDepartmentBs;
 import venus.oa.organization.department.bs.IDepartmentFacadeBs;
 import venus.oa.organization.department.util.IDepartmentConstants;
 import venus.oa.organization.department.vo.DepartmentVo;
-import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
-import venus.frames.mainframe.util.Helper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,29 +22,34 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
 
 	@Autowired
 	private IDepartmentBs departmentBs;
+
+	@Autowired
+	private IAuPartyRelationBs auPartyRelationBs;
+
+	@Autowired
+	private IHistoryLogBs historyLogBs;
 	
 	/**
 	 * 添加新记录，同时添加团体、团体关系并记录历史日志（如果parentRelId为空则不添加团体关系）
 	 */
 	public String insert(DepartmentVo deptVo, String parentRelId, LoginSessionVo vo) {
 	    String partyid = departmentBs.insert(deptVo, parentRelId);
-	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
         String parentCode = OrgHelper.getRelationCodeByRelationId(parentRelId);
         AuPartyRelationVo relvo = new AuPartyRelationVo();
         relvo.setPartyid(partyid);
         relvo.setParent_code(parentCode);
-        AuPartyRelationVo departmentRelVo = (AuPartyRelationVo)relBs.queryAuPartyRelation(relvo).get(0);
-        IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
-            	Map map = new HashMap();
-        	map.put("OPERATERID",vo.getParty_id());
-        	map.put("OPERATERNAME",vo.getName());
-        	map.put("OPERATETYPE", GlobalConstants.HISTORY_LOG_INSERT);
-        	map.put("SYSDATE", DateTools.getSysTimestamp());
-        	map.put("DEPARTMENTVO",deptVo);
-        	map.put("SOURCEID",departmentRelVo.getId());
-    		map.put("SOURCECODE",departmentRelVo.getCode());
-    		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(departmentRelVo.getCode(),true)); //由于这里保存的是父节点，所以要显示最后一级节点
-        	historyBs.insert(map);
+        AuPartyRelationVo departmentRelVo = (AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0);
+
+		Map map = new HashMap();
+		map.put("OPERATERID",vo.getParty_id());
+		map.put("OPERATERNAME",vo.getName());
+		map.put("OPERATETYPE", GlobalConstants.HISTORY_LOG_INSERT);
+		map.put("SYSDATE", DateTools.getSysTimestamp());
+		map.put("DEPARTMENTVO",deptVo);
+		map.put("SOURCEID",departmentRelVo.getId());
+		map.put("SOURCECODE",departmentRelVo.getCode());
+		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(departmentRelVo.getCode(),true)); //由于这里保存的是父节点，所以要显示最后一级节点
+		historyLogBs.insert(map);
         	return partyid;	    
 	}
 	
@@ -54,7 +57,9 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
 	 * 更新单条记录，同时调用接口更新相应的团体、团体关系记录并记录历史日志
 	 */
 	public int update(DepartmentVo deptVo, LoginSessionVo vo) {
-        	IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
+//        	IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
+
+
         	Map map = new HashMap();
         	map.put("OPERATERID",vo.getParty_id());
         	map.put("OPERATERNAME",vo.getName());
@@ -64,16 +69,16 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
         	String code[] = new String[]{new String()};
         	code = OrgHelper.getRelationCode(deptVo.getId());
             	for(int j = 0; j < code.length; j++) {
-            	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
                     AuPartyRelationVo relvo = new AuPartyRelationVo();
                     relvo.setCode(code[j]);
-                    map.put("SOURCEID",((AuPartyRelationVo)relBs.queryAuPartyRelation(relvo).get(0)).getId());
+                    map.put("SOURCEID",((AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0)).getId());
                     map.put("SOURCECODE",code[j]);
             		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code[j],false));
             	}         	
             	int rows = departmentBs.update(deptVo);
             	map.put("DEPARTMENTVO",departmentBs.find(deptVo.getId()));
-        	historyBs.insert(map);
+
+			historyLogBs.insert(map);
         	return rows;
 	}
 	
@@ -81,7 +86,6 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
 	 * 删除团体同时将团体的详细信息记录到历史表中
 	 */
 	public int delete(String partyId[],LoginSessionVo vo) {
-    	IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
     	DepartmentVo deptVo = new DepartmentVo();
     	Map map = new HashMap();
     	map.put("OPERATERID",vo.getParty_id());
@@ -95,13 +99,12 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
 	    	map.put("DEPARTMENTVO",deptVo);
 	    	code = OrgHelper.getRelationCode(deptVo.getId());
 	    	for(int j = 0; j < code.length; j++) {
-	    	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
                 AuPartyRelationVo relvo = new AuPartyRelationVo();
                 relvo.setCode(code[j]);
-                map.put("SOURCEID",((AuPartyRelationVo)relBs.queryAuPartyRelation(relvo).get(0)).getId());
+                map.put("SOURCEID",((AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0)).getId());
                 map.put("SOURCECODE",code[j]);
 	    		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code[j],false));
-	    		historyBs.insert(map);	  
+	    		historyLogBs.insert(map);
 	    	}    		
     	}
 		return departmentBs.delete(partyId);
@@ -112,7 +115,6 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
 	 */
 	public int delete(String relationId,LoginSessionVo vo) {
     	String partyId = OrgHelper.getPartyIDByRelationID(relationId);
-    	IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
     	DepartmentVo deptVo = departmentBs.find(partyId);  //通过id获取vo
     	Map map = new HashMap();
     	map.put("OPERATERID",vo.getParty_id());
@@ -125,7 +127,7 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
     	map.put("SOURCEID",relationId);
 		map.put("SOURCECODE",code);
 		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code,false));
-    	historyBs.insert(map);
+    	historyLogBs.insert(map);
 		return departmentBs.delete(relationId);
 	}
 }

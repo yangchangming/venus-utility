@@ -21,6 +21,7 @@ import venus.oa.util.GlobalConstants;
 import venus.oa.util.tree.DeepTreeSearch;
 import venus.frames.base.exception.BaseApplicationException;
 import venus.frames.mainframe.util.Helper;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.util.*;
 
@@ -47,8 +48,7 @@ public class OrgHelper {
      * @return
      */
     public static String[] getRelationCode(String partyId) {
-
-	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
 	    AuPartyRelationVo queryVo = new AuPartyRelationVo();
 	    queryVo.setPartyid(partyId);
 	    //queryVo.setRelationtype_id(GlobalConstants.getRelaType_comp());//2011-05-20 扩展关系范围，通过阅读代码没有发现这次注释会引起问题，需要项目组反馈。
@@ -73,7 +73,7 @@ public class OrgHelper {
      */
     public static String[] getRelationCode(String partyId, String partyType) {
 
-	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
 	    AuPartyRelationVo queryVo = new AuPartyRelationVo();
 	    queryVo.setPartyid(partyId);
 	    List rel = relBs.queryAuPartyRelation(queryVo);
@@ -102,7 +102,7 @@ public class OrgHelper {
      * @return
      */
     public static String getRelationCodeByRelationId(String relationId) {
-	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
 	    AuPartyRelationVo queryVo = new AuPartyRelationVo();
 	    queryVo.setId(relationId);    	
 	    List rel = relBs.queryAuPartyRelation(queryVo);
@@ -146,7 +146,7 @@ public class OrgHelper {
      * @return
      */
     public static String getPartyIDByRelationID(String id) {
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         AuPartyRelationVo vo = new AuPartyRelationVo();
         vo.setId(id);
         List list = relBs.queryAuPartyRelation(vo);
@@ -163,7 +163,7 @@ public class OrgHelper {
      * @return
      */
     public static List getSubRelationListByID(String id) {
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         AuPartyRelationVo vo = new AuPartyRelationVo();
         vo.setId(id);
         List list = relBs.queryAuPartyRelation(vo);
@@ -183,7 +183,7 @@ public class OrgHelper {
      * @return
      */
     public static AuPartyRelationVo getUpRelationVoByID (String id) {
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         
         AuPartyRelationVo vo = new AuPartyRelationVo();
         vo.setId(id);
@@ -209,7 +209,7 @@ public class OrgHelper {
      * @return
      */
     public static List getSubRelationListByCode(String code) {
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         AuPartyRelationVo vo = new AuPartyRelationVo();
         vo.setParent_code(code);
         return relBs.queryAuPartyRelation(vo);
@@ -218,11 +218,10 @@ public class OrgHelper {
      * 
      * 功能: 根据下级组织编号查询上一级组织的vo
      *
-     * @param id 团体关系编号
      * @return
      */
     public static AuPartyRelationVo getUpRelationVoByCode (String code) {
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         
         AuPartyRelationVo vo = new AuPartyRelationVo();
         vo.setCode(code);
@@ -248,7 +247,7 @@ public class OrgHelper {
      * @return
      */
     public static PartyVo getPartyVoByID (String partyId) {
-        IAuPartyBs bs = (IAuPartyBs) Helper.getBean(venus.oa.organization.auparty.util.IConstants.BS_KEY);
+        IAuPartyBs bs = (IAuPartyBs) BeanFactoryHelper.getBean("auPartyBs");
         return (PartyVo)bs.find(partyId);
     }
     /**
@@ -259,8 +258,8 @@ public class OrgHelper {
      * @return
      */
     public static PartyVo getPartyVoByCode (String code) {
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
-        IAuPartyBs ptyBs = (IAuPartyBs) Helper.getBean(venus.oa.organization.auparty.util.IConstants.BS_KEY);
+        IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
+        IAuPartyBs ptyBs = (IAuPartyBs) BeanFactoryHelper.getBean("auPartyBs");
         
         AuPartyRelationVo vo = new AuPartyRelationVo();
         vo.setCode(code);
@@ -279,7 +278,7 @@ public class OrgHelper {
      * @return
      */
     public static Map getNameMapByIDList(ArrayList lPartyId) {
-        IAuPartyBs bs = (IAuPartyBs) Helper.getBean(venus.oa.organization.auparty.util.IConstants.BS_KEY);
+        IAuPartyBs bs = (IAuPartyBs) BeanFactoryHelper.getBean("auPartyBs");
         return bs.getNameMapByKey(lPartyId);
     }
     /**
@@ -290,7 +289,7 @@ public class OrgHelper {
      * @return
      */
     public static Map getNameMapByCodeList(ArrayList lCode) {
-        IAuPartyRelationBs bs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs bs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         return bs.getNameMapByCode(lCode);
     }
     /**
@@ -299,7 +298,7 @@ public class OrgHelper {
      * @return
      */    
     public static List getParentRelation(String code) {
-    	IAuPartyRelationBs bs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+    	IAuPartyRelationBs bs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
     	return bs.getParentRelation(code);
     }
     /**
@@ -309,7 +308,7 @@ public class OrgHelper {
      * @return
      */
     public static List getPartyTypeList() {
-        IAuPartyTypeBS bs = (IAuPartyTypeBS) Helper.getBean(
+        IAuPartyTypeBS bs = (IAuPartyTypeBS) BeanFactoryHelper.getBean(
                 venus.oa.organization.aupartytype.util.IConstants.BS_KEY );
         return bs.queryAllEnable(-1,-1,null);
     }
@@ -320,7 +319,7 @@ public class OrgHelper {
      * @return
      */
     public static List getPartyRelationTypeList() {
-        IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS) Helper.getBean(
+        IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS) BeanFactoryHelper.getBean(
                 IConstants.BS_KEY );
         return bs.queryAllEnable(-1,-1,null);
     }
@@ -340,7 +339,7 @@ public class OrgHelper {
      * @return 如果添加成功则返回新添加的团体主键ID，如果添加失败则返回null
      */
     public static String addParty(PartyVo vo) {
-        IAuPartyBs bs = (IAuPartyBs) Helper.getBean(venus.oa.organization.auparty.util.IConstants.BS_KEY);
+        IAuPartyBs bs = (IAuPartyBs) BeanFactoryHelper.getBean("auPartyBs");
         return bs.addParty(vo);
     }
 
@@ -355,7 +354,7 @@ public class OrgHelper {
      * @return 如果修改成功则返回true，否则返回false
      */
     public static boolean updateParty(PartyVo vo) {
-        IAuPartyBs bs = (IAuPartyBs) Helper.getBean(venus.oa.organization.auparty.util.IConstants.BS_KEY);
+        IAuPartyBs bs = (IAuPartyBs) BeanFactoryHelper.getBean("auPartyBs");
         return bs.updateParty(vo);
     }
 
@@ -366,7 +365,7 @@ public class OrgHelper {
      * @return
      */
     public static boolean deleteParty(String partyId) {
-        IAuPartyBs bs = (IAuPartyBs) Helper.getBean(venus.oa.organization.auparty.util.IConstants.BS_KEY);
+        IAuPartyBs bs = (IAuPartyBs) BeanFactoryHelper.getBean("auPartyBs");
         return bs.delete(partyId);
     }
 
@@ -379,7 +378,7 @@ public class OrgHelper {
      * @return
      */
     public static boolean addRoot(String partyId, String partyRelationTypeId) {
-        IAuPartyRelationBs bs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs bs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         return bs.initRoot(partyId, partyRelationTypeId);
     }
     
@@ -391,7 +390,7 @@ public class OrgHelper {
      * @return 如果添加失败或该团体关系已经存在则返回false，否则返回true
      */
     public static boolean addPartyRelation(String childPartyId, String parentRelId, String relTypeId) {
-        IAuPartyRelationBs bs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs bs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         return null==bs.addPartyRelation(childPartyId, parentRelId, relTypeId)?false:true;
     }
 
@@ -401,7 +400,7 @@ public class OrgHelper {
      * @return 如果删除成功则返回true，否则返回false
      */
     public static boolean deletePartyRelation(String id) {
-        IAuPartyRelationBs bs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs bs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         return bs.deletePartyRelation(id);
     }
     
@@ -460,7 +459,7 @@ public class OrgHelper {
 	 * @return String
 	 */
 	public static String getPartyIdByCode(String code){
-	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         AuPartyRelationVo vo = new AuPartyRelationVo();
         vo.setCode(code);
         List<AuPartyRelationVo> list = relBs.queryAuPartyRelation(vo);

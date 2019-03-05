@@ -1,9 +1,8 @@
 package venus.oa.util;
 
 import org.springframework.jdbc.core.RowMapper;
-import venus.oa.util.common.bs.ICommonBs;
 import venus.frames.base.dao.BaseTemplateDao;
-import venus.frames.mainframe.util.Helper;
+import venus.oa.util.common.bs.ICommonBs;
 import venus.springsupport.BeanFactoryHelper;
 
 import java.lang.reflect.Field;
@@ -170,7 +169,8 @@ public class ProjTools {
 //            baseDao = (BaseTemplateDao) getCommonBsInstance().getDao();
             baseDao = (BaseTemplateDao)BeanFactoryHelper.getBean("commonDao");
         else
-            baseDao = (BaseTemplateDao) Helper.getBean(daoName);
+//            baseDao = (BaseTemplateDao) Helper.getBean(daoName);
+            baseDao = (BaseTemplateDao) BeanFactoryHelper.getBean(daoName);
         Connection con = null;
         try {
             con = baseDao.getDataSource().getConnection();

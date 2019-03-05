@@ -3,19 +3,17 @@ package venus.oa.organization.company.bs.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.helper.OrgHelper;
+import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
-import venus.oa.organization.aupartyrelation.util.IConstants;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.organization.company.bs.ICompanyBs;
 import venus.oa.organization.company.bs.ICompanyFacadeBs;
 import venus.oa.organization.company.util.ICompanyConstants;
 import venus.oa.organization.company.vo.CompanyVo;
-import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
-import venus.frames.mainframe.util.Helper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,17 +24,21 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
 	@Autowired
 	private ICompanyBs companyBs;
 
+	@Autowired
+	private IAuPartyRelationBs auPartyRelationBs;
+
+	@Autowired
+	private IHistoryLogBs historyLogBs;
+
 	/**
 	 * 添加新记录，同时添加团体、团体关系根节点并记录历史日志
 	 */
 	public String insertRoot(CompanyVo companyVo, LoginSessionVo vo) {
 	        String partyid = companyBs.insertRoot(companyVo);
-	        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
             AuPartyRelationVo relvo = new AuPartyRelationVo();
             relvo.setPartyid(partyid);
             relvo.setRelationtype_id(GlobalConstants.getRelaType_comp());
-            AuPartyRelationVo companyRelVo = (AuPartyRelationVo)relBs.queryAuPartyRelation(relvo).get(0);
-            IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
+            AuPartyRelationVo companyRelVo = (AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0);
             	Map map = new HashMap();
         	map.put("OPERATERID",vo.getParty_id());
         	map.put("OPERATERNAME",vo.getName());
@@ -46,7 +48,7 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
         	map.put("SOURCEID",companyRelVo.getId());
     		map.put("SOURCECODE", ProjTools.getNewTreeCode(5, GlobalConstants.getRelaType_comp()));
     		map.put("SOURCEORGTREE","");
-        	historyBs.insert(map);
+        	historyLogBs.insert(map);
         	return partyid;
 	}
 	
@@ -55,13 +57,11 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
 	 */
 	public String insert(CompanyVo companyVo, String parentRelId, LoginSessionVo vo) {
 	        String partyid = companyBs.insert(companyVo, parentRelId);
-    	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
             String parentCode = OrgHelper.getRelationCodeByRelationId(parentRelId);
             AuPartyRelationVo relvo = new AuPartyRelationVo();
             relvo.setPartyid(partyid);
             relvo.setParent_code(parentCode);
-            AuPartyRelationVo companyRelVo = (AuPartyRelationVo)relBs.queryAuPartyRelation(relvo).get(0);
-            IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
+            AuPartyRelationVo companyRelVo = (AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0);
             Map map = new HashMap();
         	map.put("OPERATERID",vo.getParty_id());
         	map.put("OPERATERNAME",vo.getName());
@@ -71,7 +71,7 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
         	map.put("SOURCEID",companyRelVo.getId());
     		map.put("SOURCECODE",companyRelVo.getCode());
     		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(companyRelVo.getCode(),true)); //由于这里保存的是父节点，所以要显示最后一级节点
-        	historyBs.insert(map);
+        	historyLogBs.insert(map);
         	return partyid;
 	} 
 	
@@ -79,7 +79,6 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
 	 * 更新单条记录，同时调用接口更新相应的团体、团体关系记录并记下历史日志
 	 */
 	public int update(CompanyVo companyVo, LoginSessionVo vo) {
-        	IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
             	Map map = new HashMap();
         	map.put("OPERATERID",vo.getParty_id());
         	map.put("OPERATERNAME",vo.getName());
@@ -88,16 +87,15 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
         	String code[] = new String[]{new String()};
         	code = OrgHelper.getRelationCode(companyVo.getId());
 	    	for(int j = 0; j < code.length; j++) {
-	    	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
                 AuPartyRelationVo relvo = new AuPartyRelationVo();
                 relvo.setCode(code[j]);
-                map.put("SOURCEID",((AuPartyRelationVo)relBs.queryAuPartyRelation(relvo).get(0)).getId());
+                map.put("SOURCEID",((AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0)).getId());
                 map.put("SOURCECODE",code[j]);
 	    		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code[j],false));
 	    	}
 	    	int rows = companyBs.update(companyVo); 
 	    	map.put("COMPANYVO",companyBs.find(companyVo.getId()));
-        	historyBs.insert(map);
+			historyLogBs.insert(map);
         	return rows;
 	}
 	
@@ -105,7 +103,6 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
 	 * 删除团体同时将团体的详细信息记录到历史表中
 	 */
 	public int delete(String partyId[],LoginSessionVo vo) {
-        	IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
         	CompanyVo companyVo = new CompanyVo();
         	Map map = new HashMap();
         	map.put("OPERATERID",vo.getParty_id());
@@ -119,13 +116,12 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
         	    	map.put("COMPANYVO",companyVo);
         	    	code = OrgHelper.getRelationCode(companyVo.getId());
         	    	for(int j = 0; j < code.length; j++) {
-        	    	    IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
                         AuPartyRelationVo relvo = new AuPartyRelationVo();
                         relvo.setCode(code[j]);
-                        map.put("SOURCEID",((AuPartyRelationVo)relBs.queryAuPartyRelation(relvo).get(0)).getId());
+                        map.put("SOURCEID",((AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0)).getId());
                         map.put("SOURCECODE",code[j]);
         	    		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code[j],false));
-        	    		historyBs.insert(map);	  
+						historyLogBs.insert(map);
         	    	}    		
         	}
 		return companyBs.delete(partyId);
@@ -136,7 +132,6 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
 	 */
 	public int delete(String relationId,LoginSessionVo vo) {
         	String partyId = OrgHelper.getPartyIDByRelationID(relationId);
-        	IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
         	CompanyVo companyVo = companyBs.find(partyId);  //通过id获取vo
         	Map map = new HashMap();
         	map.put("OPERATERID",vo.getParty_id());
@@ -149,7 +144,7 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
         	map.put("SOURCEID",relationId);
     		map.put("SOURCECODE",code);
     		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code,false));
-        	historyBs.insert(map);
+        	historyLogBs.insert(map);
 		return companyBs.delete(relationId);
 	}	
 

@@ -10,6 +10,7 @@ import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.GlobalConstants;
 import venus.frames.base.dao.BaseTemplateDao;
 import venus.frames.mainframe.util.Helper;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,7 +38,7 @@ public class DeepTreeSearch {
 		sql.append("%' AND NAME LIKE '%");
 		sql.append(name);
 		sql.append("%'");
-		BaseTemplateDao dao=(BaseTemplateDao) Helper.getBean("aupartyrelationtype_dao");
+		BaseTemplateDao dao=(BaseTemplateDao) BeanFactoryHelper.getBean("auPartyRelationTypeDao");
 		int count=dao.queryForInt(sql.toString());
 		return count>0;
 	}
@@ -90,7 +91,8 @@ public class DeepTreeSearch {
             } 
 	    }
 	    
-		BaseTemplateDao dao=(BaseTemplateDao) Helper.getBean("aupartyrelationtype_dao");
+		BaseTemplateDao dao=(BaseTemplateDao) BeanFactoryHelper.getBean("auPartyRelationTypeDao");
+
                 RowMapper rowMapper = new RowMapper() {
                     public Object mapRow(ResultSet rs, int i) throws SQLException {    
                         return rs.getString("code");
