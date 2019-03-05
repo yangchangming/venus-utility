@@ -19,7 +19,7 @@ import com.weibo.api.motan.common.MotanConstants;
 import com.weibo.api.motan.util.MotanSwitcherUtil;
 import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
-import org.springframework.context.annotation.ImportResource;
+import venus.init.InitializationFactory;
 
 /**
  * <p> Venus OA server bootstrap </p>
@@ -27,12 +27,14 @@ import org.springframework.context.annotation.ImportResource;
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-02-28 15:02
  */
-@ImportResource({"classpath:spring/applicationContext-motan.xml","classpath:spring/applicationContext.xml"})
+//@ImportResource({"classpath:spring/applicationContext-motan.xml","classpath:spring/applicationContext.xml"})
 public class VenusOABootstrap {
 
     private static final Logger logger = Logger.getLogger(VenusOABootstrap.class);
 
     public static void main(String[] args){
+        InitializationFactory.init();
+
         SpringApplication app = new SpringApplication(VenusOABootstrap.class);
         app.setWebEnvironment(false);
         app.run(args);
