@@ -5,6 +5,7 @@
 package venus.oa.organization.auparty.bs.impl;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.authority.auuser.bs.IAuUserBs;
 import venus.oa.authority.auuser.util.IAuUserConstants;
@@ -37,31 +38,20 @@ import java.util.Map;
  */
 @Service
 public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
+
+    @Autowired
+    private IAuPartyDao auPartyDao;
     
-    private IAuPartyDao dao = null;
-    
-    /**
-     * @return 返回 dao。
-     */
-    public IAuPartyDao getDao() {
-        return dao;
-    }
-    /**
-     * @param dao 要设置的 dao。
-     */
-    public void setDao(IAuPartyDao dao) {
-        this.dao = dao;
-    }
     /**
      * 新增团体
      */
     public String addParty(PartyVo vo) {
         //判断团体名称是否存在
-        //List list = getDao().queryPartyByName(vo);
+        //List list = auPartyDao.queryPartyByName(vo);
         //if (list.size()>0) {
         //    throw new BaseApplicationException("团体名称重复，请重新编辑");
         //}
-        return getDao().addParty(vo);
+        return auPartyDao.addParty(vo);
     }
     /**
      * 
@@ -108,7 +98,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      */
     public boolean updateParty (PartyVo vo){
         //根据该id查询得到旧的vo
-        PartyVo oldVo = (PartyVo)getDao().queryParty(vo.getId()).get(0);
+        PartyVo oldVo = (PartyVo)auPartyDao.queryParty(vo.getId()).get(0);
         
         //更新团体表
         if(!(vo.getName()==null || vo.getName().length()==0)){
@@ -123,7 +113,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
         if(!(vo.getOwner_org()==null || vo.getOwner_org().length()==0)){
             oldVo.setOwner_org(vo.getOwner_org());
         }
-        getDao().updateParty(oldVo);
+        auPartyDao.updateParty(oldVo);
         
         //更新用户表
         IAuUserBs userBs = (IAuUserBs) Helper.getBean(IAuUserConstants.BS_KEY);
@@ -164,7 +154,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      */
     public boolean disableParty(String partyId){
         //禁用团体
-        getDao().disableParty(partyId);
+        auPartyDao.disableParty(partyId);
         //查询相应的团体关系
         IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
         AuPartyRelationVo queryVo = new AuPartyRelationVo();
@@ -208,7 +198,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
         }
         new UserProfileModel(partyId).removeProfile();
         //删除团体
-        getDao().delete(partyId);
+        auPartyDao.delete(partyId);
         return true;
     }
     
@@ -221,7 +211,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      * @return
      */
     public List simpleQuery(int no, int size, String orderStr,String typeId, Object objVo) {
-        return getDao().simpleQuery(no, size, orderStr, typeId, objVo);
+        return auPartyDao.simpleQuery(no, size, orderStr, typeId, objVo);
     }
 
     /**
@@ -236,7 +226,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
 	    if (!"1".equals(tvo.getEnable_status())) {
 	        throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_has_been_disabled_"));
 	    }	    
-		return getDao().enableParty(id);
+		return auPartyDao.enableParty(id);
 	}
 
     /**
@@ -245,7 +235,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      * @return
      */
     public int getRecordCount(String typeId, Object objVo) {
-        return getDao().getRecordCount(typeId, objVo);
+        return auPartyDao.getRecordCount(typeId, objVo);
     }
     
     /**
@@ -254,7 +244,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      * @return
      */
     public Object find(String id) {
-        return getDao().find(id);
+        return auPartyDao.find(id);
     }
 
     /**
@@ -263,7 +253,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      * @return
      */
     public List queryAllPartyRelation(String party_id){
-        return getDao().queryAllPartyRelation(party_id);        
+        return auPartyDao.queryAllPartyRelation(party_id);        
     }
     
     /**
@@ -272,7 +262,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      * @return
      */
     public Map getNameMapByKey(List lPartyId){
-        return getDao().getNameMapByKey(lPartyId);  
+        return auPartyDao.getNameMapByKey(lPartyId);  
     }
     /**
      * 按条件查询,返回LIST
@@ -284,7 +274,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      * @return
      */
     public List simpleQueryPerson(int no, int size, String orderStr, Object objVo){
-    	List list = getDao().simpleQueryPerson(no,size,orderStr,objVo);
+    	List list = auPartyDao.simpleQueryPerson(no,size,orderStr,objVo);
         for(int i = 0; i < list.size();  i++) {
         	PartyVo partyVo = (PartyVo)list.get(i);
         	partyVo.setOwner_org(DeepTreeSearch.getOrgNameById(partyVo.getId(), false));
@@ -301,7 +291,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      * @return
      */
     public List simpleQueryPerson(int no, int size, String orderStr, String queryCondition){
-    	List list = getDao().simpleQueryPerson(no,size,orderStr,queryCondition);
+    	List list = auPartyDao.simpleQueryPerson(no,size,orderStr,queryCondition);
     	SysParamVo organizeTooltip = GlobalConstants.getSysParam(GlobalConstants.ORGANIZETOOLTIP);
         for(int i = 0; i < list.size();  i++) {
         	PartyVo partyVo = (PartyVo)list.get(i);
@@ -317,7 +307,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      * @return
      */
     public int getRecordCountPerson(Object objVo) {
-        return getDao().getRecordCountPerson(objVo);
+        return auPartyDao.getRecordCountPerson(objVo);
     }
     /**
      * 按条件获得记录数
@@ -325,7 +315,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      * @return
      */
     public int getRecordCountPerson(String queryCondition) {
-        return getDao().getRecordCountPerson(queryCondition);
+        return auPartyDao.getRecordCountPerson(queryCondition);
     }    
     /**
      * 查询团体关系表
@@ -333,7 +323,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      * @return
      */
     public List queryAllPartyRelationDivPage(int no, int size, String party_id, Object objVo){
-        return getDao().queryAllPartyRelationDivPage(no,size,party_id,objVo);
+        return auPartyDao.queryAllPartyRelationDivPage(no,size,party_id,objVo);
     }
     /**
      * 查询团体关系表
@@ -341,7 +331,7 @@ public class AuPartyBs extends BaseBusinessService implements IAuPartyBs {
      * @return
      */
     public int getRecordCountPartyRelation(String party_id){
-        return getDao().getRecordCountPartyRelation(party_id);
+        return auPartyDao.getRecordCountPartyRelation(party_id);
     }
 }
 

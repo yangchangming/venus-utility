@@ -11,19 +11,13 @@
 package venus.oa.util.common.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.util.common.dao.ICommonDao;
 import venus.frames.base.dao.BaseTemplateDao;
 
 import java.util.List;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author ganshuo
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
+@Repository
 public class CommonDao extends BaseTemplateDao implements ICommonDao {
     /**
      * 通用的方法，返回自己控制的对象

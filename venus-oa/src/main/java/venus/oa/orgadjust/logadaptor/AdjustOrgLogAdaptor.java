@@ -21,6 +21,7 @@ import java.util.Map;
  * 调级日志适配器 
  */
 public class AdjustOrgLogAdaptor implements HistoryAdaptor {
+
 	private IAuPartyBs partyBs;
 
 	/**

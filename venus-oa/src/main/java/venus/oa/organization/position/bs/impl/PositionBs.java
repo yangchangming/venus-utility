@@ -12,6 +12,7 @@
 package venus.oa.organization.position.bs.impl;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.helper.OrgHelper;
 import venus.oa.organization.auparty.vo.PartyVo;
@@ -24,40 +25,11 @@ import venus.frames.base.bs.BaseBusinessService;
 
 import java.util.List;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
-
 @Service
 public class PositionBs extends BaseBusinessService implements IPositionBs, IPositionConstants {
     
-    /**
-     * dao 表示: 数据访问层的实例
-     */
-    private IPositionDao dao = null;
-
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public IPositionDao getDao() {
-        return dao;
-    }
-
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(IPositionDao dao) {
-        this.dao = dao;
-    }
+    @Autowired
+    private IPositionDao positionDao;
 
     /**
      * 添加新记录，同时添加团体、团体关系（如果parentRelId为空则不添加团体关系）
@@ -85,7 +57,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
         if(vo.getPosition_no()==null || vo.getPosition_no().length()==0) {//如果用户不手工编号，则系统自动编号
             vo.setPosition_no(partyId);
         }
-		getDao().insert(vo);
+		positionDao.insert(vo);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "插入了1条记录,id=" + String.valueOf(oid));
 		return partyId;
     }
@@ -93,12 +65,11 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
     /**
      * 删除单条记录，同时删除团体关系及相关的权限记录
      * 
-     * @param id 用于删除的记录的id
      * @return 成功删除的记录数
      */
     public int delete(String partyRelationId) {
     	String partyid = OrgHelper.getPartyIDByRelationID(partyRelationId);
-    	int n = getDao().delete(partyid);
+    	int n = positionDao.delete(partyid);
     	OrgHelper.deleteParty(partyid);//调用接口删除相应的团体、团体关系、帐户、权限等记录
 		return n;
     }
@@ -110,7 +81,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 成功删除的记录数
      */
     public int delete(String id[]) {
-		int sum = getDao().delete(id);
+		int sum = positionDao.delete(id);
 		for(int i=0; i<id.length; i++) {
 		    OrgHelper.deleteParty(id[i]);//调用接口删除相应的团体、团体关系、帐户、权限等记录
 		}
@@ -125,7 +96,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 查询到的VO对象
      */
     public PositionVo find(String id) {
-		PositionVo vo = getDao().find(id);
+		PositionVo vo = positionDao.find(id);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "察看了1条记录,id=" + id);
 		return vo;
     }
@@ -152,7 +123,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
         partyVo.setRemark(vo.getRemark());//备注	
         OrgHelper.updateParty(partyVo);//调用接口进行更新
         
-		int sum = getDao().update(vo);
+		int sum = positionDao.update(vo);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "更新了" + sum + "条记录,id=" + String.valueOf(vo.getId()));
 		return sum;
     }
@@ -163,7 +134,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 查询到的VO列表
      */
     public List queryAll() {
-		List lResult = getDao().queryAll();
+		List lResult = positionDao.queryAll();
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll()");
 		return lResult;
     }
@@ -175,7 +146,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 查询到的VO列表
      */
     public List queryAll(String orderStr) {
-		List lResult = getDao().queryAll(orderStr);
+		List lResult = positionDao.queryAll(orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll(" + orderStr + ")");
 		return lResult;
     }
@@ -188,7 +159,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 查询到的VO列表
      */
     public List queryAll(int no, int size) {
-		List lResult = getDao().queryAll(no, size);
+		List lResult = positionDao.queryAll(no, size);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ",cmd=queryAll(" + no + ", " + size + ")");
 		return lResult;
     }
@@ -202,7 +173,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 查询到的VO列表
      */
     public List queryAll(int no, int size, String orderStr) {
-		List lResult = getDao().queryAll(no, size, orderStr);
+		List lResult = positionDao.queryAll(no, size, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll(" + no + ", " + size + ", " + orderStr + ")");
 		return lResult;
     }
@@ -213,7 +184,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 总记录数
      */
     public int getRecordCount() {
-        int sum = getDao().getRecordCount();
+        int sum = positionDao.getRecordCount();
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询到了总记录数,sum=" + sum);
         return sum;
     }
@@ -225,7 +196,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 总记录数
      */
     public int getRecordCount(String queryCondition) {
-		int sum = getDao().getRecordCount(queryCondition);
+		int sum = positionDao.getRecordCount(queryCondition);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询到了总记录数,sum=" + sum + ", queryCondition=" + queryCondition);
 		return sum;
     }
@@ -237,7 +208,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 查询到的VO列表
      */
     public List queryByCondition(String queryCondition) {
-		List lResult = getDao().queryByCondition(queryCondition);
+		List lResult = positionDao.queryByCondition(queryCondition);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", queryCondition=" + queryCondition);
 		return lResult;
     }
@@ -250,7 +221,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 查询到的VO列表
      */
     public List queryByCondition(String queryCondition, String orderStr) {
-		List lResult = getDao().queryByCondition(queryCondition, orderStr);
+		List lResult = positionDao.queryByCondition(queryCondition, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", queryCondition=" + queryCondition + ", orderStr=" + orderStr);
 		return lResult;
     }
@@ -264,7 +235,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 查询到的VO列表
      */
     public List queryByCondition(int no, int size, String queryCondition) {
-		List lResult = getDao().queryByCondition(no, size, queryCondition);
+		List lResult = positionDao.queryByCondition(no, size, queryCondition);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", no=" + no + ", size=" + size + ", queryCondition=" + queryCondition);
 		return lResult;
     }
@@ -279,7 +250,7 @@ public class PositionBs extends BaseBusinessService implements IPositionBs, IPos
      * @return 查询到的VO列表
      */
     public List queryByCondition(int no, int size, String queryCondition, String orderStr) {
-		List lResult = getDao().queryByCondition(no, size, queryCondition, orderStr);
+		List lResult = positionDao.queryByCondition(no, size, queryCondition, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", no=" + no + ", size=" + size + ", queryCondition=" + queryCondition + ", orderStr=" + orderStr);
 		return lResult;
     }

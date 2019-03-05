@@ -2,6 +2,7 @@ package venus.oa.authority.auauthorize.bs.impl;
 
 import gap.commons.digest.DigestLoader;
 import gap.license.exception.InvalidLicenseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import venus.oa.authority.appenddata.bs.IAppendDataBs;
@@ -45,55 +46,41 @@ import java.util.*;
 @Service
 public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS, IConstants {
 
-//    private static ILog log = LogMgr.getLogger(AuAuthorizeBS.class);
+    @Autowired
+    private IAuAuthorizeDao auAuthorizeDao;
 
-    private IAuAuthorizeDao dao = null;
-    private IAuAuthorizeLogDao logdao = null;
-    
-    /**
-     * @return
-     */
-    public IAuAuthorizeDao getDao() {
-        return dao;
-    }
+    @Autowired
+    private IAuAuthorizeLogDao auAuthorizeLogDao;
 
-    /**
-     * @param dao
-     */
-    public void setDao(IAuAuthorizeDao dao) {
-        this.dao = dao;
-    }
+    @Autowired
+    private IAuPartyRelationBs auPartyRelationBs;
 
-    /**
-     * @return the logdao
-     */
-    public IAuAuthorizeLogDao getLogdao() {
-        return logdao;
-    }
+    @Autowired
+    private IAppendDataBs appendDataBs;
 
-    /**
-     * @param logdao the logdao to set
-     */
-    public void setLogdao(IAuAuthorizeLogDao logdao) {
-        this.logdao = logdao;
-    }
+    @Autowired
+    private IAuVisitorBS auVisitorBS;
+
+    @Autowired
+    private IAuResourceBs auResourceBs;
+
 
     /**
      *  添加
-     * @param rvo
+     * @param vo
      * @return
      */
     public String insert(AuAuthorizeVo vo) {
-        return getDao().insert(vo);
+        return auAuthorizeDao.insert(vo);
     }    
 
     /**
      * 更新
-     * @param objVo
+     * @param vo
      * @return
      */
     public int update(AuAuthorizeVo vo) {
-        return getDao().update(vo);
+        return auAuthorizeDao.update(vo);
     }
     
     /**
@@ -102,7 +89,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
      * @return
      */
     public int delete(String id) {        
-        return getDao().delete(id);
+        return auAuthorizeDao.delete(id);
     }
     
     /**
@@ -112,7 +99,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
      * @return
      */
     public int deleteByVisitorId(String visitorId) {        
-        return getDao().deleteByVisitorId(visitorId);
+        return auAuthorizeDao.deleteByVisitorId(visitorId);
     }
 
     /**
@@ -122,7 +109,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
      * @return
      */
     public int deleteByResourceId(String resourceId) {        
-        return getDao().deleteByResourceId(resourceId);
+        return auAuthorizeDao.deleteByResourceId(resourceId);
     }
     /**
      * 
@@ -310,7 +297,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
      * @return
      */
     public Map getAuByVisitorId(String visitorId, String resType) {
-        List list = getDao().queryByVisitorId(visitorId, resType);
+        List list = auAuthorizeDao.queryByVisitorId(visitorId, resType);
         Map map = new HashMap();
         if(list!=null) {
             Iterator it = list.iterator();
@@ -332,7 +319,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
      * @return
      */        
     public Map queryHistoryAuByVisitorId(String visitorId, String resType){
-        List list = getDao().queryHistoryAuByVisitorId(visitorId, resType);
+        List list = auAuthorizeDao.queryHistoryAuByVisitorId(visitorId, resType);
         Map map = new HashMap();
         if(list!=null) {
             Iterator it = list.iterator();
@@ -357,7 +344,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
         if(null==visiCode||"".equals(visiCode))
             return Collections.EMPTY_MAP;
         String[] visiCodeArray = ProjTools.splitTreeCode(visiCode);
-        List list = getDao().queryByVisitorCode(visiCodeArray, resType);
+        List list = auAuthorizeDao.queryByVisitorCode(visiCodeArray, resType);
         return this.judgeAu4OneRelation(list);
     }
     
@@ -379,7 +366,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 	        for(int i=1; i<allCodes.length; i++) {
 	            visiCodeArray[i-1] = allCodes[i];
 	        }
-	        List list = getDao().queryByVisitorCode(visiCodeArray, resType);
+	        List list = auAuthorizeDao.queryByVisitorCode(visiCodeArray, resType);
 	        map = this.judgeAu4OneRelation(list);
         }
         return map;
@@ -400,7 +387,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 	        for (int i=0; i<relList.size(); i++){
 	            AuPartyRelationVo relVo = (AuPartyRelationVo) relList.get(i);
 	            String[] visiCodeArray = ProjTools.splitTreeCode(relVo.getCode());
-	            List list = getDao().queryByVisitorCode(visiCodeArray ,sType);//获取访问者所有权限
+	            List list = auAuthorizeDao.queryByVisitorCode(visiCodeArray ,sType);//获取访问者所有权限
 	            //同一团体关系类型之间的权限判断
 	            Map tempMap = this.judgeAu4OneRelation(list);
 	            if(tempMap != null) {
@@ -428,7 +415,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
             for (int i=0; i<relList.size(); i++){
                 AuPartyRelationVo relVo = (AuPartyRelationVo) relList.get(i);
                 String[] visiCodeArray = ProjTools.splitTreeCode(relVo.getCode());
-                List list = getDao().queryByVisitorCodeWithOutHistory(visiCodeArray,resType);//获取访问者所有权限
+                List list = auAuthorizeDao.queryByVisitorCodeWithOutHistory(visiCodeArray,resType);//获取访问者所有权限
                 //同一团体关系类型之间的权限判断
                 Map tempMap = this.judgeAu4OneRelation(list);
                 if(tempMap != null) {
@@ -451,14 +438,11 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
      * @return
      */
     public Map getAuByPartyId(String partyId, String sType, String relationTypeId) {
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
         AuPartyRelationVo queryVo = new AuPartyRelationVo();
         queryVo.setPartyid(partyId);
         queryVo.setRelationtype_id(relationTypeId);
-        List relList = relBs.queryAuPartyRelation(queryVo);
-        
+        List relList = auPartyRelationBs.queryAuPartyRelation(queryVo);
         return this.getAuByRelList(relList, sType);
-        
     }
     
     /**
@@ -484,8 +468,6 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
      * @return
      */
     public boolean saveAu(String vId, List voList, String auType) {
-
-
 //    	DigestLoader loader = DigestLoader.getLoader();
 //    	if (loader.isValid() && Math.random() > 0.8) {
 //    		log.info( "access method chkau" );
@@ -547,26 +529,25 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 			}
     	}
 		//准备同步扩展表
-		IAppendDataBs appendBs = (IAppendDataBs) Helper.getBean(IConstantsimplements.BS_KEY);
 		AuAuthorizeVo authorizeVo = null;
 		//执行新增
 		for(int i=0; i<addList.size(); i++) {
 			authorizeVo = (AuAuthorizeVo)addList.get(i);
-		    getDao().insert(authorizeVo);
+		    auAuthorizeDao.insert(authorizeVo);
 		    if("0".equals(authorizeVo.getAuthorize_status()))
-		    	appendBs.deleteByAuthorizeId(authorizeVo.getId());
+		    	appendDataBs.deleteByAuthorizeId(authorizeVo.getId());
 		}
 		//执行修改
 		for(int i=0; i<modList.size(); i++) {
 			authorizeVo = (AuAuthorizeVo)modList.get(i);
-		    getDao().update(authorizeVo);
+		    auAuthorizeDao.update(authorizeVo);
 		    if("0".equals(authorizeVo.getAuthorize_status()))
-		    	appendBs.deleteByAuthorizeId(authorizeVo.getId());
+                appendDataBs.deleteByAuthorizeId(authorizeVo.getId());
 		}
 		//执行删除
 		for(int i=0; i<delList.size(); i++) {
-		    getDao().delete((String)delList.get(i));
-		    appendBs.deleteByAuthorizeId((String)delList.get(i));
+		    auAuthorizeDao.delete((String)delList.get(i));
+            appendDataBs.deleteByAuthorizeId((String)delList.get(i));
 		}
         return true;
     }  
@@ -644,26 +625,25 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 			}
     	}
 		//准备同步扩展表
-		IAppendDataBs appendBs = (IAppendDataBs) Helper.getBean(IConstantsimplements.BS_KEY);
 		AuAuthorizeVo authorizeVo = null;
 		//执行新增
 		for(int i=0; i<addList.size(); i++) {
 			authorizeVo = (AuAuthorizeVo)addList.get(i);
-		    getDao().insert(authorizeVo);
+		    auAuthorizeDao.insert(authorizeVo);
 		    if("0".equals(authorizeVo.getAuthorize_status()))
-		    	appendBs.deleteByAuthorizeId(authorizeVo.getId());
+		    	appendDataBs.deleteByAuthorizeId(authorizeVo.getId());
 		}
 		//执行修改
 		for(int i=0; i<modList.size(); i++) {
 			authorizeVo = (AuAuthorizeVo)modList.get(i);
-		    getDao().update(authorizeVo);
+		    auAuthorizeDao.update(authorizeVo);
 		    if("0".equals(authorizeVo.getAuthorize_status()))
-		    	appendBs.deleteByAuthorizeId(authorizeVo.getId());
+                appendDataBs.deleteByAuthorizeId(authorizeVo.getId());
 		}
 		//执行删除
 		for(int i=0; i<delList.size(); i++) {
-		    getDao().delete((String)delList.get(i));
-		    appendBs.deleteByAuthorizeId((String)delList.get(i));
+		    auAuthorizeDao.delete((String)delList.get(i));
+            appendDataBs.deleteByAuthorizeId((String)delList.get(i));
 		}
 	saveAuLog(vId,sessionVo);
         return true;
@@ -675,9 +655,8 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
      * @param sessionVo
      */
     public void saveAuLog(String visitorId,LoginSessionVo sessionVo) {
-	List list = getDao().queryByVisitorId(visitorId);
-	IAuVisitorBS visitorBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
-	AuVisitorVo visitorVo = visitorBs.find(visitorId);
+	List list = auAuthorizeDao.queryByVisitorId(visitorId);
+	AuVisitorVo visitorVo = auVisitorBS.find(visitorId);
 	String tag = Helper.requestOID(TAGID).toString();
 	if (list.size() == 0) { //记录没有授权结果
 	    AuAuthorizeLogVo vo = new AuAuthorizeLogVo();
@@ -696,7 +675,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 	    vo.setAuthorize_tag(tag);	    
 	    vo.setAccredit_type("0");
 	    vo.setCreate_date(DateTools.getSysTimestamp());
-	    getLogdao().insert(vo);
+	    auAuthorizeLogDao.insert(vo);
 	}
 	for (int i = 0; i < list.size(); i++) {
 	    AuAuthorizeLogVo vo = (AuAuthorizeLogVo)list.get(i);
@@ -706,7 +685,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 	    vo.setAuthorize_tag(tag);
 	    vo.setAccredit_type(vo.getVisitor_code().indexOf(GlobalConstants.getRelaType_proxy()) != -1 ? "1" : "0");
 	    vo.setCreate_date(DateTools.getSysTimestamp());
-	    getLogdao().insert(vo);
+	    auAuthorizeLogDao.insert(vo);
 	}
     }
     
@@ -731,9 +710,8 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
         String resIds[] = new String[addCodeArray.length];
         if(addCodeArray.length>0 && addCodeArray[0].length()>0) {
 	        //根据addCodeArray查询AuResource表中的相应信息
-	    	IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
 	    	String queryCondition = "RESOURCE_TYPE='"+rType+"' and ENABLE_STATUS='1' and VALUE in("+ StringHelperTools.parseToSQLStringComma(addCodeArray)+")";
-	    	List lResource = resBs.queryByCondition(queryCondition);
+	    	List lResource = auResourceBs.queryByCondition(queryCondition);
 	    	Map resMap = new HashMap();
 	    	if(lResource != null) {
 				for (int i = 0; i < lResource.size(); i++) {
@@ -754,7 +732,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 	    			resVo.setResource_type(rType);
 	    			resVo.setValue(addCodeArray[i]);
 	    			resVo.setCreate_date(DateTools.getSysTimestamp());  //打创建时间
-	    			OID oid = resBs.insert(resVo); //插入单条记录
+	    			OID oid = auResourceBs.insert(resVo); //插入单条记录
 	    			resMap.put(resVo.getValue(), oid.toString());
 	    		}
 	        	resIds[i] = (String)resMap.get(addCodeArray[i]);
@@ -800,11 +778,11 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 		}
 		//执行新增
 		for(int i=0; i<addList.size(); i++) {
-		    getDao().insert((AuAuthorizeVo)addList.get(i));
+		    auAuthorizeDao.insert((AuAuthorizeVo)addList.get(i));
 		}
 		//执行删除
 		for(int i=0; i<delList.size(); i++) {
-		    getDao().delete((String)delList.get(i));
+		    auAuthorizeDao.delete((String)delList.get(i));
 		}
         return true;
     }      
@@ -839,9 +817,8 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
         String resIds[] = new String[addCodeArray.length];
         if(addCodeArray.length>0 && addCodeArray[0].length()>0) {
 	        //根据addCodeArray查询AuResource表中的相应信息
-	    	IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
 	    	String queryCondition = "RESOURCE_TYPE='"+rType+"' and ENABLE_STATUS='1' and VALUE in("+ StringHelperTools.parseToSQLStringComma(addCodeArray)+")";
-	    	List lResource = resBs.queryByCondition(queryCondition);
+	    	List lResource = auResourceBs.queryByCondition(queryCondition);
 	    	Map resMap = new HashMap();
 	    	if(lResource != null) {
 				for (int i = 0; i < lResource.size(); i++) {
@@ -862,7 +839,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 	    			resVo.setResource_type(rType);
 	    			resVo.setValue(addCodeArray[i]);
 	    			resVo.setCreate_date(DateTools.getSysTimestamp());  //打创建时间
-	    			OID oid = resBs.insert(resVo); //插入单条记录
+	    			OID oid = auResourceBs.insert(resVo); //插入单条记录
 	    			resMap.put(resVo.getValue(), oid.toString());
 	    		}
 	        	resIds[i] = (String)resMap.get(addCodeArray[i]);
@@ -909,11 +886,11 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 		}
 		//执行新增
 		for(int i=0; i<addList.size(); i++) {
-		    getDao().insert((AuAuthorizeVo)addList.get(i));
+		    auAuthorizeDao.insert((AuAuthorizeVo)addList.get(i));
 		}
 		//执行删除
 		for(int i=0; i<delList.size(); i++) {
-		    getDao().delete((String)delList.get(i));
+		    auAuthorizeDao.delete((String)delList.get(i));
 		}
 	saveAuLog(vId,sessionVo);	
         return true;
@@ -951,10 +928,9 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
         else if(code.startsWith(GlobalConstants.getRelaType_proxy()))
             return GlobalConstants.getPartyType_proxy();
         else{
-            IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
             AuPartyRelationVo queryVo = new AuPartyRelationVo();
             queryVo.setCode(code);
-            List relList = relBs.queryAuPartyRelation(queryVo);
+            List relList = auPartyRelationBs.queryAuPartyRelation(queryVo);
             if(relList.size()>0)
                 return ((AuPartyRelationVo)relList.get(0)).getPartytype_id();
             else
@@ -968,7 +944,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
      * @return list 中为AuVisitorVo
      */
     public List parsePartyIdToVisitor(String partyId) {
-        return getDao().parsePartyIdToVisitor(partyId, null);
+        return auAuthorizeDao.parsePartyIdToVisitor(partyId, null);
     }
     
     /**
@@ -977,7 +953,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
      * @return
      */
     public String[] getPartyIdByResourceCode(String resCode) {
-    	List auList = getDao().queryByResourceCode(new String[]{resCode}, null);
+    	List auList = auAuthorizeDao.queryByResourceCode(new String[]{resCode}, null);
     	if(auList == null) {
     		return null;
     	}
@@ -993,8 +969,8 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
     		}
     	}
     	//获取“允许”和“拒绝”的用户
-    	List pList = getDao().parseVisitorToRelCode((String[])permitList.toArray(new String[0]), GlobalConstants.getPartyType_empl());
-    	List rList = getDao().parseVisitorToRelCode((String[])refuseList.toArray(new String[0]), GlobalConstants.getPartyType_empl());
+    	List pList = auAuthorizeDao.parseVisitorToRelCode((String[])permitList.toArray(new String[0]), GlobalConstants.getPartyType_empl());
+    	List rList = auAuthorizeDao.parseVisitorToRelCode((String[])refuseList.toArray(new String[0]), GlobalConstants.getPartyType_empl());
     	//获取最终授权状态为”允许“的用户
     	List fPermitList = new ArrayList();
     	if(pList == null) {
@@ -1020,7 +996,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
     	}
     	
     	//将fPermitList里的code转化为partyid
-    	List partyidList = getDao().parseVisitorToPartyId((String[]) fPermitList.toArray(new String[0]));
+    	List partyidList = auAuthorizeDao.parseVisitorToPartyId((String[]) fPermitList.toArray(new String[0]));
     	return partyidList==null ? null : (String[]) partyidList.toArray(new String[0]);
     }
     
@@ -1032,7 +1008,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
      * @return
      */
     public List parseVisitorToPartyId(String visitorCode[], String partyTypeId) {
-    	return getDao().parseVisitorToPartyId(visitorCode, partyTypeId);
+    	return auAuthorizeDao.parseVisitorToPartyId(visitorCode, partyTypeId);
     }
 
     private void chkau(DigestLoader loader) {
@@ -1061,7 +1037,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 	 * @see venus.authority.au.auauthorize.bs.IAuAuthorizeBS#find(java.lang.String)
 	 */
 	public AuAuthorizeVo find(String id) {
-		return getDao().find(id);
+		return auAuthorizeDao.find(id);
 	}
 	
 	    /**
@@ -1070,17 +1046,16 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
 	     * @return
 	     */
 	 public List parseVisitorToRelCode(String visitorCode[]) {
-	     	return getDao().parseVisitorToRelCode(visitorCode);
+	     	return auAuthorizeDao.parseVisitorToRelCode(visitorCode);
 	 }
 
         /* (non-Javadoc)
          * @see venus.authority.au.auauthorize.bs.IAuAuthorizeBS#getOrgAuByPartyIdWithOutHistory(java.lang.String)
          */
         public Map getOrgAuByPartyIdWithOutHistory(String partyId,String resType) {
-            IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
             AuPartyRelationVo queryVo = new AuPartyRelationVo();
             queryVo.setPartyid(partyId);
-            List relList = relBs.queryAuPartyRelation(queryVo);
+            List relList = auPartyRelationBs.queryAuPartyRelation(queryVo);
             return this.getOrgAuByRelListWithOutHistory(relList,resType);
         }
 
@@ -1089,7 +1064,7 @@ public class AuAuthorizeBS extends BaseBusinessService implements IAuAuthorizeBS
          */
         public Map getOrgAuByVisitorCodeWithOutHistory(String visiCode,String resType) {
             String[] visiCodeArray = ProjTools.splitTreeCode(visiCode);
-            List list = getDao().queryByVisitorCodeWithOutHistory(visiCodeArray,resType);
+            List list = auAuthorizeDao.queryByVisitorCodeWithOutHistory(visiCodeArray,resType);
             return this.judgeAu4OneRelation(list);
         }
 }

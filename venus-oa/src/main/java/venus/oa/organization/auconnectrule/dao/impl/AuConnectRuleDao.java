@@ -2,6 +2,7 @@ package venus.oa.organization.auconnectrule.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.organization.auconnectrule.dao.IAuConnectRuleDao;
 import venus.oa.organization.auconnectrule.util.IConstants;
 import venus.oa.organization.auconnectrule.vo.AuConnectRuleVo;
@@ -16,8 +17,8 @@ import java.util.List;
 /**
  * 团体规则DAO
  * @author wumingqiang
- *
  */
+@Repository
 public class AuConnectRuleDao extends BaseTemplateDao implements IAuConnectRuleDao,
         IConstants {
 

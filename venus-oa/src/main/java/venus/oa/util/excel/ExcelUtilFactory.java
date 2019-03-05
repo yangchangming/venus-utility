@@ -11,19 +11,26 @@ import java.io.*;
  *
  */
 public class ExcelUtilFactory {
+
     public interface ExcelUtil{
         public void writeExcel(String name, String sheet, String arr[][]);
         public String[][] readExcel(String name, String sheet);
     }
+
     private static ExcelUtil util = null;
     private static final String EXCELTOOLS = "ExcelUtil";
     static{
         try{
-        util = (ExcelUtil) Helper.getBean(EXCELTOOLS);
+
+            util = (ExcelUtil) Helper.getBean(EXCELTOOLS);
+
+
+
         }catch(Exception e){
             util = null;
         }
     }
+
     public static ExcelUtil getUtil(){
         if(null!=util)
             return util;

@@ -95,4 +95,11 @@
     <!--登录日志-->
     <motan:service interface="venus.oa.loginlog.bs.ILoginLogBs" ref="loginLogBs" basicService="serviceBasicConfig" />
 
+    <!--多租户?目前没有用到-->
+    <motan:service interface="venus.oa.profile.bs.IUserProfileBs" ref="userProfileBs" basicService="serviceBasicConfig" />
+
+    <motan:service interface="venus.oa.util.common.bs.ICommonBs" ref="commonBs" basicService="serviceBasicConfig" />
+
+
+
 </beans>

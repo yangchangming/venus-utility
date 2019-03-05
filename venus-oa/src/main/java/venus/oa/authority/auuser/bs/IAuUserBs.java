@@ -27,20 +27,7 @@ import java.util.List;
  */
 
 public interface IAuUserBs {
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public IAuUserDao getDao();
 
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(IAuUserDao dao);
-    
     /**
      * 
      * 功能: 获取portal帐户信息

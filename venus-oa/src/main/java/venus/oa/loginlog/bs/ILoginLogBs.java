@@ -31,20 +31,6 @@ import java.util.List;
 public interface ILoginLogBs {
 
     /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public ILoginLogDao getDao();
-
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(ILoginLogDao dao);
-
-    /**
      * 插入单条记录
      * 
      * @param vo 用于添加的VO对象

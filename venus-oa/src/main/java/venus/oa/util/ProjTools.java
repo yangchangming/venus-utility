@@ -1,20 +1,10 @@
-/*
- * 系统名称:Platform --> authority
- * 
- * 文件名称: venus.authority.util --> ProjTools.java
- * 
- * 功能描述: 系统公用的一些方法
- * 
- * 版本历史:
- * 2005-6-28 13:04:51 创建1.0.0版 (Administrator)
- * 
- */
 package venus.oa.util;
 
 import org.springframework.jdbc.core.RowMapper;
 import venus.oa.util.common.bs.ICommonBs;
 import venus.frames.base.dao.BaseTemplateDao;
 import venus.frames.mainframe.util.Helper;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -24,23 +14,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
 public class ProjTools {
-    
-    /**
-     * 构造函数:
-     *  
-     */
-    public ProjTools() {
-    }
     
     /**
      * 功能: 根据父编码生成树状编码的子编码
@@ -150,14 +124,13 @@ public class ProjTools {
     }
     
     public static ICommonBs getCommonBsInstance() {
-        return (ICommonBs) Helper.getBean("au_common_bs");
+        return (ICommonBs)BeanFactoryHelper.getBean("CommonBs");
     }
 
     /**
      * 
      * 功能:判断参数1是否可以通过乘积拆分成参数2 
      *
-     * @param num
      * @return
      */
     public static boolean judgeNum(int bigNum, int smallNum) {
@@ -194,7 +167,8 @@ public class ProjTools {
         String databaseProductName = null;
         BaseTemplateDao baseDao = null;
         if(null==daoName)
-            baseDao = (BaseTemplateDao) getCommonBsInstance().getDao();
+//            baseDao = (BaseTemplateDao) getCommonBsInstance().getDao();
+            baseDao = (BaseTemplateDao)BeanFactoryHelper.getBean("commonDao");
         else
             baseDao = (BaseTemplateDao) Helper.getBean(daoName);
         Connection con = null;

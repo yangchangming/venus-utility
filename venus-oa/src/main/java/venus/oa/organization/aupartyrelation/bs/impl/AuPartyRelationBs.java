@@ -6,6 +6,7 @@ package venus.oa.organization.aupartyrelation.bs.impl;
 
 import gap.commons.digest.DigestLoader;
 import gap.license.exception.NoSuchModuleException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.authority.auvisitor.bs.IAuVisitorBS;
 import venus.oa.authority.auvisitor.vo.AuVisitorVo;
@@ -35,21 +36,10 @@ import java.util.Map;
 
 @Service
 public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRelationBs,IConstants {
-    private IAuPartyRelationDao dao=null;
-//    private static ILog log = LogMgr.getLogger(AuPartyRelationBs.class);
-   
-    /**
-     * @return 返回 dao。
-     */
-    public IAuPartyRelationDao getDao() {
-        return dao;
-    }
-    /**
-     * @param dao 要设置的 dao。
-     */
-    public void setDao(IAuPartyRelationDao dao) {
-        this.dao = dao;
-    }
+
+    @Autowired
+    private IAuPartyRelationDao auPartyRelationDao;
+
     /**
      * 
      * 功能: 添加团体关系根节点
@@ -78,7 +68,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
         rvo.setIs_leaf("1");
         rvo.setType_is_leaf("1");
         rvo.setEmail(vo.getEmail());
-        getDao().addAuPartyRelation(rvo);
+        auPartyRelationDao.addAuPartyRelation(rvo);
         
         return true;
     }
@@ -109,14 +99,14 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
             queryVo = new AuPartyRelationVo();
             queryVo.setRelationtype_id(relTypeId);
             queryVo.setPartyid(childPartyId);
-            List allrel=getDao().queryAuPartyRelation(queryVo);
+            List allrel=auPartyRelationDao.queryAuPartyRelation(queryVo);
             if (allrel.size()>0){
                 throw new BaseApplicationException(childPartyVo.getName()+venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Already_exists_can_not_repeat_the_add_"));
             }
         }
         
         //根据父团体关系id查询得到父团体关系Vo
-        AuPartyRelationVo parentRelationVo = getDao().find(parentRelId);
+        AuPartyRelationVo parentRelationVo = auPartyRelationDao.find(parentRelId);
         if (parentRelationVo==null){
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Not_Found")+childPartyVo.getName()+venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.The_higher_the_node_"));
         }
@@ -128,9 +118,9 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
         queryVo = new AuPartyRelationVo();
         queryVo.setRelationtype_id(parentRelationVo.getRelationtype_id());
         queryVo.setPartyid(parentRelationVo.getPartyid());
-        List allParentRel = getDao().queryAuPartyRelation(queryVo);
+        List allParentRel = auPartyRelationDao.queryAuPartyRelation(queryVo);
         for (int i=0;i<allParentRel.size();i++){
-            List list=getDao().queryAuParentRelation(((AuPartyRelationVo)allParentRel.get(i)).getCode(),childPartyId);
+            List list=auPartyRelationDao.queryAuParentRelation(((AuPartyRelationVo)allParentRel.get(i)).getCode(),childPartyId);
             if (list.size()>0){
                 throw new BaseApplicationException(childPartyVo.getName()+venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Not_only")+parentRelationVo.getName()+venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Parent_node_is_its_child_nodes_"));
             }
@@ -138,7 +128,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
         //查询兄弟节点列表
         queryVo = new AuPartyRelationVo();
         queryVo.setParent_code(parentRelationVo.getCode());
-        List result=getDao().queryAuPartyRelation(queryVo);
+        List result=auPartyRelationDao.queryAuPartyRelation(queryVo);
         for(int i=0; i<result.size(); i++) {
             AuPartyRelationVo childVo = (AuPartyRelationVo)result.get(i);
             //判断相同的团体关系是否已经存在，如果已经存在则报错
@@ -169,7 +159,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
         vo.setType_is_leaf("1");
         vo.setEmail(childPartyVo.getEmail());
         vo.setRelationtype_keyword(relationtype_keyword);
-        OID oid = getDao().addAuPartyRelation(vo);
+        OID oid = auPartyRelationDao.addAuPartyRelation(vo);
         
         //判断父节点原先是否叶子节点，如果是则置为非叶子节点
         boolean editFlag = false;
@@ -186,7 +176,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
         }
         //判断父节点是否需要修改
         if(editFlag){
-            getDao().updateLeaf(parentRelationVo);
+            auPartyRelationDao.updateLeaf(parentRelationVo);
         }
         return oid;
     }
@@ -209,7 +199,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      * @param vo
      */
     public void addPartyRelation(AuPartyRelationVo vo) {
-        getDao().addAuPartyRelation(vo);
+        auPartyRelationDao.addAuPartyRelation(vo);
     }
 
     /**
@@ -219,7 +209,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
     private PartyVo queryAuPartyForId(String id){
         PartyVo vo=new PartyVo();
         vo.setId(id);
-        List result=getDao().queryAuParty(vo);
+        List result=auPartyRelationDao.queryAuParty(vo);
         if(result.size()==0){
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Can_not_find_the_data_"));
         }
@@ -236,7 +226,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
         vo.setChild_partytype_id(childPartyTypeId);
         vo.setParent_partytype_id(parentPartyTypeId);
         vo.setRelation_type_id(relTypeId);
-        List result=getDao().queryAuConnectrule(vo);
+        List result=auPartyRelationDao.queryAuConnectrule(vo);
         if(result.size()==0){
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Does_not_meet_the_connection_rules_failed_to_add_"));
         }
@@ -247,7 +237,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      * @return
      */
     public boolean deletePartyRelation(String id){
-        AuPartyRelationVo vo = getDao().find(id);
+        AuPartyRelationVo vo = auPartyRelationDao.find(id);
         if("0".equals(vo.getIs_leaf())) {
             throw new BaseApplicationException(vo.getName()+venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Not_a_leaf_node_is_not_allowed_to_delete_"));
         }
@@ -255,16 +245,16 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
         IAuVisitorBS auBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
         auBs.deleteByOrigId(id);
         //删除当前节点
-        getDao().deleteAuPartyRelation(id);
+        auPartyRelationDao.deleteAuPartyRelation(id);
         //查询父节点Vo
         AuPartyRelationVo queryVo=new AuPartyRelationVo();
         queryVo.setCode(vo.getParent_code());
-        List result = getDao().queryAuPartyRelation(queryVo);
+        List result = auPartyRelationDao.queryAuPartyRelation(queryVo);
         if (result.size()>0) {
             AuPartyRelationVo parentVo = (AuPartyRelationVo) result.get(0);
             boolean isModify = false;
             //判断删除当前节点后，父节点是否为叶子节点
-            int nCount = getDao().getCountByParentCode(vo.getParent_code());
+            int nCount = auPartyRelationDao.getCountByParentCode(vo.getParent_code());
             if(nCount==0) {
                 parentVo.setIs_leaf("1");
                 parentVo.setType_is_leaf("1");
@@ -274,7 +264,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
                 queryVo=new AuPartyRelationVo();
                 queryVo.setParent_code(parentVo.getCode());
                 queryVo.setPartytype_id(parentVo.getPartytype_id());
-                result = getDao().queryAuPartyRelation(queryVo);
+                result = auPartyRelationDao.queryAuPartyRelation(queryVo);
                 if(result.size()==0) {
                     parentVo.setType_is_leaf("1");
                     isModify = true;
@@ -282,7 +272,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
             }
             //根据id修改团体关系的is_leaf,type_is_leaf字段
             if(isModify) {
-                getDao().updateLeaf(parentVo);
+                auPartyRelationDao.updateLeaf(parentVo);
             }
         }
         
@@ -294,7 +284,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      * @return
      */
     public int getCountByParentCode(String parentCode) {
-        return getDao().getCountByParentCode(parentCode);
+        return auPartyRelationDao.getCountByParentCode(parentCode);
     }
     /**
      * 对团体关系表进行查询
@@ -302,7 +292,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      * @return
      */
     public List queryAuPartyRelation(AuPartyRelationVo vo) {
-        return getDao().queryAuPartyRelation(vo);
+        return auPartyRelationDao.queryAuPartyRelation(vo);
     }
     /**
      * 
@@ -312,7 +302,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      * @return
      */
     public List queryAllByCode(String parentCode){
-        return getDao().queryAllByCode(parentCode);
+        return auPartyRelationDao.queryAllByCode(parentCode);
     }
     /**
      * 修改团体关系
@@ -328,7 +318,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
             visiBs.update(visiVo);
         }
         //更新团体关系表记录
-        return getDao().update(vo);
+        return auPartyRelationDao.update(vo);
     }
     /**
      * 
@@ -342,9 +332,9 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
 		for(Iterator itlChange = lChange.iterator(); itlChange.hasNext(); ) {
 			String[] param = (String[]) itlChange.next();	
 			//更新团体关系表
-			AuPartyRelationVo vo = getDao().find(param[1]);
+			AuPartyRelationVo vo = auPartyRelationDao.find(param[1]);
 			vo.setOrder_code(param[0]);
-			sum += getDao().update(vo);
+			sum += auPartyRelationDao.update(vo);
 		} 
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "排序操作更新了" + IAuPartyRelationConstants.TABLE_NAME + "表的" + sum + "条记录");
 		return sum;
@@ -357,7 +347,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      * @return
      */
     public List queryParentRelation(String parentCode) {
-        return getDao().queryParentRelation(parentCode);
+        return auPartyRelationDao.queryParentRelation(parentCode);
     }
     
     /**
@@ -366,7 +356,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      * @return
      */
     public List getParentRelation(String code) {
-    	 return getDao().getParentRelation(code);
+    	 return auPartyRelationDao.getParentRelation(code);
     }
     
     /**
@@ -376,7 +366,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      * @return 查询到的VO对象
      */
     public AuPartyRelationVo find(String id) {
-        return getDao().find(id);
+        return auPartyRelationDao.find(id);
     }
     /**
      * 根据code列表获得name的Map
@@ -385,7 +375,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      * @return 查询到的VO对象
      */
     public Map getNameMapByCode(ArrayList lCode){
-        return getDao().getNameMapByCode(lCode);
+        return auPartyRelationDao.getNameMapByCode(lCode);
     }
     /**
      * 按条件获得记录数
@@ -393,7 +383,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      * @return
      */
     public int getRecordCount(String queryCondition) {
-        return getDao().getRecordCount(queryCondition);
+        return auPartyRelationDao.getRecordCount(queryCondition);
     }
     /**
      * 按条件查询,返回LIST
@@ -404,7 +394,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      * @return
      */
     public List simpleQuery(int no, int size, String orderStr, Object objVo) {
-        return getDao().simpleQuery(no, size, orderStr, objVo);
+        return auPartyRelationDao.simpleQuery(no, size, orderStr, objVo);
     }
     
     private void chkrelation(DigestLoader loader) {
@@ -433,7 +423,7 @@ public class AuPartyRelationBs extends BaseBusinessService implements IAuPartyRe
      */
     public AuPartyRelationVo queryRelationVoByKey(String childPartyId,
                                                   String parentRelId, String relTypeId) {
-        return getDao().queryRelationVoByKey(childPartyId,parentRelId,relTypeId);
+        return auPartyRelationDao.queryRelationVoByKey(childPartyId,parentRelId,relTypeId);
     }    
 }
 

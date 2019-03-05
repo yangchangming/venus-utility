@@ -27,19 +27,6 @@ import java.util.List;
  */
 
 public interface IAuResourceBs {
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public IAuResourceDao getDao();
-
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(IAuResourceDao dao);
 
     /**
      * 插入单条记录

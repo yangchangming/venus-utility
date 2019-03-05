@@ -26,19 +26,6 @@ import java.util.List;
  */
 
 public interface IEmployeeBs {
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public IEmployeeDao getDao();
-
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(IEmployeeDao dao);
 
     /**
      * 添加新记录，同时添加团体、团体关系（如果parentRelId为空则不添加团体关系）

@@ -1,6 +1,7 @@
 package venus.oa.authority.auresource.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Service;
 import venus.oa.authority.auresource.dao.IAuResourceDao;
 import venus.oa.authority.auresource.util.IAuResourceConstants;
 import venus.oa.authority.auresource.vo.AuResourceVo;
@@ -16,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+@Service
 public class AuResourceDao extends BaseTemplateDao implements IAuResourceDao, IAuResourceConstants {
 
     /**

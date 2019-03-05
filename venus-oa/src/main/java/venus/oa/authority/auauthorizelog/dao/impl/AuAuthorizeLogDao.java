@@ -4,6 +4,7 @@
 package venus.oa.authority.auauthorizelog.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.authority.auauthorize.vo.AuAuthorizeVo;
 import venus.oa.authority.auauthorizelog.dao.IAuAuthorizeLogDao;
 import venus.oa.authority.auauthorizelog.util.IConstants;
@@ -23,6 +24,7 @@ import java.util.List;
  * @author zangjian
  *
  */
+@Repository
 public class AuAuthorizeLogDao extends BaseTemplateDao implements IAuAuthorizeLogDao, IConstants {
 
     /**

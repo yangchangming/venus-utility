@@ -1,58 +1,31 @@
 package venus.oa.authority.aufunctree.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import venus.frames.base.bs.BaseBusinessService;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
 import venus.oa.authority.aufunctree.dao.IAuFunctreeDao;
 import venus.oa.authority.aufunctree.util.AuFunctreeConstants;
 import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
 import venus.oa.authority.auresource.bs.IAuResourceBs;
-import venus.oa.authority.auresource.util.IAuResourceConstants;
 import venus.oa.authority.auresource.vo.AuResourceVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
-import venus.frames.base.bs.BaseBusinessService;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
-
 @Service
 public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, IAuFunctreeConstants {
-    
-    /**
-     * dao 表示: 数据访问层的实例
-     */
-    private IAuFunctreeDao dao = null;
 
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public IAuFunctreeDao getDao() {
-        return dao;
-    }
+    @Autowired
+    private IAuFunctreeDao auFunctreeDao;
 
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(IAuFunctreeDao dao) {
-        this.dao = dao;
-    }
+    @Autowired
+    private IAuResourceBs auResourceBs;
 
     /**
      * 插入单条记录
@@ -62,7 +35,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      */
     public OID insert(AuFunctreeVo vo) {
 		//第一步：判断父节点是否为叶子节点，如果是则将它改为非叶子节点
-        List myList = getDao().queryByCondition("TOTAL_CODE='"+vo.getParent_code()+"'");
+        List myList = auFunctreeDao.queryByCondition("TOTAL_CODE='"+vo.getParent_code()+"'");
 		AuFunctreeVo parentVo = (AuFunctreeVo)myList.get(0);
         if( "1".equals(parentVo.getIs_leaf()) || "1".equals(parentVo.getType_is_leaf()) ) {
         	boolean isUpdate = false;
@@ -76,7 +49,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
         	}
         	if(isUpdate) {
         	    parentVo.setModify_date(DateTools.getSysTimestamp());
-        		getDao().update(parentVo);
+        		auFunctreeDao.update(parentVo);
         	}
         }
 
@@ -84,7 +57,6 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
         String code = ProjTools.getTreeCode(AuFunctreeConstants.getDifferentInstance().TABLE_NAME,"TOTAL_CODE",3,vo.getParent_code()); //获得code
         String orderCode = ProjTools.getTreeCode(AuFunctreeConstants.getDifferentInstance().TABLE_NAME,"ORDER_CODE",3,vo.getParent_code());
         
-        IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
         AuResourceVo resVo = new AuResourceVo();
         resVo.setResource_type(vo.getType());
         resVo.setName(vo.getName());
@@ -104,7 +76,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
 		//resVo.setTable_chinesename();
         //resVo.setField_chinesename();
         
-        OID oid = resBs.insert(resVo);
+        OID oid = auResourceBs.insert(resVo);
         //第三步：插入新节点
         vo.setTotal_code(code);
         vo.setOrder_code(orderCode);//排序编号
@@ -115,7 +87,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
         vo.setCode(code.substring(code.length()-3));
         long id = oid.longValue();
         vo.setId(String.valueOf(id));
-        getDao().insert(vo);
+        auFunctreeDao.insert(vo);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "插入了1条记录,id=" + String.valueOf(oid));
 		return oid;
     }
@@ -127,23 +99,23 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 成功删除的记录数
      */
     public int delete(String id) {
-        AuFunctreeVo vo = getDao().find(id);
+        AuFunctreeVo vo = auFunctreeDao.find(id);
         String pCode = vo.getParent_code();
         //第一步：判断删除的节点是否最后一个子节点，如果是则将其父节点改为叶子节点
         boolean is_leaf = false;
         boolean type_is_leaf = false;
-		int count = getDao().getRecordCount("PARENT_CODE ='"+pCode+"'");
+		int count = auFunctreeDao.getRecordCount("PARENT_CODE ='"+pCode+"'");
 		if( count==1 ) {
 			is_leaf = true;
 			type_is_leaf = true;
         }else if(vo.getType().equals(GlobalConstants.getResType_menu())){//当前删除的是菜单，且菜单只有一个
-			count = getDao().getRecordCount("PARENT_CODE ='"+pCode+"' and TYPE='" + GlobalConstants.getResType_menu() + "'");
+			count = auFunctreeDao.getRecordCount("PARENT_CODE ='"+pCode+"' and TYPE='" + GlobalConstants.getResType_menu() + "'");
 			if( count==1 ) {
 				type_is_leaf = true;
 	        }
         }
 		if(is_leaf || type_is_leaf) {
-			List pList = getDao().queryByCondition("TOTAL_CODE ='"+pCode+"'");
+			List pList = auFunctreeDao.queryByCondition("TOTAL_CODE ='"+pCode+"'");
 		    AuFunctreeVo parentVo = (AuFunctreeVo)pList.get(0);
 			if(is_leaf) {
 				 parentVo.setIs_leaf("1");
@@ -152,10 +124,10 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
 				parentVo.setType_is_leaf("1");
 			}
 			parentVo.setModify_date(DateTools.getSysTimestamp());
-			getDao().update(parentVo);	
+			auFunctreeDao.update(parentVo);	
 		}
 		//第二步：删除节点
-		int sum = getDao().delete(id);
+		int sum = auFunctreeDao.delete(id);
 		
 		//同步删除au_resource
 
@@ -178,10 +150,8 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 成功删除的记录数
      */
     public int delete(String id[]) {
-		int sum = getDao().delete(id);
-		//同步删除au_resource
-        IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
-        resBs.delete(id);
+		int sum = auFunctreeDao.delete(id);
+        auResourceBs.delete(id);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "删除了" + sum + "条记录,id=" + String.valueOf(id));
 		return sum;
     }
@@ -193,7 +163,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 查询到的VO对象
      */
     public AuFunctreeVo find(String id) {
-		AuFunctreeVo vo = getDao().find(id);
+		AuFunctreeVo vo = auFunctreeDao.find(id);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "察看了1条记录,id=" + id);
 		return vo;
     }
@@ -205,10 +175,9 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 成功更新的记录数
      */
     public int update(AuFunctreeVo vo) {
-		int sum = getDao().update(vo);
+		int sum = auFunctreeDao.update(vo);
 		//同步更新au_resource
-		IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
-        AuResourceVo resVo = resBs.find(vo.getId());
+        AuResourceVo resVo = auResourceBs.find(vo.getId());
         boolean isUpdate = false;
         if(vo.getName()!=null && ! vo.getName().equals(resVo.getName())) {
 	        resVo.setName(vo.getName());
@@ -232,7 +201,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
         }
         if(isUpdate) {
             resVo.setModify_date(vo.getModify_date());
-	        resBs.update(resVo);
+            auResourceBs.update(resVo);
         }
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "更新了" + sum + "条记录,id=" + String.valueOf(vo.getId()));
 		return sum;
@@ -242,7 +211,6 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * 
      * 更新多条记录
      *
-     * @param lChang 用于更新的列表(String[2]组成的list)
      * @return 成功更新的记录数
      */
     public int update(List lChange) {
@@ -250,7 +218,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
 		for(Iterator itlChange = lChange.iterator(); itlChange.hasNext(); ) {
 			String[] param = (String[]) itlChange.next();
 			String strSql = "update "+ AuFunctreeConstants.getDifferentInstance().TABLE_NAME+" set ORDER_CODE='"+param[0]+"' where id='"+param[1]+"'";
-			sum += getDao().update(strSql);				
+			sum += auFunctreeDao.update(strSql);				
 		} 
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "更新了" + sum + "条记录,id=" + String.valueOf(vo.getId()));
 		return sum;
@@ -262,7 +230,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 查询到的VO列表
      */
     public List queryAll() {
-		List lResult = getDao().queryAll();
+		List lResult = auFunctreeDao.queryAll();
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll()");
 		return lResult;
     }
@@ -274,7 +242,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 查询到的VO列表
      */
     public List queryAll(String orderStr) {
-		List lResult = getDao().queryAll(orderStr);
+		List lResult = auFunctreeDao.queryAll(orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll(" + orderStr + ")");
 		return lResult;
     }
@@ -287,7 +255,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 查询到的VO列表
      */
     public List queryAll(int no, int size) {
-		List lResult = getDao().queryAll(no, size);
+		List lResult = auFunctreeDao.queryAll(no, size);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ",cmd=queryAll(" + no + ", " + size + ")");
 		return lResult;
     }
@@ -301,7 +269,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 查询到的VO列表
      */
     public List queryAll(int no, int size, String orderStr) {
-		List lResult = getDao().queryAll(no, size, orderStr);
+		List lResult = auFunctreeDao.queryAll(no, size, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll(" + no + ", " + size + ", " + orderStr + ")");
 		return lResult;
     }
@@ -312,7 +280,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 总记录数
      */
     public int getRecordCount() {
-        int sum = getDao().getRecordCount();
+        int sum = auFunctreeDao.getRecordCount();
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询到了总记录数,sum=" + sum);
         return sum;
     }
@@ -324,7 +292,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 总记录数
      */
     public int getRecordCount(String queryCondition) {
-		int sum = getDao().getRecordCount(queryCondition);
+		int sum = auFunctreeDao.getRecordCount(queryCondition);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询到了总记录数,sum=" + sum + ", queryCondition=" + queryCondition);
 		return sum;
     }
@@ -336,7 +304,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 查询到的VO列表
      */
     public List queryByCondition(String queryCondition) {
-		List lResult = getDao().queryByCondition(queryCondition);
+		List lResult = auFunctreeDao.queryByCondition(queryCondition);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", queryCondition=" + queryCondition);
 		return lResult;
     }
@@ -349,7 +317,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 查询到的VO列表
      */
     public List queryByCondition(String queryCondition, String orderStr) {
-		List lResult = getDao().queryByCondition(queryCondition, orderStr);
+		List lResult = auFunctreeDao.queryByCondition(queryCondition, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", queryCondition=" + queryCondition + ", orderStr=" + orderStr);
 		return lResult;
     }
@@ -363,7 +331,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 查询到的VO列表
      */
     public List queryByCondition(int no, int size, String queryCondition) {
-		List lResult = getDao().queryByCondition(no, size, queryCondition);
+		List lResult = auFunctreeDao.queryByCondition(no, size, queryCondition);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", no=" + no + ", size=" + size + ", queryCondition=" + queryCondition);
 		return lResult;
     }
@@ -378,7 +346,7 @@ public class AuFunctreeBs extends BaseBusinessService implements IAuFunctreeBs, 
      * @return 查询到的VO列表
      */
     public List queryByCondition(int no, int size, String queryCondition, String orderStr) {
-		List lResult = getDao().queryByCondition(no, size, queryCondition, orderStr);
+		List lResult = auFunctreeDao.queryByCondition(no, size, queryCondition, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", no=" + no + ", size=" + size + ", queryCondition=" + queryCondition + ", orderStr=" + orderStr);
 		return lResult;
     }

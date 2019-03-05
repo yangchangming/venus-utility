@@ -1,6 +1,7 @@
 package venus.oa.organization.employee.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.organization.employee.dao.IEmployeeDao;
 import venus.oa.organization.employee.util.IEmployeeConstants;
 import venus.oa.organization.employee.vo.EmployeeVo;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * employee data access object
  */
+@Repository
 public class EmployeeDao extends BaseTemplateDao implements IEmployeeDao, IEmployeeConstants {
 
     /**

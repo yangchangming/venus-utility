@@ -1,5 +1,6 @@
 package venus.oa.history.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.history.dao.IHistoryLogDao;
@@ -10,9 +11,12 @@ import venus.frames.base.bs.BaseBusinessService;
 import venus.pub.lang.OID;
 
 import java.util.List;
+
 @Service
 public class HistoryLogBs extends BaseBusinessService implements IHistoryLogBs {
-	private IHistoryLogDao dao=null;
+
+	@Autowired
+	private IHistoryLogDao historyLogDao;
     
     private HistoryLogModel model;
     
@@ -32,19 +36,12 @@ public class HistoryLogBs extends BaseBusinessService implements IHistoryLogBs {
     }
     
 	/**
-	 * @param dao 要设置的 dao。
-	 */
-	public void setDao(IHistoryLogDao dao) {
-		this.dao = dao;
-	}
-	
-	/**
 	 * 增加历史日志
 	 * @param vo
 	 * @return
 	 */
 	public OID insert (Object vo) {
-		return getModel().onLog(vo,dao);
+		return getModel().onLog(vo,historyLogDao);
 	}
 	
 	/**
@@ -53,7 +50,7 @@ public class HistoryLogBs extends BaseBusinessService implements IHistoryLogBs {
 	 * @return
 	 */
 	public HistoryLogVo find (String id) {
-		return dao.find(id);
+		return historyLogDao.find(id);
 	}
 	
 	/**
@@ -62,7 +59,7 @@ public class HistoryLogBs extends BaseBusinessService implements IHistoryLogBs {
 	 * @return
 	 */
 	public HistoryLogVo findDetail(String id) {
-		return dao.findDetail(id);
+		return historyLogDao.findDetail(id);
 	}	
 	
 	/**
@@ -79,7 +76,7 @@ public class HistoryLogBs extends BaseBusinessService implements IHistoryLogBs {
 	 * @return
 	 */
 	public int getRecordCount(String queryCondition) {
-		return dao.getRecordCount(queryCondition);
+		return historyLogDao.getRecordCount(queryCondition);
 	}
 	
 	/**
@@ -109,21 +106,21 @@ public class HistoryLogBs extends BaseBusinessService implements IHistoryLogBs {
 	 * @return
 	 */
 	public List queryByCondition(int no, int size, String queryCondition, String orderStr) {
-		return dao.queryByCondition(no,  size, queryCondition, orderStr);
+		return historyLogDao.queryByCondition(no,  size, queryCondition, orderStr);
 	}
 
 	/* （非 Javadoc）
 	 * @see venus.authority.service.history.bs.IHistoryLogBs#getRecordCount(venus.authority.util.SqlBuilder)
 	 */
 	public int getRecordCount(SqlBuilder sql) {
-		return dao.getRecordCount(sql);
+		return historyLogDao.getRecordCount(sql);
 	}
 
 	/* （非 Javadoc）
 	 * @see venus.authority.service.history.bs.IHistoryLogBs#queryByCondition(venus.authority.util.SqlBuilder)
 	 */
 	public List queryByCondition(SqlBuilder sql) {
-		return dao.queryByCondition(sql);
+		return historyLogDao.queryByCondition(sql);
 	}
 }
 

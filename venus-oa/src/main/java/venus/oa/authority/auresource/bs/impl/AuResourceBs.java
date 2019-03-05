@@ -11,53 +11,28 @@
 
 package venus.oa.authority.auresource.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import venus.frames.base.bs.BaseBusinessService;
 import venus.oa.authority.auauthorize.dao.IAuAuthorizeDao;
 import venus.oa.authority.auresource.bs.IAuResourceBs;
 import venus.oa.authority.auresource.dao.IAuResourceDao;
 import venus.oa.authority.auresource.util.IAuResourceConstants;
 import venus.oa.authority.auresource.vo.AuResourceVo;
 import venus.oa.util.GlobalConstants;
-import venus.frames.base.bs.BaseBusinessService;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.util.List;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
 @Service
 public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, IAuResourceConstants {
 
-    /**
-     * dao 表示: 数据访问层的实例
-     */
-    private IAuResourceDao dao = null;
+    @Autowired
+    private IAuResourceDao auResourceDao;
 
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public IAuResourceDao getDao() {
-        return dao;
-    }
-
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(IAuResourceDao dao) {
-        this.dao = dao;
-    }
-
+    @Autowired
+    private IAuAuthorizeDao auAuthorizeDao;
+    
     /**
      * 插入单条记录
      * 
@@ -66,7 +41,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      */
     public OID insert(AuResourceVo vo) {
         //判断名称是否存在
-        //List list = getDao().queryPartyByNameAndResourceType(vo);
+        //List list = auResourceDao.queryPartyByNameAndResourceType(vo);
         //if (list.size() > 0) {
         //    throw new BaseApplicationException("名称重复，请重新编辑");
         //}
@@ -74,7 +49,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
                 || GlobalConstants.getResType_recd().equals(vo.getResource_type())) {
             updateTableName(vo);
         }
-        OID oid = getDao().insert(vo);
+        OID oid = auResourceDao.insert(vo);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "插入了1条记录,id=" + String.valueOf(oid));
         return oid;
     }
@@ -86,11 +61,9 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 成功删除的记录数
      */
     public int delete(String id) {
-        //获得IAuAuthorizeDao
-        IAuAuthorizeDao auAuthorizeDao = (IAuAuthorizeDao) Helper.getBean("auauthorize_dao");
         //先删除授权情况(包括附加数据)
         auAuthorizeDao.deleteByResourceId(id);
-        int sum = getDao().delete(id);
+        int sum = auResourceDao.delete(id);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "删除了" + sum + "条记录,id=" + String.valueOf(id));
         return sum;
     }
@@ -102,8 +75,6 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 成功删除的记录数
      */
     public int delete(String id[]) {
-        //获得IAuAuthorizeDao
-        IAuAuthorizeDao auAuthorizeDao = (IAuAuthorizeDao) Helper.getBean("auauthorize_dao");
         //循环删除
         for (int i=0; i<id.length; i++) {
             //删除授权情况（包括附加数据）
@@ -112,7 +83,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
             }
         }
 
-        int sum = getDao().delete(id);
+        int sum = auResourceDao.delete(id);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "删除了" + sum + "条记录,id=" + String.valueOf(id));
         return sum;
     }
@@ -124,7 +95,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 查询到的VO对象
      */
     public AuResourceVo find(String id) {
-        AuResourceVo vo = getDao().find(id);
+        AuResourceVo vo = auResourceDao.find(id);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "察看了1条记录,id=" + id);
         return vo;
     }
@@ -141,7 +112,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
         AuResourceVo oldVo = find(vo.getId());
         if (oldVo.getName() != null) {
             if (!oldVo.getName().equals(vo.getName())) {
-                List list = getDao().queryPartyByNameAndResourceType(vo);
+                List list = auResourceDao.queryPartyByNameAndResourceType(vo);
                 if (list.size() > 0) {
                     throw new BaseApplicationException("名称重复，请重新编辑");
                 }
@@ -151,7 +122,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
                 || GlobalConstants.getResType_recd().equals(vo.getResource_type())) {
             updateTableName(vo);
         }
-        int sum = getDao().update(vo);
+        int sum = auResourceDao.update(vo);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "更新了" + sum + "条记录,id=" + String.valueOf(vo.getId()));
         return sum;
     }
@@ -162,7 +133,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 成功更新的记录数
      */
     private int updateTableName(AuResourceVo vo) {
-       int sum = getDao().updateTableName(vo);
+       int sum = auResourceDao.updateTableName(vo);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "更新了" + sum + "条记录,id=" + String.valueOf(vo.getId()));
         return sum;
     }
@@ -174,7 +145,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 查询到的VO列表
      */
     public List queryAll() {
-        List lResult = getDao().queryAll();
+        List lResult = auResourceDao.queryAll();
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll()");
         return lResult;
     }
@@ -186,7 +157,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 查询到的VO列表
      */
     public List queryAll(String orderStr) {
-        List lResult = getDao().queryAll(orderStr);
+        List lResult = auResourceDao.queryAll(orderStr);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll(" + orderStr +
         // ")");
         return lResult;
@@ -200,7 +171,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 查询到的VO列表
      */
     public List queryAll(int no, int size) {
-        List lResult = getDao().queryAll(no, size);
+        List lResult = auResourceDao.queryAll(no, size);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ",cmd=queryAll(" + no + ", " +
         // size + ")");
         return lResult;
@@ -215,7 +186,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 查询到的VO列表
      */
     public List queryAll(int no, int size, String orderStr) {
-        List lResult = getDao().queryAll(no, size, orderStr);
+        List lResult = auResourceDao.queryAll(no, size, orderStr);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll(" + no + ", " +
         // size + ", " + orderStr + ")");
         return lResult;
@@ -227,7 +198,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 总记录数
      */
     public int getRecordCount() {
-        int sum = getDao().getRecordCount();
+        int sum = auResourceDao.getRecordCount();
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询到了总记录数,sum=" + sum);
         return sum;
     }
@@ -239,7 +210,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 总记录数
      */
     public int getRecordCount(String queryCondition) {
-        int sum = getDao().getRecordCount(queryCondition);
+        int sum = auResourceDao.getRecordCount(queryCondition);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询到了总记录数,sum=" + sum + ", queryCondition=" + queryCondition);
         return sum;
     }
@@ -251,7 +222,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 查询到的VO列表
      */
     public List queryByCondition(String queryCondition) {
-        List lResult = getDao().queryByCondition(queryCondition);
+        List lResult = auResourceDao.queryByCondition(queryCondition);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", queryCondition=" +
         // queryCondition);
         return lResult;
@@ -265,7 +236,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 查询到的VO列表
      */
     public List queryByCondition(String queryCondition, String orderStr) {
-        List lResult = getDao().queryByCondition(queryCondition, orderStr);
+        List lResult = auResourceDao.queryByCondition(queryCondition, orderStr);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", queryCondition=" +
         // queryCondition + ", orderStr=" + orderStr);
         return lResult;
@@ -280,7 +251,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 查询到的VO列表
      */
     public List queryByCondition(int no, int size, String queryCondition) {
-        List lResult = getDao().queryByCondition(no, size, queryCondition);
+        List lResult = auResourceDao.queryByCondition(no, size, queryCondition);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", no=" + no + ", size=" +
         // size + ", queryCondition=" + queryCondition);
         return lResult;
@@ -296,7 +267,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 查询到的VO列表
      */
     public List queryByCondition(int no, int size, String queryCondition, String orderStr) {
-        List lResult = getDao().queryByCondition(no, size, queryCondition, orderStr);
+        List lResult = auResourceDao.queryByCondition(no, size, queryCondition, orderStr);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", no=" + no + ", size=" +
         // size + ", queryCondition=" + queryCondition + ", orderStr=" + orderStr);
         return lResult;
@@ -309,12 +280,10 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return
      */
     public boolean disable(AuResourceVo vo) {
-        //获得IAuAuthorizeDao
         String id = vo.getId();
-        IAuAuthorizeDao auAuthorizeDao = (IAuAuthorizeDao) Helper.getBean("auauthorize_dao");
         //删除授权情况(包括附加数据)
         auAuthorizeDao.deleteByResourceId(id);
-        getDao().update(vo);
+        auResourceDao.update(vo);
         return true;
 
     }
@@ -326,7 +295,7 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 查询到的VO列表
      */
     public List queryAllTableName(String queryCondition) {
-        return getDao().queryAllTableName(queryCondition);
+        return auResourceDao.queryAllTableName(queryCondition);
     }
 
     /**
@@ -336,12 +305,12 @@ public class AuResourceBs extends BaseBusinessService implements IAuResourceBs, 
      * @return 查询到的VO列表
      */
     public List queryTableField(String  tableName,String queryCondition) {
-        return getDao().queryTableField( tableName,queryCondition);
+        return auResourceDao.queryTableField( tableName,queryCondition);
     }
 
     @Override
     public List queryIdByTableNameAndResourceType(AuResourceVo vo) {
-        return getDao().queryIdByTableNameAndResourceType(vo);
+        return auResourceDao.queryIdByTableNameAndResourceType(vo);
     }
 }
 

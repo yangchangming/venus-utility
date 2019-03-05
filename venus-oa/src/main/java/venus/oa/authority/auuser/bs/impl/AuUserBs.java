@@ -1,6 +1,11 @@
 package venus.oa.authority.auuser.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import venus.commons.xmlenum.EnumRepository;
+import venus.commons.xmlenum.EnumValueMap;
+import venus.frames.base.bs.BaseBusinessService;
+import venus.frames.base.exception.BaseApplicationException;
 import venus.oa.authority.auuser.adaptor.InitLoginAndPwd;
 import venus.oa.authority.auuser.bs.IAuUserBs;
 import venus.oa.authority.auuser.dao.IAuUserDao;
@@ -8,7 +13,6 @@ import venus.oa.authority.auuser.util.IAuUserConstants;
 import venus.oa.authority.auuser.vo.AuUserVo;
 import venus.oa.helper.OrgHelper;
 import venus.oa.organization.auparty.bs.IAuPartyBs;
-import venus.oa.organization.auparty.util.IConstants;
 import venus.oa.organization.auparty.vo.PartyVo;
 import venus.oa.profile.model.UserProfileModel;
 import venus.oa.sysparam.vo.SysParamVo;
@@ -16,54 +20,29 @@ import venus.oa.util.DateTools;
 import venus.oa.util.Encode;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.tree.DeepTreeSearch;
-import venus.commons.xmlenum.EnumRepository;
-import venus.commons.xmlenum.EnumValueMap;
-import venus.frames.base.bs.BaseBusinessService;
-import venus.frames.base.exception.BaseApplicationException;
-//import venus.frames.mainframe.log.ILog;
-//import venus.frames.mainframe.log.LogMgr;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//import venus.frames.mainframe.log.ILog;
+//import venus.frames.mainframe.log.LogMgr;
+
 @Service
 public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserConstants {
 
-//    private static ILog log = LogMgr.getLogger(AuUserBs.class);
+    @Autowired
+    private IAuUserDao auUserDao;
 
+    @Autowired
+    private IAuPartyBs auPartyBs;
 
-
-
-    /**
-     * dao 表示: 数据访问层的实例
-     */
-    private IAuUserDao dao = null;
-
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public IAuUserDao getDao() {
-        return dao;
-    }
+    @Autowired
+    private InitLoginAndPwd loginIdAndPwd;
 
     /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(IAuUserDao dao) {
-        this.dao = dao;
-    }
-
-    /**
-     * 
      * 功能: 获取portal帐户信息
      *
-     * @param portalUserId
      * @return
      *
     public UserMappingEntry getPortalUserMap(String portalUserId) {
@@ -108,13 +87,13 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
     public OID insert(AuUserVo vo) {
     	vo.setRetire_date(DateTools.getRetireDate());//设置过期时间
     	vo.setFailed_times(new Integer(0));
-		OID oid = getDao().insert(vo);
+		OID oid = auUserDao.insert(vo);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "插入了1条记录,id=" + String.valueOf(oid));
 		return oid;
     }
     
-    private String[] initLoginIdAndPwd(AuUserVo vo){        
-        return ((InitLoginAndPwd) Helper.getBean("loginIdAndPwd")).customLoginAndPwd(vo.getParty_id(), vo.getName());
+    private String[] initLoginIdAndPwd(AuUserVo vo){
+        return loginIdAndPwd.customLoginAndPwd(vo.getParty_id(), vo.getName());
     }
     
     /**
@@ -175,7 +154,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
         vo.setParty_id(partyId);
         vo.setRetire_date(DateTools.getRetireDate());//设置过期时间
         vo.setFailed_times(new Integer(0));
-		OID oid = getDao().insert(vo);
+		OID oid = auUserDao.insert(vo);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "插入了1条记录,id=" + String.valueOf(oid));
 		return oid;
     }
@@ -187,7 +166,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 成功删除的记录数
      */
     public int delete(String id) {
-    	return getDao().delete(id);  
+    	return auUserDao.delete(id);  
     }
 
     /**
@@ -197,7 +176,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 成功删除的记录数
      */
     public int delete(String id[]) {
-        return getDao().delete(id);
+        return auUserDao.delete(id);
 //          RmLogHelper.log(TABLE_LOG_TYPE_NAME, "删除了" + sum + "条记录,id=" + String.valueOf(id));
     }
 
@@ -208,7 +187,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 查询到的VO对象
      */
     public AuUserVo find(String id) {
-		AuUserVo vo = getDao().find(id);
+		AuUserVo vo = auUserDao.find(id);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "察看了1条记录,id=" + id);
 		return vo;
     }
@@ -219,30 +198,30 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return
      */
     public int resetPassword(String id) {
-    	AuUserVo vo = getDao().find(id);
+    	AuUserVo vo = auUserDao.find(id);
     	vo.setPassword(vo.getLogin_id());//设置密码＝登陆帐号
     	vo.setRetire_date(DateTools.getRetireDate());//设置过期时间
     	vo.setFailed_times(new Integer(0));
     	//this.updatePortalUser(vo.getLogin_id(), vo.getLogin_id(), vo.getPassword());//更新portal账号
-    	return getDao().update(vo);//更新au_user表
+    	return auUserDao.update(vo);//更新au_user表
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "更新了" + sum + "条记录,id=" + String.valueOf(vo.getId()));
     }
+
     /**
      * 启用
      * @param id
      * @return
      */
     public int enable(String id) {
-    	AuUserVo vo = getDao().find(id);
-    	IAuPartyBs partyBs = (IAuPartyBs) Helper.getBean(IConstants.BS_KEY);
-        PartyVo partyVo= (PartyVo) partyBs.find(vo.getParty_id());
+    	AuUserVo vo = auUserDao.find(id);
+        PartyVo partyVo= (PartyVo)auPartyBs.find(vo.getParty_id());
         if("0".equals(partyVo.getEnable_status())){
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.The_group_is_disabled_group_"));
         }
     	vo.setEnable_status("1");
     	vo.setFailed_times(new Integer(0));
     	vo.setRetire_date(DateTools.getRetireDate());//设置过期时间
-    	return getDao().update(vo);//更新au_user表
+    	return auUserDao.update(vo);//更新au_user表
     }
     /**
      * 禁用
@@ -250,9 +229,9 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return
      */
     public int disable(String id) {
-        AuUserVo vo = getDao().find(id);
+        AuUserVo vo = auUserDao.find(id);
         vo.setEnable_status("0");
-		return getDao().update(vo);//更新au_user表
+		return auUserDao.update(vo);//更新au_user表
     }
     /**
      * 更新单条记录
@@ -261,7 +240,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 成功更新的记录数
      */
     public int update(AuUserVo vo) {
-        AuUserVo oldVo = getDao().find(vo.getId());
+        AuUserVo oldVo = auUserDao.find(vo.getId());
         //this.updatePortalUser(oldVo.getLogin_id(), vo.getLogin_id(), vo.getPassword());//更新portal账号
         //如果新旧密码不同，则认为密码被修改
         if(!oldVo.getPassword().equals(vo.getPassword())){
@@ -272,7 +251,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
             UserProfileModel profile = new UserProfileModel(vo.getParty_id());
             profile.updateProfile(pwdtimes.getValue("CHANGEPWDTIMES"), String.valueOf(Integer.parseInt(null==profile.snapshotValue(pwdtimes.getValue("CHANGEPWDTIMES"))?"0":profile.snapshotValue(pwdtimes.getValue("CHANGEPWDTIMES")))+1));
         }
-    	return getDao().update(vo);//更新au_user表
+    	return auUserDao.update(vo);//更新au_user表
     }
     
     /**
@@ -299,7 +278,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 查询到的VO列表
      */
     public List queryAll() {
-		List lResult = getDao().queryAll();
+		List lResult = auUserDao.queryAll();
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll()");
 		return lResult;
     }
@@ -311,7 +290,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 查询到的VO列表
      */
     public List queryAll(String orderStr) {
-		List lResult = getDao().queryAll(orderStr);
+		List lResult = auUserDao.queryAll(orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll(" + orderStr + ")");
 		return lResult;
     }
@@ -324,7 +303,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 查询到的VO列表
      */
     public List queryAll(int no, int size) {
-		List lResult = getDao().queryAll(no, size);
+		List lResult = auUserDao.queryAll(no, size);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ",cmd=queryAll(" + no + ", " + size + ")");
 		return lResult;
     }
@@ -338,7 +317,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 查询到的VO列表
      */
     public List queryAll(int no, int size, String orderStr) {
-		List lResult = getDao().queryAll(no, size, orderStr);
+		List lResult = auUserDao.queryAll(no, size, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll(" + no + ", " + size + ", " + orderStr + ")");
 		return lResult;
     }
@@ -349,7 +328,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 总记录数
      */
     public int getRecordCount() {
-        int sum = getDao().getRecordCount();
+        int sum = auUserDao.getRecordCount();
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询到了总记录数,sum=" + sum);
         return sum;
     }
@@ -361,7 +340,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 总记录数
      */
     public int getRecordCount(String queryCondition) {
-		int sum = getDao().getRecordCount(queryCondition);
+		int sum = auUserDao.getRecordCount(queryCondition);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询到了总记录数,sum=" + sum + ", queryCondition=" + queryCondition);
 		return sum;
     }
@@ -373,7 +352,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 查询到的VO列表
      */
     public List queryByCondition(String queryCondition) {
-		List lResult = getDao().queryByCondition(queryCondition);
+		List lResult = auUserDao.queryByCondition(queryCondition);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", queryCondition=" + queryCondition);
 		return lResult;
     }
@@ -386,7 +365,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 查询到的VO列表
      */
     public List queryByCondition(String queryCondition, String orderStr) {
-		List lResult = getDao().queryByCondition(queryCondition, orderStr);
+		List lResult = auUserDao.queryByCondition(queryCondition, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", queryCondition=" + queryCondition + ", orderStr=" + orderStr);
 		
 		return lResult;
@@ -401,7 +380,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 查询到的VO列表
      */
     public List queryByCondition(int no, int size, String queryCondition) {
-		List lResult = getDao().queryByCondition(no, size, queryCondition);
+		List lResult = auUserDao.queryByCondition(no, size, queryCondition);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", no=" + no + ", size=" + size + ", queryCondition=" + queryCondition);
 		return lResult;
     }
@@ -413,7 +392,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 总记录数
      */
     public int getRecordCount4Limit(String queryCondition) {
-		int sum = getDao().getRecordCount4Limit(queryCondition);
+		int sum = auUserDao.getRecordCount4Limit(queryCondition);
 		return sum;
     }
     
@@ -426,7 +405,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 查询到的VO列表
      */
     public List queryByCondition4Limit(int no, int size, String queryCondition) {
-    	List list = getDao().queryByCondition4Limit(no, size, queryCondition);
+    	List list = auUserDao.queryByCondition4Limit(no, size, queryCondition);
     	List result = new ArrayList();
     	AuUserVo userVo = new AuUserVo();
     	SysParamVo organizeTooltip = GlobalConstants.getSysParam(GlobalConstants.ORGANIZETOOLTIP);
@@ -450,7 +429,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 查询到的VO列表
      */
     public List queryByCondition(int no, int size, String queryCondition, String orderStr) {
-		List lResult = getDao().queryByCondition(no, size, queryCondition, orderStr);
+		List lResult = auUserDao.queryByCondition(no, size, queryCondition, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", no=" + no + ", size=" + size + ", queryCondition=" + queryCondition + ", orderStr=" + orderStr);
 		return lResult;
     }
@@ -465,7 +444,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return
      */
     public List queryByCondition4Org(int no, int size, String queryCondition, String orderStr) {
-		List lResult = getDao().queryByCondition4Org(no, size, queryCondition, orderStr);
+		List lResult = auUserDao.queryByCondition4Org(no, size, queryCondition, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", no=" + no + ", size=" + size + ", queryCondition=" + queryCondition + ", orderStr=" + orderStr);
 		return lResult;
     }
@@ -478,7 +457,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 总记录数
      */
     public int getRecordCount4Org(String queryCondition) {
-		int sum = getDao().getRecordCount4Org(queryCondition);
+		int sum = auUserDao.getRecordCount4Org(queryCondition);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询到了总记录数,sum=" + sum + ", queryCondition=" + queryCondition);
 		return sum;
     }
@@ -490,7 +469,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return 查询到的VO对象
      */
     public AuUserVo getByPartyId(String partyid) {
-        List lResult = getDao().queryByCondition("PARTY_ID='"+partyid+"'");
+        List lResult = auUserDao.queryByCondition("PARTY_ID='"+partyid+"'");
         if(lResult==null || lResult.size()==0) {
             return null;
         }
@@ -503,7 +482,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return
      */
     public boolean hasLoginId(String loginId) {
-        int sn = getDao().getRecordCount("LOGIN_ID ='" + loginId + "'");
+        int sn = auUserDao.getRecordCount("LOGIN_ID ='" + loginId + "'");
         return 0!=sn;
     }
     
@@ -513,7 +492,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
      * @return
      */
     public List queryNoAccountUser(String code) {
-	return getDao().queryNoAccountUser(code);
+	return auUserDao.queryNoAccountUser(code);
     }
     
     /* (non-Javadoc)
@@ -522,7 +501,7 @@ public class AuUserBs extends BaseBusinessService implements IAuUserBs, IAuUserC
     public int authorize(String loginId, String passWord) {
         AuUserVo userVo = null;
         try{
-            userVo = (AuUserVo)getDao().findByLoginId(loginId);
+            userVo = (AuUserVo)auUserDao.findByLoginId(loginId);
         }catch(Exception e){
 //            log.warn("账户"+loginId+"验证失败！");
         }

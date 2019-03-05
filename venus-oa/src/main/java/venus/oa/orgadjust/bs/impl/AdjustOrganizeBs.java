@@ -1,8 +1,8 @@
 package venus.oa.orgadjust.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.frames.base.bs.BaseBusinessService;
-import venus.frames.mainframe.util.Helper;
 import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.orgadjust.bs.IAdjustOrganizeBs;
 import venus.oa.orgadjust.util.IContants;
@@ -15,10 +15,16 @@ import java.util.*;
 
 @Service
 public class AdjustOrganizeBs extends BaseBusinessService implements IAdjustOrganizeBs,IContants {
-//	private static ILog log = LogMgr.getLogger(AdjustOrganizeBs.class);
+
+	@Autowired
 	private IAuPartyRelationBs relationBs;
+
+	@Autowired
+	private IHistoryLogBs historyLogBs;
+
 	private AuPartyRelationVo destVo;
-	private List list;
+
+	private List list; //谁写的傻逼代码！
 
 	/**
 	 * @param relationBs
@@ -88,7 +94,6 @@ public class AdjustOrganizeBs extends BaseBusinessService implements IAdjustOrga
 	 * @param orgId
 	 */
 	private void addLog(String orgId) {
-		IHistoryLogBs bs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
 		Map map = new HashMap();
 		map.put("ORGID",orgId);
 		map.put("SYSDATE", DateTools.getSysTimestamp());
@@ -96,7 +101,7 @@ public class AdjustOrganizeBs extends BaseBusinessService implements IAdjustOrga
 			AuPartyRelationVo vo = (AuPartyRelationVo) list.get(i);
 			map.put("HISTORYVO",vo);
 			map.put("HISTORYDESTVO", destVo);
-			bs.insert(map);
+			historyLogBs.insert(map);
 			map.remove("HISTORYVO");
 			map.remove("HISTORYDESTVO");
 		}

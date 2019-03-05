@@ -3,7 +3,6 @@
  */
 package venus.oa.sysparam.bs;
 
-import venus.oa.sysparam.dao.ISysParamDao;
 import venus.oa.sysparam.vo.SysParamVo;
 import venus.pub.lang.OID;
 
@@ -14,20 +13,6 @@ import java.util.List;
  * @author changming.Y <changming.yang.ah@gmail.com>
  */
 public interface ISysParamsBs {
-
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public ISysParamDao getDao();
-
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(ISysParamDao dao);
 
     /**
      * 插入单条记录

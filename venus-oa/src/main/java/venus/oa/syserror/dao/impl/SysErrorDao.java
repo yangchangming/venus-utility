@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.AbstractLobCreatingPreparedStatementCallback;
 import org.springframework.jdbc.support.lob.LobCreator;
 import org.springframework.jdbc.support.lob.LobHandler;
+import org.springframework.stereotype.Repository;
 import venus.oa.syserror.dao.ISysErrorDao;
 import venus.oa.syserror.util.IContants;
 import venus.oa.syserror.vo.SysErrorVo;
@@ -25,6 +26,7 @@ import java.util.List;
  * @author zangjian
  *
  */
+@Repository
 public class SysErrorDao extends BaseTemplateDao implements IContants, ISysErrorDao {
     
     private LobHandler lobHandler = null;  
@@ -97,7 +99,7 @@ public class SysErrorDao extends BaseTemplateDao implements IContants, ISysError
                 }
             });
         } catch (BaseDataAccessException e) {
-            logger.error(e.getMessage());
+//            logger.error(e.getMessage());
             throw new BaseDataAccessException("BaseDataAccessException: " + e);
         }       
         return oid;        

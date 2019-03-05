@@ -12,6 +12,7 @@
 package venus.oa.organization.employee.bs.impl;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.helper.OrgHelper;
 import venus.oa.organization.auparty.vo.PartyVo;
@@ -25,40 +26,11 @@ import venus.frames.base.bs.BaseBusinessService;
 
 import java.util.List;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
-
 @Service
 public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmployeeConstants {
     
-    /**
-     * dao 表示: 数据访问层的实例
-     */
-    private IEmployeeDao dao = null;
-
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public IEmployeeDao getDao() {
-        return dao;
-    }
-
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(IEmployeeDao dao) {
-        this.dao = dao;
-    }
+    @Autowired
+    private IEmployeeDao employeeDao;
 
     /**
      * 添加新记录，同时添加团体、团体关系（如果parentRelId为空则不添加团体关系）
@@ -87,7 +59,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
         if(vo.getPerson_no()==null || vo.getPerson_no().length()==0) {//如果用户不手工编号，则系统自动编号
             vo.setPerson_no(partyId);
         }
-		getDao().insert(vo);
+		employeeDao.insert(vo);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "插入了1条记录,id=" + String.valueOf(oid));
 		return partyId;
     }
@@ -115,7 +87,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
         		boolean result = OrgHelper.deletePartyRelation(partyRelationId);//删除当前节点
         		n = result ? 1 : 0;
         	}else if(GlobalConstants.getPartyType_dept().equals(parentVo.getPartytype_id())) {//如果父节点是部门，彻底删除该人员
-            	n = getDao().delete(partyid);
+            	n = employeeDao.delete(partyid);
             	OrgHelper.deleteParty(partyid);//调用接口删除相应的团体、团体关系、帐户、权限等记录
         	}
     	}
@@ -129,7 +101,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 成功删除的记录数
      */
     public int delete(String id[]) {
-		int sum = getDao().delete(id);
+		int sum = employeeDao.delete(id);
 		for(int i=0; i<id.length; i++) {
 		    OrgHelper.deleteParty(id[i]);//调用接口删除相应的团体、团体关系、帐户、权限等记录
 		}
@@ -144,7 +116,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 查询到的VO对象
      */
     public EmployeeVo find(String id) {
-		EmployeeVo vo = getDao().find(id);
+		EmployeeVo vo = employeeDao.find(id);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "察看了1条记录,id=" + id);
 		return vo;
     }
@@ -172,7 +144,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
         partyVo.setRemark(vo.getRemark());//备注	
         OrgHelper.updateParty(partyVo);//调用接口进行更新
         
-		int sum = getDao().update(vo);
+		int sum = employeeDao.update(vo);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "更新了" + sum + "条记录,id=" + String.valueOf(vo.getId()));
 		return sum;
     }
@@ -183,7 +155,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 查询到的VO列表
      */
     public List queryAll() {
-		List lResult = getDao().queryAll();
+		List lResult = employeeDao.queryAll();
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll()");
 		return lResult;
     }
@@ -195,7 +167,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 查询到的VO列表
      */
     public List queryAll(String orderStr) {
-		List lResult = getDao().queryAll(orderStr);
+		List lResult = employeeDao.queryAll(orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll(" + orderStr + ")");
 		return lResult;
     }
@@ -208,7 +180,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 查询到的VO列表
      */
     public List queryAll(int no, int size) {
-		List lResult = getDao().queryAll(no, size);
+		List lResult = employeeDao.queryAll(no, size);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ",cmd=queryAll(" + no + ", " + size + ")");
 		return lResult;
     }
@@ -222,7 +194,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 查询到的VO列表
      */
     public List queryAll(int no, int size, String orderStr) {
-		List lResult = getDao().queryAll(no, size, orderStr);
+		List lResult = employeeDao.queryAll(no, size, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询了多条记录,recordSum=" + lResult.size() + ", cmd=queryAll(" + no + ", " + size + ", " + orderStr + ")");
 		return lResult;
     }
@@ -233,7 +205,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 总记录数
      */
     public int getRecordCount() {
-        int sum = getDao().getRecordCount();
+        int sum = employeeDao.getRecordCount();
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询到了总记录数,sum=" + sum);
         return sum;
     }
@@ -245,7 +217,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 总记录数
      */
     public int getRecordCount(String queryCondition) {
-		int sum = getDao().getRecordCount(queryCondition);
+		int sum = employeeDao.getRecordCount(queryCondition);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "查询到了总记录数,sum=" + sum + ", queryCondition=" + queryCondition);
 		return sum;
     }
@@ -257,7 +229,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 查询到的VO列表
      */
     public List queryByCondition(String queryCondition) {
-		List lResult = getDao().queryByCondition(queryCondition);
+		List lResult = employeeDao.queryByCondition(queryCondition);
         //RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", queryCondition=" + queryCondition);
 		return lResult;
     }
@@ -270,7 +242,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 查询到的VO列表
      */
     public List queryByCondition(String queryCondition, String orderStr) {
-		List lResult = getDao().queryByCondition(queryCondition, orderStr);
+		List lResult = employeeDao.queryByCondition(queryCondition, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", queryCondition=" + queryCondition + ", orderStr=" + orderStr);
 		return lResult;
     }
@@ -284,7 +256,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 查询到的VO列表
      */
     public List queryByCondition(int no, int size, String queryCondition) {
-		List lResult = getDao().queryByCondition(no, size, queryCondition);
+		List lResult = employeeDao.queryByCondition(no, size, queryCondition);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", no=" + no + ", size=" + size + ", queryCondition=" + queryCondition);
 		return lResult;
     }
@@ -298,7 +270,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return
      */
     public List queryByCondition4Mobile(int offset, int pageSize, String queryCondition) {
-        List resultList = getDao().queryByCondition4Mobile(offset,pageSize,queryCondition);
+        List resultList = employeeDao.queryByCondition4Mobile(offset,pageSize,queryCondition);
         return resultList;
     }
 
@@ -312,7 +284,7 @@ public class EmployeeBs extends BaseBusinessService implements IEmployeeBs, IEmp
      * @return 查询到的VO列表
      */
     public List queryByCondition(int no, int size, String queryCondition, String orderStr) {
-		List lResult = getDao().queryByCondition(no, size, queryCondition, orderStr);
+		List lResult = employeeDao.queryByCondition(no, size, queryCondition, orderStr);
 		//RmLogHelper.log(TABLE_LOG_TYPE_NAME, "按条件查询了多条记录,recordSum=" + lResult.size() + ", no=" + no + ", size=" + size + ", queryCondition=" + queryCondition + ", orderStr=" + orderStr);
 		return lResult;
     }

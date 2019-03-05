@@ -1,32 +1,8 @@
-//代码生成时,文件路径: file:///C:/venustools/workspace/HR_II/src/com/use/comm/auuser/vo/AuUserVo.java
-//代码生成时,系统时间: 2006-06-09 15:32:04.668
-//代码生成时,操作系统用户: lidonghong
-
-/*
- * 系统名称:PlatForm
- * 
- * 文件名称: venus.authority.au.auuser.vo --> AuUserVo.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2006-06-09 15:32:04.658 创建1.0.0版 (甘硕)
- *  
- */
-
 package venus.oa.authority.auuser.vo;
 
 import venus.frames.base.vo.BaseValueObject;
 
 import java.sql.Timestamp;
-
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
 
 public class AuUserVo extends BaseValueObject implements Cloneable {
     

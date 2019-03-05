@@ -5,6 +5,7 @@
 package venus.oa.organization.aupartyrelation.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.organization.auconnectrule.vo.AuConnectRuleVo;
 import venus.oa.organization.auparty.vo.PartyVo;
 import venus.oa.organization.aupartyrelation.dao.IAuPartyRelationDao;
@@ -30,6 +31,7 @@ import java.util.Map;
  * @author maxiao
  *  
  */
+@Repository
 public class AuPartyRelationDao extends BaseTemplateDao implements IAuPartyRelationDao, IConstants {
 
     /**

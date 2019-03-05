@@ -2,6 +2,7 @@ package venus.oa.organization.aupartytype.dao.impl;
 
 import org.apache.struts.util.LabelValueBean;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.organization.aupartytype.dao.IAuPartyTypeDao;
 import venus.oa.organization.aupartytype.util.IConstants;
 import venus.oa.organization.aupartytype.vo.AuPartyTypeVo;
@@ -23,8 +24,8 @@ import java.util.List;
  * @author wumingqiang
  *
  */
-public class AuPartyTypeDao extends BaseTemplateDao implements IAuPartyTypeDao,
-        IConstants {
+@Repository
+public class AuPartyTypeDao extends BaseTemplateDao implements IAuPartyTypeDao, IConstants {
 
   
     /**

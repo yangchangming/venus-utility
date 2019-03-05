@@ -33,6 +33,7 @@ public class VenusOABootstrap {
     private static final Logger logger = Logger.getLogger(VenusOABootstrap.class);
 
     public static void main(String[] args){
+//      starting Venus framework
         InitializationFactory.init();
 
         SpringApplication app = new SpringApplication(VenusOABootstrap.class);

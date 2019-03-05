@@ -1,5 +1,6 @@
 package venus.oa.authority.appenddata.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.authority.appenddata.bs.IAppendDataBs;
 import venus.oa.authority.appenddata.dao.IAuAppendDataDao;
@@ -7,16 +8,13 @@ import venus.oa.authority.appenddata.vo.AuAppendVo;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
 import venus.oa.authority.auauthorize.vo.AuAuthorizeVo;
 import venus.oa.authority.auresource.bs.IAuResourceBs;
-import venus.oa.authority.auresource.util.IAuResourceConstants;
 import venus.oa.authority.auresource.vo.AuResourceVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
-import venus.oa.organization.aupartyrelation.util.IConstants;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
 import venus.oa.util.StringHelperTools;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.util.*;
@@ -27,26 +25,28 @@ import java.util.*;
  */
 @Service
 public class AppendDataBs implements IAppendDataBs {
-	
-	private IAuAppendDataDao dao;
 
-	/**
-	 * @return 返回 dao。
-	 */
-	public IAuAppendDataDao getDao() {
-		return dao;
-	}
-	/**
-	 * @param dao 要设置的 dao。
-	 */
-	public void setDao(IAuAppendDataDao dao) {
-		this.dao = dao;
-	}
+	@Autowired
+	private IAuAppendDataDao auAppendDataDao;
+
+	@Autowired
+	private IAuResourceBs auResourceBs;
+
+	@Autowired
+	private IAuAuthorizeBS auAuthorizeBS;
+
+//	@Autowired
+//	private IAppendDataBs appendDataBs;
+
+	@Autowired
+	private IAuPartyRelationBs auPartyRelationBs;
+
+
 	/* （非 Javadoc）
 	 * @see venus.authority.au.appenddata.bs.IAppendDataBs#getAppendByAuthorizeId(java.lang.String)
 	 */
 	public Map getAppendByAuthorizeId(String authorizeId) {
-		List list = getDao().queryAppendByAuthorizeId(authorizeId);
+		List list = auAppendDataDao.queryAppendByAuthorizeId(authorizeId);
 		Map map = new HashMap();
 		Iterator it = list.iterator();
 		while(it.hasNext()) {
@@ -64,7 +64,7 @@ public class AppendDataBs implements IAppendDataBs {
 		for(int i=0;i<visiCode.length;i++){
 	        String[] allCodes = ProjTools.splitTreeCode(visiCode[i]);
 	        if(allCodes!=null && allCodes.length>1) {
-	            List list = getDao().queryAppendByVisitorCode(allCodes, resourceId, appendValue);
+	            List list = auAppendDataDao.queryAppendByVisitorCode(allCodes, resourceId, appendValue);
 	            map.putAll(judgeAuAppend(list));
 	        }
 		}
@@ -95,9 +95,8 @@ public class AppendDataBs implements IAppendDataBs {
         String resIds[] = new String[addCodeArray.length];
         if(addCodeArray.length>0 && addCodeArray[0].length()>0) {
 	        //根据addCodeArray查询AuResource表中的相应信息
-	    	IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
 	    	String queryCondition = "RESOURCE_TYPE='"+rType+"' and ENABLE_STATUS='1' and VALUE in("+ StringHelperTools.parseToSQLStringComma(addCodeArray)+")";
-	    	List lResource = resBs.queryByCondition(queryCondition);
+	    	List lResource = auResourceBs.queryByCondition(queryCondition);
 	    	Map resMap = new HashMap();
 	    	if(lResource != null) {
 				for (int i = 0; i < lResource.size(); i++) {
@@ -118,22 +117,20 @@ public class AppendDataBs implements IAppendDataBs {
 	    			resVo.setResource_type(rType);
 	    			resVo.setValue(addCodeArray[i]);
 	    			resVo.setCreate_date(DateTools.getSysTimestamp());  //打创建时间
-	    			OID oid = resBs.insert(resVo); //插入单条记录
+	    			OID oid = auResourceBs.insert(resVo); //插入单条记录
 	    			resMap.put(resVo.getValue(), oid.toString());
 	    		}
 	        	resIds[i] = (String)resMap.get(addCodeArray[i]);
 	        }
         }
         //将AuAuthorize表的is_append属性设置为1：有附加数据
-        IAuAuthorizeBS authorizeBs = (IAuAuthorizeBS) Helper.getBean(venus.oa.authority.auauthorize.util.IConstants.BS_KEY);
-        AuAuthorizeVo authorizeVo=authorizeBs.find(authorizeId);
+        AuAuthorizeVo authorizeVo=auAuthorizeBS.find(authorizeId);
         if("0".equals(authorizeVo.getIs_append())){
         	authorizeVo.setIs_append("1");
-        	authorizeBs.update(authorizeVo);
+			auAuthorizeBS.update(authorizeVo);
         }
 		//取得修改前的权限列表
-        IAppendDataBs appendBs = (IAppendDataBs) Helper.getBean("AuAppendData_bs");
-		Map selIdMap = appendBs.getAppendByAuthorizeId(authorizeId);
+		Map selIdMap = getAppendByAuthorizeId(authorizeId);
 	    HashMap selCodeMap = new HashMap();
 	    for(Iterator it=selIdMap.keySet().iterator(); it.hasNext(); ) {
 	    	AuAppendVo auVo = (AuAppendVo)selIdMap.get((String)it.next());
@@ -164,17 +161,15 @@ public class AppendDataBs implements IAppendDataBs {
 			    delList.add((String)selCodeMap.get(delCodeArray[i]));	
 			}
 		}
-		IAuAppendDataDao appendDao=(IAuAppendDataDao) Helper.getBean("AuAppendData_dao");
-		//执行新增
 		for(int i=0; i<addList.size(); i++) {
-			appendDao.insert((AuAppendVo)addList.get(i));
+			auAppendDataDao.insert((AuAppendVo)addList.get(i));
 		}
-		//执行删除
 		for(int i=0; i<delList.size(); i++) {
-			appendDao.delete((String)delList.get(i));
+			auAppendDataDao.delete((String)delList.get(i));
 		}
         return true;
 	}
+
     /**
      * 
      * 功能: 在同一团体关系类型内，根据优先级过滤附加数据的权限，并返回过滤结果
@@ -197,15 +192,14 @@ public class AppendDataBs implements IAppendDataBs {
 	 * @see venus.authority.au.appenddata.bs.IAppendDataBs#getExtendAppendAuByPartyId(java.lang.String, java.lang.String)
 	 */
 	public Map getExtendAppendAuByPartyId(String partyId, String resourceId,String appendValue) {
-		IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
         AuPartyRelationVo queryVo = new AuPartyRelationVo();
         queryVo.setPartyid(partyId);
-        List relList = relBs.queryAuPartyRelation(queryVo);
+        List relList = auPartyRelationBs.queryAuPartyRelation(queryVo);
 		Map map = new HashMap();
 		for(int i=0;i<relList.size();i++){
 	        String[] allCodes = ProjTools.splitTreeCode(((AuPartyRelationVo)relList.get(i)).getCode());
 	        if(allCodes!=null && allCodes.length>1) {
-	            List list = getDao().queryAppendByVisitorCode(allCodes, resourceId,appendValue);
+	            List list = auAppendDataDao.queryAppendByVisitorCode(allCodes, resourceId,appendValue);
 		        map.putAll(judgeAuAppend(list));
 	        }
 		}
@@ -224,7 +218,7 @@ public class AppendDataBs implements IAppendDataBs {
 	 * @see venus.authority.au.appenddata.bs.IAppendDataBs#deleteByAuthorizeId(java.lang.String)
 	 */
 	public void deleteByAuthorizeId(String id) {
-		getDao().deleteByAuthorizeId(id);
+		auAppendDataDao.deleteByAuthorizeId(id);
 	}
     
 }

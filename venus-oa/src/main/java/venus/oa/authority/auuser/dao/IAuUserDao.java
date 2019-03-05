@@ -1,14 +1,3 @@
-/*
- * 系统名称:PlatForm
- * 
- * 文件名称: venus.authority.au.auuser.dao --> IAuUserDao.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2006-06-09 15:32:04.558 创建1.0.0版 (甘硕)
- *  
- */
-
 package venus.oa.authority.auuser.dao;
 
 import venus.oa.authority.auuser.vo.AuUserVo;
@@ -21,7 +10,6 @@ import java.util.List;
  * 
  * @author 甘硕
  * @version 1.0.0
- * @see 需要参见的其它类
  * @since 1.0.0
  */
 

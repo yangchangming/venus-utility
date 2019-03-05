@@ -1,5 +1,6 @@
 package venus.oa.authority.auvisitor.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.authority.auauthorize.dao.IAuAuthorizeDao;
 import venus.oa.authority.auvisitor.bs.IAuVisitorBS;
@@ -13,8 +14,6 @@ import venus.oa.util.GlobalConstants;
 import venus.oa.util.tree.DeepTreeSearch;
 import venus.frames.base.bs.BaseBusinessService;
 import venus.frames.base.exception.BaseApplicationException;
-//import venus.frames.mainframe.log.ILog;
-//import venus.frames.mainframe.log.LogMgr;
 import venus.frames.mainframe.util.Helper;
 
 import java.util.ArrayList;
@@ -29,9 +28,11 @@ import java.util.List;
 @Service
 public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IConstants {
 
-//    private static ILog log = LogMgr.getLogger(AuVisitorBS.class);
+    @Autowired
+    private IAuVisitorDao auVisitorDao;
 
-    private IAuVisitorDao dao = null;
+    @Autowired
+    private IAuAuthorizeDao auAuthorizeDao;
 
     /**
      * 按条件查询,返回LIST
@@ -43,7 +44,7 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      * @return
      */
     public List simpleQuery(int no, int size, String orderStr, Object objVo) {
-        return getDao().simpleQuery(no, size, orderStr, objVo);
+        return auVisitorDao.simpleQuery(no, size, orderStr, objVo);
     }
 
     /**
@@ -56,7 +57,7 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      * @return
      */
     public List simpleQueryByTypes(int no, int size, String orderStr, Object objVo, String condition) {
-    	List list = getDao().simpleQueryByTypes(no, size, orderStr, objVo, condition);
+    	List list = auVisitorDao.simpleQueryByTypes(no, size, orderStr, objVo, condition);
     	List result = new ArrayList();
     	AuVisitorVo vo = new AuVisitorVo();
     	for(int i=0; i<list.size(); i++) {
@@ -78,12 +79,10 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      * @return
      */
     public int delete(String id) {
-        //获得IAuAuthorizeDao
-        IAuAuthorizeDao auAuthorizeDao = (IAuAuthorizeDao) Helper.getBean("auauthorize_dao");
         //删除授权情况（包括附加数据）
         auAuthorizeDao.deleteByVisitorId(id);
         //删除访问者
-        return getDao().delete(id);
+        return auVisitorDao.delete(id);
     }
 
     /**
@@ -94,14 +93,12 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      * @return
      */
     public int deleteByOrigId(String origId) {
-        AuVisitorVo vo = (AuVisitorVo) getDao().findByOrgId(origId);
+        AuVisitorVo vo = (AuVisitorVo) auVisitorDao.findByOrgId(origId);
         if (vo != null) {
-            //获得IAuAuthorizeDao
-            IAuAuthorizeDao auAuthorizeDao = (IAuAuthorizeDao) Helper.getBean("auauthorize_dao");
             //删除授权情况（包括附加数据）
             auAuthorizeDao.deleteByVisitorId(vo.getId());
             //删除访问者
-            return getDao().delete(vo.getId());
+            return auVisitorDao.delete(vo.getId());
         } else {
             return 0;
         }
@@ -113,31 +110,16 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      * @return
      */
     public int getRecordCount() {
-        return getDao().getRecordCount();
+        return auVisitorDao.getRecordCount();
     }
 
     /**
      * 按条件获得记录数
      * 
-     * @param queryCondition
      * @return
      */
     public int getRecordCount(Object objVo) {
-        return getDao().getRecordCount(objVo);
-    }
-
-    /**
-     * @return
-     */
-    public IAuVisitorDao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao
-     */
-    public void setDao(IAuVisitorDao dao) {
-        this.dao = dao;
+        return auVisitorDao.getRecordCount(objVo);
     }
 
     /**
@@ -148,10 +130,10 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      */
     public String insert(Object objVo) {
         AuVisitorVo vo = (AuVisitorVo) objVo;
-        if (getDao().findByOrgId(vo.getOriginal_id(), vo.getVisitor_type()) != null) {
+        if (auVisitorDao.findByOrgId(vo.getOriginal_id(), vo.getVisitor_type()) != null) {
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Add_the_record_already_exists_"));
         }
-        return getDao().insert(objVo);
+        return auVisitorDao.insert(objVo);
 
     }
 
@@ -162,7 +144,7 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      * @return
      */
     public int update(Object objVo) {
-        return getDao().update(objVo);
+        return auVisitorDao.update(objVo);
     }
 
     /**
@@ -175,7 +157,7 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      */
     public AuVisitorVo queryByRelationId(String relId, String pType) {
 //        log.debug("根据团体关系ID和团体类型查询相应的访问者Vo，如果查不到则自动生成一个访问者vo并添加到访问者表中，然后返回新添加的访问者vo");
-        AuVisitorVo vo = (AuVisitorVo) getDao().findByOrgId(relId, GlobalConstants.getVisiTypeByPartyType(pType));
+        AuVisitorVo vo = (AuVisitorVo) auVisitorDao.findByOrgId(relId, GlobalConstants.getVisiTypeByPartyType(pType));
         if (vo == null) {
             IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper
                     .getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
@@ -188,7 +170,7 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
             vo.setPartyrelationtype_id(relVo.getRelationtype_id());
             vo.setPartytype_id(relVo.getPartytype_id());
             vo.setVisitor_type(GlobalConstants.getVisiTypeByPartyType(relVo.getPartytype_id()));
-            getDao().insert(vo);
+            auVisitorDao.insert(vo);
         }
         return vo;
     }
@@ -202,7 +184,7 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      * @return
      */
     public List queryAllByTypes(int no, int size, String orderStr) {
-        return getDao().queryAllByTypes(no, size, orderStr);
+        return auVisitorDao.queryAllByTypes(no, size, orderStr);
     }
     /**
      * 按条件获得记录数
@@ -211,7 +193,7 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      * @return
      */
     public int getRecordCountByTypes(String partyTypes){
-        return getDao().getRecordCountByTypes(partyTypes);
+        return auVisitorDao.getRecordCountByTypes(partyTypes);
     }
     /**
      * 按条件获得记录数
@@ -220,14 +202,14 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
      * @return
      */
     public int getRecordCountByTypes(String partyTypes, Object objVo, String condition){
-        return getDao().getRecordCountByTypes(partyTypes,objVo, condition);
+        return auVisitorDao.getRecordCountByTypes(partyTypes,objVo, condition);
     }
 
     /* (non-Javadoc)
      * @see venus.authority.au.auvisitor.bs.IAuVisitorBS#find(java.lang.String)
      */
     public AuVisitorVo find(String visitorId) {
-        return dao.find(visitorId);
+        return auVisitorDao.find(visitorId);
     }
 }
 

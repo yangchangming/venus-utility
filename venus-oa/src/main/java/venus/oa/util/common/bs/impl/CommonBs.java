@@ -1,5 +1,6 @@
 package venus.oa.util.common.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import venus.oa.util.common.bs.ICommonBs;
@@ -11,29 +12,9 @@ import java.util.List;
 @Service
 public class CommonBs extends BaseBusinessService implements ICommonBs {
     
-    /**
-     * dao 表示: 数据访问层的实例
-     */
-    private ICommonDao dao = null;
+    @Autowired
+    private ICommonDao commonDao;
 
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public ICommonDao getDao() {
-        return dao;
-    }
-
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(ICommonDao dao) {
-        this.dao = dao;
-    }
-    
     /**
      * 通用的方法，返回自己控制的对象
      *
@@ -42,7 +23,7 @@ public class CommonBs extends BaseBusinessService implements ICommonBs {
      * @return 自己控制的对象列表
      */
     public List doQuery(String strsql, RowMapper rowMapper) {
-        return getDao().doQuery(strsql, rowMapper);
+        return commonDao.doQuery(strsql, rowMapper);
     }
     
     /**
@@ -55,7 +36,7 @@ public class CommonBs extends BaseBusinessService implements ICommonBs {
      * @return 自己控制的对象列表
      */
     public List doQuery(String strsql, RowMapper rowMapper, int no, int size) {
-        return getDao().doQuery(strsql, rowMapper, no, size);
+        return commonDao.doQuery(strsql, rowMapper, no, size);
     }
     
     /**
@@ -66,7 +47,7 @@ public class CommonBs extends BaseBusinessService implements ICommonBs {
      * @return 自己控制的对象
      */
     public Object doQueryForObject(String strsql, RowMapper rowMapper) {
-        return getDao().doQueryForObject(strsql, rowMapper);
+        return commonDao.doQueryForObject(strsql, rowMapper);
     }
     
     /**
@@ -76,7 +57,7 @@ public class CommonBs extends BaseBusinessService implements ICommonBs {
      * @return 查询结果int
      */
     public int doQueryForInt(String strsql) {
-        return getDao().doQueryForInt(strsql);
+        return commonDao.doQueryForInt(strsql);
     }
     
     /**
@@ -86,7 +67,7 @@ public class CommonBs extends BaseBusinessService implements ICommonBs {
      * @return 查询结果long
      */
     public long doQueryForLong(String strsql) {
-        return getDao().doQueryForLong(strsql);
+        return commonDao.doQueryForLong(strsql);
     }
     
     /**
@@ -96,7 +77,7 @@ public class CommonBs extends BaseBusinessService implements ICommonBs {
      * @return 更新记录条数
      */
     public int doUpdate(String strsql) {
-        return getDao().doUpdate(strsql);
+        return commonDao.doUpdate(strsql);
     }
     
     /**
@@ -105,7 +86,7 @@ public class CommonBs extends BaseBusinessService implements ICommonBs {
      * @param strsql 要执行的sql语句
      */
     public void doExecute(String strsql) {
-        getDao().doExecute(strsql);
+        commonDao.doExecute(strsql);
     }
 
 }

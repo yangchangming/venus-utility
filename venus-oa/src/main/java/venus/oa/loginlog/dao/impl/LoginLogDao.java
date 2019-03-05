@@ -1,6 +1,7 @@
 package venus.oa.loginlog.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.frames.base.dao.BaseTemplateDao;
 import venus.frames.mainframe.util.Helper;
 import venus.oa.login.vo.LoginSessionVo;
@@ -17,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Repository
 public class LoginLogDao extends BaseTemplateDao implements ILoginLogDao, ILoginLogConstants {
 
     /**

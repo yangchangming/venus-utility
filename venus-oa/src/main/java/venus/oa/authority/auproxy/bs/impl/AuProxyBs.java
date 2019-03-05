@@ -3,6 +3,7 @@
  */
 package venus.oa.authority.auproxy.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.authority.auauthorizelog.bs.IAuAuthorizeLogBS;
 import venus.oa.authority.auauthorizelog.vo.AuAuthorizeLogVo;
@@ -34,20 +35,16 @@ import java.util.Map;
  * 
  */
 @Service
-public class AuProxyBs extends BaseBusinessService implements IAuProxyBs,
-        venus.oa.authority.auproxy.util.IConstants {
+public class AuProxyBs extends BaseBusinessService implements IAuProxyBs, venus.oa.authority.auproxy.util.IConstants {
 
-    public IHistoryLogBs getHistoryBs() {
-        return (IHistoryLogBs) Helper.getBean(PROXY_LOG_BS);
-    }
-    
-    public IProxyHistoryBs getProxyHistoryBs() {
-        return (IProxyHistoryBs) Helper.getBean(PROXY_HISTORY_BS);
-    }
-    
-    public IAuAuthorizeLogBS getAuthorizeLogBs() {
-        return (IAuAuthorizeLogBS) Helper.getBean(AUTHORIZE_LOG_BS);
-    }
+    @Autowired
+    private IHistoryLogBs historyLogBs;
+
+    @Autowired
+    private IProxyHistoryBs proxyHistoryBs;
+
+    @Autowired
+    private IAuAuthorizeLogBS auAuthorizeLogBS;
 
     /**
      * 关联用户时记录历史日志
@@ -76,7 +73,7 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs,
         map.put("SOURCECODE", relVo.getCode());
         map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(relVo.getCode(), false)); // 由于这里保存的是父节点，所以要显示最后一级节点
         //记录关联历史
-        OID historyOid = getHistoryBs().insert(map);
+        OID historyOid = historyLogBs.insert(map);
         //记录代理业务历史
         addLog(historyOid,"1",now,relVo,vo);
         return oid;// 调用接口添加团体关系
@@ -105,7 +102,7 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs,
             map.put("SOURCECODE", relVo.getCode());
             map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(relVo.getCode(), false));
             //记录解除关联历史
-            getHistoryBs().insert(map);
+            historyLogBs.insert(map);
             //记录代理业务历史
             updateLog("2",now, relVo,vo);
             // 删除团体关系
@@ -123,14 +120,14 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs,
      */
     private void addLog(OID historyOid, String operateType, Timestamp now, AuPartyRelationVo relVo, LoginSessionVo vo){
          //准备记录代理业务历史
-        List al = getHistoryBs().queryByCondition(" SOURCE_CODE='"+relVo.getParent_code()+"' ", " A.ID DESC ");
+        List al = historyLogBs.queryByCondition(" SOURCE_CODE='"+relVo.getParent_code()+"' ", " A.ID DESC ");
         HistoryLogVo historyLogVo = null;
         if(al.size()>0){
             historyLogVo = (HistoryLogVo)al.get(0);
         }else{
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Lack_of_agency_history_"));
         }
-        List aual = getAuthorizeLogBs().queryByCondition(-1,-1," VISITOR_CODE='"+relVo.getParent_code()+"' "," OPERATE_DATE DESC,AUTHORIZE_TAG DESC  ");
+        List aual = auAuthorizeLogBS.queryByCondition(-1,-1," VISITOR_CODE='"+relVo.getParent_code()+"' "," OPERATE_DATE DESC,AUTHORIZE_TAG DESC  ");
         AuAuthorizeLogVo authorizeLogVo = new AuAuthorizeLogVo();
         if(aual.size()>0){
             authorizeLogVo = (AuAuthorizeLogVo)aual.get(0);
@@ -153,7 +150,7 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs,
         proxyHistoryVo.setRecipient(relVo.getName());//乙方
         proxyHistoryVo.setRecipient_id(relVo.getPartyid());
         //记录代理业务历史
-        getProxyHistoryBs().insert(proxyHistoryVo);
+        proxyHistoryBs.insert(proxyHistoryVo);
     }
     
     /**
@@ -165,7 +162,7 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs,
      * @param vo 安全上下文
      */
     private void updateLog(String operateType, Timestamp now, AuPartyRelationVo relVo, LoginSessionVo vo){
-        List proxyHis = getProxyHistoryBs().queryByCondition(-1,-1," PROXY_ID='"+relVo.getParent_partyid()+"' AND RECIPIENT_ID='"+relVo.getPartyid()+"'"," ID DESC  ");
+        List proxyHis = proxyHistoryBs.queryByCondition(-1,-1," PROXY_ID='"+relVo.getParent_partyid()+"' AND RECIPIENT_ID='"+relVo.getPartyid()+"'"," ID DESC  ");
         ProxyHistoryVo proxyHisVo = new ProxyHistoryVo();
         if(proxyHis.size()>0){
             proxyHisVo = (ProxyHistoryVo)proxyHis.get(0);
@@ -176,7 +173,7 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs,
         proxyHistoryVo.setCanel_date(now);
         proxyHistoryVo.setCanel_id(vo.getParty_id());
         proxyHistoryVo.setCanel_name(vo.getName());
-        getProxyHistoryBs().update(proxyHistoryVo);
+        proxyHistoryBs.update(proxyHistoryVo);
     }
 }
 

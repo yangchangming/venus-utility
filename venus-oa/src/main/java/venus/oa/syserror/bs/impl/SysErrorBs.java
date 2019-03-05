@@ -1,8 +1,6 @@
-/**
- * Copyright 2003-2010 UFIDA Software Engineering Co., Ltd. 
- */
 package venus.oa.syserror.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.syserror.bs.ISysErrorBs;
 import venus.oa.syserror.dao.ISysErrorDao;
@@ -13,49 +11,35 @@ import java.util.List;
 
 /**
  * @author zangjian
- *
  */
 @Service
 public class SysErrorBs implements ISysErrorBs {
     
-    private ISysErrorDao dao;
+    @Autowired
+    private ISysErrorDao sysErrorDao;
     
-    /**
-     * @return the dao
-     */
-    public ISysErrorDao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(ISysErrorDao dao) {
-        this.dao = dao;
-    }
-
     public int delete(SysErrorVo vo) {
-        return getDao().delete(vo);
+        return sysErrorDao.delete(vo);
     }
 
     public int deleteAll() {
-        return getDao().deleteAll();
+        return sysErrorDao.deleteAll();
     }
 
     public int getRecordCount() {
-        return getDao().getRecordCount();
+        return sysErrorDao.getRecordCount();
     }
 
     public int getRecordCount(String queryCondition) {
-        return getDao().getRecordCount(queryCondition);
+        return sysErrorDao.getRecordCount(queryCondition);
     }
 
     public OID insert(SysErrorVo vo) {
-        return getDao().insert(vo);
+        return sysErrorDao.insert(vo);
     }
 
     public List queryByCondition(int no, int size, String queryCondition) {
-        return getDao().queryByCondition(no, size, queryCondition);
+        return sysErrorDao.queryByCondition(no, size, queryCondition);
     }
 
 }

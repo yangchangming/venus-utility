@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.AbstractLobCreatingPreparedStatementCallback;
 import org.springframework.jdbc.support.lob.LobCreator;
 import org.springframework.jdbc.support.lob.LobHandler;
+import org.springframework.stereotype.Repository;
 import venus.oa.history.dao.IHistoryLogDao;
 import venus.oa.history.util.IContants;
 import venus.oa.history.vo.HistoryLogVo;
@@ -19,7 +20,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Repository
 public class HistoryLogDao extends BaseTemplateDao implements IContants,IHistoryLogDao {
+
 	private LobHandler lobHandler = null;  
 
 	/**
@@ -62,7 +65,7 @@ public class HistoryLogDao extends BaseTemplateDao implements IContants,IHistory
 	        	}
 	        });
         } catch (BaseDataAccessException e) {
-        	logger.error(e.getMessage());
+//        	logger.error(e.getMessage());
             throw new BaseDataAccessException("BaseDataAccessException: " + e);
         }		
 

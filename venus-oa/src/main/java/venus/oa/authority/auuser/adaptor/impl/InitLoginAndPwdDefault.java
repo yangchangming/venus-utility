@@ -1,6 +1,3 @@
-/**
- * Copyright 2003-2010 UFIDA Software Engineering Co., Ltd. 
- */
 package venus.oa.authority.auuser.adaptor.impl;
 
 import org.springframework.stereotype.Component;

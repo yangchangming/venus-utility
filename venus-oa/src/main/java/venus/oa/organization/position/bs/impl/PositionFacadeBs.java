@@ -1,5 +1,6 @@
 package venus.oa.organization.position.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.helper.OrgHelper;
 import venus.oa.login.vo.LoginSessionVo;
@@ -20,16 +21,10 @@ import java.util.Map;
 
 @Service
 public class PositionFacadeBs implements IPositionFacadeBs, IPositionConstants {
-  
+
+	@Autowired
 	private IPositionBs positionBs;
-	
-	/**
-	 * @param positionBs 要设置的 positionBs。
-	 */
-	public void setPositionBs(IPositionBs positionBs) {
-		this.positionBs = positionBs;
-	}
-	
+
 	/**
 	 * 添加新记录，同时添加团体、团体关系并记录历史日志（如果parentRelId为空则不添加团体关系）
 	 */

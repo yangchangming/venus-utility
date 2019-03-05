@@ -12,6 +12,7 @@
 package venus.oa.organization.department.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.organization.department.dao.IDepartmentDao;
 import venus.oa.organization.department.util.IDepartmentConstants;
 import venus.oa.organization.department.vo.DepartmentVo;
@@ -25,15 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
-
+@Repository
 public class DepartmentDao extends BaseTemplateDao implements IDepartmentDao, IDepartmentConstants {
 
     /**

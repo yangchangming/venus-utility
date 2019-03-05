@@ -12,7 +12,6 @@
 package venus.oa.util.common.bs;
 
 import org.springframework.jdbc.core.RowMapper;
-import venus.oa.util.common.dao.ICommonDao;
 
 import java.util.List;
 
@@ -78,6 +77,5 @@ public interface ICommonBs {
      */
     public void doExecute(String strsql);
     
-    public ICommonDao getDao();
 }
 

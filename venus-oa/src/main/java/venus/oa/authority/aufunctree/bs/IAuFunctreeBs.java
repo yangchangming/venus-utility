@@ -27,19 +27,6 @@ import java.util.List;
  */
 
 public interface IAuFunctreeBs {
-    /**
-     * 设置数据访问接口
-     * 
-     * @return
-     */
-    public IAuFunctreeDao getDao();
-
-    /**
-     * 获取数据访问接口
-     * 
-     * @param dao
-     */
-    public void setDao(IAuFunctreeDao dao);
 
     /**
      * 插入单条记录

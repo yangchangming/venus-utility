@@ -1,6 +1,8 @@
 package venus.oa.authority.auauthorizelog.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import venus.frames.base.bs.BaseBusinessService;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
 import venus.oa.authority.auauthorizelog.bs.IAuAuthorizeLogBS;
 import venus.oa.authority.auauthorizelog.dao.IAuAuthorizeLogDao;
@@ -10,8 +12,6 @@ import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.util.ProjTools;
 import venus.oa.util.SqlBuilder;
-import venus.frames.base.bs.BaseBusinessService;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.util.ArrayList;
@@ -26,43 +26,32 @@ import java.util.Map;
 @Service
 public class AuAuthorizeLogBS extends BaseBusinessService implements IAuAuthorizeLogBS,IConstants {
 
-    private IAuAuthorizeLogDao dao = null;
+    @Autowired
+    private IAuAuthorizeLogDao auAuthorizeLogDao;
     
-    public IAuAuthorizeBS getAuthorizeBs() {
-        return (IAuAuthorizeBS) Helper.getBean(venus.oa.authority.auauthorize.util.IConstants.BS_KEY);
-    }  
+    @Autowired
+    private IAuAuthorizeBS auAuthorizeBS;
 
-    /**
-     * @return the dao
-     */
-    public IAuAuthorizeLogDao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(IAuAuthorizeLogDao dao) {
-        this.dao = dao;
-    }
+    @Autowired
+    private IAuPartyRelationBs auPartyRelationBs;
     
     public int getRecordCount(SqlBuilder sql) {
-	return getDao().getRecordCount(sql);
+	return auAuthorizeLogDao.getRecordCount(sql);
     }
     
     public List queryByCondition(SqlBuilder sql) {
-	return getDao().queryByCondition(sql);
+	return auAuthorizeLogDao.queryByCondition(sql);
     }
     
     public OID insert(AuAuthorizeLogVo vo) {
-	return getDao().insert(vo);
+	return auAuthorizeLogDao.insert(vo);
     }
 
     /* (non-Javadoc)
      * @see venus.authority.au.auauthorizelog.bs.IAuAuthorizeLogBS#getRecordCount(java.lang.String)
      */
     public int getRecordCount(String queryCondition) {
-        return dao.getRecordCount(queryCondition);
+        return auAuthorizeLogDao.getRecordCount(queryCondition);
     }
 
     /* (non-Javadoc)
@@ -70,7 +59,7 @@ public class AuAuthorizeLogBS extends BaseBusinessService implements IAuAuthoriz
      */
     public List queryByCondition(int no, int size, String queryCondition,
             String orderStr) {
-        return dao.queryByCondition(no, size, queryCondition, orderStr);
+        return auAuthorizeLogDao.queryByCondition(no, size, queryCondition, orderStr);
     }
 
     /* (non-Javadoc)
@@ -90,14 +79,11 @@ public class AuAuthorizeLogBS extends BaseBusinessService implements IAuAuthoriz
      */
     
     public Map getAuByPartyId(String partyId, String sType, String relationTypeId,String auHisTag) {
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
         AuPartyRelationVo queryVo = new AuPartyRelationVo();
         queryVo.setPartyid(partyId);
         queryVo.setRelationtype_id(relationTypeId);
-        List relList = relBs.queryAuPartyRelation(queryVo);
-        
+        List relList = auPartyRelationBs.queryAuPartyRelation(queryVo);
         return this.getAuByRelList(relList, sType,auHisTag);
-        
     }
     
     /**
@@ -115,16 +101,16 @@ public class AuAuthorizeLogBS extends BaseBusinessService implements IAuAuthoriz
             for (int i=0; i<relList.size(); i++){
                 AuPartyRelationVo relVo = (AuPartyRelationVo) relList.get(i);
                 String[] visiCodeArray = ProjTools.splitTreeCode(relVo.getCode());
-                List list = getDao().queryByVisitorCode(visiCodeArray ,sType,auHisTag);//获取访问者所有权限
+                List list = auAuthorizeLogDao.queryByVisitorCode(visiCodeArray ,sType,auHisTag);//获取访问者所有权限
                 //同一团体关系类型之间的权限判断
-                Map tempMap = getAuthorizeBs().judgeAu4OneRelation(list);
+                Map tempMap = auAuthorizeBS.judgeAu4OneRelation(list);
                 if(tempMap != null) {
                     auList.addAll(tempMap.values());
                 }
             }
         }
         //不同团体关系类型之间的权限判断
-        Map auMap = getAuthorizeBs().judgeAu4DifRelation(auList);
+        Map auMap = auAuthorizeBS.judgeAu4DifRelation(auList);
         return auMap==null ? new HashMap() : auMap;
     }
 
@@ -133,16 +119,14 @@ public class AuAuthorizeLogBS extends BaseBusinessService implements IAuAuthoriz
      * 功能: 根据访问者Code数组和资源类型查询该访问者自身拥有的权限+在同一团体关系类型内它所继承的权限
      *      如果资源类型为null，则查询全部资源类型的权限
      *
-     * @param visiCodes 访问者编号数组
-     * @param resType 资源类型
      * @return
      */
     public Map getAuByVisitorCode(String visiCode, String resType,String auHisTag) {
         if(null==visiCode||"".equals(visiCode))
             return java.util.Collections.EMPTY_MAP;
         String[] visiCodeArray = ProjTools.splitTreeCode(visiCode);
-        List list = getDao().queryByVisitorCode(visiCodeArray, resType,auHisTag);
-        return getAuthorizeBs().judgeAu4OneRelation(list);
+        List list = auAuthorizeLogDao.queryByVisitorCode(visiCodeArray, resType,auHisTag);
+        return auAuthorizeBS.judgeAu4OneRelation(list);
     }
 
     /**
@@ -150,17 +134,14 @@ public class AuAuthorizeLogBS extends BaseBusinessService implements IAuAuthoriz
      * 功能: 根据访问者Code数组和资源类型查询该访问者自身拥有的数据权限+在同一团体关系类型内它所继承的权限
      *      提出历史数据权限
      *
-     * @param visiCodes 访问者编号数组
-     * @param resType 资源类型
      * @return
      */
-    public Map getOrgAuByVisitorCodeWithOutHistory(String visiCode,String resType,
-            String auHisTag) {
+    public Map getOrgAuByVisitorCodeWithOutHistory(String visiCode,String resType, String auHisTag) {
         if(null==visiCode||"".equals(visiCode))
             return java.util.Collections.EMPTY_MAP;
         String[] visiCodeArray = ProjTools.splitTreeCode(visiCode);
-        List list = getDao().queryByVisitorCodeWithOutHistory(visiCodeArray, resType,auHisTag);
-        return getAuthorizeBs().judgeAu4OneRelation(list);
+        List list = auAuthorizeLogDao.queryByVisitorCodeWithOutHistory(visiCodeArray, resType,auHisTag);
+        return auAuthorizeBS.judgeAu4OneRelation(list);
     }
 }
 

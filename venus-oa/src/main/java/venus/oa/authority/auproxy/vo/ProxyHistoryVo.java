@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 
 /**
  * @author changming.Y <changming.yang.ah@gmail.com>
- *
  */
 public class ProxyHistoryVo extends BaseValueObject {
     private String id;

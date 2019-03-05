@@ -26,13 +26,6 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
 	private IDepartmentBs departmentBs;
 	
 	/**
-	 * @param departmentBs 要设置的 departmentBs。
-	 */
-	public void setDepartmentBs(IDepartmentBs departmentBs) {
-		this.departmentBs = departmentBs;
-	}
-	
-	/**
 	 * 添加新记录，同时添加团体、团体关系并记录历史日志（如果parentRelId为空则不添加团体关系）
 	 */
 	public String insert(DepartmentVo deptVo, String parentRelId, LoginSessionVo vo) {

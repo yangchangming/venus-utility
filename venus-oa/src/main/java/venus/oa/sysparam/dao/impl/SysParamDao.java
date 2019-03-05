@@ -4,6 +4,7 @@
 package venus.oa.sysparam.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.sysparam.dao.ISysParamDao;
 import venus.oa.sysparam.util.IConstants;
 import venus.oa.sysparam.vo.SysParamVo;
@@ -21,6 +22,7 @@ import java.util.List;
  * 
  * @author changming.Y <changming.yang.ah@gmail.com>
  */
+@Repository
 public class SysParamDao extends BaseTemplateDao implements ISysParamDao, IConstants {
 
 	/*

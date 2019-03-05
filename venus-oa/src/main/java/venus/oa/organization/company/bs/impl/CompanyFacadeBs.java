@@ -27,13 +27,6 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
 	private ICompanyBs companyBs;
 
 	/**
-	 * @param companyBs 要设置的 companyBs。
-	 */
-	public void setCompanyBs(ICompanyBs companyBs) {
-		this.companyBs = companyBs;
-	}
-	
-	/**
 	 * 添加新记录，同时添加团体、团体关系根节点并记录历史日志
 	 */
 	public String insertRoot(CompanyVo companyVo, LoginSessionVo vo) {

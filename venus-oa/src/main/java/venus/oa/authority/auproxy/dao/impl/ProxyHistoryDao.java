@@ -4,6 +4,7 @@
 package venus.oa.authority.auproxy.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.authority.auproxy.dao.IProxyHistoryDao;
 import venus.oa.authority.auproxy.util.IConstants;
 import venus.oa.authority.auproxy.vo.ProxyHistoryVo;
@@ -20,6 +21,7 @@ import java.util.List;
  * @author changming.Y <changming.yang.ah@gmail.com>
  *
  */
+@Repository
 public class ProxyHistoryDao extends BaseTemplateDao implements IProxyHistoryDao,IConstants {
 
     /* (non-Javadoc)

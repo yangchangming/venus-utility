@@ -2,6 +2,7 @@ package venus.oa.organization.aupartyrelationtype.dao.impl;
 
 import org.apache.struts.util.LabelValueBean;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.organization.aupartyrelationtype.dao.IAuPartyRelationTypeDao;
 import venus.oa.organization.aupartyrelationtype.util.IConstants;
 import venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo;
@@ -21,8 +22,8 @@ import java.util.List;
 /**
  * 团体关系类型DAO
  * @author wumingqiang
- *
  */
+@Repository
 public class AuPartyRelationTypeDao extends BaseTemplateDao implements IAuPartyRelationTypeDao,
         IConstants {
 

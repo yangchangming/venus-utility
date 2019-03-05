@@ -6,6 +6,7 @@ package venus.oa.organization.auparty.dao.impl;
 
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.organization.auparty.dao.IAuPartyDao;
 import venus.oa.organization.auparty.util.IConstants;
 import venus.oa.organization.auparty.vo.PartyVo;
@@ -28,6 +29,7 @@ import java.util.Map;
  * @author maxiao
  *
  */
+@Repository
 public class AuPartyDao extends BaseTemplateDao implements IAuPartyDao,IConstants {
     /**
      * 新增团体

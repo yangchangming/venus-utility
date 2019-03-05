@@ -3,32 +3,28 @@
  */
 package venus.oa.profile.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import venus.oa.profile.bs.IUserProfileBs;
 import venus.oa.profile.dao.IUserProfileDao;
 import venus.oa.profile.vo.UserProfileVo;
 import venus.pub.lang.OID;
 
-
 /**
  * @author changming.Y <changming.yang.ah@gmail.com>
  *
  */
+@Service
 public class UserProfileBs implements IUserProfileBs {
-    private IUserProfileDao dao;
-        
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(IUserProfileDao dao) {
-        this.dao = dao;
-    }
 
+    @Autowired
+    private IUserProfileDao userProfileDao;
 
     /* (non-Javadoc)
      * @see venus.authority.service.profile.bs.IUserProfileBs#insert(venus.authority.service.profile.vo.UserProfileVo)
      */
     public OID insert(UserProfileVo vo) {
-        return dao.insert(vo);
+        return userProfileDao.insert(vo);
     }
 
 
@@ -36,7 +32,7 @@ public class UserProfileBs implements IUserProfileBs {
      * @see venus.authority.service.profile.bs.IUserProfileBs#find(java.lang.String, java.lang.String)
      */
     public UserProfileVo find(String partyid, String propertykey) {
-        return dao.find(partyid,propertykey);
+        return userProfileDao.find(partyid,propertykey);
     }
 
 
@@ -44,7 +40,7 @@ public class UserProfileBs implements IUserProfileBs {
      * @see venus.authority.service.profile.bs.IUserProfileBs#updateValueByVo(venus.authority.service.profile.vo.UserProfileVo)
      */
     public void updateValueByVo(UserProfileVo vo) {
-        dao.updateValueByVo(vo);
+        userProfileDao.updateValueByVo(vo);
     }
 
 
@@ -52,7 +48,7 @@ public class UserProfileBs implements IUserProfileBs {
      * @see venus.authority.service.profile.bs.IUserProfileBs#delete(venus.authority.service.profile.vo.UserProfileVo)
      */
     public void delete(UserProfileVo vo) {
-        dao.delete(vo);
+        userProfileDao.delete(vo);
     }
 
 }

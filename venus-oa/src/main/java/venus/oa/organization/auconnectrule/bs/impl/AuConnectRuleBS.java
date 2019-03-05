@@ -1,5 +1,6 @@
 package venus.oa.organization.auconnectrule.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.organization.auconnectrule.bs.IAuConnectRuleBS;
 import venus.oa.organization.auconnectrule.dao.IAuConnectRuleDao;
@@ -21,9 +22,8 @@ import java.util.List;
 @Service
 public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRuleBS, IConstants {
 
-//    private static ILog log = LogMgr.getLogger(AuConnectRuleBS.class);
-
-    private IAuConnectRuleDao dao = null;
+    @Autowired
+    private IAuConnectRuleDao auConnectRuleDao;
 
     /**
      * 查询所有
@@ -33,7 +33,7 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
      * @return
      */
     public List queryAll(int no, int size, String orderStr) {
-        return getDao().queryAll(no, size, orderStr);
+        return auConnectRuleDao.queryAll(no, size, orderStr);
     }
 
     /**
@@ -45,7 +45,7 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
      * @return
      */
     public List simpleQuery(int no, int size, String orderStr, Object objVo) {
-        return getDao().simpleQuery(no, size, orderStr, objVo);
+        return auConnectRuleDao.simpleQuery(no, size, orderStr, objVo);
     }
 
     /**
@@ -54,7 +54,7 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
      * @return
      */
     public int delete(String id) {
-        return getDao().delete(id);
+        return auConnectRuleDao.delete(id);
     }
 
     /**
@@ -62,7 +62,7 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
      * @return
      */
     public int getRecordCount() {
-        return getDao().getRecordCount();
+        return auConnectRuleDao.getRecordCount();
     }
 
 
@@ -72,22 +72,9 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
      * @return
      */
     public int getRecordCount(String queryCondition) {
-        return getDao().getRecordCount(queryCondition);
+        return auConnectRuleDao.getRecordCount(queryCondition);
     }
 
-    /**
-     * @return
-     */
-    public IAuConnectRuleDao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao
-     */
-    public void setDao(IAuConnectRuleDao dao) {
-        this.dao = dao;
-    }
 
     /**
      *  添加
@@ -95,12 +82,12 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
      * @return
      */
     public OID insert(Object objVo) {
-        List list = getDao().queryByName(objVo);
+        List list = auConnectRuleDao.queryByName(objVo);
         if (list.size()>0) {
 //            log.error(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit_")+((AuConnectRuleVo) objVo).getName());
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit"));
         }
-        return getDao().insert(objVo);
+        return auConnectRuleDao.insert(objVo);
     }
 
     /**
@@ -109,7 +96,7 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
      * @return
      */
     public Object find(String id) {
-        return getDao().find(id);
+        return auConnectRuleDao.find(id);
     }
 
     /**
@@ -118,7 +105,7 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
      * @return
      */
     public int update(Object objVo) {
-        List list = getDao().queryByName(objVo);
+        List list = auConnectRuleDao.queryByName(objVo);
         if (list.size()>1) {
 //            log.error(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit_")+((AuConnectRuleVo) objVo).getName());
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit"));
@@ -130,7 +117,7 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
                 throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_to_connect_the_name_to_repeat_the_rules_please_re_edit"));
             }
         }
-        return getDao().update(objVo);
+        return auConnectRuleDao.update(objVo);
     }
 
     /**
@@ -140,7 +127,7 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
      * @return
      */
     public int getRecordCount(String m, String n) {
-        return getDao().getRecordCount(m, n);
+        return auConnectRuleDao.getRecordCount(m, n);
     }
     
     /**
@@ -151,7 +138,7 @@ public class AuConnectRuleBS extends BaseBusinessService implements IAuConnectRu
      * @return
      */
     public List queryByType(Object objVo) {
-        return getDao().queryByType(objVo);
+        return auConnectRuleDao.queryByType(objVo);
     }
 	
 }

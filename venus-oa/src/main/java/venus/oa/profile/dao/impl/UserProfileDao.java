@@ -1,6 +1,7 @@
 package venus.oa.profile.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.profile.dao.IUserProfileDao;
 import venus.oa.profile.util.IContants;
 import venus.oa.profile.vo.UserProfileVo;
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
  * @author changming.Y <changming.yang.ah@gmail.com>
  *
  */
+@Repository
 public class UserProfileDao extends BaseTemplateDao implements IContants,IUserProfileDao {
 
     /* (non-Javadoc)

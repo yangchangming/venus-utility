@@ -5,6 +5,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
 import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
@@ -36,12 +37,10 @@ import java.util.List;
  *
  */
 @Service
-public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS,
-        IConstants {
+public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS, IConstants {
 
-//    private static ILog log = LogMgr.getLogger(AuPartyTypeBS.class);
-
-    private IAuPartyTypeDao dao = null;
+    @Autowired
+    private IAuPartyTypeDao auPartyTypeDao;
 
     /**
      * 查询所有
@@ -51,7 +50,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
     public List queryAll(int no, int size, String orderStr) {
-        return getDao().queryAll(no, size, orderStr);
+        return auPartyTypeDao.queryAll(no, size, orderStr);
     }
 
     /**
@@ -65,7 +64,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
     public List queryAllEnable(int no, int size, String orderStr) {
-        return getDao().queryAllEnable(no, size, orderStr);
+        return auPartyTypeDao.queryAllEnable(no, size, orderStr);
     }
     
     /**
@@ -77,7 +76,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
     public List simpleQuery(int no, int size, String orderStr, Object objVo) {
-        return getDao().simpleQuery(no, size, orderStr, objVo);
+        return auPartyTypeDao.simpleQuery(no, size, orderStr, objVo);
     }
 
     /**
@@ -86,7 +85,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
     public int delete(String id) {
-        return getDao().delete(id);
+        return auPartyTypeDao.delete(id);
     }
 
     /**
@@ -94,7 +93,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
     public int getRecordCount() {
-        return getDao().getRecordCount();
+        return auPartyTypeDao.getRecordCount();
     }
 
 
@@ -104,35 +103,16 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
     public int getRecordCount(Object objVo) {
-        return getDao().getRecordCount(objVo);
+        return auPartyTypeDao.getRecordCount(objVo);
     }
 
-    /**
-     * @return
-     */
-    public IAuPartyTypeDao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao
-     */
-    public void setDao(IAuPartyTypeDao dao) {
-        this.dao = dao;
-    }
-
-    /**
-     *  添加
-     * @param rvo
-     * @return
-     */
     public String insert(Object objVo) {
-        List list = getDao().queryByName(objVo);
+        List list = auPartyTypeDao.queryByName(objVo);
         if (list.size()>0) {
 //            log.equals(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit_")+((AuPartyTypeVo) objVo).getName());
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit"));
         }
-        return getDao().insert(objVo);
+        return auPartyTypeDao.insert(objVo);
     }
 
     /**
@@ -141,7 +121,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
     public Object find(String id) {
-        return getDao().find(id);
+        return auPartyTypeDao.find(id);
     }
 
     /**
@@ -150,7 +130,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
     public int update(Object objVo) {
-        List list = getDao().queryByName(objVo);
+        List list = auPartyTypeDao.queryByName(objVo);
         if (list.size()>1) {
 //            log.equals(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit_")+((AuPartyTypeVo) objVo).getName());
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit"));
@@ -162,11 +142,11 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
                 throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Body_type_name_duplication_re_edit"));
             }
         }
-        return getDao().update(objVo);
+        return auPartyTypeDao.update(objVo);
     }
 
 	public List getPartyAll() {
-		return getDao().getPartyAll();
+		return auPartyTypeDao.getPartyAll();
 	}    
 	/**
      * 启用
@@ -174,7 +154,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
 	public int enable(String id) {
-		return getDao().enable(id);
+		return auPartyTypeDao.enable(id);
 	}
 	/**
      * 禁用
@@ -207,7 +187,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
 	    if (list.size()>0) {
 	        throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_of_this_type_have_been_used_to_connect_the_rules_Please_delete_the_relevant_data"));
 	    }
-		return getDao().disable(id);
+		return auPartyTypeDao.disable(id);
 	}
 	
 	/**
@@ -216,14 +196,14 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
     public String getIdByKeyWord(String keyword){
-    	return getDao().getIdByKeyWord(keyword);
+    	return auPartyTypeDao.getIdByKeyWord(keyword);
     }
     /**
      * 根据KeyWord获得所有该类型的party列表
      * @return
      */
     public List getPartysByKeyWord(String keyword){
-        return getDao().getPartysByKeyWord(keyword);
+        return auPartyTypeDao.getPartysByKeyWord(keyword);
     }
 
     /**
@@ -231,7 +211,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
      * @return
      */
     public List getPartyAllByKeyword(String keyword){
-        return getDao().getPartyAllByKeyword(keyword);
+        return auPartyTypeDao.getPartyAllByKeyword(keyword);
     }
 
     public String generatePhysicsCode(String paraValue,String paraArray,AuPartyTypeVo obj) {
@@ -289,7 +269,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
         root.addContent(new Element("identification").setText(obj.getId()));
         root.addContent(new Element("name").setText(obj.getName()));
         try {
-            root.addContent(new Element("dbproductname").setText(DataBaseDescription.getDatabaseProductName(((AuPartyTypeDao) dao).getDataSource().getConnection())));
+            root.addContent(new Element("dbproductname").setText(DataBaseDescription.getDatabaseProductName(((AuPartyTypeDao)auPartyTypeDao).getDataSource().getConnection())));
         } catch (SQLException e) {
             e.printStackTrace();
         }

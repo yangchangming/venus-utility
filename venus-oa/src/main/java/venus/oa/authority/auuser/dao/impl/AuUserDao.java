@@ -13,6 +13,7 @@
 package venus.oa.authority.auuser.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.authority.auuser.dao.IAuUserDao;
 import venus.oa.authority.auuser.util.IAuUserConstants;
 import venus.oa.authority.auuser.vo.AuUserVo;
@@ -30,15 +31,7 @@ import java.sql.Types;
 import java.util.List;
 //import venus.pub.util.Encode;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
-
+@Repository
 public class AuUserDao extends BaseTemplateDao implements IAuUserDao, IAuUserConstants {
 
     /**

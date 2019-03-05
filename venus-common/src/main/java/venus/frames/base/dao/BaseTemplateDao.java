@@ -8,8 +8,6 @@ import venus.VenusHelper;
 import venus.frames.base.IGlobalsKeys;
 import venus.frames.jdbc.core.PageableJdbcTemplate;
 import venus.frames.jdbc.datasource.ConfDataSource;
-import venus.frames.mainframe.log.ILog;
-import venus.frames.mainframe.log.LogMgr;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -27,7 +25,8 @@ import java.util.List;
  */
 public abstract class BaseTemplateDao implements RowMapper, IGlobalsKeys {
 
-    protected final ILog logger = LogMgr.getLogger(this);
+//    protected final ILog logger = LogMgr.getLogger(this);
+
     private PageableJdbcTemplate jdbcTemplate;
     public static String DEFAULT_DATASOURE_BEAN_ID = "dataSource";
     public static int DEFAULT_UNIFORM_TYPE = Types.VARCHAR;
@@ -1042,8 +1041,7 @@ public abstract class BaseTemplateDao implements RowMapper, IGlobalsKeys {
      */
     private void logEndSQL(String sql, Object[] args, long time) {
         if (VenusHelper.IS_LOG_SQL_END_ENABLED) {
-            VenusHelper.getLogger(this.getClass().getName()).debug(
-                    this.getEndSQL(sql, args, time));
+            VenusHelper.getLogger(this.getClass().getName()).debug(this.getEndSQL(sql, args, time));
         }
     }
 

@@ -1,10 +1,8 @@
-/**
- * Copyright 2003-2010 UFIDA Software Engineering Co., Ltd. 
- */
 package venus.oa.authority.aufunctree.util;
 
-import venus.oa.util.ProjTools;
 import venus.frames.i18n.util.LocaleHolder;
+import venus.oa.util.common.dao.ICommonDao;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +25,7 @@ public class AuFunctreeConstants {
             boolean wetherExt = langSet.contains(localLang);
             if(!wetherExt){
                 try{
-                    ProjTools.getCommonBsInstance().getDao().doQueryForInt("select count(id) from AU_FUNCTREE_"+localLang);     
+                    ((ICommonDao)BeanFactoryHelper.getBean("commonDao")).doQueryForInt("select count(id) from AU_FUNCTREE_"+localLang);
                     langSet.add(localLang);
                     wetherExt = true;
                 }catch(Exception e){

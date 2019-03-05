@@ -1,6 +1,7 @@
 package venus.oa.authority.auvisitor.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.authority.auvisitor.dao.IAuVisitorDao;
 import venus.oa.authority.auvisitor.util.IConstants;
 import venus.oa.authority.auvisitor.vo.AuVisitorVo;
@@ -18,6 +19,7 @@ import java.util.List;
  * @author wumingqiang
  *  
  */
+@Repository
 public class AuVisitorDao extends BaseTemplateDao implements IAuVisitorDao, IConstants {
 
     /**

@@ -1,6 +1,9 @@
 package venus.oa.organization.aupartyrelationtype.bs.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import venus.frames.base.bs.BaseBusinessService;
+import venus.frames.base.exception.BaseApplicationException;
 import venus.oa.organization.auconnectrule.dao.IAuConnectRuleDao;
 import venus.oa.organization.auconnectrule.vo.AuConnectRuleVo;
 import venus.oa.organization.aupartyrelation.dao.IAuPartyRelationDao;
@@ -9,14 +12,12 @@ import venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS;
 import venus.oa.organization.aupartyrelationtype.dao.IAuPartyRelationTypeDao;
 import venus.oa.organization.aupartyrelationtype.util.IConstants;
 import venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo;
-import venus.frames.base.bs.BaseBusinessService;
-import venus.frames.base.exception.BaseApplicationException;
-//import venus.frames.mainframe.log.ILog;
-//import venus.frames.mainframe.log.LogMgr;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.util.List;
+
+//import venus.frames.mainframe.log.ILog;
+//import venus.frames.mainframe.log.LogMgr;
 
 /**
  * 团体关系类型BS
@@ -24,12 +25,17 @@ import java.util.List;
  *
  */
 @Service
-public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPartyRelationTypeBS,
-        IConstants {
+public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPartyRelationTypeBS, IConstants {
 
-//    private static ILog log = LogMgr.getLogger(AuPartyRelationTypeBS.class);
+    @Autowired
+    private IAuPartyRelationTypeDao auPartyRelationTypeDao;
 
-    private IAuPartyRelationTypeDao dao = null;
+    @Autowired
+    private IAuPartyRelationDao auPartyRelationDao;
+
+    @Autowired
+    private IAuConnectRuleDao auConnectRuleDao;
+
 
     /**
      * 查询所有
@@ -39,7 +45,7 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
      * @return
      */
     public List queryAll(int no, int size, String orderStr) {
-        return getDao().queryAll(no, size, orderStr);
+        return auPartyRelationTypeDao.queryAll(no, size, orderStr);
     }
 
     /**
@@ -51,7 +57,7 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
      * @return
      */
     public List simpleQuery(int no, int size, String orderStr, Object objVo) {
-        return getDao().simpleQuery(no, size, orderStr, objVo);
+        return auPartyRelationTypeDao.simpleQuery(no, size, orderStr, objVo);
     }
 
     /**
@@ -60,7 +66,7 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
      * @return
      */
     public int delete(String id) {
-        return getDao().delete(id);
+        return auPartyRelationTypeDao.delete(id);
     }
 
     /**
@@ -68,7 +74,7 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
      * @return
      */
     public int getRecordCount() {
-        return getDao().getRecordCount();
+        return auPartyRelationTypeDao.getRecordCount();
     }
 
 
@@ -78,29 +84,15 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
      * @return
      */
     public int getRecordCount(String queryCondition) {
-        return getDao().getRecordCount(queryCondition);
-    }
-
-    /**
-     * @return
-     */
-    public IAuPartyRelationTypeDao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao
-     */
-    public void setDao(IAuPartyRelationTypeDao dao) {
-        this.dao = dao;
+        return auPartyRelationTypeDao.getRecordCount(queryCondition);
     }
 
     public OID insert(Object objVo) {
-        List list = getDao().queryByName(objVo);
+        List list = auPartyRelationTypeDao.queryByName(objVo);
         if (list.size()>0) {
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Relationship_type_name_of_the_group_to_repeat_re_edit"));
         }
-        return getDao().insert(objVo);
+        return auPartyRelationTypeDao.insert(objVo);
     }
 
     /**
@@ -109,7 +101,7 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
      * @return
      */
     public Object find(String id) {
-        return getDao().find(id);
+        return auPartyRelationTypeDao.find(id);
     }
 
     /**
@@ -118,7 +110,7 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
      * @return
      */
     public int update(Object objVo) {
-        List list = getDao().queryByName(objVo);
+        List list = auPartyRelationTypeDao.queryByName(objVo);
         if (list.size()>1) {
 //            log.error(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Relationship_type_name_of_the_group_to_repeat_re_edit_")+((AuPartyRelationTypeVo) objVo).getName());
             throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Relationship_type_name_of_the_group_to_repeat_re_edit"));
@@ -130,11 +122,11 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
                 throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Relationship_type_name_of_the_group_to_repeat_re_edit"));
             }
         }
-        return getDao().update(objVo);
+        return auPartyRelationTypeDao.update(objVo);
     }
 
 	public List getPartyAll() {
-		return getDao().getPartyAll();
+		return auPartyRelationTypeDao.getPartyAll();
 	}    
 	/**
      * 启用
@@ -142,7 +134,7 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
      * @return
      */
 	public int enable(String id) {
-		return getDao().enable(id);
+		return auPartyRelationTypeDao.enable(id);
 	}
 	/**
      * 禁用
@@ -150,7 +142,6 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
      * @return
      */
 	public int disable(String id) {
-	    IAuPartyRelationDao auPartyRelationDao = (IAuPartyRelationDao) Helper.getBean("aupartyrelation_dao");
 	    AuPartyRelationVo vo = new AuPartyRelationVo();
 	    vo.setRelationtype_id(id);
 	    List list = auPartyRelationDao.queryAuPartyRelation(vo);
@@ -158,7 +149,6 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
 //	        log.error(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Relationship_as_the_relationship_has_been_used_Please_delete_the_relevant_data_")+id);
 	        throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Relationship_as_the_relationship_has_been_used_Please_delete_the_relevant_data"));
 	    }
-	    IAuConnectRuleDao auConnectRuleDao = (IAuConnectRuleDao) Helper.getBean("au_connectrule_dao");
 	    AuConnectRuleVo tvo = new AuConnectRuleVo();
 	    tvo.setParent_partytype_id(id);
 	    list = auConnectRuleDao.queryByType(tvo);
@@ -173,7 +163,7 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
 //	        log.error(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Relationship_as_the_relationship_has_been_used_Please_delete_the_relevant_data_")+id);
 	        throw new BaseApplicationException(venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Groups_of_this_type_have_been_used_to_connect_the_rules_Please_delete_the_relevant_data"));
 	    }
-		return getDao().disable(id);
+		return auPartyRelationTypeDao.disable(id);
 	}
 	/**
      * 根据KeyWord获得ID
@@ -181,7 +171,7 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
      * @return
      */
 	public String getIdByKeyWord(String keyword){
-    	return getDao().getIdByKeyWord(keyword);
+    	return auPartyRelationTypeDao.getIdByKeyWord(keyword);
     }
 	/**
      * 
@@ -194,14 +184,14 @@ public class AuPartyRelationTypeBS extends BaseBusinessService implements IAuPar
      * @return
      */
     public List queryAllEnable(int no, int size, String orderStr) {
-        return getDao().queryAllEnable(no,size,orderStr);
+        return auPartyRelationTypeDao.queryAllEnable(no,size,orderStr);
     }
     /**
      * List 中是LabelValueBean
      * @return
      */
     public List getPartyAllByKeyWord(String keyword){
-        return getDao().getPartyAllByKeyWord(keyword);
+        return auPartyRelationTypeDao.getPartyAllByKeyWord(keyword);
     }
 }
 

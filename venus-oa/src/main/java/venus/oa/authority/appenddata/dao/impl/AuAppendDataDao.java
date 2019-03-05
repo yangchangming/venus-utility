@@ -1,6 +1,7 @@
 package venus.oa.authority.appenddata.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.authority.appenddata.dao.IAuAppendDataDao;
 import venus.oa.authority.appenddata.util.IConstantsimplements;
 import venus.oa.authority.appenddata.vo.AuAppendVo;
@@ -18,6 +19,7 @@ import java.util.List;
  *  2008-9-26
  * @author changming.Y <changming.yang.ah@gmail.com>
  */
+@Repository
 public class AuAppendDataDao extends BaseTemplateDao implements IConstantsimplements, IAuAppendDataDao {
 
 	/* （非 Javadoc）

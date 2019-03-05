@@ -1,6 +1,7 @@
 package venus.oa.authority.auauthorize.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import venus.oa.authority.auauthorize.dao.IAuAuthorizeDao;
 import venus.oa.authority.auauthorize.util.IConstants;
 import venus.oa.authority.auauthorize.vo.AuAuthorizeVo;
@@ -17,12 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * 权限DAO
- * 
- * @author ganshuo
- *  
- */
+@Repository
 public class AuAuthorizeDao extends BaseTemplateDao implements IAuAuthorizeDao, IConstants {
 
     /**
