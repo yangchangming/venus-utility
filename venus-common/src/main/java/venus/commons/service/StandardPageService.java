@@ -3,8 +3,6 @@ package venus.commons.service;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import venus.frames.base.IGlobalsKeys;
-import venus.frames.mainframe.log.ILog;
-import venus.frames.mainframe.log.LogMgr;
 import venus.frames.mainframe.util.Helper;
 import venus.frames.web.page.PageVo;
 
@@ -20,7 +18,7 @@ import javax.servlet.ServletRequest;
 @Service
 public class StandardPageService implements PageService, IGlobalsKeys {
 
-    private static ILog log = LogMgr.getLogger(StandardPageService.class);
+//    private static ILog log = LogMgr.getLogger(StandardPageService.class);
 
     public PageVo findPageVo(ServletRequest request) {
 
@@ -57,7 +55,7 @@ public class StandardPageService implements PageService, IGlobalsKeys {
                     pageNo = 0;
                 }
             } catch (Exception e) {
-                log.error("error in createPageVo: ", e);
+//                log.error("error in createPageVo: ", e);
             }
         }
         if (StringUtils.isNotBlank(request.getParameter(PAGE_SIZE_KEY))) {
@@ -65,7 +63,7 @@ public class StandardPageService implements PageService, IGlobalsKeys {
                 String s = request.getParameter(PAGE_SIZE_KEY);
                 pageSize = Integer.parseInt(s);
             } catch (Exception e) {
-                log.error("error in createPageVo: ", e);
+//                log.error("error in createPageVo: ", e);
             }
         }
 
@@ -92,7 +90,7 @@ public class StandardPageService implements PageService, IGlobalsKeys {
                 String s = request.getParameter(PAGE_NO_KEY);
                 pageNo = Integer.parseInt(s);
             } catch (Exception e) {
-                log.error("error in updatePageVo: ", e);
+//                log.error("error in updatePageVo: ", e);
             }
             pageVo.setCurrentPage(pageNo);
         }
@@ -102,7 +100,7 @@ public class StandardPageService implements PageService, IGlobalsKeys {
                 String s = request.getParameter(PAGE_SIZE_KEY);
                 pageSize = Integer.parseInt(s);
             } catch (Exception e) {
-                log.error("error in updatePageVo: ", e);
+//                log.error("error in updatePageVo: ", e);
             }
             pageVo.setPageSize(pageSize);
             pageVo.rePageCount();

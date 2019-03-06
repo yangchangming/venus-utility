@@ -16,13 +16,15 @@
 package venus.common;
 
 
+import java.io.Serializable;
+
 /**
  * <p> Venus Global constants </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2018-05-04 00:11
  */
-public interface VenusConstants {
+public interface VenusConstants extends Serializable {
 
     String CONFIG_TYPE_ANNOTATION = "annotation";
     String CONFIG_TYPE_PROPERTY = "property";

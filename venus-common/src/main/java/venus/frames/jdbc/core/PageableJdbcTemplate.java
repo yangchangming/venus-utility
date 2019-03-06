@@ -52,10 +52,24 @@ public class PageableJdbcTemplate extends JdbcTemplate implements PageableJdbcOp
 	public PageableJdbcTemplate() {
 	}
 
+	/**
+	 * Construct a new JdbcTemplate, given a DataSource to obtain connections from.
+	 * Note: This will trigger eager initialization of the exception translator.
+	 *
+	 * @param dataSource JDBC DataSource to obtain connections from
+	 */
+	public PageableJdbcTemplate(DataSource dataSource) {
+		super(dataSource);
+//		if ((dataSource != null) && (dataSource instanceof ConfDataSource)) {
+//			String nullEscapeStr = ((ConfDataSource) dataSource).getNullEscapeStr();
+//		}
+	}
+
+
 	public void setDataSource(DataSource dataSource) {		
-		if ((dataSource != null) && (dataSource instanceof ConfDataSource)) {
-            String nullEscapeStr = ((ConfDataSource) dataSource).getNullEscapeStr();
-        }	
+//		if ((dataSource != null) && (dataSource instanceof ConfDataSource)) {
+//            String nullEscapeStr = ((ConfDataSource) dataSource).getNullEscapeStr();
+//        }
 		super.setDataSource(dataSource);
 	}
 	
@@ -90,20 +104,6 @@ public class PageableJdbcTemplate extends JdbcTemplate implements PageableJdbcOp
 			}
 		}
 	}
-	
-	
-	/**
-	 * Construct a new JdbcTemplate, given a DataSource to obtain connections from.
-	 * Note: This will trigger eager initialization of the exception translator.
-	 * @param dataSource JDBC DataSource to obtain connections from
-	 */
-	public PageableJdbcTemplate(DataSource dataSource) {
-		super(dataSource);
-		if ((dataSource != null) && (dataSource instanceof ConfDataSource)) {
-            String nullEscapeStr = ((ConfDataSource) dataSource).getNullEscapeStr();
-        }
-	}
-
 
 	public Object pagequery(final String sql, final ResultSetExtractor rse) throws DataAccessException {
 		if (sql == null) {

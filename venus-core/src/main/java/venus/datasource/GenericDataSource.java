@@ -32,7 +32,7 @@ import java.sql.SQLException;
 public class GenericDataSource extends AbstractDataSource {
 
     public Connection getConnection() throws SQLException {
-        // TODO: 18/5/2 fetch the datasource by configuration or annotation or default
+        // TODO: 18/5/2 fetch the datasource by configuration or annotation or default, just by user defined?
         DataSource dataSource = ExtensionLoader.getExtensionLoader(DataSource.class).loadExtensionInstance(VenusConstants.DEFAULT_DATASOURCE_MYSQL);
         return dataSource==null ? null : dataSource.getConnection();
     }

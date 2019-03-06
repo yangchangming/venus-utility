@@ -17,7 +17,7 @@
                         application="venus-oa" registry="registry" id="serviceBasicConfig"/>
 
     <!--公司-->
-    <motan:service interface="venus.oa.organization.company.bs.ICompanyBs" ref="companyBs" basicService="serviceBasicConfig" />
+    <motan:service interface="venus.oa.organization.company.bs.ICompanyBs" ref="companyBs" export="venus-restful-protocol:20041" basicService="serviceBasicConfig" />
     <motan:service interface="venus.oa.organization.company.bs.ICompanyFacadeBs" ref="companyFacadeBs" basicService="serviceBasicConfig" />
 
     <!--部门-->

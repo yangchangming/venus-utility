@@ -87,6 +87,8 @@ public interface ICompanyBs {
      * 
      * @return 查询到的VO列表
      */
+    @GET
+    @Path("/queryAll")
     public List queryAll();
     
     /**

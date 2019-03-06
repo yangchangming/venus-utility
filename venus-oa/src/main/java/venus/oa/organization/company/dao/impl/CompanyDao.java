@@ -1,14 +1,3 @@
-/*
- * 系统名称:单表模板 --> test
- * 
- * 文件名称: venus.authority.sample.company.dao.impl --> CompanyDao.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2007-01-31 14:20:11.307 创建1.0.0版 (甘硕)
- *  
- */
-
 package venus.oa.organization.company.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;

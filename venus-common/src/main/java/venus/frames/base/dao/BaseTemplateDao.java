@@ -25,8 +25,6 @@ import java.util.List;
  */
 public abstract class BaseTemplateDao implements RowMapper, IGlobalsKeys {
 
-//    protected final ILog logger = LogMgr.getLogger(this);
-
     private PageableJdbcTemplate jdbcTemplate;
     public static String DEFAULT_DATASOURE_BEAN_ID = "dataSource";
     public static int DEFAULT_UNIFORM_TYPE = Types.VARCHAR;
@@ -39,7 +37,6 @@ public abstract class BaseTemplateDao implements RowMapper, IGlobalsKeys {
 
     /**
      * @param dbUsr db.xml文件配置的数据源名，即DB_USER元素的src属性值
-     *
      */
     public BaseTemplateDao(String dbUsr) {
         DataSource ds = new ConfDataSource(dbUsr);
@@ -47,7 +44,6 @@ public abstract class BaseTemplateDao implements RowMapper, IGlobalsKeys {
     }
 
     /**
-     * 
      * @param dataSource 使用的数据源
      */
     public BaseTemplateDao(DataSource dataSource) {
@@ -1051,8 +1047,7 @@ public abstract class BaseTemplateDao implements RowMapper, IGlobalsKeys {
      */
     private void logStrartSQL(String sql, Object[] args) {
         if (VenusHelper.IS_LOG_SQL_START_ENABLED) {
-            VenusHelper.getLogger(this.getClass().getName()).debug(
-                    getStartSQL(sql, args));
+            VenusHelper.getLogger(this.getClass().getName()).debug(getStartSQL(sql, args));
         }
     }
 
@@ -1070,17 +1065,11 @@ public abstract class BaseTemplateDao implements RowMapper, IGlobalsKeys {
      *             如果失败，抛出DataException异常
      */
     public int updateWithUniformArgType(String sql, Object[] args) {
-
         if (args == null) {
-
             return update(sql, args);
-
         } else {
-
             return update(sql, args, getUniformTypeForArgs(args));
-
         }
-
     }
 
     /**
