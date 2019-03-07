@@ -18,8 +18,6 @@ package venus.dao.provider;
 import venus.core.SpiMeta;
 import venus.dao.BaseDao;
 
-import java.sql.Connection;
-
 /**
  * <p> Base mybatis dao provider, based on mybatis3 </p>
  *
@@ -28,8 +26,4 @@ import java.sql.Connection;
  */
 @SpiMeta(name = "mybatis")
 public class BaseMybatisDao implements BaseDao {
-
-    public Connection getConnection() {
-        return null;
-    }
 }

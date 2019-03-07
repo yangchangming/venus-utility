@@ -267,10 +267,8 @@ public class PopulateUtil implements IGlobalsKeys {
      */
     public static boolean populate(Object obj, java.sql.ResultSet rs, Map map, String[] ignoreProperties) throws SQLException {
         try {
-            List ignoreList = (ignoreProperties != null) ? Arrays
-                    .asList(ignoreProperties) : null;
-            BeanWrapper bw = new BeanWrapperImpl(
-                    obj);
+            List ignoreList = (ignoreProperties != null) ? Arrays.asList(ignoreProperties) : null;
+            BeanWrapper bw = new BeanWrapperImpl(obj);
             PropertyDescriptor[] pd = bw.getPropertyDescriptors();
             Map amap = new HashMap();
             if (map != null) {
@@ -303,18 +301,14 @@ public class PopulateUtil implements IGlobalsKeys {
                     try {
                         Object res = rs.getObject(name);
                         Class targetTypeClazz = bw.getPropertyType(targetName);
-                        if (superPopulate(targetTypeClazz.getName(), res, obj,
-                                targetName)) {
+                        if (superPopulate(targetTypeClazz.getName(), res, obj, targetName)) {
                             continue;
                         }
                         if (res != null && targetTypeClazz != null) {
                             BeanUtils.setProperty(obj, targetName, res);
                         }
                     } catch (Exception e) {
-                        getIlog().error(
-                                "In populate " + obj + " Property("
-                                        + targetName
-                                        + ") value from Db ResultSet", e);
+                        getIlog().error("In populate " + obj + " Property(" + targetName + ") value from Db ResultSet", e);
                     }
                 }
             }

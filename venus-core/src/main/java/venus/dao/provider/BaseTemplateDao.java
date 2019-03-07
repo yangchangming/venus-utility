@@ -130,6 +130,46 @@ public class BaseTemplateDao extends JdbcDaoSupport implements BaseDao {
     }
 
     /**
+     * spring3*版本，JdbcTemplate中存在queryForInt方法，而spring4*中不存在，所以自定义
+     *
+     * @param sql
+     * @return
+     */
+    public int queryForInt(String sql) {
+        logStrartSQL(sql, null);
+        long time = System.currentTimeMillis();
+        if (VenusHelper.SQL_FILTER) {
+            sql = VenusHelper.doSqlFilter(sql);
+        }
+        Number number = getJdbcTemplate().queryForObject(sql, null, Integer.class);
+        int res = (number != null ? number.intValue() : 0);
+        logEndSQL(sql, null, time);
+        return res;
+    }
+
+    /**
+     * spring3*版本，JdbcTemplate中存在queryForLong方法，而spring4*中不存在，所以自定义
+     *
+     * @param sql
+     * @return
+     */
+    public long queryForLong(String sql) {
+        logStrartSQL(sql, null);
+        long time = System.currentTimeMillis();
+
+        if (VenusHelper.SQL_FILTER) {
+            sql = VenusHelper.doSqlFilter(sql);
+        }
+
+        Number number = getJdbcTemplate().queryForObject(sql, null, Long.class);
+        long res = (number != null ? number.longValue() : 0);
+        logEndSQL(sql, null, time);
+        return res;
+    }
+
+
+
+    /**
      * 执行给定SQL, 通过RowMapper接口的mapRow方法，对选中的记录，返回一个Java对象
      * 使用JDBC Statement执行静态查询并返回一个Java对象.
      *

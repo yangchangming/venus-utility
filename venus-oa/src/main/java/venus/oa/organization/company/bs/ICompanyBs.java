@@ -1,31 +1,11 @@
-/*
- * 系统名称:单表模板 --> test
- * 
- * 文件名称: venus.authority.sample.company.bs --> ICompanyBs.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2007-01-31 14:20:11.275 创建1.0.0版 (甘硕)
- *  
- */
-
 package venus.oa.organization.company.bs;
 
-import venus.oa.organization.company.dao.ICompanyDao;
 import venus.oa.organization.company.vo.CompanyVo;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.List;
-
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @see 需要参见的其它类
- * @since 1.0.0
- */
 
 @Path("/company")
 public interface ICompanyBs {
@@ -88,6 +68,7 @@ public interface ICompanyBs {
      * @return 查询到的VO列表
      */
     @GET
+    @Produces("text/plain")
     @Path("/queryAll")
     public List queryAll();
     
