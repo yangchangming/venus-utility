@@ -15,15 +15,13 @@
  */
 package venus.user.dao.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import venus.frames.base.dao.BaseTemplateDao;
+import venus.dao.provider.BaseTemplateDao;
 import venus.user.dao.IUserDao;
 import venus.user.model.User;
 import venus.util.PopulateUtil;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -37,9 +35,6 @@ import java.util.List;
 @Repository("userDao")
 public class UserDao extends BaseTemplateDao implements IUserDao {
 
-    @Autowired
-    private DataSource dataSource;
-
     public List<User> queryAll(String sql) {
 
         List result = query(sql.trim(), new RowMapper() {
@@ -50,7 +45,6 @@ public class UserDao extends BaseTemplateDao implements IUserDao {
                 return user;
             }
         });
-
         return result;
     }
 }

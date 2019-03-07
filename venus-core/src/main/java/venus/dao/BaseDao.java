@@ -18,8 +18,6 @@ package venus.dao;
 import venus.common.VenusConstants;
 import venus.core.Spi;
 
-import java.sql.Connection;
-
 /**
  * <p> Base dao interface definition for all over system </p>
  *
@@ -28,6 +26,4 @@ import java.sql.Connection;
  */
 @Spi
 public interface BaseDao extends VenusConstants {
-
-    Connection getConnection();
 }

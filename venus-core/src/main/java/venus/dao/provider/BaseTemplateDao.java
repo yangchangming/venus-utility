@@ -16,21 +16,21 @@
 package venus.dao.provider;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import venus.VenusHelper;
 import venus.core.SpiMeta;
 import venus.dao.BaseDao;
-import venus.datasource.GenericDataSource;
-import venus.exception.VenusFrameworkException;
-import venus.frames.jdbc.core.PageableJdbcTemplate;
 import venus.frames.jdbc.datasource.ConfDataSource;
-import venus.springsupport.BeanFactoryHelper;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.List;
 
 /**
@@ -40,38 +40,21 @@ import java.util.List;
  * @since 2019-03-06 13:26
  */
 @SpiMeta(name = "template")
-public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
-
-    private static int DEFAULT_UNIFORM_TYPE = Types.VARCHAR;
-
-    private static DataSource dataSource;
+public class BaseTemplateDao extends JdbcDaoSupport implements BaseDao {
 
     private static Logger logger = Logger.getLogger(BaseTemplateDao.class);
 
-    static {
-        Object _dataSource = BeanFactoryHelper.getBean("dataSource");
-        if (_dataSource!=null && _dataSource instanceof GenericDataSource){
-            dataSource = (GenericDataSource)_dataSource;
-        }else {
-            logger.error("Datasource not match!");
-            throw new VenusFrameworkException("Datasource not match!");
-        }
-    }
+    private static int DEFAULT_UNIFORM_TYPE = Types.VARCHAR;
+
+    @Autowired
+    private DataSource dataSource;
 
     /**
-     * Constructor
+     * fixed the problem about final method setDataSource() of JdbcDaoSupport, not override
      */
-    public BaseTemplateDao(){
-        super(dataSource);
-    }
-
-    public Connection getConnection() {
-        try {
-            return getDataSource().getConnection();
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-            throw new VenusFrameworkException("Fetch datasource connection failure!");
-        }
+    @PostConstruct
+    private final void initialize() {
+        setDataSource(dataSource);
     }
 
 
@@ -83,7 +66,7 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
     public void execute(final String sql) {
         logStrartSQL(sql, null);
         long time = System.currentTimeMillis();
-        super.execute(sql);
+        getJdbcTemplate().execute(sql);
         logEndSQL(sql, null, time);
     }
 
@@ -97,7 +80,7 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
     public Object update(final String sql, PreparedStatementCallback action) {
         logStrartSQL(sql, null);
         long time = System.currentTimeMillis();
-        Object res = execute(sql, action);
+        Object res = getJdbcTemplate().execute(sql, action);
         logEndSQL(sql, null, time);
         return res;
     }
@@ -111,7 +94,7 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
     public int update(final String sql) {
         logStrartSQL(sql, null);
         long time = System.currentTimeMillis();
-        int res = super.update(sql);
+        int res = getJdbcTemplate().update(sql);
         logEndSQL(sql, null, time);
         return res;
     }
@@ -126,7 +109,7 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
     public int update(String sql, Object[] args, int[] argTypes) {
         logStrartSQL(sql, args);
         long time = System.currentTimeMillis();
-        int res = super.update(sql, args, argTypes);
+        int res = getJdbcTemplate().update(sql, args, argTypes);
         logEndSQL(sql, args, time);
         return res;
     }
@@ -141,85 +124,7 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
     public int update(String sql, Object[] args) {
         logStrartSQL(sql, args);
         long time = System.currentTimeMillis();
-        int res = super.update(sql, checkArgs(args));
-        logEndSQL(sql, args, time);
-        return res;
-    }
-
-    /**
-     * 执行给定的SQL，返回长整数.
-     * 使用JDBC Statement执行静态查询并返回一个long型数据
-     * 本方法用来执行一个静态SQL，此SQL返回单行单列的整数.
-     *
-     * @param sql
-     * @return 长整型, 当SQL执行结果为NULL时，返回0, 如果失败，抛出DataException异常
-     */
-    public long queryForLong(String sql) {
-        logStrartSQL(sql, null);
-        long time = System.currentTimeMillis();
-        if (VenusHelper.SQL_FILTER) {
-            sql = VenusHelper.doSqlFilter(sql);
-        }
-        long res = super.queryForLong(sql);
-        logEndSQL(sql, null, time);
-        return res;
-    }
-
-    /**
-     * 执行给定的SQL，返回长整数.
-     * 使用JDBC PreparedStatement执行动态查询并返回一个long型数据
-     * 本方法用来执行一个动态SQL，此SQL返回单行单列的整数.
-     *
-     * @param sql
-     * @param args
-     * @return 长整型, 当SQL执行结果为NULL时，返回0, 如果失败，抛出DataException异常
-     */
-    public long queryForLong(String sql, Object[] args) {
-        logStrartSQL(sql, args);
-        long time = System.currentTimeMillis();
-        if (VenusHelper.SQL_FILTER) {
-            sql = VenusHelper.doSqlFilter(sql);
-        }
-        long res = super.queryForLong(sql, checkArgs(args));
-        logEndSQL(sql, args, time);
-        return res;
-    }
-
-    /**
-     * 执行给定的SQL，返回整数.
-     * 使用JDBC Statement执行静态查询并返回一个int型数据。
-     * 本方法用来执行一个静态SQL，此SQL返回单行单列的整数.
-     *
-     * @param sql
-     * @return 整型, 当SQL执行结果为NULL时，返回0
-     */
-    public int queryForInt(String sql) {
-        logStrartSQL(sql, null);
-        long time = System.currentTimeMillis();
-        if (VenusHelper.SQL_FILTER) {
-            sql = VenusHelper.doSqlFilter(sql);
-        }
-        int res = super.queryForInt(sql);
-        logEndSQL(sql, null, time);
-        return res;
-    }
-
-    /**
-     * 执行给定的SQL，返回整数.
-     * 使用JDBC PreparedStatement执行动态查询并返回一个int型数据.
-     * 本方法用来执行一个动态SQL，此SQL返回单行单列的整数.
-     *
-     * @param sql
-     * @param args
-     * @return 整型, 当SQL执行结果为NULL时，返回0 如果失败，抛出DataException异常
-     */
-    public int queryForInt(String sql, Object[] args) {
-        logStrartSQL(sql, args);
-        long time = System.currentTimeMillis();
-        if (VenusHelper.SQL_FILTER) {
-            sql = VenusHelper.doSqlFilter(sql);
-        }
-        int res = super.queryForInt(sql, checkArgs(args));
+        int res = getJdbcTemplate().update(sql, checkArgs(args));
         logEndSQL(sql, args, time);
         return res;
     }
@@ -293,7 +198,7 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
         if (VenusHelper.SQL_FILTER) {
             sql = VenusHelper.doSqlFilter(sql);
         }
-        List res = super.query(sql, mapper);
+        List res = getJdbcTemplate().query(sql, mapper);
         logEndSQL(sql, null, time);
         return res;
     }
@@ -312,7 +217,7 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
         if (VenusHelper.SQL_FILTER) {
             sql = VenusHelper.doSqlFilter(sql);
         }
-        List res = super.query(sql, mapper, firstResult, maxResult);
+        List res = getJdbcTemplate().query(sql, mapper, firstResult, maxResult);
         logEndSQL(sql, null, time);
         return res;
     }
@@ -333,7 +238,7 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
         if (VenusHelper.SQL_FILTER) {
             sql = VenusHelper.doSqlFilter(sql);
         }
-        List res = super.query(sql, args, argTypes, mapper);
+        List res = getJdbcTemplate().query(sql, args, argTypes, mapper);
         logEndSQL(sql, args, time);
         return res;
     }
@@ -353,7 +258,7 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
         if (VenusHelper.SQL_FILTER) {
             sql = VenusHelper.doSqlFilter(sql);
         }
-        List res = super.query(sql, checkArgs(args), mapper);
+        List res = getJdbcTemplate().query(sql, checkArgs(args), mapper);
         logEndSQL(sql, args, time);
         return res;
     }
@@ -368,18 +273,16 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
      * @param mapper
      * @return 对象集合
      */
-    public List query(String sql, Object[] args, int[] argTypes,
-                      final RowMapper mapper, int firstResult, int maxResult) {
-        logStrartSQL(sql, args);
-        long time = System.currentTimeMillis();
-
-        if (VenusHelper.SQL_FILTER) {
-            sql = VenusHelper.doSqlFilter(sql);
-        }
-        List res = super.query(sql, args, argTypes, mapper, firstResult, maxResult);
-        logEndSQL(sql, args, time);
-        return res;
-    }
+//    public List query(String sql, Object[] args, int[] argTypes, final RowMapper mapper, int firstResult, int maxResult) {
+//        logStrartSQL(sql, args);
+//        long time = System.currentTimeMillis();
+//        if (VenusHelper.SQL_FILTER) {
+//            sql = VenusHelper.doSqlFilter(sql);
+//        }
+//        List res = getJdbcTemplate().query(sql, args, argTypes, mapper, firstResult, maxResult);
+//        logEndSQL(sql, args, time);
+//        return res;
+//    }
 
     /**
      * 执行给定SQL, 通过RowMapper接口的mapRow方法，对给定范围的记录，返回一个Java对象列表
@@ -390,16 +293,16 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
      * @param mapper
      * @return 对象集合
      */
-    public List query(String sql, Object[] args, final RowMapper mapper, int firstResult, int maxResult) {
-        logStrartSQL(sql, args);
-        long time = System.currentTimeMillis();
-        if (VenusHelper.SQL_FILTER) {
-            sql = VenusHelper.doSqlFilter(sql);
-        }
-        List res = super.query(sql, checkArgs(args), mapper, firstResult, maxResult);
-        logEndSQL(sql, args, time);
-        return res;
-    }
+//    public List query(String sql, Object[] args, final RowMapper mapper, int firstResult, int maxResult) {
+//        logStrartSQL(sql, args);
+//        long time = System.currentTimeMillis();
+//        if (VenusHelper.SQL_FILTER) {
+//            sql = VenusHelper.doSqlFilter(sql);
+//        }
+//        List res = getJdbcTemplate().query(sql, checkArgs(args), mapper, firstResult, maxResult);
+//        logEndSQL(sql, args, time);
+//        return res;
+//    }
 
     /**
      * 执行给定SQL, 通过ResultSetExtractor接口进行数据抽取,以处理字段类型为LOB类型的查询
@@ -415,7 +318,7 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
         if (VenusHelper.SQL_FILTER) {
             sql = VenusHelper.doSqlFilter(sql);
         }
-        Object res = super.query(sql, checkArgs(args), extractor);
+        Object res = getJdbcTemplate().query(sql, checkArgs(args), extractor);
         logEndSQL(sql, args, time);
         return res;
     }
@@ -432,7 +335,7 @@ public class BaseTemplateDao extends PageableJdbcTemplate implements BaseDao {
      * @return 影响的行数的数组
      */
     public int[] batchUpdate(String sql, BatchPreparedStatementSetter batchPreparedStatementSetter) {
-        return super.batchUpdate(sql, batchPreparedStatementSetter);
+        return getJdbcTemplate().batchUpdate(sql, batchPreparedStatementSetter);
     }
 
     /**
