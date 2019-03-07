@@ -72,7 +72,7 @@ public class ConfigFactory {
     }
 
     /**
-     * Load current application all configuration at classpath
+     * Load current final application all configuration at classpath
      */
     private static void loadCurrentConfig(){
         List<File> configFiles = ResourceLoader.defaultLoadConfig();
@@ -87,7 +87,8 @@ public class ConfigFactory {
     }
 
     /**
-     * Register all config for all of modules
+     * Register all config by self of all modules
+     * All modules must implements interface ConfigRegister
      */
     private static void registerConfig(){
         ConcurrentMap<String, Class<ConfigRegister>> configRegisters = ExtensionLoader.getExtensionLoader(ConfigRegister.class).loadExtensions();
@@ -163,7 +164,7 @@ public class ConfigFactory {
 
 
     /**
-     * Fetch all spring configuration that start with "spring"
+     * Fetch all spring configuration that start with "spring" or "applicationContext"
      *
      * @return
      */
@@ -173,7 +174,7 @@ public class ConfigFactory {
         Set<URL> keys = configs.keySet();
         for (URL url : keys) {
             String path = url.getUrl().getPath();
-            if (path!=null && (path.toLowerCase().indexOf(VenusConstants.CONFIG_SPRING_PREFIX.toLowerCase())>-1 || path.indexOf("applicationContext")>-1) ){
+            if (path!=null && (path.toLowerCase().indexOf(VenusConstants.CONFIG_SPRING_PREFIX.toLowerCase())>-1 || path.indexOf(VenusConstants.CONFIG_APPLICATION_CONTEXT_PREFIX)>-1) ){
                 // excluding spring mvc configuration
                 if (!path.endsWith("mvc.xml") && !path.endsWith("MVC.xml")){
                     configLocations.add(path);
@@ -190,7 +191,8 @@ public class ConfigFactory {
             for (String configLocation : configLocations) {
                 String[] temp = configLocation.split("/");
                 for (String path : temp) {
-                    if (path!=null && !"".equals(path) && path.trim().startsWith(VenusConstants.CONFIG_SPRING_PREFIX) &&
+                    if (path!=null && !"".equals(path) && (path.trim().startsWith(VenusConstants.CONFIG_SPRING_PREFIX) ||
+                            path.trim().startsWith(VenusConstants.CONFIG_APPLICATION_CONTEXT_PREFIX)) &&
                             path.trim().indexOf(VenusConstants.CONFIG_EXTENSION_SEPARATOR)>-1 &&
                             path.trim().endsWith(VenusConstants.CONFIG_EXTENSION_XML)){
                         configNames.add(path.trim());
