@@ -36,6 +36,7 @@ public interface VenusConstants extends Serializable {
     String DEFAULT_DATASOURCE_POOL_DRUID = "druid";
 
     String CONFIG_SPRING_PREFIX = "spring";
+    String CONFIG_APPLICATION_CONTEXT_PREFIX = "applicationContext";
     String CONFIG_EXTENSION_SEPARATOR = ".";
     String CONFIG_EXTENSION_XML = "xml";
 

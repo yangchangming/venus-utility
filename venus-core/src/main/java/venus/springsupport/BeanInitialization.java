@@ -159,6 +159,11 @@ public class BeanInitialization implements Initialization {
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, applicationContext);
     }
 
+    /**
+     * Spring configuration must location at "classpath:spring/"
+     *
+     * @return
+     */
     private String[] fetchSpringConfigNames(){
         List<String> configNames = ConfigFactory.fetchSpringConfigNames();
         String[] _configNames = new String[configNames.size()];

@@ -61,7 +61,7 @@ public class ConfigFactory {
             return;
         }
         registerConfig();
-        loadCurrentConfig();
+        loadCurrentAppClassPathConfig();
         initialized = true;
     }
 
@@ -72,9 +72,9 @@ public class ConfigFactory {
     }
 
     /**
-     * Load current final application all configuration at classpath
+     * Load current application all configuration at classpath
      */
-    private static void loadCurrentConfig(){
+    private static void loadCurrentAppClassPathConfig(){
         List<File> configFiles = ResourceLoader.defaultLoadConfig();
         for (File configFile : configFiles) {
             try {
@@ -113,8 +113,10 @@ public class ConfigFactory {
      *
      * @param url config url
      */
-    public static void loadConfig(URL url){
-
+    public synchronized static void loadConfig(URL url){
+        if (duplicateConfig(url)){
+            return;
+        }
         Map<URL, Config> _map = new HashMap<URL, Config>();
         String spiName = parseURL(url);
         if (spiName==null || "".equals(spiName)){
@@ -130,12 +132,32 @@ public class ConfigFactory {
         addConfig(_map);
     }
 
+    /**
+     * Has duplicate configuration in configs
+     *
+     * @param url
+     * @return
+     */
+    private static boolean duplicateConfig(URL url){
+        if (url==null || url.getUrl()==null){
+            return false;
+        }
+        for (URL _url : fetchAllConfig().keySet()) {
+            if (_url.getUrl().getFile().equals(url.getUrl().getFile())){
+                logger.warn("Duplicate configuration for [" + url.getUrl().getFile() +"]");
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     private static String parseURL(URL url){
         if (url==null){
             throw new VenusFrameworkException("Configuration url is Null.");
         }
         if (!url.isValid()){
-            logger.warn("Unsupported configuration file type. [" + url.getType() + "]");
+            logger.warn("Unsupported configuration file type. [" + url.getUrl().getFile() + "]");
             return "";
         }
         return url.getType()==null ? "" : url.getType();
