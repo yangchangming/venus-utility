@@ -31,4 +31,14 @@ public class Logger {
         logger.info("");
     }
 
+    public static void keyInfos(org.apache.log4j.Logger logger, String[] messages){
+        logger.info("");
+        logger.info("------------------------------------------------------------------------");
+        for (String message : messages) {
+            logger.info(message);
+        }
+        logger.info("------------------------------------------------------------------------");
+        logger.info("");
+    }
+
 }
