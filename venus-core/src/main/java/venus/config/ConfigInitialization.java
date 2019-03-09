@@ -19,6 +19,8 @@ import org.apache.log4j.Logger;
 import venus.core.SpiMeta;
 import venus.init.Initialization;
 
+import java.util.Map;
+
 /**
  * <p> Configuration Initialization that all over system </p>
  *
@@ -32,6 +34,15 @@ public class ConfigInitialization implements Initialization {
 
     public void init() {
         ConfigFactory.init();
+
+        Map<URL, Config> configs = ConfigFactory.fetchAllConfig();
+        String[] configNames = new String[configs.size()];
+        int index = 0;
+        for (URL url : configs.keySet()) {
+            configNames[index] = url.getUrl().getFile();
+            index++;
+        }
+        venus.log.Logger.keyInfos(logger, configNames);
         venus.log.Logger.keyInfo(logger, "Configuration initial Success!");
     }
 }
