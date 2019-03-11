@@ -5,12 +5,12 @@ package venus.oa.authority.auproxy.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import venus.dao.provider.BaseTemplateDao;
+import venus.frames.mainframe.util.Helper;
 import venus.oa.authority.auproxy.dao.IProxyHistoryDao;
 import venus.oa.authority.auproxy.util.IConstants;
 import venus.oa.authority.auproxy.vo.ProxyHistoryVo;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.dao.BaseTemplateDao;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.sql.ResultSet;
@@ -72,7 +72,7 @@ public class ProxyHistoryDao extends BaseTemplateDao implements IProxyHistoryDao
         if(orderStr == null ) {
             strsql += ORDER_BY_ID;
         } else {
-            strsql += ORDER_BY_SYMBOL + orderStr;
+            strsql += " ORDER BY " + orderStr;
         }
         if(no <= 0 || size <= 0) {
             return query(strsql, new RowMapper() {

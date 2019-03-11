@@ -1,10 +1,9 @@
-/**
- * Copyright 2003-2010 UFIDA Software Engineering Co., Ltd. 
- */
 package venus.oa.authority.auauthorizelog.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import venus.dao.provider.BaseTemplateDao;
+import venus.frames.mainframe.util.Helper;
 import venus.oa.authority.auauthorize.vo.AuAuthorizeVo;
 import venus.oa.authority.auauthorizelog.dao.IAuAuthorizeLogDao;
 import venus.oa.authority.auauthorizelog.util.IConstants;
@@ -12,8 +11,6 @@ import venus.oa.authority.auauthorizelog.vo.AuAuthorizeLogVo;
 import venus.oa.util.SqlBuilder;
 import venus.oa.util.StringHelperTools;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.dao.BaseTemplateDao;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.sql.ResultSet;
@@ -48,9 +45,10 @@ public class AuAuthorizeLogDao extends BaseTemplateDao implements IAuAuthorizeLo
     public List queryByCondition(SqlBuilder sql) {
 	String strsql = QUERY_ALL_SQL;
         if (sql != null ) {
-            strsql += " WHERE " + sql.bulidSql(); //where后加上查询条件
+            strsql += " WHERE " + sql.bulidSql();
         }
         strsql += " ORDER BY AUTHORIZE_TAG DESC ";
+
         return query(strsql,sql.getData().toArray(), new RowMapper() {
                 public Object mapRow(ResultSet rs, int i) throws SQLException {
                     AuAuthorizeLogVo vo = new AuAuthorizeLogVo();
@@ -102,7 +100,7 @@ public class AuAuthorizeLogDao extends BaseTemplateDao implements IAuAuthorizeLo
         if(orderStr == null ) {
             strsql += " ORDER BY ID ";
         } else {
-            strsql += ORDER_BY_SYMBOL + orderStr;
+            strsql += " ORDER BY " + orderStr;
         }
         if(no <= 0 || size <= 0) {
             return query(strsql, new RowMapper() {

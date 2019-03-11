@@ -3,11 +3,11 @@ package venus.oa.organization.auconnectrule.dao.impl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import venus.dao.provider.BaseTemplateDao;
+import venus.frames.mainframe.util.Helper;
 import venus.oa.organization.auconnectrule.dao.IAuConnectRuleDao;
 import venus.oa.organization.auconnectrule.util.IConstants;
 import venus.oa.organization.auconnectrule.vo.AuConnectRuleVo;
-import venus.frames.base.dao.BaseTemplateDao;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.sql.ResultSet;

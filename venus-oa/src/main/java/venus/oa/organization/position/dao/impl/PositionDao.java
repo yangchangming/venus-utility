@@ -13,13 +13,13 @@ package venus.oa.organization.position.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import venus.dao.provider.BaseTemplateDao;
+import venus.frames.mainframe.util.Helper;
 import venus.oa.organization.position.dao.IPositionDao;
 import venus.oa.organization.position.util.IPositionConstants;
 import venus.oa.organization.position.vo.PositionVo;
 import venus.oa.util.StringHelperTools;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.dao.BaseTemplateDao;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.sql.ResultSet;
@@ -139,7 +139,7 @@ public class PositionDao extends BaseTemplateDao implements IPositionDao, IPosit
         if(orderStr == null ) {
             strsql += DEFAULT_DESC_ORDER_BY_ID;
         } else {
-            strsql += ORDER_BY_SYMBOL + orderStr;
+            strsql += " ORDER BY " + orderStr;
         }
         if(no <= 0 || size <= 0) {
             return query(strsql, new RowMapper() {
@@ -233,7 +233,7 @@ public class PositionDao extends BaseTemplateDao implements IPositionDao, IPosit
         if(orderStr == null ) {
             strsql += DEFAULT_DESC_ORDER_BY_ID;
         } else {
-            strsql += ORDER_BY_SYMBOL + orderStr;
+            strsql += " ORDER BY " + orderStr;
         }
         if(no <= 0 || size <= 0) {
             return query(strsql, new RowMapper() {

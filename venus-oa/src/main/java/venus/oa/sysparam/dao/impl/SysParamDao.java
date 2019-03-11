@@ -5,12 +5,12 @@ package venus.oa.sysparam.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import venus.dao.provider.BaseTemplateDao;
+import venus.frames.mainframe.util.Helper;
 import venus.oa.sysparam.dao.ISysParamDao;
 import venus.oa.sysparam.util.IConstants;
 import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.dao.BaseTemplateDao;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.sql.ResultSet;
@@ -103,9 +103,9 @@ public class SysParamDao extends BaseTemplateDao implements ISysParamDao, IConst
 			strsql += " AND " + queryCondition; //where后加上查询条件
 		}
 		if (orderStr == null) {
-			strsql += ORDER_BY_SYMBOL + DEFAULT_ORDER_CODE;
+			strsql += " ORDER BY " + DEFAULT_ORDER_CODE;
 		} else {
-			strsql += ORDER_BY_SYMBOL + orderStr;
+			strsql += " ORDER BY " + orderStr;
 		}
 		return query(strsql, new RowMapper() {
 			public Object mapRow(ResultSet rs, int i) throws SQLException {

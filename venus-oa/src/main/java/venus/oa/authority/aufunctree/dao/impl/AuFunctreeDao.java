@@ -1,25 +1,14 @@
-/*
- * 系统名称:PlatForm
- * 
- * 文件名称: venus.authority.au.aufunctree.dao.impl --> AuFunctreeDao.java
- * 
- * 功能描述:
- * 
- * 版本历史: 2006-06-09 15:32:54.954 创建1.0.0版 (甘硕)
- *  
- */
-
 package venus.oa.authority.aufunctree.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import venus.dao.provider.BaseTemplateDao;
 import venus.oa.authority.aufunctree.dao.IAuFunctreeDao;
 import venus.oa.authority.aufunctree.util.AuFunctreeConstants;
 import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
 import venus.oa.util.StringHelperTools;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.dao.BaseTemplateDao;
 import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.LangException;
 import venus.pub.lang.OID;
@@ -146,7 +135,7 @@ public class AuFunctreeDao extends BaseTemplateDao implements IAuFunctreeDao, IA
         if(orderStr == null ) {
             strsql += AuFunctreeConstants.getDifferentInstance().DEFAULT_DESC_ORDER_BY_ID;
         } else {
-            strsql += ORDER_BY_SYMBOL + orderStr;
+            strsql += " ORDER BY " + orderStr;
         }
         if(no <= 0 || size <= 0) {
             return query(strsql, new RowMapper() {
@@ -240,7 +229,7 @@ public class AuFunctreeDao extends BaseTemplateDao implements IAuFunctreeDao, IA
         if(orderStr == null ) {
             strsql += AuFunctreeConstants.getDifferentInstance().DEFAULT_DESC_ORDER_BY_ID;
         } else {
-            strsql += ORDER_BY_SYMBOL + orderStr;
+            strsql += " ORDER BY " + orderStr;
         }
         if(no <= 0 || size <= 0) {
             return query(strsql, new RowMapper() {

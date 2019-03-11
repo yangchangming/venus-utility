@@ -12,8 +12,8 @@ package venus.oa.util.common.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import venus.dao.provider.BaseTemplateDao;
 import venus.oa.util.common.dao.ICommonDao;
-import venus.frames.base.dao.BaseTemplateDao;
 
 import java.util.List;
 

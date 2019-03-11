@@ -2,13 +2,13 @@ package venus.oa.profile.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import venus.dao.provider.BaseTemplateDao;
+import venus.frames.mainframe.util.Helper;
 import venus.oa.profile.dao.IUserProfileDao;
 import venus.oa.profile.util.IContants;
 import venus.oa.profile.vo.UserProfileVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.dao.BaseTemplateDao;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.sql.ResultSet;

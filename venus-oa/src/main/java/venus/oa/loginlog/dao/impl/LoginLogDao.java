@@ -2,7 +2,7 @@ package venus.oa.loginlog.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import venus.frames.base.dao.BaseTemplateDao;
+import venus.dao.provider.BaseTemplateDao;
 import venus.frames.mainframe.util.Helper;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.loginlog.dao.ILoginLogDao;
@@ -171,9 +171,9 @@ public class LoginLogDao extends BaseTemplateDao implements ILoginLogDao, ILogin
             strsql += " AND " + queryCondition; //where后加上查询条件
         }
         if(orderStr == null ) {
-            strsql += ORDER_BY_SYMBOL + DEFAULT_ORDER_CODE;
+            strsql += " ORDER BY " + DEFAULT_ORDER_CODE;
         } else {
-            strsql += ORDER_BY_SYMBOL + orderStr;
+            strsql += " ORDER BY " + orderStr;
         }
         if(null!=AuthorizedContext)
             strsql = AuHelper.filterRecordPrivInSQL(strsql, AuthorizedContext);

@@ -2,13 +2,13 @@ package venus.oa.authority.auresource.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
+import venus.dao.provider.BaseTemplateDao;
+import venus.frames.mainframe.util.Helper;
 import venus.oa.authority.auresource.dao.IAuResourceDao;
 import venus.oa.authority.auresource.util.IAuResourceConstants;
 import venus.oa.authority.auresource.vo.AuResourceVo;
 import venus.oa.util.StringHelperTools;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.dao.BaseTemplateDao;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.sql.Connection;
@@ -180,7 +180,7 @@ public class AuResourceDao extends BaseTemplateDao implements IAuResourceDao, IA
         if(orderStr == null ) {
             strsql += DEFAULT_DESC_ORDER_BY_ID;
         } else {
-            strsql += ORDER_BY_SYMBOL + orderStr;
+            strsql += " ORDER BY " + orderStr;
         }
         if(no <= 0 || size <= 0) {
             return query(strsql, new RowMapper() {
@@ -274,7 +274,7 @@ public class AuResourceDao extends BaseTemplateDao implements IAuResourceDao, IA
         if(orderStr == null ) {
             strsql += DEFAULT_DESC_ORDER_BY_ID;
         } else {
-            strsql += ORDER_BY_SYMBOL + orderStr;
+            strsql += " ORDER BY " + orderStr;
         }
         if(no <= 0 || size <= 0) {
             return query(strsql, new RowMapper() {

@@ -35,9 +35,6 @@ public class AppendDataBs implements IAppendDataBs {
 	@Autowired
 	private IAuAuthorizeBS auAuthorizeBS;
 
-//	@Autowired
-//	private IAppendDataBs appendDataBs;
-
 	@Autowired
 	private IAuPartyRelationBs auPartyRelationBs;
 

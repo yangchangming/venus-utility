@@ -2,13 +2,12 @@ package venus.oa.authority.appenddata.dao.impl;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import venus.frames.mainframe.util.Helper;
 import venus.oa.authority.appenddata.dao.IAuAppendDataDao;
 import venus.oa.authority.appenddata.util.IConstantsimplements;
 import venus.oa.authority.appenddata.vo.AuAppendVo;
 import venus.oa.util.StringHelperTools;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.dao.BaseTemplateDao;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 
 import java.sql.ResultSet;
@@ -20,7 +19,7 @@ import java.util.List;
  * @author changming.Y <changming.yang.ah@gmail.com>
  */
 @Repository
-public class AuAppendDataDao extends BaseTemplateDao implements IConstantsimplements, IAuAppendDataDao {
+public class AuAppendDataDao extends venus.dao.provider.BaseTemplateDao implements IConstantsimplements, IAuAppendDataDao {
 
 	/* （非 Javadoc）
 	 * @see venus.authority.au.appenddata.dao.IAuAppendDataDao#delete(java.lang.String)

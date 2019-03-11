@@ -21,11 +21,10 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import venus.VenusHelper;
 import venus.core.SpiMeta;
 import venus.dao.BaseDao;
-import venus.frames.jdbc.datasource.ConfDataSource;
+import venus.dao.PaginationTemplateDao;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -40,17 +39,18 @@ import java.util.List;
  * @since 2019-03-06 13:26
  */
 @SpiMeta(name = "template")
-public class BaseTemplateDao extends JdbcDaoSupport implements BaseDao {
+public class BaseTemplateDao extends PaginationTemplateDao implements BaseDao {
 
     private static Logger logger = Logger.getLogger(BaseTemplateDao.class);
 
     private static int DEFAULT_UNIFORM_TYPE = Types.VARCHAR;
 
+
     @Autowired
     private DataSource dataSource;
 
     /**
-     * fixed the problem about final method setDataSource() of JdbcDaoSupport, not override
+     * fixed the problem about final method setDataSource() of JdbcDaoSupport, not override problem
      */
     @PostConstruct
     private final void initialize() {
@@ -324,25 +324,8 @@ public class BaseTemplateDao extends JdbcDaoSupport implements BaseDao {
 //        return res;
 //    }
 
-    /**
-     * 执行给定SQL, 通过RowMapper接口的mapRow方法，对给定范围的记录，返回一个Java对象列表
-     * 使用JDBC PreparedStatement执行动态查询. 如果只返回一个对象，请使用queryForObject方法.
-     *
-     * @param sql
-     * @param args
-     * @param mapper
-     * @return 对象集合
-     */
-//    public List query(String sql, Object[] args, final RowMapper mapper, int firstResult, int maxResult) {
-//        logStrartSQL(sql, args);
-//        long time = System.currentTimeMillis();
-//        if (VenusHelper.SQL_FILTER) {
-//            sql = VenusHelper.doSqlFilter(sql);
-//        }
-//        List res = getJdbcTemplate().query(sql, checkArgs(args), mapper, firstResult, maxResult);
-//        logEndSQL(sql, args, time);
-//        return res;
-//    }
+
+
 
     /**
      * 执行给定SQL, 通过ResultSetExtractor接口进行数据抽取,以处理字段类型为LOB类型的查询
@@ -503,27 +486,6 @@ public class BaseTemplateDao extends JdbcDaoSupport implements BaseDao {
         return types;
     }
 
-    private Object[] checkArgs(Object[] args) {
-        Object ds = this.getDataSource();
-        if ((ds == null) || !(ds instanceof ConfDataSource)) {
-            return args;
-        } else {
-            String replaceStr = ((ConfDataSource) ds).getNullEscapeStr();
-            if (replaceStr != null) {
-                if (args == null || args.length < 1) {
-                    Object[] re = {};
-                    return re;
-                } else {
-                    Object[] re = new Object[args.length];
-                    for (int i = 0; i < args.length; i++) {
-                        re[i] = (args[i] == null) ? replaceStr : args[i];
-                    }
-                    return re;
-                }
-            } else {
-                return args;
-            }
-        }
-    }
+
 
 }
