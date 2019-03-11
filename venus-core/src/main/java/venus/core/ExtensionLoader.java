@@ -290,6 +290,24 @@ public class ExtensionLoader<T> {
     }
 
     /**
+     * fetch unique extension, otherwise throw exception
+     *
+     * @return
+     */
+    public Class<T> loadUniqueExtension(){
+        ConcurrentMap<String, Class<T>> extensions = loadExtensions();
+        if (extensions==null || extensions.size()>1){
+            logger.error("Load unique extension failure.[" + extensions + "]");
+            throw new VenusFrameworkException("Load unique extension failure.");
+        }
+        for (String key : extensions.keySet()) {
+            return extensions.get(key);
+        }
+        return null;
+    }
+
+
+    /**
      * fetch all extension class of this object
      *
      * @return
@@ -307,6 +325,24 @@ public class ExtensionLoader<T> {
      */
     public T loadExtensionInstance(String spiName){
         Class<T> clazz = loadExtension(spiName);
+        if (clazz==null){
+            return null;
+        }
+        try {
+            return clazz.newInstance();
+        } catch (Exception e) {
+            logger.warn("Extension instance failure. " + clazz.getName());
+            return null;
+        }
+    }
+
+    /**
+     * fetch unique extension instance
+     *
+     * @return
+     */
+    public T loadUniqueExtensionInstance(){
+        Class<T> clazz = loadUniqueExtension();
         if (clazz==null){
             return null;
         }
