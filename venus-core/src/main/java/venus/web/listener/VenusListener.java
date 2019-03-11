@@ -15,6 +15,8 @@
  */
 package venus.web.listener;
 
+import com.weibo.api.motan.common.MotanConstants;
+import com.weibo.api.motan.util.MotanSwitcherUtil;
 import venus.init.InitializationFactory;
 import venus.util.VenusPathUtil;
 
@@ -32,6 +34,10 @@ public class VenusListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         VenusPathUtil.resetWebEnv(servletContextEvent.getServletContext());
         InitializationFactory.init();
+
+        if (!MotanSwitcherUtil.isOpen(MotanConstants.REGISTRY_HEARTBEAT_SWITCHER)){
+            MotanSwitcherUtil.setSwitcherValue(MotanConstants.REGISTRY_HEARTBEAT_SWITCHER, true);
+        }
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {

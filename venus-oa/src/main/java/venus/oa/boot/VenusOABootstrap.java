@@ -39,8 +39,9 @@ public class VenusOABootstrap {
         SpringApplication app = new SpringApplication(VenusOABootstrap.class);
         app.setWebEnvironment(false);
         app.run(args);
-        MotanSwitcherUtil.setSwitcherValue(MotanConstants.REGISTRY_HEARTBEAT_SWITCHER, true);
-
+        if (!MotanSwitcherUtil.isOpen(MotanConstants.REGISTRY_HEARTBEAT_SWITCHER)){
+            MotanSwitcherUtil.setSwitcherValue(MotanConstants.REGISTRY_HEARTBEAT_SWITCHER, true);
+        }
         venus.log.Logger.keyInfo(logger, "Venus OA server start success!");
     }
 
