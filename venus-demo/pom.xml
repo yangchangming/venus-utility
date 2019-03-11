@@ -21,6 +21,12 @@
 
         <dependency>
             <groupId>com.datavens</groupId>
+            <artifactId>venus-oa</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.datavens</groupId>
             <artifactId>venus-datasource-mysql</artifactId>
             <version>${project.version}</version>
         </dependency>

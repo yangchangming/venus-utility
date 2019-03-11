@@ -16,6 +16,7 @@ import venus.oa.util.Encode;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.VoHelperTools;
 import venus.frames.mainframe.util.Helper;
+import venus.springsupport.BeanFactoryHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -376,7 +377,11 @@ public class LoginHelper {
      */
     public static List getPublicFuncTree(){
         List publicFuncTreeList = new ArrayList();
-        IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
+//        IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
+
+        IAuFunctreeBs bs = (IAuFunctreeBs)BeanFactoryHelper.getBean("auFunctreeBs");
+
+
         List publicMenuList = bs.queryByCondition(" type = '0' and is_public = '1' ", " TREE_LEVEL,ORDER_CODE ");
         if(null == publicMenuList)
             return Collections.emptyList();

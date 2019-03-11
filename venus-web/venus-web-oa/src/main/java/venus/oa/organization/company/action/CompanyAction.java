@@ -27,27 +27,12 @@ import java.util.List;
 @RequestMapping("/company")
 public class CompanyAction implements ICompanyConstants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public ICompanyBs getBs() {
-        return (ICompanyBs) Helper.getBean(BS_KEY);  //得到BS对象,受事务控制
-    }
-
     @Autowired
     private ICompanyBs companyBs;
-
-
-    /**
-     * 得到Facade BS对象
-     * 
-     * @return BS对象
-     */
-    public ICompanyFacadeBs getFacadeBs() {
-    	return (ICompanyFacadeBs) Helper.getBean(FACADE_BS_KEY);//得到BS对象,受事务控制
-    }     
+    
+    @Autowired
+    ICompanyFacadeBs companyFacadeBs;
+    
 
     /**
      * 从页面表单获取信息注入vo，并插入单条记录，同时添加团体、团体关系（如果parentRelId为空则不添加团体关系）
@@ -71,13 +56,13 @@ public class CompanyAction implements ICompanyConstants {
         vo.setCreate_date(DateTools.getSysTimestamp());//打创建时间戳
         String parentRelId = request.getParameter("parentRelId");
         if(parentRelId!=null && !"".equals(parentRelId) && !"null".equals(parentRelId)) {
-            getFacadeBs().insert(vo, parentRelId, AuthorizedContext);
+            companyFacadeBs.insert(vo, parentRelId, AuthorizedContext);
             request.setAttribute("parent_code", GlobalConstants.getRelaType_comp());
 //            return request.findForward(FORWARD_QUERY_TREE_KEY);//返回组织关系管理页面
             return "redirect:/relation/showTree";
         }else {
             String owner_party_id = request.getParameter("owner_party_id");
-            getFacadeBs().insert(vo, owner_party_id, AuthorizedContext);
+            companyFacadeBs.insert(vo, owner_party_id, AuthorizedContext);
 //            return request.findForward(FORWARD_TO_QUERY_ALL_KEY);//返回公司管理列表页面
             return "redirect:/company/queryAll";
         }
@@ -104,7 +89,7 @@ public class CompanyAction implements ICompanyConstants {
             return MESSAGE_AGENT_ERROR;
         }
         vo.setCreate_date(DateTools.getSysTimestamp());//打创建时间戳
-        getFacadeBs().insertRoot(vo, AuthorizedContext);
+        companyFacadeBs.insertRoot(vo, AuthorizedContext);
         request.setAttribute("parent_code", GlobalConstants.getRelaType_comp()); 
 //        return request.findForward(FORWARD_QUERY_TREE_KEY);//返回组织关系管理页面
         return "redirect:/relation/showTree";
@@ -121,7 +106,7 @@ public class CompanyAction implements ICompanyConstants {
     @RequestMapping("/delete")
     public String delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	LoginSessionVo AuthorizedContext= LoginHelper.getLoginVo(request);//权限上下文
-    	getFacadeBs().delete(request.getParameter("relationId"),AuthorizedContext);
+    	companyFacadeBs.delete(request.getParameter("relationId"),AuthorizedContext);
         request.setAttribute("parent_code", GlobalConstants.getRelaType_comp()); 
 //        return request.findForward(FORWARD_QUERY_TREE_KEY);
         return "redirect:/relation/showTree";
@@ -142,7 +127,7 @@ public class CompanyAction implements ICompanyConstants {
         String ids = request.getParameter(REQUEST_MULTI_ID_FLAG);  //从request获取多条记录id
         String id[] = ids.split(",");
         if (id != null && id.length != 0) {
-        	getFacadeBs().delete(id,AuthorizedContext);  //删除多条记录
+        	companyFacadeBs.delete(id,AuthorizedContext);  //删除多条记录
         }
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/company/queryAll";
@@ -158,7 +143,7 @@ public class CompanyAction implements ICompanyConstants {
      */
     @RequestMapping("/find")
     public String find(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        CompanyVo bean = getBs().find(request.getParameter(REQUEST_ID_FLAG));  //通过id获取vo
+        CompanyVo bean = companyBs.find(request.getParameter(REQUEST_ID_FLAG));  //通过id获取vo
         request.setAttribute(REQUEST_BEAN_VALUE, bean);  //把vo放入request
 //        return request.findForward(FORWARD_UPDATE_KEY);
         return FORWARD_UPDATE_KEY;
@@ -182,7 +167,7 @@ public class CompanyAction implements ICompanyConstants {
             return MESSAGE_AGENT_ERROR;
         }
         vo.setModify_date(DateTools.getSysTimestamp());//打修改时间戳
-        getFacadeBs().update(vo, AuthorizedContext);
+        companyFacadeBs.update(vo, AuthorizedContext);
         String parentRelId = request.getParameter("parentRelId");
         if(parentRelId!=null && !"".equals(parentRelId) && !"null".equals(parentRelId)) {
             request.setAttribute("parent_code", GlobalConstants.getRelaType_comp()); 
@@ -206,7 +191,7 @@ public class CompanyAction implements ICompanyConstants {
     public String queryAll(HttpServletRequest _request, HttpServletResponse response) throws Exception {
 
         IRequest request = (IRequest)new HttpRequest(_request);
-        ICompanyBs bs = getBs();
+        ICompanyBs bs = companyBs;
         String queryCondition = "";  //查询条件
         queryCondition = AuHelper.filterOrgPrivInSQL(queryCondition, "B.CODE", (HttpServletRequest) request.getServletRequest());//控制数据权限
         PageVo pageVo = Helper.findPageVo(request);
@@ -234,7 +219,7 @@ public class CompanyAction implements ICompanyConstants {
      */
     @RequestMapping("/detail")
     public String detail(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        CompanyVo bean = getBs().find(request.getParameter(REQUEST_ID_FLAG));  //通过id获取vo
+        CompanyVo bean = companyBs.find(request.getParameter(REQUEST_ID_FLAG));  //通过id获取vo
         request.setAttribute(REQUEST_BEAN_VALUE, bean);  //把vo放入request
 //        return request.findForward(FORWARD_DETAIL_KEY);
         return FORWARD_DETAIL_KEY;
@@ -252,7 +237,7 @@ public class CompanyAction implements ICompanyConstants {
     public String simpleQuery(HttpServletRequest _request, HttpServletResponse response) throws Exception {
 
         IRequest request = (IRequest)new HttpRequest(_request);
-        ICompanyBs bs = getBs();
+        ICompanyBs bs = companyBs;
         String queryCondition = queryCondition(request);
         queryCondition = AuHelper.filterOrgPrivInSQL(queryCondition, "B.CODE", (HttpServletRequest) request.getServletRequest());//控制数据权限
         PageVo pageVo = Helper.findPageVo(request);
@@ -281,7 +266,7 @@ public class CompanyAction implements ICompanyConstants {
     public String queryReference(HttpServletRequest _request, HttpServletResponse response) throws Exception {
 
         IRequest request = (IRequest)new HttpRequest(_request);
-        ICompanyBs bs = getBs();
+        ICompanyBs bs = companyBs;
         String queryCondition = queryCondition(request);
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {

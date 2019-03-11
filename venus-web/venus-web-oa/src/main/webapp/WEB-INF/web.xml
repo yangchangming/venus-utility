@@ -5,7 +5,7 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
            version="3.0">
 
-<display-name>Venus OA</display-name>
+<display-name>Venus OA WEB</display-name>
 <context-param>
     <param-name>webAppRootKey</param-name>
     <param-value>venus.oa.root</param-value>
@@ -22,6 +22,10 @@
     </param-value>
 </context-param>
 
+    <listener>
+        <listener-class>venus.web.listener.VenusListener</listener-class>
+    </listener>
+    
 <filter>
     <filter-name>Set Character Encoding</filter-name>
     <filter-class>venus.frames.web.filter.SetEncodingFilter</filter-class>
@@ -306,7 +310,7 @@
 </mime-mapping>
 
 <welcome-file-list>
-    <welcome-file>/data-portal/index.html</welcome-file>
+    <welcome-file>/index/authority-index.jsp</welcome-file>
 </welcome-file-list>
 
 <!--Struts Tag Library Descriptors-->

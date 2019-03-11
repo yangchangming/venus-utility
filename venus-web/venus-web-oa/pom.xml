@@ -63,9 +63,7 @@
             <groupId>com.datavens</groupId>
             <artifactId>venus-oa</artifactId>
             <version>${project.version}</version>
-            <classifier>api</classifier>
         </dependency>
-
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -82,7 +80,6 @@
     </dependencies>
 
     <build>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -91,9 +88,38 @@
                     <source>${java.source.version}</source>
                     <target>${java.target.version}</target>
                     <encoding>utf-8</encoding>
+                    <compilerArguments>
+                        <!--<bootclasspath>${java.home}/lib/rt.jar</bootclasspath>-->
+                    </compilerArguments>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <server>Tomcat7</server>
+                    <path>/</path>
+                    <port>50020</port>
+                    <uriEncoding>UTF-8</uriEncoding>
+                </configuration>
+            </plugin>
+
         </plugins>
+
+
+
+
+
 
     </build>
 

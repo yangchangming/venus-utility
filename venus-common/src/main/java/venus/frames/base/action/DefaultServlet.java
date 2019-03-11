@@ -2,7 +2,6 @@ package venus.frames.base.action;
 
 import gap.commons.digest.DigestLoader;
 import gap.license.exception.InvalidLicenseException;
-import org.apache.struts.action.ActionServlet;
 import venus.frames.base.IGlobalsKeys;
 import venus.frames.base.action.plugin.IServletPlugin;
 import venus.frames.mainframe.action.HttpRequest;
@@ -15,6 +14,7 @@ import venus.frames.mainframe.util.PathMgr;
 import venus.pub.util.ReflectionUtils;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import java.util.Vector;
  * 主 Servlet 集中处理类
  * 
  */
-public class DefaultServlet extends ActionServlet implements ILog, IGlobalsKeys {
+public class DefaultServlet extends HttpServlet implements ILog, IGlobalsKeys {
 	
 	//protected final ILog logger = LogMgr.getLogger(this);
 
@@ -139,7 +139,7 @@ public class DefaultServlet extends ActionServlet implements ILog, IGlobalsKeys 
 		}
 
 		//运行父类的方法 init()
-		super.init();
+//		super.init();
 	}
 
 	/**
@@ -159,9 +159,7 @@ public class DefaultServlet extends ActionServlet implements ILog, IGlobalsKeys 
 	* @roseuid 3F41E164023E
 	*/
 
-	public void process(
-		HttpServletRequest request,
-		HttpServletResponse response)
+	public void process(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 
 		try {
@@ -211,7 +209,7 @@ public class DefaultServlet extends ActionServlet implements ILog, IGlobalsKeys 
 			}
 	
 			//如果转发失败，则调用父类的方法，进行Action的分发控制
-			super.process((HttpServletRequest) req.getServletRequest(), (HttpServletResponse) res.getServletResponse());
+//			super.process((HttpServletRequest) req.getServletRequest(), (HttpServletResponse) res.getServletResponse());
 		
 		} catch (Exception e) {
 			//info("exception in process(....) ",e);
@@ -219,8 +217,7 @@ public class DefaultServlet extends ActionServlet implements ILog, IGlobalsKeys 
 		}
 	}
 	
-	private void showExceptionForWeb(Exception e,HttpServletResponse response,HttpServletRequest request)
-	throws  ServletException, IOException {
+	private void showExceptionForWeb(Exception e,HttpServletResponse response,HttpServletRequest request) throws  ServletException, IOException {
 		if( MSG_ON_EXCEPTION == null || MSG_ON_EXCEPTION.length()<1 )  throw new ServletException(e);
 		
 		try {
@@ -337,11 +334,7 @@ public class DefaultServlet extends ActionServlet implements ILog, IGlobalsKeys 
 	 * @roseuid 3FA5B65E00F9
 	 */
 
-	protected void runPlugin(
-		String runLoc,
-		IRequest request,
-		IResponse response)
-		throws DefaultServletException {
+	protected void runPlugin(String runLoc, IRequest request, IResponse response) throws DefaultServletException {
 
 		if (m_hashPlugin.containsKey(runLoc)) {
 
@@ -424,11 +417,7 @@ public class DefaultServlet extends ActionServlet implements ILog, IGlobalsKeys 
 	 * @roseuid 3FA5B94D029F
 	 */
 
-	private void runPluginAryService(
-		IServletPlugin[] tmpary,
-		IRequest request,
-		IResponse response)
-		throws DefaultServletException {
+	private void runPluginAryService(IServletPlugin[] tmpary, IRequest request, IResponse response) throws DefaultServletException {
 
 		for (int i = 0; i < tmpary.length; i++) {
 			try {

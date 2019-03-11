@@ -8,10 +8,10 @@
     <!--<motan:registry regProtocol="local" name="registry"/>-->
     <motan:registry regProtocol="zookeeper" name="registry" address="127.0.0.1:2181" connectTimeout="2000"/>
 
-    <motan:protocol default="true" id="motan-protocol" name="motan" haStrategy="failover" loadbalance="roundrobin" maxClientConnection="10" minClientConnection="2"/>
+    <motan:protocol default="true" name="motan" haStrategy="failover" loadbalance="roundrobin" maxClientConnection="100" minClientConnection="2"/>
 
     <motan:basicReferer requestTimeout="200" accessLog="false" retries="2" group="venus-oa-group" module="venus-oa-group"
-                        application="venus-oa" protocol="motan-protocol" registry="registry" id="basicRefererConfig" throwException="true" check="true"/>
+                        application="venus-oa" protocol="motan" registry="registry" id="basicRefererConfig" throwException="true" check="true"/>
 
     <motan:referer id="companyBs" interface="venus.oa.organization.company.bs.ICompanyBs" connectTimeout="1000" requestTimeout="1000" basicReferer="basicRefererConfig"/>
 

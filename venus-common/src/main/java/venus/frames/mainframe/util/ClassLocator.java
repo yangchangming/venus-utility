@@ -1,5 +1,3 @@
-//Source file: D:\\venus_view\\Tech_Department\\Platform\\Venus\\4项目开发\\1工作区\\4实现\\venus\\frames\\mainframe\\util\\ClassLocator.java
-
 package venus.frames.mainframe.util;
 
 /**
@@ -21,8 +19,7 @@ public class ClassLocator {
 	 * @throws ClassNotFoundException 如果不能找到相应的类
 	 * @roseuid 3F8E48A5027E
 	 */
-	public static Class loadClass(String className)
-		throws ClassNotFoundException {
+	public static Class loadClass(String className) throws ClassNotFoundException {
 		//对Class.forName()进行封装
 		//ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		//if (cl == null) {
