@@ -42,6 +42,8 @@ public interface VenusConstants extends Serializable {
 
     String CONFIG_SPRING_CLASSPATH_PREFIX = "classpath:spring/";
 
+    String URL_PROTOCOL_FILE = "file";
+    String URL_PROTOCOL_JAR = "jar";
 
     String BEAN_ID_DATASOURCE = "dataSource";
 

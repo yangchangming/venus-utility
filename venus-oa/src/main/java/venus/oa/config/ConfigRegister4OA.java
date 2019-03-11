@@ -16,10 +16,14 @@
 package venus.oa.config;
 
 import org.apache.log4j.Logger;
+import venus.common.VenusConstants;
 import venus.config.ConfigFactory;
 import venus.config.ConfigRegister;
-import venus.config.URL;
 import venus.core.SpiMeta;
+import venus.util.ResourceLoader;
+
+import java.net.URL;
+import java.util.Enumeration;
 
 /**
  * <p> Config register for oa module </p>
@@ -36,13 +40,20 @@ public class ConfigRegister4OA implements ConfigRegister {
 
     @Override
     public void register() {
-        java.net.URL springURL = this.getClass().getResource("/spring/" + SPRING_CONFIG_NAME);
-        java.net.URL motanURL = this.getClass().getResource("/spring/" + MOTAN_CONFIG_NAME);
-        if (springURL==null || motanURL==null){
-            logger.warn("Configuration file is not find.");
-        }else {
-            ConfigFactory.loadConfig(new URL(springURL));
-            ConfigFactory.loadConfig(new URL(motanURL));
+        Enumeration<java.net.URL> springConfigs = ResourceLoader.loadSpecifiedConfig("spring/" + SPRING_CONFIG_NAME);
+        Enumeration<java.net.URL> motanConfigs = ResourceLoader.loadSpecifiedConfig("spring/" + MOTAN_CONFIG_NAME);
+        _register(springConfigs);
+        _register(motanConfigs);
+    }
+
+    private void _register(Enumeration<java.net.URL> configs){
+        if (configs!=null){
+            while (configs.hasMoreElements()){
+                URL url = configs.nextElement();
+                if (VenusConstants.URL_PROTOCOL_JAR.equals(url.getProtocol())){
+                    ConfigFactory.loadConfig(new venus.config.URL(url));
+                }
+            }
         }
     }
 }

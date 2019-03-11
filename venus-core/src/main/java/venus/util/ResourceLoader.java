@@ -16,8 +16,12 @@
 package venus.util;
 
 import org.apache.log4j.Logger;
+import venus.exception.VenusFrameworkException;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -31,7 +35,7 @@ public class ResourceLoader {
     private static final Logger logger = Logger.getLogger(ResourceLoader.class);
 
     /**
-     * Load all Configuration of classpath
+     * Load all Configuration of classpath, current project
      *
      * @return
      */
@@ -40,4 +44,28 @@ public class ResourceLoader {
         List<File> configFiles = FileUtil.fetchSubFiles(classPath);
         return configFiles;
     }
+
+    /**
+     * Load configuration specified by param fullpath
+     *
+     * @param fullPath
+     * @return
+     */
+    public static Enumeration<URL> loadSpecifiedConfig(String fullPath){
+        Enumeration<URL> urlEnumeration;
+        if (fullPath==null || "".equals(fullPath)){
+            return null;
+        }
+        if (fullPath.startsWith("/")){
+            fullPath = fullPath.substring(1, fullPath.length()-1);
+        }
+        try {
+            urlEnumeration = Thread.currentThread().getContextClassLoader().getResources(fullPath);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            throw new VenusFrameworkException("load configuration ["+ fullPath +"] failure. [" + e.getMessage() + "]");
+        }
+        return urlEnumeration;
+    }
+
 }
