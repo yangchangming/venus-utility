@@ -230,9 +230,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
 //        Through.setValue(xmlStr);
 
         if(isGenerateCode) {
-//            ((ETLProcessor) Helper.getBean("organizeModelEtlprocessor")).process();
         } else {
-//            ((ETLProcessor) Helper.getBean("commonModelEtlprocessor")).process();
         }
 //        Through.removeValue();
 
@@ -258,9 +256,7 @@ public class AuPartyTypeBS extends BaseBusinessService implements IAuPartyTypeBS
         //generate party type
 //        Through.setValue(xmlStr);
         if(isGenerateCode) {
-//            ((ETLProcessor) Helper.getBean("appendOrganizeModelEtlprocessor")).process();
         }else {
-//            ((ETLProcessor) Helper.getBean("appendCommonModelEtlprocessor")).process();
         }
 //        Through.removeValue();
         return null;

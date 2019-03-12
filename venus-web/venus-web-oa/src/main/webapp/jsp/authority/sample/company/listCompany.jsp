@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
-<%@ page import="venus.authority.sample.company.util.ICompanyConstants" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.organization.company.util.ICompanyConstants" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><fmt:message key='venus.authority.Company_Management' bundle='${applicationAuResources}' /></title>

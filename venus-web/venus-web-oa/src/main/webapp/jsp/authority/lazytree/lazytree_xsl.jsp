@@ -1,6 +1,6 @@
 <%@page contentType="text/xml;charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.service.sys.vo.SysParamVo"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
+<%@ page import="venus.oa.service.sys.vo.SysParamVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
 <%
 	String inputType = request.getParameter("inputType");
 	if(inputType == null || inputType.length() == 0 || (!"noInput".equals(inputType) && !"checkbox".equals(inputType) && !"radio".equals(inputType))) {

@@ -1,5 +1,5 @@
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
 <html>
 <head>
 <%@ include file="/jsp/include/global.jsp" %>

@@ -1,16 +1,16 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.au.aufunctree.bs.IAuFunctreeBs"%>
-<%@ page import="venus.authority.au.aufunctree.vo.AuFunctreeVo" %>
-<%@ page import="venus.authority.au.aufunctree.util.IAuFunctreeConstants" %>
+<%@ page import="venus.oa.authority.aufunctree.bs.IAuFunctreeBs"%>
+<%@ page import="venus.oa.authority.aufunctree.vo.AuFunctreeVo" %>
+<%@ page import="venus.oa.authority.aufunctree.util.IAuFunctreeConstants" %>
 <%@ page import="venus.frames.mainframe.util.Helper"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 
 <%
 try {
 	String parent_code = request.getParameter("total_code");
-	
-	IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
+	IAuFunctreeBs bs = (IAuFunctreeBs) BeanFactoryHelper.getBean("auFunctreeBs");
 	List lChild = bs.queryByCondition("parent_code='"+parent_code+"'","ORDER_CODE");//子节点列表
 	String htmStr = "";
 	for(Iterator itlChild = lChild.iterator(); itlChild.hasNext(); ) {

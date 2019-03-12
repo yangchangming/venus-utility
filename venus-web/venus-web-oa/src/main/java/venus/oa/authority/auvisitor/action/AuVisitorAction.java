@@ -1,5 +1,6 @@
 package venus.oa.authority.auvisitor.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.oa.authority.auvisitor.bs.IAuVisitorBS;
@@ -15,6 +16,7 @@ import venus.frames.base.action.IRequest;
 import venus.frames.mainframe.action.HttpRequest;
 import venus.frames.mainframe.util.Helper;
 import venus.frames.web.page.PageVo;
+import venus.springsupport.BeanFactoryHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,14 +32,8 @@ import java.util.List;
 @RequestMapping("/auVisitor")
 public class AuVisitorAction implements IConstants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public IAuVisitorBS getBS() {
-        return (IAuVisitorBS) Helper.getBean(BS_KEY);
-    }
+    @Autowired
+    private IAuVisitorBS auVisitorBS;
     
     /**
      * 查询信息
@@ -49,7 +45,7 @@ public class AuVisitorAction implements IConstants {
     public String queryAllByTypes(HttpServletRequest _request, HttpServletResponse response) {
         IRequest request = (IRequest)new HttpRequest(_request);
         String partyTypes = request.getParameter("partyTypes");
-        IAuVisitorBS bs = getBS();
+        IAuVisitorBS bs = auVisitorBS;
         String queryCondition = "";  //查询条件
         if( ! GlobalConstants.getVisiType_role().equals(partyTypes)) {//非角色
         	queryCondition = AuHelper.filterOrgPrivInSQL(queryCondition, "r.CODE", (HttpServletRequest) request);//控制数据权限
@@ -75,7 +71,7 @@ public class AuVisitorAction implements IConstants {
     public String queryAllUser(HttpServletRequest _request, HttpServletResponse response) {
         IRequest request = (IRequest)new HttpRequest(_request);
         String partyTypes = "1";
-        IAuVisitorBS bs = getBS();
+        IAuVisitorBS bs = auVisitorBS;
         String queryCondition = "";  //查询条件
         queryCondition = AuHelper.filterOrgPrivInSQL(queryCondition, "r.CODE", (HttpServletRequest) request);//控制数据权限
         
@@ -109,7 +105,7 @@ public class AuVisitorAction implements IConstants {
     public String queryAllRole(HttpServletRequest _request, HttpServletResponse response) {
         IRequest request = (IRequest)new HttpRequest(_request);
         String partyTypes = "2";
-        IAuVisitorBS bs = getBS();
+        IAuVisitorBS bs = auVisitorBS;
         String queryCondition = "";  //查询条件
         queryCondition = AuHelper.filterOrgPrivInSQL(queryCondition, "r.CODE", (HttpServletRequest) request);//控制数据权限
         
@@ -143,7 +139,7 @@ public class AuVisitorAction implements IConstants {
     public String queryAllOrg(HttpServletRequest _request, HttpServletResponse response) {
         IRequest request = (IRequest)new HttpRequest(_request);
         String partyTypes = "3";
-        IAuVisitorBS bs = getBS();
+        IAuVisitorBS bs = auVisitorBS;
         String queryCondition = "";  //查询条件
         queryCondition = AuHelper.filterOrgPrivInSQL(queryCondition, "r.CODE", (HttpServletRequest) request);//控制数据权限
         
@@ -188,7 +184,7 @@ public class AuVisitorAction implements IConstants {
         //if( ! GlobalConstants.getVisiType_role().equals(partyTypes)) {//非角色  //20091109非角色也需要过滤权限
         	queryCondition = AuHelper.filterOrgPrivInSQL(queryCondition, "r.CODE", (HttpServletRequest) request);//控制数据权限
         //}
-        IAuVisitorBS bs = getBS();
+        IAuVisitorBS bs = auVisitorBS;
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {
             pageVo = Helper.updatePageVo(pageVo, request);
@@ -222,7 +218,7 @@ public class AuVisitorAction implements IConstants {
         String delRelIds[] = split(request.getParameter("delRelIds"),",");
         String relType = GlobalConstants.getRelaType_role();//团体关系类型－角色关系
         //先删再增策略20100528开始
-        IAuPartyRelationBs bs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs bs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         for(int i=0;i<delRelIds.length;i++){
             AuPartyRelationVo vo = bs.queryRelationVoByKey(partyId, delRelIds[i], relType);
             if(vo!=null){ //在进行用户角色授权时，可能出现在取消父节点角色时，子节点再次获取其值时出现空

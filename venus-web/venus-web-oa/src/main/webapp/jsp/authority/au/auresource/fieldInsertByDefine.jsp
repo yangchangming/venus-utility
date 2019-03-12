@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import = "java.util.List,java.util.Iterator,java.util.ArrayList,java.util.HashMap"%>
-<%@ page import="venus.authority.au.auresource.vo.AuResourceVo"%>
-<%@ page import = "venus.authority.util.VoHelperTools"%>
+<%@ page import="venus.oa.authority.auresource.vo.AuResourceVo"%>
+<%@ page import="venus.oa.util.VoHelperTools"%>
 <%  //判断是否为修改页面
 	boolean isModify = false;
 	if(request.getParameter("isModify") != null) {

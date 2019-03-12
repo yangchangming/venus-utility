@@ -2,9 +2,9 @@
 <%@ include file="/jsp/include/global.jsp" %>
 <%@ page import = "java.util.List,java.util.Iterator,java.util.ArrayList"%>
 <%@ page import="venus.frames.web.page.PageVo" %>
-<%@ page import="venus.authority.service.history.vo.HistoryLogVo"%>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
+<%@ page import="venus.oa.service.history.vo.HistoryLogVo"%>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
 <%
 	List historyList = (List)request.getAttribute("beans");
 %>

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.service.sys.vo.SysParamVo"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
+<%@ page import="venus.oa.service.sys.vo.SysParamVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
 <%
 	SysParamVo funcTreeMode = GlobalConstants.getSysParam(GlobalConstants.FUNCTREEMODE);
 	 if (funcTreeMode != null && "1".equals(funcTreeMode.getValue())) { //功能树全加载

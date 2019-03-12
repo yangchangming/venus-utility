@@ -24,6 +24,7 @@ import venus.frames.base.bs.BaseBusinessService;
 import venus.frames.base.exception.BaseApplicationException;
 import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -52,14 +53,11 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs, venus.
      * @param partyId
      * @param parentRelId
      * @param relType
-     * @param partyVo
      * @param vo
      * @return
      */
-    public OID addRelation(String partyId, String parentRelId, String relType,
-            LoginSessionVo vo) {
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper
-        .getBean(IConstants.BS_KEY);
+    public OID addRelation(String partyId, String parentRelId, String relType, LoginSessionVo vo) {
+        IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         OID oid = relBs.addPartyRelation(partyId, parentRelId, relType);// 调用接口添加团体关系
         AuPartyRelationVo relVo = relBs.find(oid.toString());
         Map map = new HashMap();

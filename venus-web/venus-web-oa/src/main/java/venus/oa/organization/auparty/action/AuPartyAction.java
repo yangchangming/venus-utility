@@ -1,9 +1,13 @@
 package venus.oa.organization.auparty.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import venus.frames.base.action.IRequest;
+import venus.frames.mainframe.action.HttpRequest;
+import venus.frames.mainframe.util.Helper;
+import venus.frames.web.page.PageVo;
 import venus.oa.authority.auuser.bs.IAuUserBs;
-import venus.oa.authority.auuser.util.IAuUserConstants;
 import venus.oa.authority.auuser.vo.AuUserVo;
 import venus.oa.organization.auparty.bs.IAuPartyBs;
 import venus.oa.organization.auparty.util.IConstants;
@@ -12,10 +16,6 @@ import venus.oa.organization.aupartytype.bs.IAuPartyTypeBS;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.action.IRequest;
-import venus.frames.mainframe.action.HttpRequest;
-import venus.frames.mainframe.util.Helper;
-import venus.frames.web.page.PageVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,14 +31,14 @@ import java.util.List;
 @RequestMapping("/auParty")
 public class AuPartyAction implements IConstants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public IAuPartyBs getBS() {
-        return (IAuPartyBs) Helper.getBean(BS_KEY);
-    }
+    @Autowired
+    private IAuPartyBs auPartyBs;
+
+    @Autowired
+    private IAuPartyTypeBS auPartyTypeBS;
+
+    @Autowired
+    private IAuUserBs auUserBs;
 
     /**
      * 添加
@@ -58,7 +58,7 @@ public class AuPartyAction implements IConstants {
         }
         obj.setPartytype_id(typeId);
         obj.setCreate_date(DateTools.getSysTimestamp());  //打创建时间戳
-        getBS().addParty(obj);
+        auPartyBs.addParty(obj);
         request.setAttribute(TYPE_VALUE, typeId);
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auParty/queryAll?typeId=" + typeId;
@@ -79,7 +79,7 @@ public class AuPartyAction implements IConstants {
         PartyVo obj = new PartyVo();
         obj.setName(name);
         obj.setPartytype_id(typeId);
-        IAuPartyBs bs = getBS();
+        IAuPartyBs bs = auPartyBs;
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {
             pageVo = Helper.updatePageVo(pageVo, request);
@@ -114,7 +114,7 @@ public class AuPartyAction implements IConstants {
         PartyVo obj = new PartyVo();
         obj.setName(name);
         obj.setPartytype_id(typeId);
-        IAuPartyBs bs = getBS();
+        IAuPartyBs bs = auPartyBs;
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {
             pageVo = Helper.updatePageVo(pageVo, request);
@@ -146,7 +146,7 @@ public class AuPartyAction implements IConstants {
     public String find(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String ids = request.getParameter("id");
         String typeId = request.getParameter(TYPE_VALUE);
-        PartyVo obj = (PartyVo) getBS().find(ids); //通过id获取vo
+        PartyVo obj = (PartyVo) auPartyBs.find(ids); //通过id获取vo
         VoHelperTools.null2Nothing(obj);
         request.setAttribute(TYPE_VALUE, typeId);
         request.setAttribute(REQUEST_BEAN_VALUE, obj); //把vo放入request
@@ -172,7 +172,7 @@ public class AuPartyAction implements IConstants {
             return MESSAGE_AGENT_ERROR;
         }
         obj.setModify_date(DateTools.getSysTimestamp());
-        getBS().updateParty(obj);
+        auPartyBs.updateParty(obj);
         request.setAttribute(TYPE_VALUE, typeId);
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auParty/queryAll?typeId=" + typeId;
@@ -189,7 +189,7 @@ public class AuPartyAction implements IConstants {
     public String enable(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         String typeId = request.getParameter(TYPE_VALUE);
-        getBS().enableParty(id);
+        auPartyBs.enableParty(id);
         request.setAttribute(TYPE_VALUE, typeId);
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auParty/queryAll?typeId=" + typeId;
@@ -206,7 +206,7 @@ public class AuPartyAction implements IConstants {
     public String disable(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         String typeId = request.getParameter(TYPE_VALUE);
-        getBS().disableParty(id);
+        auPartyBs.disableParty(id);
         request.setAttribute(TYPE_VALUE, typeId);
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auParty/queryAll?typeId=" + typeId;
@@ -222,12 +222,11 @@ public class AuPartyAction implements IConstants {
     @RequestMapping("/initPage")
     public String initPage(HttpServletRequest request, HttpServletResponse response) {
         String partyRelationTypeId=request.getParameter("partyrelationtypeId");
-        IAuPartyTypeBS partyTypeBS = (IAuPartyTypeBS) Helper.getBean(PARTYTYPEBS_KEY);
         List partyTypeList=new ArrayList();
         if(partyRelationTypeId==null || "".equals(partyRelationTypeId)){
-            partyTypeList = partyTypeBS.queryAllEnable(-1,-1,null);
+            partyTypeList = auPartyTypeBS.queryAllEnable(-1,-1,null);
         }else{
-            partyTypeList = partyTypeBS.getPartysByKeyWord(partyRelationTypeId);
+            partyTypeList = auPartyTypeBS.getPartysByKeyWord(partyRelationTypeId);
             request.setAttribute("IS_ROOT", "1");
         }
         request.setAttribute(REQUEST_BEAN_VALUE, partyTypeList);
@@ -246,8 +245,8 @@ public class AuPartyAction implements IConstants {
     public String detailPage(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         String pageFlag = request.getParameter("pageFlag");
-        PartyVo obj = (PartyVo) getBS().find(id); //通过id获取vo
-        List list = getBS().queryAllPartyRelation(id);
+        PartyVo obj = (PartyVo) auPartyBs.find(id); //通过id获取vo
+        List list = auPartyBs.queryAllPartyRelation(id);
         VoHelperTools.null2Nothing(obj);
         request.setAttribute(REQUEST_BEAN_VALUE, obj); //把vo放入request
         request.setAttribute(REQUEST_LIST_VALUE, list); //把vo放入request
@@ -257,8 +256,7 @@ public class AuPartyAction implements IConstants {
             return FORWARD_DETAIL_KEY;
         } else {
             if(pageFlag.equals(GlobalConstants.getAuPartyTypePeop())) {
-                IAuUserBs userBs = (IAuUserBs) Helper.getBean(IAuUserConstants.BS_KEY);
-                List userList = userBs.queryByCondition("PARTY_ID='" + id + "'");
+                List userList = auUserBs.queryByCondition("PARTY_ID='" + id + "'");
                 if(userList!=null && userList.size()>0) {
                     AuUserVo userVo = (AuUserVo)userList.get(0);
                     request.setAttribute("UserVo", userVo); //把vo放入request
@@ -282,18 +280,18 @@ public class AuPartyAction implements IConstants {
         IRequest request = (IRequest)new HttpRequest(_request);
         String id = request.getParameter("id");
         String pageFlag = request.getParameter("pageFlag");
-        PartyVo obj = (PartyVo) getBS().find(id); //通过id获取vo
+        PartyVo obj = (PartyVo) auPartyBs.find(id); //通过id获取vo
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {
             pageVo = Helper.updatePageVo(pageVo, request);
         } else {
-            int recordCount =  getBS().getRecordCountPartyRelation(id);
+            int recordCount =  auPartyBs.getRecordCountPartyRelation(id);
             pageVo = Helper.createPageVo(request, recordCount);
         }
         String orderStr = Helper.findOrderStr(request);
 
         List list = new ArrayList(); //定义结果集
-        list = getBS().queryAllPartyRelationDivPage(pageVo.getCurrentPage(), pageVo.getPageSize(), id, obj);
+        list = auPartyBs.queryAllPartyRelationDivPage(pageVo.getCurrentPage(), pageVo.getPageSize(), id, obj);
         Helper.saveOrderStr(orderStr, request);
         Helper.savePageVo(pageVo, request);
         VoHelperTools.null2Nothing(obj);
@@ -306,8 +304,7 @@ public class AuPartyAction implements IConstants {
             return FORWARD_DETAIL_KEY;
         } else {
             if(pageFlag.equals(GlobalConstants.getAuPartyTypePeop())) {
-                IAuUserBs userBs = (IAuUserBs) Helper.getBean(IAuUserConstants.BS_KEY);
-                List userList = userBs.queryByCondition("PARTY_ID='" + id + "'");
+                List userList = auUserBs.queryByCondition("PARTY_ID='" + id + "'");
                 if(userList!=null && userList.size()>0) {
                     AuUserVo userVo = (AuUserVo)userList.get(0);
                     request.setAttribute("UserVo", userVo); //把vo放入request

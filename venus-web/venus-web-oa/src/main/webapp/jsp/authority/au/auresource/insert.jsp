@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import = "java.util.List,java.util.Iterator,java.util.ArrayList,java.util.HashMap"%>
-<%@ page import="venus.authority.au.auresource.vo.AuResourceVo"%>
-<%@ page import="venus.authority.au.auresource.util.IAuResourceConstants"%>
-<%@ page import = "venus.authority.util.VoHelperTools"%>
+<%@ page import="venus.oa.authority.auresource.vo.AuResourceVo"%>
+<%@ page import="venus.oa.authority.auresource.util.IAuResourceConstants"%>
+<%@ page import="venus.oa.util.VoHelperTools"%>
 <%@ include file="/jsp/include/global.jsp" %>
 <title><fmt:message key='venus.authority.Increase_in_template' bundle='${applicationAuResources}' /></title>
 <script>

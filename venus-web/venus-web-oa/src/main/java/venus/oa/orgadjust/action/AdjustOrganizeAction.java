@@ -1,15 +1,15 @@
 package venus.oa.orgadjust.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import venus.frames.base.exception.BaseApplicationException;
 import venus.oa.helper.LoginHelper;
-import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
-import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.orgadjust.bs.IAdjustOrganizeBs;
 import venus.oa.orgadjust.util.IContants;
+import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
+import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.util.ProjTools;
-import venus.frames.base.exception.BaseApplicationException;
-import venus.frames.mainframe.util.Helper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,15 +18,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/adjustOrganize")
 public class AdjustOrganizeAction implements IContants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public IAdjustOrganizeBs getBs() {
-        return (IAdjustOrganizeBs) Helper.getBean(BS_KEY);
-    }  	
-    
+	@Autowired
+	private IAdjustOrganizeBs adjustOrganizeBs;
+
+	@Autowired
+	private IAuPartyRelationBs auPartyRelationBs;
+
     /**
      * 调级功能
      */
@@ -35,8 +32,7 @@ public class AdjustOrganizeAction implements IContants {
     	//获得调级功能参数
     	String orgId = LoginHelper.getPartyId(request);
     	String srcrelationid = request.getParameter("srcrelationid");
-    	IAuPartyRelationBs relationBs = (IAuPartyRelationBs) Helper.getBean("aupartyrelation_bs");//aupartyrelation_target//aupartyrelation_bs
-    	AuPartyRelationVo relationVo = relationBs.find(srcrelationid);
+    	AuPartyRelationVo relationVo = auPartyRelationBs.find(srcrelationid);
     	String oldNodeCode = relationVo.getCode();
     	String newNodeCode = request.getParameter("newNodeCode");
     	if(orgId == null || oldNodeCode == null || newNodeCode == null) { 
@@ -50,7 +46,7 @@ public class AdjustOrganizeAction implements IContants {
 			return FORWARD_TO_ORGTREE;
         }
     	try {
-    		getBs().updateRelation(orgId,oldNodeCode,newNodeCode);
+    		adjustOrganizeBs.updateRelation(orgId,oldNodeCode,newNodeCode);
     		//
     		String oldKeyWorld = relationVo.getRelationtype_keyword();
     		String relaType= relationVo.getRelationtype_id();

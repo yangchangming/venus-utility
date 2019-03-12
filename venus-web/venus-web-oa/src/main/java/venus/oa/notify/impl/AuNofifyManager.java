@@ -2,9 +2,9 @@ package venus.oa.notify.impl;
 
 import venus.frames.mainframe.log.ILog;
 import venus.frames.mainframe.log.LogMgr;
-import venus.frames.mainframe.util.Helper;
 import venus.oa.notify.NotifyDecorator;
 import venus.oa.notify.NotifyManager;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,9 @@ public class AuNofifyManager implements NotifyManager {
         AbstractNotifyDecorator recentDecorator = null;
         //按照list顺序将修饰器递归设置
         for(int i=auNotifies.size()-1;i>=0;i--){
-            recentDecorator = (AbstractNotifyDecorator) Helper.getBean((String) auNotifies.get(i));
+
+            recentDecorator = (AbstractNotifyDecorator) BeanFactoryHelper.getBean((String) auNotifies.get(i));
+
             //如果第一次循环，则设置默认修饰器
             if(i==auNotifies.size()-1){
                 recentDecorator.setDecorator(new NotifyDecorator(){

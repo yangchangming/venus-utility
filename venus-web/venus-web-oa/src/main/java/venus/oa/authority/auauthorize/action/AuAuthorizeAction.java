@@ -7,10 +7,8 @@ import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
 import venus.oa.authority.auauthorize.util.IConstants;
 import venus.oa.authority.auauthorize.vo.AuAuthorizeVo;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
-import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
 import venus.oa.authority.auresource.bs.IAuResourceBs;
-import venus.oa.authority.auresource.util.IAuResourceConstants;
 import venus.oa.authority.auresource.vo.AuResourceVo;
 import venus.oa.authority.auvisitor.bs.IAuVisitorBS;
 import venus.oa.authority.auvisitor.vo.AuVisitorVo;
@@ -18,7 +16,6 @@ import venus.oa.helper.LoginHelper;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
-import venus.frames.mainframe.util.Helper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +30,15 @@ public class AuAuthorizeAction implements IConstants {
 
 	@Autowired
 	private IAuAuthorizeBS auAuthorizeBS;
+
+	@Autowired
+	private IAuVisitorBS auVisitorBS;
+
+	@Autowired
+	private IAuFunctreeBs auFunctreeBs;
+
+	@Autowired
+	private IAuResourceBs auResourceBs;
 
 	/**
 	 * save user
@@ -137,9 +143,7 @@ public class AuAuthorizeAction implements IConstants {
     		}
 		}
     	String delCodeArray[] = (String[])delCodeList.toArray(new String[0]);
-    	//将团体关系id转化成访问者vo
-    	IAuVisitorBS visiBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
-    	AuVisitorVo visiVo = visiBs.queryByRelationId(relId, pType);
+    	AuVisitorVo visiVo = auVisitorBS.queryByRelationId(relId, pType);
     	LoginSessionVo sessonVo = LoginHelper.getLoginVo(request);//权限上下文
 
     	//分析并保存针对组织机构的授权结果
@@ -170,9 +174,7 @@ public class AuAuthorizeAction implements IConstants {
     	String fType = GlobalConstants.getResType_menu();//功能菜单
     	String bType = GlobalConstants.getResType_butn();//功能按钮
 
-        //将团体关系id转化成访问者vo
-    	IAuVisitorBS visiBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
-    	AuVisitorVo visiVo = visiBs.queryByRelationId(relId, pType);
+    	AuVisitorVo visiVo = auVisitorBS.queryByRelationId(relId, pType);
     	//获取该访问者自身拥有权限的节点
     	Map selMap = auAuthorizeBS.getAuByVisitorId(visiVo.getId(),null);
     	//获取该访问者继承权限的节点
@@ -180,8 +182,7 @@ public class AuAuthorizeAction implements IConstants {
  
     	//获取全部功能节点
     	String strSql = "TOTAL_CODE like'101%' AND (TYPE='"+fType+"' OR TYPE='"+bType+"')";
-    	IAuFunctreeBs funcBs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
-    	List lFunctree = funcBs.queryByCondition(strSql, "tree_level, order_code");
+    	List lFunctree = auFunctreeBs.queryByCondition(strSql, "tree_level, order_code");
 
     	//过滤权限，实现分级授权
     	if( ! LoginHelper.getIsAdmin(request)) {
@@ -199,8 +200,7 @@ public class AuAuthorizeAction implements IConstants {
 		}
     	
     	//获取公开访问的节点
-    	IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
-    	List lResource = resBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and (RESOURCE_TYPE='"+fType+"' or RESOURCE_TYPE='"+bType+"')");
+    	List lResource = auResourceBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and (RESOURCE_TYPE='"+fType+"' or RESOURCE_TYPE='"+bType+"')");
     	Map resMap = new HashMap();
     	for(Iterator itLResource = lResource.iterator(); itLResource.hasNext(); ) {
     		AuResourceVo resVo = (AuResourceVo) itLResource.next();
@@ -227,17 +227,14 @@ public class AuAuthorizeAction implements IConstants {
 //            return MessageAgent.sendErrorMessage(request, venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Missing_parameter"), MessageStyle.ALERT_AND_BACK);
         	return MESSAGE_AGENT_ERROR;
 		}
-        //将团体关系id转化成访问者vo
-    	IAuVisitorBS visiBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
-    	AuVisitorVo visiVo = visiBs.queryByRelationId(relId, pType);
+    	AuVisitorVo visiVo = auVisitorBS.queryByRelationId(relId, pType);
     	//获取该访问者自身拥有权限的节点
     	Map selMap = auAuthorizeBS.getAuByVisitorId(visiVo.getId(),rType);
     	//获取该访问者继承权限的节点
     	Map extMap = auAuthorizeBS.getExtendAuByVisitorCode(visiVo.getCode(),rType);
 
     	//获取全部记录资源
-    	IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
-    	List lResource = resBs.queryByCondition("RESOURCE_TYPE='"+rType+"' and ENABLE_STATUS='1'");
+    	List lResource = auResourceBs.queryByCondition("RESOURCE_TYPE='"+rType+"' and ENABLE_STATUS='1'");
     
     	//过滤权限，实现分级授权
     	if( ! LoginHelper.getIsAdmin((HttpServletRequest)request)) {
@@ -256,7 +253,7 @@ public class AuAuthorizeAction implements IConstants {
 		}
     	
     	//获取公开访问的记录资源
-    	List lPubRes = resBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and RESOURCE_TYPE='"+rType+"'");
+    	List lPubRes = auResourceBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and RESOURCE_TYPE='"+rType+"'");
     	Map resMap = new HashMap();
     	for(Iterator it = lPubRes.iterator(); it.hasNext(); ) {
     		AuResourceVo resVo = (AuResourceVo) it.next();
@@ -306,12 +303,10 @@ public class AuAuthorizeAction implements IConstants {
    
     	//获取全部功能节点
     	String strSql = "TOTAL_CODE like'101%' AND (TYPE='"+fType+"' OR TYPE='"+bType+"')";
-    	IAuFunctreeBs funcBs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
-    	List lFunctree = funcBs.queryByCondition(strSql, "tree_level, order_code");
+    	List lFunctree = auFunctreeBs.queryByCondition(strSql, "tree_level, order_code");
 
     	//获取公开访问的节点
-    	IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
-    	List lResource = resBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and (RESOURCE_TYPE='"+fType+"' or RESOURCE_TYPE='"+bType+"')");
+    	List lResource = auResourceBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and (RESOURCE_TYPE='"+fType+"' or RESOURCE_TYPE='"+bType+"')");
     	Map resMap = new HashMap();
     	for(Iterator itLResource = lResource.iterator(); itLResource.hasNext(); ) {
     		AuResourceVo resVo = (AuResourceVo) itLResource.next();
@@ -338,11 +333,10 @@ public class AuAuthorizeAction implements IConstants {
     	    allMap = auAuthorizeBS.getAuByVisitorCode(vCode,rType);
     	}
     	//获取全部记录资源
-    	IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
-    	List lResource = resBs.queryByCondition("RESOURCE_TYPE='"+rType+"' and ENABLE_STATUS='1'");
+    	List lResource = auResourceBs.queryByCondition("RESOURCE_TYPE='"+rType+"' and ENABLE_STATUS='1'");
     	
     	//获取公开访问的记录资源
-    	List lPubRes = resBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and RESOURCE_TYPE='"+rType+"'");
+    	List lPubRes = auResourceBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and RESOURCE_TYPE='"+rType+"'");
     	Map resMap = new HashMap();
     	for(Iterator it = lPubRes.iterator(); it.hasNext(); ) {
     		AuResourceVo resVo = (AuResourceVo) it.next();
@@ -352,13 +346,10 @@ public class AuAuthorizeAction implements IConstants {
     	request.setAttribute("RES_LIST", lResource);
     	request.setAttribute("PUB_RES_MAP", resMap);
     	if(GlobalConstants.getResType_fild().equals(rType)) {
-//    	    return request.findForward(FORWARD_TO_VIEW_FILD_KEY);
 			return FORWARD_TO_VIEW_FILD_KEY;
     	}else {
-//    	    return request.findForward(FORWARD_TO_VIEW_RECD_KEY);
 			return FORWARD_TO_VIEW_RECD_KEY;
     	}
     }
-    
 }
 

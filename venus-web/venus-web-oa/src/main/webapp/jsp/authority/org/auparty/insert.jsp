@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <%@ page import = "java.util.List,java.util.Iterator,java.util.ArrayList,java.util.HashMap"%>
-<%@ page import="venus.authority.org.auparty.vo.PartyVo"%>
-<%@ page import = "venus.authority.util.GlobalConstants"%>
-<%@ page import = "venus.authority.util.VoHelperTools"%>
+<%@ page import="venus.oa.organization.auparty.vo.PartyVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.util.VoHelperTools"%>
 	<%  //判断是否为修改页面
 		boolean isModify = false;
 		String strModify = venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Added");

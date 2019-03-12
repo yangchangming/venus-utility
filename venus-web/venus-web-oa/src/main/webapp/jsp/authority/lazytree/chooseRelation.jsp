@@ -1,28 +1,29 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="venus.frames.mainframe.util.Helper"%>
-<%@ page import="venus.authority.helper.LoginHelper"%>
-<%@ page import="venus.authority.login.vo.LoginSessionVo"%>
-<%@ page import="venus.authority.util.tree.DeepTreeSearch"%>
+<%@ page import="venus.oa.helper.LoginHelper"%>
+<%@ page import="venus.oa.login.vo.LoginSessionVo"%>
+<%@ page import="venus.oa.util.tree.DeepTreeSearch"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.Iterator"%>
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.HashMap"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.bs.IAuPartyRelationTypeBS"%>
-<%@ page import="venus.authority.org.aupartyrelation.bs.IAuPartyRelationBs"%>
-<%@ page import="venus.authority.org.aupartyrelation.vo.AuPartyRelationVo"%>
+<%@ page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS"%>
+<%@ page import="venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs"%>
+<%@ page import="venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo"%>
 <%@ page import="org.apache.struts.util.LabelValueBean"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.util.IConstants" %>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.organization.aupartyrelationtype.util.IConstants" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%
-        IAuPartyRelationTypeBS relBS = (IAuPartyRelationTypeBS) Helper.getBean(IConstants.BS_KEY);
+        IAuPartyRelationTypeBS relBS = (IAuPartyRelationTypeBS) BeanFactoryHelper.getBean("auPartyRelationTypeBS");
         List relTypeList = relBS.getPartyAll();
         String relationtype_id= ((LoginSessionVo)LoginHelper.getLoginVo(request)).getRelationtype_id();
         if(relationtype_id==null) {
             relationtype_id = "-1";
         }
         //关系处理
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.authority.org.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         String currentCode = ((LoginSessionVo)LoginHelper.getLoginVo(request)).getCurrent_code();
         AuPartyRelationVo queryVo = new AuPartyRelationVo();
         queryVo.setPartyid(((LoginSessionVo)LoginHelper.getLoginVo(request)).getParty_id());

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.sample.company.vo.CompanyVo" %>
-<%@ page import="venus.authority.sample.company.util.ICompanyConstants" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.organization.company.vo.CompanyVo" %>
+<%@ page import="venus.oa.organization.company.util.ICompanyConstants" %>
 <%  //判断是否为修改页面
 	boolean isModify = false;  //定义变量,标识本页面是否修改(或者新增)
 	if(request.getParameter("isModify") != null) {  //如果从request获得参数"isModify"不为空

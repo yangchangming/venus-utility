@@ -1,15 +1,15 @@
 <%@ include file="/jsp/authority/tree/include/globalTreeCache.jsp" %>
 <%@ page contentType="text/xml;charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.tree.DeepTreeXmlHandler"%>
+<%@ page import="venus.oa.util.tree.DeepTreeXmlHandler"%>
 <%@ page import="org.springframework.jdbc.core.RowMapper"%>
 <%@ page import="java.sql.ResultSet"%>
 <%@ page import="java.sql.SQLException"%>
-<%@ page import="venus.authority.util.tree.DeepTreeVo"%>
-<%@ page import="venus.authority.util.ProjTools"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.au.auauthorize.bs.IAuAuthorizeBS"%>
-<%@ page import="venus.authority.au.auauthorize.util.IConstants"%>
-<%@ page import="venus.authority.au.auauthorize.vo.AuAuthorizeVo"%>
+<%@ page import="venus.oa.util.tree.DeepTreeVo"%>
+<%@ page import="venus.oa.util.ProjTools"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.authority.auauthorize.bs.IAuAuthorizeBS"%>
+<%@ page import="venus.oa.authority.auauthorize.util.IConstants"%>
+<%@ page import="venus.oa.authority.auauthorize.vo.AuAuthorizeVo"%>
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.Set"%>
 <%@ page import="java.util.HashSet"%>
@@ -17,6 +17,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
 <%@ page import="venus.frames.mainframe.util.Helper"%>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 
 <%
 try {
@@ -27,7 +28,7 @@ try {
     String partyId = request.getParameter("partyId");
 
     String rType = GlobalConstants.getResType_orga();//记录
-    IAuAuthorizeBS auBs = (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY);
+    IAuAuthorizeBS auBs = (IAuAuthorizeBS) BeanFactoryHelper.getBean("auAuthorizeBS");
     //获取拥有权限的节点
     Map allMap = null;
     if ("1".equals(isUser)){

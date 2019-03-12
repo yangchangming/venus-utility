@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import = "venus.authority.util.VoHelperTools" %>
-<%@ page import = "venus.authority.util.StringHelperTools" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <%
     String partyTypes = request.getParameter("partyTypes");

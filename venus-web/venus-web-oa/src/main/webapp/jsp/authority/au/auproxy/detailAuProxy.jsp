@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
-<%@ page import="venus.authority.org.auparty.vo.PartyVo" %>
-<%@ page import="venus.authority.org.auparty.util.IConstants" %>
-<%@ page import="venus.authority.util.GlobalConstants" %>
-<%@ page import="venus.authority.helper.OrgHelper" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.organization.auparty.vo.PartyVo" %>
+<%@ page import="venus.oa.organization.auparty.util.IConstants" %>
+<%@ page import="venus.oa.util.GlobalConstants" %>
+<%@ page import="venus.oa.helper.OrgHelper" %>
 <%@ page import="java.util.List" %>
 <%  //取出本条记录
 	PartyVo resultVo = null;  //定义一个临时的vo变量

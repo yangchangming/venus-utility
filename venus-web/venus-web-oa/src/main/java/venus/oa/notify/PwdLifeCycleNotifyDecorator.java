@@ -1,11 +1,10 @@
 package venus.oa.notify;
 
-import org.springframework.stereotype.Service;
-import venus.frames.mainframe.util.Helper;
 import venus.oa.notify.impl.AbstractNotifyDecorator;
 import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.common.dao.impl.CommonDao;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.lang.reflect.Method;
 
@@ -14,7 +13,6 @@ import java.lang.reflect.Method;
  * @author changming.Y <changming.yang.ah@gmail.com>
  *
  */
-@Service
 public class PwdLifeCycleNotifyDecorator extends AbstractNotifyDecorator {
 
 //    private static ILog log = LogMgr.getLogger(PwdLifeCycleNotifyDecorator.class);
@@ -31,7 +29,7 @@ public class PwdLifeCycleNotifyDecorator extends AbstractNotifyDecorator {
             Method method = (Method) returnObject[1];
             if("0".equals(sysvo.getEnable())||"update".equals(method.getName())){//如果是禁用或者更新
 //                log.debug("禁用PWDLIFECYCLE时用户列表中的密码过期时间应置空。");
-                CommonDao dao = (CommonDao) Helper.getBean("au_common_dao");
+                CommonDao dao = (CommonDao) BeanFactoryHelper.getBean("CommonDao");
                 dao.update("UPDATE AU_USER SET RETIRE_DATE = NULL");
             }
         }

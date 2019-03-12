@@ -1,6 +1,6 @@
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.service.sys.vo.SysParamVo"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
+<%@ page import="venus.oa.service.sys.vo.SysParamVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
 <%
 	String rootXmlSource = request.getParameter("rootXmlSource");
 	if(rootXmlSource == null || rootXmlSource.length() == 0) {

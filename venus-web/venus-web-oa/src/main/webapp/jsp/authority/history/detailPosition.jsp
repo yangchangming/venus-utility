@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.service.history.util.IContants" %>
-<%@ page import="venus.authority.sample.position.vo.PositionVo" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
+<%@ page import="venus.oa.service.history.util.IContants" %>
+<%@ page import="venus.oa.organization.position.vo.PositionVo" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
 <%@ page import="java.util.Map" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <%

@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/jsp/include/global.jsp" %>
-<%@ page import = "venus.authority.util.VoHelperTools" %>
-<%@ page import = "venus.authority.util.StringHelperTools" %>
-<%@ page import="venus.authority.org.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.util.IConstants" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
+<%@ page import="venus.oa.organization.aupartyrelationtype.util.IConstants" %>
 <%@ page import="venus.commons.xmlenum.EnumRepository"%>
 <%@ page import="venus.commons.xmlenum.EnumValueMap"%>
 <%

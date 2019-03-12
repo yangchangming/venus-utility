@@ -1,5 +1,6 @@
 package venus.oa.syserror.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.oa.syserror.bs.ISysErrorBs;
@@ -21,9 +22,8 @@ import java.util.List;
 @RequestMapping("/sysError")
 public class SysErrorAction implements IContants {
 
-    public ISysErrorBs getBs() {
-        return (ISysErrorBs) Helper.getBean(IContants.BS_KEY);
-    }
+    @Autowired
+    private ISysErrorBs sysErrorBs;
     
     /**
      * 查询全部记录，分页显示
@@ -44,10 +44,10 @@ public class SysErrorAction implements IContants {
        if (pageVo != null) {
            pageVo = Helper.updatePageVo(pageVo, request);
        } else {
-           int recordCount = getBs().getRecordCount(queryCondition);
+           int recordCount = sysErrorBs.getRecordCount(queryCondition);
            pageVo = Helper.createPageVo(request, recordCount);
        }
-       List sysErrorList = getBs().queryByCondition(pageVo.getCurrentPage(), pageVo.getPageSize(), queryCondition);
+       List sysErrorList = sysErrorBs.queryByCondition(pageVo.getCurrentPage(), pageVo.getPageSize(), queryCondition);
         Helper.savePageVo(pageVo, request);
         request.setAttribute(PROJECT_VALUE, sysErrorList);
 //       return request.findForward(FORWARD_SYSERROR_LIST);

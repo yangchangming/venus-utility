@@ -1,36 +1,33 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.au.aufunctree.bs.IAuFunctreeBs"%>
-<%@ page import="venus.authority.au.aufunctree.vo.AuFunctreeVo"%>
-<%@ page import="venus.authority.au.aufunctree.util.IAuFunctreeConstants"%>
-<%@ page import="venus.frames.mainframe.util.Helper"%>
-<%@ page import="venus.authority.helper.LoginHelper"%>
-<%@ page import="venus.authority.helper.OrgHelper"%>
-<%@ page import="venus.authority.login.vo.LoginSessionVo"%>
+<%@ page import="venus.oa.authority.aufunctree.bs.IAuFunctreeBs"%>
+<%@ page import="venus.oa.helper.LoginHelper"%>
+<%@ page import="venus.oa.helper.OrgHelper"%>
+<%@ page import="venus.oa.login.vo.LoginSessionVo"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.Iterator"%>
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.HashMap"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.bs.IAuPartyRelationTypeBS"%>
-<%@ page import="venus.authority.org.aupartyrelation.bs.IAuPartyRelationBs"%>
-<%@ page import="venus.authority.org.aupartyrelation.vo.AuPartyRelationVo"%>
-<%@ page import="venus.authority.util.tree.DeepTreeSearch"%>
+<%@ page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS"%>
+<%@ page import="venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs"%>
+<%@ page import="venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo"%>
+<%@ page import="venus.oa.util.tree.DeepTreeSearch"%>
 <%@ page import="org.apache.struts.util.LabelValueBean"%>
-<%@ page import="venus.authority.service.sys.vo.SysParamVo"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.util.IConstants" %>
+<%@ page import="venus.oa.sysparam.vo.SysParamVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%
     try {
-        IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
+        IAuFunctreeBs bs = (IAuFunctreeBs) BeanFactoryHelper.getBean("auFunctreeBs");
         List lTree = bs.queryByCondition("TOTAL_CODE like'101%' and TYPE='0'", "tree_level, order_code");
-        IAuPartyRelationTypeBS relBS = (IAuPartyRelationTypeBS) Helper.getBean(IConstants.BS_KEY);
+        IAuPartyRelationTypeBS relBS = (IAuPartyRelationTypeBS) BeanFactoryHelper.getBean("auFunctreeBs");
         List relTypeList = relBS.getPartyAll();
         String relationtype_id= ((LoginSessionVo)LoginHelper.getLoginVo(request)).getRelationtype_id();
         if(relationtype_id==null) {
             relationtype_id = "-1";
         }
         //关系处理
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.authority.org.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         String currentCode = ((LoginSessionVo)LoginHelper.getLoginVo(request)).getCurrent_code();
         String currentRelStr = "";
         if(null!=currentCode)
@@ -59,7 +56,6 @@
         }
         int selectOpetionSize = relList.size()+relTypeMap.size();
         String selectOpetionMaxLengthStr = "";
-        //IAuAuthorizeBS authorizeBs = (IAuAuthorizeBS)Helper.getBean(venus.authority.au.auauthorize.util.IConstants.BS_KEY);
 %>
 <%@ include file="/jsp/include/global.jsp" %>
 <jsp:include page="include/globalLazyTree.jsp?returnTextType=plugParent" />

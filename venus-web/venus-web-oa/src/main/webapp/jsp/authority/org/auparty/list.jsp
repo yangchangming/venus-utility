@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/jsp/include/global.jsp" %>
-<%@ page import = "venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.util.GlobalConstants" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.GlobalConstants" %>
 <%
 	String partyTypeId = (String)request.getAttribute("typeId");
 %>

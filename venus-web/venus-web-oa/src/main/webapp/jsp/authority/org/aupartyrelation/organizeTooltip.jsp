@@ -1,5 +1,5 @@
-<%@ page import="venus.authority.service.sys.vo.SysParamVo" %>
-<%@ page import="venus.authority.util.GlobalConstants" %>
+<%@ page import="venus.oa.service.sys.vo.SysParamVo" %>
+<%@ page import="venus.oa.util.GlobalConstants" %>
 <%
 	SysParamVo organizeTooltip = GlobalConstants.getSysParam(GlobalConstants.ORGANIZETOOLTIP);
 %>

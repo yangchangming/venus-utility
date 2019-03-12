@@ -3,16 +3,12 @@ package venus.oa.authority.appenddata.action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import venus.frames.mainframe.util.Helper;
 import venus.oa.authority.appenddata.bs.IAppendDataBs;
 import venus.oa.authority.appenddata.util.IConstantsimplements;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
-import venus.oa.authority.auauthorize.util.IConstants;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
-import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
 import venus.oa.authority.auresource.bs.IAuResourceBs;
-import venus.oa.authority.auresource.util.IAuResourceConstants;
 import venus.oa.authority.auresource.vo.AuResourceVo;
 import venus.oa.authority.auvisitor.bs.IAuVisitorBS;
 import venus.oa.authority.auvisitor.vo.AuVisitorVo;
@@ -29,6 +25,19 @@ public class AuAppendAction implements IConstantsimplements {
 
 	@Autowired
 	private IAppendDataBs appendDataBs;
+
+	@Autowired
+	private IAuVisitorBS auVisitorBS;
+
+	@Autowired
+	private IAuAuthorizeBS auAuthorizeBS;
+
+	@Autowired
+	private IAuFunctreeBs auFunctreeBs;
+
+	@Autowired
+	private IAuResourceBs auResourceBs;
+
 
 	@RequestMapping("/saveFunOrgAuByRelId")
     public String saveFunOrgAuByRelId(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -71,8 +80,7 @@ public class AuAppendAction implements IConstantsimplements {
 		}
     	String delCodeArray[] = (String[])delCodeList.toArray(new String[0]);
     	//将团体关系id转化成访问者vo
-    	IAuVisitorBS visiBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
-    	AuVisitorVo visiVo = visiBs.queryByRelationId(relId, pType);
+    	AuVisitorVo visiVo = auVisitorBS.queryByRelationId(relId, pType);
     	//分析并保存针对组织机构的授权结果
     	appendDataBs.saveFunOrgAu(visiVo.getId(), visiVo.getCode(), visiVo.getVisitor_type(), addCodeArray, delCodeArray, sNames, sTypes, authorizeId);
     	request.setAttribute("retMessage", venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Save_successful_"));
@@ -102,17 +110,15 @@ public class AuAppendAction implements IConstantsimplements {
     	String bType = GlobalConstants.getResType_butn();//功能按钮
 
         //将团体关系id转化成访问者vo
-    	IAuVisitorBS visiBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
-    	AuVisitorVo visiVo = visiBs.queryByRelationId(relId, pType);
-    	//获取该访问者自身拥有权限的节点
-    	Map selMap = ((IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY)).getAuByVisitorId(visiVo.getId(),null);
+    	AuVisitorVo visiVo = auVisitorBS.queryByRelationId(relId, pType);
+		//获取该访问者自身拥有权限的节点
+    	Map selMap = auAuthorizeBS.getAuByVisitorId(visiVo.getId(),null);
     	//获取该访问者继承权限的节点
-    	Map extMap = ((IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY)).getExtendAuByVisitorCode(visiVo.getCode(), null);
+    	Map extMap = auAuthorizeBS.getExtendAuByVisitorCode(visiVo.getCode(), null);
  
     	//获取全部功能节点
     	String strSql = "TOTAL_CODE like'101%' AND (TYPE='"+fType+"' OR TYPE='"+bType+"')";
-    	IAuFunctreeBs funcBs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
-    	List lFunctree = funcBs.queryByCondition(strSql, "tree_level, order_code");
+    	List lFunctree = auFunctreeBs.queryByCondition(strSql, "tree_level, order_code");
 
     	//过滤权限，实现分级授权
     	if( ! LoginHelper.getIsAdmin((HttpServletRequest)request)) {
@@ -128,10 +134,7 @@ public class AuAppendAction implements IConstantsimplements {
 				}
 			}
 		}
-    	
-    	//获取公开访问的节点
-    	IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
-    	List lResource = resBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and (RESOURCE_TYPE='"+fType+"' or RESOURCE_TYPE='"+bType+"')");
+    	List lResource = auResourceBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and (RESOURCE_TYPE='"+fType+"' or RESOURCE_TYPE='"+bType+"')");
     	Map resMap = new HashMap();
     	for(Iterator itLResource = lResource.iterator(); itLResource.hasNext(); ) {
     		AuResourceVo resVo = (AuResourceVo) itLResource.next();
@@ -158,19 +161,17 @@ public class AuAppendAction implements IConstantsimplements {
     	//获取访问者拥有的权限
     	Map allMap = null;
     	if ("1".equals(isUser)){
-    	    allMap = ((IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY)).getAuByPartyId(partyId,null);
+    	    allMap = auAuthorizeBS.getAuByPartyId(partyId,null);
     	}else{
-    	    allMap = ((IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY)).getAuByVisitorCode(vCode,null);
+    	    allMap = auAuthorizeBS.getAuByVisitorCode(vCode,null);
     	}
 
     	//获取全部功能节点
     	String strSql = "TOTAL_CODE like'101%' AND (TYPE='"+fType+"' OR TYPE='"+bType+"')";
-    	IAuFunctreeBs funcBs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
-    	List lFunctree = funcBs.queryByCondition(strSql, "tree_level, order_code");
+    	List lFunctree = auFunctreeBs.queryByCondition(strSql, "tree_level, order_code");
 
     	//获取公开访问的节点
-    	IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
-    	List lResource = resBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and (RESOURCE_TYPE='"+fType+"' or RESOURCE_TYPE='"+bType+"')");
+    	List lResource = auResourceBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and (RESOURCE_TYPE='"+fType+"' or RESOURCE_TYPE='"+bType+"')");
     	Map resMap = new HashMap();
     	for(Iterator itLResource = lResource.iterator(); itLResource.hasNext(); ) {
     		AuResourceVo resVo = (AuResourceVo) itLResource.next();

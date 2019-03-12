@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.org.aupartytype.vo.AuPartyTypeVo"%>
-<%@ page import="venus.authority.org.auparty.util.IConstants"%>
+<%@ page import="venus.oa.organization.aupartytype.vo.AuPartyTypeVo"%>
+<%@ page import="venus.oa.organization.auparty.util.IConstants"%>
 <%@ page import="java.util.List,java.util.Set,java.util.HashSet"%>
 <%@ page import="java.util.Iterator"%>
 <%@ page import = "venus.commons.xmlenum.EnumRepository" %>

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.au.auresource.vo.AuResourceVo"%>
-<%@ page import="venus.authority.au.auauthorize.vo.AuAuthorizeVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.authority.auresource.vo.AuResourceVo"%>
+<%@ page import="venus.oa.authority.auauthorize.vo.AuAuthorizeVo"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
 <%@ page import="java.util.Map,java.util.HashMap"%>

@@ -1,4 +1,4 @@
-<%@ page import="venus.authority.helper.LoginHelper" %>
+<%@ page import="venus.oa.helper.LoginHelper" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%
 	String loginId = LoginHelper.getLoginId(request);

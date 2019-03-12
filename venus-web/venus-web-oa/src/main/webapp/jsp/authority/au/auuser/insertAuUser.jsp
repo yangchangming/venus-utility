@@ -1,9 +1,9 @@
 <%@ include file="/jsp/include/global.jsp" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.au.auuser.vo.AuUserVo" %>
-<%@ page import="venus.authority.au.auuser.util.IAuUserConstants" %>
-<%@ page import="venus.authority.util.GlobalConstants" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.authority.auuser.vo.AuUserVo" %>
+<%@ page import="venus.oa.authority.auuser.util.IAuUserConstants" %>
+<%@ page import="venus.oa.util.GlobalConstants" %>
 <%  //判断是否为修改页面
 	boolean isModify = false;  //定义变量,标识本页面是否修改(或者新增)
 	if(request.getParameter("isModify") != null) {  //如果从request获得参数"isModify"不为空

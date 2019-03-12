@@ -1,22 +1,21 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.au.auproxy.bs.IProxyHistoryBs"%>
-<%@ page import="venus.frames.mainframe.util.Helper"%>
-<%@ page import="venus.authority.au.auproxy.vo.ProxyHistoryVo"%>
-<%@page import="venus.authority.au.auauthorizelog.bs.IAuAuthorizeLogBS"%>
-<%@page import="venus.authority.au.auauthorizelog.vo.AuAuthorizeLogVo"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
-<%@page import="venus.authority.org.aupartyrelationtype.util.IConstants"%>
-<%@page import="venus.authority.org.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.authority.auproxy.bs.IProxyHistoryBs"%>
+<%@ page import="venus.oa.authority.auproxy.vo.ProxyHistoryVo"%>
+<%@page import="venus.oa.authority.auauthorizelog.bs.IAuAuthorizeLogBS"%>
+<%@page import="venus.oa.authority.auauthorizelog.vo.AuAuthorizeLogVo"%>
+<%@ page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
+<%@page import="venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
 <%@page import="java.util.List"%>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <%
     String proxyhistoryid = request.getParameter("proxyhistoryid");
-    IProxyHistoryBs proxyHistory = (IProxyHistoryBs)Helper.getBean(venus.authority.au.auproxy.util.IConstants.PROXY_HISTORY_BS);
+    IProxyHistoryBs proxyHistory = (IProxyHistoryBs) BeanFactoryHelper.getBean("proxyHistoryBs");
     ProxyHistoryVo proxyHistoryVo = proxyHistory.find(proxyhistoryid);
-    IAuAuthorizeLogBS authorizeLogBs = (IAuAuthorizeLogBS)Helper.getBean(venus.authority.au.auauthorizelog.util.IConstants.BS_KEY);
+    IAuAuthorizeLogBS authorizeLogBs = (IAuAuthorizeLogBS)BeanFactoryHelper.getBean("auAuthorizeLogBS");
     VoHelperTools.null2Nothing(proxyHistoryVo);
     List al = authorizeLogBs.queryByCondition(1,1," AUTHORIZE_TAG='"+proxyHistoryVo.getProxy_authorize_history_id()+"'",null);
     String vCode = "";
@@ -27,7 +26,7 @@
     }
     //关系类型
     java.util.Map relationTypeMap = new HashMap();
-    IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS)Helper.getBean(IConstants.BS_KEY);
+    IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS)BeanFactoryHelper.getBean("auPartyRelationTypeBS");
     AuPartyRelationTypeVo searchVo = new AuPartyRelationTypeVo();
     searchVo.setKeyword("4");
     List relationTypeAl = bs.simpleQuery(1,Short.MAX_VALUE,null,searchVo);

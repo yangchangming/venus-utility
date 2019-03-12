@@ -1,5 +1,6 @@
 package venus.oa.organization.auconnectrule.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.oa.organization.auconnectrule.bs.IAuConnectRuleBS;
@@ -30,10 +31,14 @@ import java.util.Map;
 @RequestMapping("/auConnectRule")
 public class AuConnectRuleAction implements IConstants {
 
-    public IAuConnectRuleBS getBS() {
-        return (IAuConnectRuleBS) Helper.getBean(BS_KEY);
-    }
+    @Autowired
+    private IAuConnectRuleBS auConnectRuleBS;
 
+    @Autowired
+    private IAuPartyTypeBS auPartyTypeBS;
+
+    @Autowired
+    private IAuPartyRelationTypeBS auPartyRelationTypeBS;
 
     /**
      * insert
@@ -44,7 +49,7 @@ public class AuConnectRuleAction implements IConstants {
     @RequestMapping("/insert")
     public String insert(HttpServletRequest _request, HttpServletResponse response) {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IAuConnectRuleBS bs = getBS();
+        IAuConnectRuleBS bs = auConnectRuleBS;
         AuConnectRuleVo obj = new AuConnectRuleVo();
         if (!Helper.populate(obj, request)) {
 //            return MessageAgent.sendErrorMessage(request, DEFAULT_MSG_ERROR_STR, MessageStyle.ALERT_AND_BACK);
@@ -72,7 +77,7 @@ public class AuConnectRuleAction implements IConstants {
     @RequestMapping("/queryAll")
     public String queryAll(HttpServletRequest _request, HttpServletResponse response) {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IAuConnectRuleBS bs = getBS();
+        IAuConnectRuleBS bs = auConnectRuleBS;
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {
             pageVo = Helper.updatePageVo(pageVo, request);
@@ -105,7 +110,7 @@ public class AuConnectRuleAction implements IConstants {
     @RequestMapping("/delete")
     public String delete(HttpServletRequest request, HttpServletResponse response) {
         //int deleteCount = 
-        getBS().delete(request.getParameter("ids"));
+        auConnectRuleBS.delete(request.getParameter("ids"));
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auConnectRule/queryAll";
     }
@@ -128,7 +133,7 @@ public class AuConnectRuleAction implements IConstants {
 //            return MessageAgent.sendErrorMessage(request, DEFAULT_MSG_ERROR_STR, MessageStyle.ALERT_AND_BACK);
             return MESSAGE_AGENT_ERROR;
         }
-        IAuConnectRuleBS bs = getBS();
+        IAuConnectRuleBS bs = auConnectRuleBS;
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {
             pageVo = Helper.updatePageVo(pageVo, request);
@@ -161,9 +166,6 @@ public class AuConnectRuleAction implements IConstants {
     @RequestMapping("/newPage")
     public String newPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         //String ids = request.getParameter("ids");
-
-        IAuPartyTypeBS partyTypeBS = (IAuPartyTypeBS) Helper.getBean(PARTYTYPEBS_KEY);
-        IAuPartyRelationTypeBS partyRelationTypeBS = (IAuPartyRelationTypeBS) Helper.getBean(PARTYRELATIONTYPEBS_KEY);
         Map partyRelationMap = new HashMap();
         Map partyMap = new HashMap();
         EnumRepository er = EnumRepository.getInstance();
@@ -172,14 +174,14 @@ public class AuConnectRuleAction implements IConstants {
         List partyRelationKeyList = relationTypeMap.getEnumList();
         for (int i = 0; i < partyRelationKeyList.size(); i++) {
             String key = relationTypeMap.getValue(partyRelationKeyList.get(i).toString());
-            List partyRelationTypeList = partyRelationTypeBS.getPartyAllByKeyWord(key);
+            List partyRelationTypeList = auPartyRelationTypeBS.getPartyAllByKeyWord(key);
             partyRelationMap.put(key, partyRelationTypeList);
         }
         EnumValueMap typeMap = er.getEnumValueMap("TypeStatus");
         List partyKeyList = typeMap.getEnumList();
         for (int i = 0; i < partyKeyList.size(); i++) {
             String key = typeMap.getValue( partyKeyList.get(i).toString());
-            List partyTypeList = partyTypeBS.getPartyAllByKeyword(key);
+            List partyTypeList = auPartyTypeBS.getPartyAllByKeyword(key);
             partyMap.put(key, partyTypeList);
         }
         request.setAttribute(REQUEST_RELATION_TYPE, partyRelationMap);
@@ -201,12 +203,10 @@ public class AuConnectRuleAction implements IConstants {
     @RequestMapping("/find")
     public String find(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String ids = request.getParameter("ids");
-        AuConnectRuleVo obj = (AuConnectRuleVo) getBS().find(ids); //通过id获取vo
+        AuConnectRuleVo obj = (AuConnectRuleVo) auConnectRuleBS.find(ids); //通过id获取vo
         VoHelperTools.null2Nothing(obj);
-        IAuPartyTypeBS partyTypeBS = (IAuPartyTypeBS) Helper.getBean(PARTYTYPEBS_KEY);
-        IAuPartyRelationTypeBS partyRelationTypeBS = (IAuPartyRelationTypeBS) Helper.getBean(PARTYRELATIONTYPEBS_KEY);
-        List partyTypeList = partyTypeBS.getPartyAll();
-        List partyRelationTypeList = partyRelationTypeBS.getPartyAll();
+        List partyTypeList = auPartyTypeBS.getPartyAll();
+        List partyRelationTypeList = auPartyRelationTypeBS.getPartyAll();
         request.setAttribute(REQUEST_BEAN_VALUE, obj); //把vo放入request
         request.setAttribute(REQUEST_RELATION_TYPE, partyRelationTypeList);
         request.setAttribute(REQUEST_PARENT_PARTYTYPE, partyTypeList);
@@ -232,7 +232,7 @@ public class AuConnectRuleAction implements IConstants {
             return MESSAGE_AGENT_ERROR;
         }
         obj.setModify_date(DateTools.getSysTimestamp());
-        getBS().update(obj);
+        auConnectRuleBS.update(obj);
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auConnectRule/queryAll";
     }
@@ -247,7 +247,7 @@ public class AuConnectRuleAction implements IConstants {
     @RequestMapping("/detailPage")
     public String detailPage(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
-        AuConnectRuleVo obj = (AuConnectRuleVo) getBS().find(id); //通过id获取vo
+        AuConnectRuleVo obj = (AuConnectRuleVo) auConnectRuleBS.find(id); //通过id获取vo
         VoHelperTools.null2Nothing(obj);
         request.setAttribute(REQUEST_BEAN_VALUE, obj); //把vo放入request
         request.setAttribute(REQUEST_WRITE_BACK_FORM_VALUES, VoHelperTools.getMapFromVo(obj)); //回写表单

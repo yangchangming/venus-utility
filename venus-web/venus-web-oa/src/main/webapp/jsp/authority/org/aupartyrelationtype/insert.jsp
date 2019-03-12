@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <%@ page import = "java.util.List,java.util.Iterator,java.util.ArrayList,java.util.HashMap"%>
-<%@ page import = "venus.authority.org.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
-<%@ page import = "venus.authority.util.VoHelperTools"%>
+<%@ page import="venus.oa.org.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
+<%@ page import="venus.oa.util.VoHelperTools"%>
 <%@ page import = "venus.commons.xmlenum.EnumRepository" %>
 <%@ page import = "venus.commons.xmlenum.EnumValueMap" %>
 	<%  //判断是否为修改页面

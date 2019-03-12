@@ -1,5 +1,6 @@
 package venus.oa.authority.auresource.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,14 +33,8 @@ import java.util.List;
 @RequestMapping("/auResource")
 public class AuResourceAction implements IAuResourceConstants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public IAuResourceBs getBs() {
-        return (IAuResourceBs) Helper.getBean(BS_KEY); //得到BS对象,受事务控制
-    }
+    @Autowired
+    private IAuResourceBs auResourceBs;
 
     /**
      * 从页面表单获取信息注入vo，并插入单条记录
@@ -58,7 +53,7 @@ public class AuResourceAction implements IAuResourceConstants {
             return MESSAGE_AGENT_ERROR;
         }
         vo.setCreate_date(DateTools.getSysTimestamp()); //打创建时间戳
-        getBs().insert(vo); //插入单条记录
+        auResourceBs.insert(vo); //插入单条记录
         if ("3".equals(vo.getResource_type())) {
 //            return request.findForward("queryAllfield");
             return "redirect:/auResource/queryAllfield";
@@ -78,7 +73,7 @@ public class AuResourceAction implements IAuResourceConstants {
      */
     @RequestMapping("/delete")
     public String delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        getBs().delete(request.getParameter(REQUEST_ID_FLAG)); //删除单条记录
+        auResourceBs.delete(request.getParameter(REQUEST_ID_FLAG)); //删除单条记录
         //RmJspHelper.transctPageVo(request,-deleteCount); //翻页偏移
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auResource/queryAll";
@@ -99,7 +94,7 @@ public class AuResourceAction implements IAuResourceConstants {
         //int deleteCount = 0; //定义成功删除的记录数
         if (id != null && id.length != 0) {
             //deleteCount = 
-            getBs().delete(id); //删除多条记录
+            auResourceBs.delete(id); //删除多条记录
         }
         //RmJspHelper.transctPageVo(request, -deleteCount); //翻页偏移
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
@@ -117,7 +112,7 @@ public class AuResourceAction implements IAuResourceConstants {
      */
     @RequestMapping("/find")
     public String find(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        AuResourceVo bean = getBs().find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
+        AuResourceVo bean = auResourceBs.find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
         request.setAttribute(REQUEST_BEAN_VALUE, bean); //把vo放入request
         //RmJspHelper.transctPageVo(request); //翻页重载
 //        return request.findForward(FORWARD_UPDATE_KEY);
@@ -181,7 +176,7 @@ public class AuResourceAction implements IAuResourceConstants {
         String call_code = request.getParameter("call_code");
 
         //查询AuResource表
-        List lResource = getBs().queryByCondition(
+        List lResource = auResourceBs.queryByCondition(
                 "CALL_CODE='" + call_code + "' and OLD_RESOURCE_ID='" + old_resource_id + "'");
         if (lResource != null && lResource.size() > 0) {
             resVo = (AuResourceVo) lResource.get(0);
@@ -213,7 +208,7 @@ public class AuResourceAction implements IAuResourceConstants {
         }
         vo.setModify_date(DateTools.getSysTimestamp()); //打修改时间戳
         //int count = 
-        getBs().update(vo); //更新单条记录
+        auResourceBs.update(vo); //更新单条记录
         if ("3".equals(vo.getResource_type())) {
 //            return request.findForward("queryAllfield");
             return "redirect:/auResource/queryAllfield";
@@ -245,15 +240,15 @@ public class AuResourceAction implements IAuResourceConstants {
             vo.setAccess_type("1");
             vo.setName(old_resource_name);
             vo.setCreate_date(DateTools.getSysTimestamp());
-            OID oid = getBs().insert(vo);//插入单条记录
+            OID oid = auResourceBs.insert(vo);//插入单条记录
             resource_id = String.valueOf(oid.longValue());
         } else {
-            AuResourceVo vo = getBs().find(resource_id); //通过id获取vo
+            AuResourceVo vo = auResourceBs.find(resource_id); //通过id获取vo
             vo.setIs_public(default_access);
             vo.setModify_date(DateTools.getSysTimestamp()); //打修改时间戳
-            getBs().update(vo); //更新单条记录
+            auResourceBs.update(vo); //更新单条记录
         }
-        AuResourceVo bean = getBs().find(resource_id);
+        AuResourceVo bean = auResourceBs.find(resource_id);
         request.setAttribute(REQUEST_BEAN_VALUE, bean); //把vo放入request
         request.setAttribute(REQUEST_WRITE_BACK_FORM_VALUES, VoHelperTools.getMapFromRequest(request));
 //        return request.findForward(FORWARD_FINDDEFAULTACCESS_KEY);
@@ -273,7 +268,7 @@ public class AuResourceAction implements IAuResourceConstants {
     @RequestMapping("/queryAll")
     public String queryAll(HttpServletRequest _request, HttpServletResponse response) throws Exception {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IAuResourceBs bs = getBs();
+        IAuResourceBs bs = auResourceBs;
         String condition = "RESOURCE_TYPE='4'";
         PageVo pageVo = Helper.findPageVo(request); //得到当前翻页信息
         if (pageVo != null) {
@@ -306,7 +301,7 @@ public class AuResourceAction implements IAuResourceConstants {
      */
     @RequestMapping("/detail")
     public String detail(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        AuResourceVo bean = getBs().find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
+        AuResourceVo bean = auResourceBs.find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
         request.setAttribute(REQUEST_BEAN_VALUE, bean); //把vo放入request
 //        return request.findForward(FORWARD_DETAIL_KEY);
         // no forward found
@@ -324,7 +319,7 @@ public class AuResourceAction implements IAuResourceConstants {
      */
     @RequestMapping("/simpleQuery")
     public String simpleQuery(HttpServletRequest _request, HttpServletResponse response) throws Exception {
-        IAuResourceBs bs = getBs();
+        IAuResourceBs bs = auResourceBs;
         IRequest request = (IRequest)new HttpRequest(_request);
         String queryCondition = "resource_type='4'";//request.getParameter(REQUEST_QUERY_CONDITION_VALUE);
         //从request获得查询条件
@@ -359,7 +354,7 @@ public class AuResourceAction implements IAuResourceConstants {
     @RequestMapping("/queryReference")
     public String queryReference(HttpServletRequest _request, HttpServletResponse response) throws Exception {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IAuResourceBs bs = getBs();
+        IAuResourceBs bs = auResourceBs;
         String queryCondition = request.getParameter(REQUEST_QUERY_CONDITION_VALUE); //从request获得查询条件
         PageVo pageVo = Helper.findPageVo(request); //得到当前翻页信息
         if (pageVo != null) {
@@ -388,7 +383,7 @@ public class AuResourceAction implements IAuResourceConstants {
      */
     @RequestMapping("/queryAllfield")
     public String queryAllfield(HttpServletRequest _request, HttpServletResponse response) throws Exception {
-        IAuResourceBs bs = getBs();
+        IAuResourceBs bs = auResourceBs;
         IRequest request = (IRequest)new HttpRequest(_request);
         String name = request.getParameter("name");
         String condition = " resource_type = '3'";
@@ -439,7 +434,7 @@ public class AuResourceAction implements IAuResourceConstants {
         vo.setEnable_date(DateTools.getSysTimestamp());
         vo.setCreate_date(DateTools.getSysTimestamp()); //打创建时间戳
         vo.setModify_date(DateTools.getSysTimestamp()); //打修改时间戳
-        getBs().insert(vo); //插入单条记录
+        auResourceBs.insert(vo); //插入单条记录
 //        return request.findForward("queryAllfield");
         return "redirect:/auResource/queryAllfield";
     }
@@ -492,7 +487,7 @@ public class AuResourceAction implements IAuResourceConstants {
                         bean.setEnable_status("1");
                         bean.setCreate_date(DateTools.getSysTimestamp()); //打创建时间戳
                         //OID count = 
-                        getBs().insert(bean); //插入多条记录
+                        auResourceBs.insert(bean); //插入多条记录
                     }
                 }
             }
@@ -526,7 +521,7 @@ public class AuResourceAction implements IAuResourceConstants {
 //            return MessageAgent.sendErrorMessage(request, DEFAULT_MSG_ERROR_STR, MessageStyle.ALERT_AND_BACK);
             return MESSAGE_AGENT_ERROR;
         }
-        AuResourceVo bean = getBs().find(vo.getId()); //通过id获取vo
+        AuResourceVo bean = auResourceBs.find(vo.getId()); //通过id获取vo
         bean.setName(vo.getName());
         bean.setField_name(vo.getField_name());
         bean.setTable_name(vo.getTable_name());
@@ -535,7 +530,7 @@ public class AuResourceAction implements IAuResourceConstants {
         bean.setHelp(vo.getHelp());
         bean.setIs_public(vo.getIs_public());
         bean.setModify_date(DateTools.getSysTimestamp()); //打修改时间戳
-        getBs().update(bean); //更新单条记录
+        auResourceBs.update(bean); //更新单条记录
 //        return request.findForward("queryAllfield");
         return "redirect:/auResource/queryAllfield";
     }
@@ -552,12 +547,12 @@ public class AuResourceAction implements IAuResourceConstants {
     @RequestMapping("/enablestatus")
     public String enablestatus(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String pageFlag = request.getParameter("pageFlag");
-        AuResourceVo bean = getBs().find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
+        AuResourceVo bean = auResourceBs.find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
         bean.setEnable_status("1");
         bean.setEnable_date(DateTools.getSysTimestamp());
         bean.setModify_date(DateTools.getSysTimestamp()); //打修改时间戳
         //int count = 
-        getBs().update(bean); //更新单条记录
+        auResourceBs.update(bean); //更新单条记录
         if ("4".equals(pageFlag)) {
 //            return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
             return "redirect:/auResource/queryAll";
@@ -578,11 +573,11 @@ public class AuResourceAction implements IAuResourceConstants {
     @RequestMapping("/disablestatus")
     public String disablestatus(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String pageFlag = request.getParameter("pageFlag");
-        AuResourceVo bean = getBs().find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
+        AuResourceVo bean = auResourceBs.find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
         bean.setEnable_status("0");
         bean.setEnable_date(DateTools.getSysTimestamp());
         bean.setModify_date(DateTools.getSysTimestamp()); //打修改时间戳
-        getBs().disable(bean); //更新单条记录
+        auResourceBs.disable(bean); //更新单条记录
         if ("4".equals(pageFlag)) {
 //            return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
             return "redirect:/auResource/queryAll";
@@ -602,7 +597,7 @@ public class AuResourceAction implements IAuResourceConstants {
      */
     @RequestMapping("/initupdatefield")
     public String initupdatefield(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        AuResourceVo bean = getBs().find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
+        AuResourceVo bean = auResourceBs.find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
         request.setAttribute(REQUEST_BEAN_VALUE, bean); //把vo放入request
         request.setAttribute(REQUEST_WRITE_BACK_FORM_VALUES, VoHelperTools.getMapFromVo(bean)); //回写表单
 //        return request.findForward("initfieldupdate");
@@ -620,7 +615,7 @@ public class AuResourceAction implements IAuResourceConstants {
      */
     @RequestMapping("/initinsert")
     public String initinsert(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        IAuResourceBs bs = getBs();
+        IAuResourceBs bs = auResourceBs;
 
         String resource_type = request.getParameter("resource_type");
         String condition = null;
@@ -669,7 +664,7 @@ public class AuResourceAction implements IAuResourceConstants {
      */
     @RequestMapping("/queryTablefield")
     public String queryTablefield(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        IAuResourceBs bs = getBs();
+        IAuResourceBs bs = auResourceBs;
         String name = request.getParameter("name");
         String conditionfield = "";//"and b.resource_type = '3'";
         List listfield = new ArrayList(); //定义结果集

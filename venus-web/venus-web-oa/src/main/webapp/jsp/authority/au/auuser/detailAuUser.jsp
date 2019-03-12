@@ -1,22 +1,23 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
-<%@ page import="venus.authority.au.auuser.vo.AuUserVo" %>
-<%@ page import="venus.authority.au.auuser.util.IAuUserConstants" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.authority.auuser.vo.AuUserVo" %>
+<%@ page import="venus.oa.authority.auuser.util.IAuUserConstants" %>
 <%@ page import="venus.frames.mainframe.util.Helper"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
-<%@page import="venus.authority.org.aupartyrelationtype.util.IConstants"%>
-<%@page import="venus.authority.org.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
+<%@page import="venus.oa.organization.aupartyrelationtype.util.IConstants"%>
+<%@page import="venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%  //取出本条记录
 	AuUserVo resultVo = null;  //定义一个临时的vo变量
 	resultVo = (AuUserVo)request.getAttribute(IAuUserConstants.REQUEST_BEAN_VALUE);  //从request中取出vo, 赋值给resultVo
 	VoHelperTools.replaceToHtml(resultVo);  //把vo中的每个值过滤
 	//关系类型
     java.util.Map relationTypeMap = new HashMap();
-    IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS)Helper.getBean(IConstants.BS_KEY);
+    IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS) BeanFactoryHelper.getBean("auPartyRelationTypeBS");
     AuPartyRelationTypeVo searchVo = new AuPartyRelationTypeVo();
     searchVo.setKeyword("4");
     List al = bs.simpleQuery(1,Short.MAX_VALUE,null,searchVo);

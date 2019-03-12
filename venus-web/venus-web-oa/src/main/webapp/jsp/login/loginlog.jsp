@@ -1,17 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.helper.LoginHelper"%>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.util.StringTokenizer" %>
-<%@ page import="venus.authority.util.BrowserDetect" %>
-<%@ page import="venus.authority.login.tools.OnlineUserVo" %>
-<%@ page import="venus.authority.login.loginlog.bs.ILoginLogBs" %>
-<%@ page import="venus.authority.login.loginlog.util.ILoginLogConstants" %>
-<%@ page import="venus.authority.au.auuser.bs.IAuUserBs" %>
-<%@ page import="venus.authority.au.auuser.util.IAuUserConstants" %>
-<%@ page import="venus.authority.au.auuser.vo.AuUserVo" %>
+<%@ page import="venus.oa.util.BrowserDetect" %>
+<%@ page import="venus.oa.login.tools.OnlineUserVo" %>
+<%@ page import="venus.oa.loginlog.bs.ILoginLogBs" %>
+<%@ page import="venus.oa.authority.auuser.bs.IAuUserBs" %>
+<%@ page import="venus.oa.authority.auuser.vo.AuUserVo" %>
 <%@ page import="java.util.List" %>
-<%@ page import="venus.frames.mainframe.util.Helper" %>
 <%@ page import="venus.pub.lang.OID" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%
 		//记录失败登录的历史
 		Timestamp loginTime = new Timestamp(session.getCreationTime());//获得session创建时间
@@ -47,7 +44,7 @@
 		
 		OnlineUserVo vo = new OnlineUserVo();
 		vo.setLogin_id(request.getParameter("login_id"));
-		List logins = ((IAuUserBs) Helper.getBean(IAuUserConstants.BS_KEY)).queryByCondition("LOGIN_ID ='" + vo.getLogin_id() + "'");
+		List logins = ((IAuUserBs) BeanFactoryHelper.getBean("auUserBs")).queryByCondition("LOGIN_ID ='" + vo.getLogin_id() + "'");
 		if(logins.size()>0){
 		    vo.setName(((AuUserVo)logins.get(0)).getName());
 		}		
@@ -58,7 +55,7 @@
 		vo.setLogin_time(loginTime);
 		vo.setLogin_state((String)request.getAttribute("Message"));
 		vo.setLogin_mac(login_mac);
-		OID oid = ((ILoginLogBs) Helper.getBean(ILoginLogConstants.BS_KEY)).insert(vo);
+		OID oid = ((ILoginLogBs) BeanFactoryHelper.getBean("loginLogBs")).insert(vo);
 		
 		pageContext.forward("/jsp/login/login.jsp");
 %>

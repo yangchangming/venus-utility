@@ -1,6 +1,7 @@
 package venus.oa.organization.relation.action;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.oa.helper.LoginHelper;
@@ -35,14 +36,17 @@ import java.util.List;
 @RequestMapping("/relation")
 public class RelationAction implements IConstants, IRelationConstants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public IAuPartyRelationBs getBS() {
-        return (IAuPartyRelationBs) Helper.getBean(BS_KEY);
-    }
+    @Autowired
+    private IAuPartyRelationBs auPartyRelationBs;
+
+    @Autowired
+    private IAuPartyTypeBS auPartyTypeBS;
+
+    @Autowired
+    private IAuConnectRuleBS auConnectRuleBS;
+
+    @Autowired
+    private IRelationBs relationBs;
 
     /**
      * 
@@ -62,7 +66,7 @@ public class RelationAction implements IConstants, IRelationConstants {
         else
             parentCode = GlobalConstants.getRelaType_comp();
         
-        int nCount = getBS().getCountByParentCode(parentCode);
+        int nCount = auPartyRelationBs.getCountByParentCode(parentCode);
         
         request.setAttribute("parent_code", parentCode); 
         if(nCount>0) {//有根节点
@@ -111,7 +115,7 @@ public class RelationAction implements IConstants, IRelationConstants {
         String partyRelationTypeId = StringUtils.isNotEmpty(relTypeId)?relTypeId: GlobalConstants.getRelaType_comp();
         String partyId = request.getParameter("partyId");
         //添加团体关系根节点
-        getBS().initRoot(partyId, partyRelationTypeId);
+        auPartyRelationBs.initRoot(partyId, partyRelationTypeId);
         request.setAttribute("parent_code", partyRelationTypeId);
 //        return request.findForward("list");
         return FORWARD_LIST_KEY;
@@ -137,33 +141,23 @@ public class RelationAction implements IConstants, IRelationConstants {
             return "forward:/company/detail";
 
         }else if(GlobalConstants.getPartyType_dept().equals(partyTypeId)) {
-//            return request.findForward("queryDeptDetail");
             return "forward:/department/detail";
-
         }else if(GlobalConstants.getPartyType_posi().equals(partyTypeId)) {
-//            return request.findForward("queryPosiDetail");
             return "forward:/position/detail";
-
         }else if(GlobalConstants.getPartyType_empl().equals(partyTypeId)) {
-//            return request.findForward("queryEmplDetail");
             return "forward:/employee/detail";
-
         }else if(StringUtils.isNotEmpty(partyTypeId)){
-            AuPartyTypeVo obj = (AuPartyTypeVo) ((IAuPartyTypeBS) Helper.getBean(venus.oa.organization.aupartytype.util.IConstants.BS_KEY)).find(partyTypeId); //通过id获取vo
+            AuPartyTypeVo obj = (AuPartyTypeVo) auPartyTypeBS.find(partyTypeId);
             String tableName = obj.getTable_name();
             boolean isGenerateCode = tableName.contains("ORGANIZE_");
             String catalogue = isGenerateCode?tableName.substring("ORGANIZE_".length()):tableName.substring("COLLECTIVE_".length());
             request.setAttribute("actionName", String.valueOf(catalogue.charAt(0))+catalogue.substring(1).toLowerCase()+(isGenerateCode?"Organize":"Collective"));
-//            return request.findForward("queryCommonDetail");
-
             String actionName = String.valueOf(catalogue.charAt(0))+catalogue.substring(1).toLowerCase()+(isGenerateCode?"Organize":"Collective");
             return "forward:/" + actionName + "/detail";
         }else {
-//            return request.findForward("default");
             return FORWARD_DEFAULT_KEY;
         }
     }
-
 
     /**
      * 
@@ -179,11 +173,10 @@ public class RelationAction implements IConstants, IRelationConstants {
         String partyType = request.getParameter("partyType");
         String relationId = request.getParameter("relationId");
         String relationTypeId = getRelationTypeIdByRelationId(relationId);
-        IAuConnectRuleBS ruleBs = (IAuConnectRuleBS) Helper.getBean(venus.oa.organization.auconnectrule.util.IConstants.BS_KEY);
         AuConnectRuleVo vo = new AuConnectRuleVo();
         vo.setRelation_type_id(relationTypeId);
         vo.setParent_partytype_id(partyType);
-        List list = ruleBs.queryByType(vo);
+        List list = auConnectRuleBS.queryByType(vo);
         HashMap ruleMap = new HashMap();
         if(list!=null) {
             for(int i=0; i<list.size(); i++) {
@@ -199,7 +192,8 @@ public class RelationAction implements IConstants, IRelationConstants {
                 }else{
                     if(!ruleMap.containsKey("common"))
                         ruleMap.put("common", new ArrayList());
-                    AuPartyTypeVo obj = (AuPartyTypeVo) ((IAuPartyTypeBS) Helper.getBean(venus.oa.organization.aupartytype.util.IConstants.BS_KEY)).find(ruleVo.getChild_partytype_id()); //通过id获取vo
+
+                    AuPartyTypeVo obj = (AuPartyTypeVo)auPartyTypeBS.find(ruleVo.getChild_partytype_id());
                     String tableName = obj.getTable_name();
                     boolean isGenerateCode = tableName.contains("ORGANIZE_");
                     String catalogue = isGenerateCode?tableName.substring("ORGANIZE_".length()):tableName.substring("COLLECTIVE_".length());
@@ -211,7 +205,6 @@ public class RelationAction implements IConstants, IRelationConstants {
         request.setAttribute("id", request.getParameter("id")); 
         request.setAttribute("partyType", request.getParameter("partyType")); 
         request.setAttribute("ruleMap", ruleMap); 
-//        return request.findForward("add");
         return FORWARD_ADD_KEY;
     }
 
@@ -231,10 +224,8 @@ public class RelationAction implements IConstants, IRelationConstants {
         String partyIds[] = request.getParameter("partyIds").split(",");
         String parentRelId = request.getParameter("parentRelId");
         String relType = getRelationTypeIdByRelationId(parentRelId);//团体关系类型
-        IRelationBs bs = (IRelationBs) Helper.getBean("Relation_bs");
-        bs.addRelation(partyIds, parentRelId, relType,vo);
+        relationBs.addRelation(partyIds, parentRelId, relType,vo);
         request.setAttribute("parent_code", relType); 
-//        return request.findForward("list");
         return FORWARD_LIST_KEY;
     }
     
@@ -254,7 +245,7 @@ public class RelationAction implements IConstants, IRelationConstants {
         
         AuPartyRelationVo queryVo = new AuPartyRelationVo();
         queryVo.setParent_code(parent_code);
-    	List lOld = getBS().queryAuPartyRelation(queryVo);//查询旧的列表
+    	List lOld = auPartyRelationBs.queryAuPartyRelation(queryVo);//查询旧的列表
     	
     	List lChange = new ArrayList();
     	if (lOld.size() != newIds.length) {  //判断排序前后记录的数量是否一致，以免出错
@@ -273,11 +264,11 @@ public class RelationAction implements IConstants, IRelationConstants {
     	}
     	
     	if ( lChange.size() > 0 ) {
-    	    getBS().sort(lChange);//更新多条记录
+    	    auPartyRelationBs.sort(lChange);//更新多条记录
 		}
     	queryVo = new AuPartyRelationVo();
     	queryVo.setCode(parent_code);
-    	List queryRelation = getBS().queryAuPartyRelation(queryVo);
+    	List queryRelation = auPartyRelationBs.queryAuPartyRelation(queryVo);
     	String relType = getRelationTypeIdByRelationId(((AuPartyRelationVo)queryRelation.get(0)).getId());//团体关系类型
     	request.setAttribute("parent_code", relType); 
 //        return request.findForward("list");
@@ -298,7 +289,7 @@ public class RelationAction implements IConstants, IRelationConstants {
         String relId = request.getParameter("relId");
         String returnPage = request.getParameter("returnPage");
         String parentCode = request.getParameter("partyrelationtype_id");//返回关系树页面使用
-        getBS().deletePartyRelation(relId);
+        auPartyRelationBs.deletePartyRelation(relId);
         if("party_detail".equals(returnPage)) {//有根节点
 //            return request.findForward(FORWARD_PARTY_DETAIL_KEY);
             return "forward:/auParty/detailPage";
@@ -326,7 +317,7 @@ public class RelationAction implements IConstants, IRelationConstants {
 //            return MessageAgent.sendErrorMessage(request, DEFAULT_MSG_ERROR_STR, MessageStyle.ALERT_AND_BACK);
             return IRelationConstants.MESSAGE_AGENT_ERROR;
         }
-        IAuPartyRelationBs bs = getBS();
+        IAuPartyRelationBs bs = auPartyRelationBs;
 
         PageVo pageVo = Helper.findPageVo(request);
 
@@ -349,7 +340,7 @@ public class RelationAction implements IConstants, IRelationConstants {
 
 
     private String getRelationTypeIdByRelationId(String relationId){
-        return getBS().find(relationId).getRelationtype_id();
+        return auPartyRelationBs.find(relationId).getRelationtype_id();
     }
     
     /**
@@ -375,7 +366,7 @@ public class RelationAction implements IConstants, IRelationConstants {
             queryVo.setPartyid(partyId);
         }
         
-        IAuPartyRelationBs bs = getBS();
+        IAuPartyRelationBs bs = auPartyRelationBs;
         List<AuPartyRelationVo> auRelations= bs.queryAuPartyRelation(queryVo);
         AuPartyRelationVo relationVo= auRelations.get(0);
         String result = "1";
@@ -434,7 +425,7 @@ public class RelationAction implements IConstants, IRelationConstants {
             queryVo.setPartyid(partyId);
         }
         
-        IAuPartyRelationBs bs = getBS();
+        IAuPartyRelationBs bs = auPartyRelationBs;
         List<AuPartyRelationVo> auRelations= bs.queryAuPartyRelation(queryVo);
         AuPartyRelationVo relationVo= auRelations.get(0);
         String result = "1";
@@ -485,7 +476,7 @@ public class RelationAction implements IConstants, IRelationConstants {
         String operation = request.getParameter("operation");
         AuPartyRelationVo queryVo = new AuPartyRelationVo();
         queryVo.setId(parentRelId);
-        IAuPartyRelationBs bs = getBS();
+        IAuPartyRelationBs bs = auPartyRelationBs;
         List<AuPartyRelationVo> auRelations= bs.queryAuPartyRelation(queryVo);
         AuPartyRelationVo relationVo= auRelations.get(0);
         String result = "1";
@@ -542,7 +533,7 @@ public class RelationAction implements IConstants, IRelationConstants {
             queryVo.setPartyid(partyId);
         }
         
-        IAuPartyRelationBs bs = getBS();
+        IAuPartyRelationBs bs = auPartyRelationBs;
         List<AuPartyRelationVo> auRelations= bs.queryAuPartyRelation(queryVo);
         AuPartyRelationVo relationVo= auRelations.get(0);
         String result = "1";

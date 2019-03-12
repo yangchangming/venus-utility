@@ -1,8 +1,15 @@
 package venus.oa.authority.auuser.action;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import venus.commons.xmlenum.EnumRepository;
+import venus.commons.xmlenum.EnumValueMap;
+import venus.frames.base.action.IRequest;
+import venus.frames.mainframe.action.HttpRequest;
+import venus.frames.mainframe.util.Helper;
+import venus.frames.web.page.PageVo;
 import venus.oa.authority.auuser.bs.IAuUserBs;
 import venus.oa.authority.auuser.util.IAuUserConstants;
 import venus.oa.authority.auuser.vo.AuUserVo;
@@ -12,12 +19,6 @@ import venus.oa.profile.model.UserProfileModel;
 import venus.oa.util.DateTools;
 import venus.oa.util.Encode;
 import venus.oa.util.VoHelperTools;
-import venus.commons.xmlenum.EnumRepository;
-import venus.commons.xmlenum.EnumValueMap;
-import venus.frames.base.action.IRequest;
-import venus.frames.mainframe.action.HttpRequest;
-import venus.frames.mainframe.util.Helper;
-import venus.frames.web.page.PageVo;
 import venus.pub.lang.OID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,15 +32,9 @@ import java.util.List;
 @RequestMapping("/auUser")
 public class AuUserAction implements IAuUserConstants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public IAuUserBs getBs() {
-        return (IAuUserBs) Helper.getBean(BS_KEY); //得到BS对象,受事务控制
-    }
-
+    @Autowired
+    private IAuUserBs auUserBs;
+    
     /**
      * 从页面表单获取信息注入vo，并插入单条记录
      * 
@@ -51,7 +46,7 @@ public class AuUserAction implements IAuUserConstants {
     @RequestMapping("/insert")
     public String insert(HttpServletRequest _request, HttpServletResponse response) throws Exception {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IAuUserBs bs = getBs();
+        IAuUserBs bs = auUserBs;
         this.writeBackParam(_request);
         AuUserVo vo = new AuUserVo();
         if (!Helper.populate(vo, request)) { //从request中注值进去vo
@@ -89,7 +84,7 @@ public class AuUserAction implements IAuUserConstants {
         if (codes == null || codes.length < 1)
 //            return MessageAgent.sendErrorMessage(request,venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Incoming_parameter_is_incorrect_"), MessageStyle.ALERT_AND_BACK);
             return MESSAGE_AGENT_ERROR;
-        OID[] oid = getBs().insertMulti(codes);
+        OID[] oid = auUserBs.insertMulti(codes);
         HttpServletRequest req = (HttpServletRequest)request;
         HttpSession session = req.getSession(false);
         session.setAttribute("insertCount", oid.length);
@@ -108,7 +103,7 @@ public class AuUserAction implements IAuUserConstants {
     @RequestMapping("/insert4party")
     public String insert4party(HttpServletRequest _request, HttpServletResponse response) throws Exception {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IAuUserBs bs = getBs();
+        IAuUserBs bs = auUserBs;
         this.writeBackParam(_request);
         AuUserVo vo = new AuUserVo();
         if (!Helper.populate(vo, request)) { //从request中注值进去vo
@@ -138,7 +133,7 @@ public class AuUserAction implements IAuUserConstants {
     @RequestMapping("/register")
     public String register(HttpServletRequest _request, HttpServletResponse response) throws Exception {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IAuUserBs bs = getBs();
+        IAuUserBs bs = auUserBs;
         HttpServletRequest req = _request;
         HttpSession session = (HttpSession) req.getSession(false);
         String inputVerify = request.getParameter("verify");
@@ -184,7 +179,7 @@ public class AuUserAction implements IAuUserConstants {
     @RequestMapping("/delete")
     public String delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
         this.writeBackParam(request);
-        getBs().delete(request.getParameter(REQUEST_ID_FLAG)); //删除单条记录
+        auUserBs.delete(request.getParameter(REQUEST_ID_FLAG)); //删除单条记录
         //RmJspHelper.transctPageVo(request,-deleteCount); //翻页偏移
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auUser/queryAll";
@@ -203,7 +198,7 @@ public class AuUserAction implements IAuUserConstants {
         this.writeBackParam(request);
         String[] id = request.getParameterValues(REQUEST_MULTI_ID_FLAG); //从request获取多条记录id
         if (id != null && id.length != 0) {
-            getBs().delete(id); //删除多条记录
+            auUserBs.delete(id); //删除多条记录
         }
         //RmJspHelper.transctPageVo(request, -deleteCount); //翻页偏移
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
@@ -221,7 +216,7 @@ public class AuUserAction implements IAuUserConstants {
     @RequestMapping("/find")
     public String find(HttpServletRequest request, HttpServletResponse response) throws Exception {
         this.writeBackParam(request);
-        AuUserVo bean = getBs().find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
+        AuUserVo bean = auUserBs.find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
         request.setAttribute(REQUEST_BEAN_VALUE, bean); //把vo放入request
         //RmJspHelper.transctPageVo(request); //翻页重载
 //        return request.findForward(FORWARD_UPDATE_KEY);
@@ -238,7 +233,7 @@ public class AuUserAction implements IAuUserConstants {
      */
     @RequestMapping("/validate")
     public String validate(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List beans = getBs().queryByCondition(" login_id='" + request.getParameter("login_id") + "'"); //通过loginid获取vo
+        List beans = auUserBs.queryByCondition(" login_id='" + request.getParameter("login_id") + "'"); //通过loginid获取vo
         boolean hasLogin_id = false;
         if (beans != null & beans.size() > 0) {
             hasLogin_id = true;
@@ -259,7 +254,7 @@ public class AuUserAction implements IAuUserConstants {
      */
     @RequestMapping("/validateLoginId")
     public String validateLoginId(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        IAuUserBs bs = getBs();
+        IAuUserBs bs = auUserBs;
         PrintWriter writer = response.getWriter();
         writer.print(bs.getRecordCount("LOGIN_ID='" + request.getParameter("loginId") + "'"));
         writer.close();
@@ -278,7 +273,7 @@ public class AuUserAction implements IAuUserConstants {
     @RequestMapping("/resetPassword")
     public String resetPassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
         this.writeBackParam(request);
-        getBs().resetPassword(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
+        auUserBs.resetPassword(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auUser/queryAll";
     }
@@ -294,7 +289,7 @@ public class AuUserAction implements IAuUserConstants {
     @RequestMapping("/enable")
     public String enable(HttpServletRequest request, HttpServletResponse response) throws Exception {
         this.writeBackParam(request);
-        getBs().enable(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
+        auUserBs.enable(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auUser/queryAll";
     }
@@ -310,7 +305,7 @@ public class AuUserAction implements IAuUserConstants {
     @RequestMapping("/disable")
     public String disable(HttpServletRequest request, HttpServletResponse response) throws Exception {
         this.writeBackParam(request);
-        getBs().disable(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
+        auUserBs.disable(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auUser/queryAll";
     }
@@ -327,7 +322,7 @@ public class AuUserAction implements IAuUserConstants {
     @RequestMapping("/update")
     public String update(HttpServletRequest _request, HttpServletResponse response) throws Exception {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IAuUserBs bs = getBs();
+        IAuUserBs bs = auUserBs;
         this.writeBackParam(_request);
         AuUserVo vo = new AuUserVo();
         if (!Helper.populate(vo, request)) { //从request中注值进去vo
@@ -361,7 +356,7 @@ public class AuUserAction implements IAuUserConstants {
     @RequestMapping("/update4party")
     public String update4party(HttpServletRequest _request, HttpServletResponse response) throws Exception {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IAuUserBs bs = getBs();
+        IAuUserBs bs = auUserBs;
         this.writeBackParam(_request);
         AuUserVo vo = new AuUserVo();
         if (!Helper.populate(vo, request)) { //从request中注值进去vo
@@ -391,7 +386,7 @@ public class AuUserAction implements IAuUserConstants {
      */
     @RequestMapping("/modifyPassword")
     public String modifyPassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        IAuUserBs bs = getBs();
+        IAuUserBs bs = auUserBs;
         String loginId = request.getParameter("login_id");
         String oldPwd = request.getParameter("old_password");
         String newPwd = request.getParameter("new_password");
@@ -430,7 +425,7 @@ public class AuUserAction implements IAuUserConstants {
      */
     @RequestMapping("/forceModifyPassword")
     public String forceModifyPassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        IAuUserBs bs = getBs();
+        IAuUserBs bs = auUserBs;
         String loginId = request.getParameter("login_id");
         String force = request.getParameter("force");
         String seeagain = request.getParameter("seeagain");
@@ -477,7 +472,7 @@ public class AuUserAction implements IAuUserConstants {
     @RequestMapping("/detail")
     public String detail(HttpServletRequest request, HttpServletResponse response) throws Exception {
         this.writeBackParam(request);
-        AuUserVo bean = getBs().find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
+        AuUserVo bean = auUserBs.find(request.getParameter(REQUEST_ID_FLAG)); //通过id获取vo
         request.setAttribute(REQUEST_BEAN_VALUE, bean); //把vo放入request
         //RmJspHelper.transctPageVo(request); //翻页重载
 //        return request.findForward(FORWARD_DETAIL_KEY);
@@ -500,7 +495,7 @@ public class AuUserAction implements IAuUserConstants {
         String func_code = request.getParameter("func_code");
         request.setAttribute("system_id", system_id);
         request.setAttribute("func_code", func_code);
-        IAuUserBs bs = getBs();
+        IAuUserBs bs = auUserBs;
         
         //定义默认用户状态条件
     	EnumRepository er = EnumRepository.getInstance();
@@ -557,7 +552,7 @@ public class AuUserAction implements IAuUserConstants {
         
         request.setAttribute("system_id", system_id);
         request.setAttribute("func_code", func_code);
-        IAuUserBs bs = getBs();
+        IAuUserBs bs = auUserBs;
         
         String queryCondition = null;
 		if(login_id != null && name != null) {
@@ -607,7 +602,7 @@ public class AuUserAction implements IAuUserConstants {
      */
     @RequestMapping("/queryReference")
     public String queryReference(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        IAuUserBs bs = getBs();
+        IAuUserBs bs = auUserBs;
         String queryCondition = request.getParameter(REQUEST_QUERY_CONDITION_VALUE); //从request获得查询条件
 
         PageVo pageVo = Helper.findPageVo(request); //得到当前翻页信息

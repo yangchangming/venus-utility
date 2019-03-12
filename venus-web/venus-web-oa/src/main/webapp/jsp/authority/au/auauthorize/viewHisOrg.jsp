@@ -1,9 +1,9 @@
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ include file="/jsp/include/global.jsp" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.au.auauthorize.bs.IAuAuthorizeBS"%>
-<%@ page import="venus.authority.au.auauthorize.util.IConstants"%>
-<%@ page import="venus.authority.au.auauthorize.vo.AuAuthorizeVo"%>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.authority.auauthorize.bs.IAuAuthorizeBS"%>
+<%@ page import="venus.oa.authority.auauthorize.util.IConstants"%>
+<%@ page import="venus.oa.authority.auauthorize.vo.AuAuthorizeVo"%>
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.Set"%>
 <%@ page import="java.util.HashMap"%>
@@ -11,6 +11,7 @@
 <%@ page import="venus.frames.mainframe.util.Helper"%>
 <%@ page import = "venus.commons.xmlenum.EnumRepository" %>
 <%@ page import = "venus.commons.xmlenum.EnumValueMap" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 
 <%
  	String vCode = request.getParameter("vCode");
@@ -18,7 +19,7 @@
 	String isUser = request.getParameter("isUser");
     String partyId = request.getParameter("partyId");
      	
- 	IAuAuthorizeBS auBs = (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY);
+ 	IAuAuthorizeBS auBs = (IAuAuthorizeBS) BeanFactoryHelper.getBean("auAuthorizeBS");
  	Map map = new HashMap();
 	if ("1".equals(isUser)){ 	
  		map =  auBs.getAuByPartyId(partyId, rType);

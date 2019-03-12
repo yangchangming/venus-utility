@@ -1,13 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ page import="venus.authority.util.GlobalConstants" %>
-<%@ page import="venus.authority.service.sys.vo.SysParamVo" %>
-<%@ page import="venus.authority.login.tools.OnLineUser" %>
+<%@ page import="venus.oa.util.GlobalConstants" %>
+<%@ page import="venus.oa.sysparam.vo.SysParamVo" %>
+<%@ page import="venus.oa.login.tools.OnLineUser" %>
 <%--<%@ taglib uri="/WEB-INF/sslext.tld" prefix="sslext"%>--%>
 <%@ include file="/jsp/include/global.jsp" %>
 
 <%
 	String isExit = request.getParameter("isExit");//注销标志
-	String login_id = (String)session.getAttribute(venus.authority.util.GlobalConstants.getCasFilterUser());
+	String login_id = (String)session.getAttribute(venus.oa.util.GlobalConstants.getCasFilterUser());
 	
 	if(login_id!=null) {//如果是通过单点登录过来的
 		if("1".equals(isExit)) {
@@ -16,7 +16,7 @@
 	        }catch(Exception e) {
 	            //e.printStackTrace();
 	        }
-			String logoutUrl = venus.authority.util.GlobalConstants.getPortalLogoutUrl();
+			String logoutUrl = venus.oa.util.GlobalConstants.getPortalLogoutUrl();
 			response.sendRedirect(logoutUrl);
 		}
 %>
@@ -48,7 +48,7 @@
     SysParamVo loginStgVo = GlobalConstants.getSysParam(GlobalConstants.LOGINSTRATEGY);
     String loginStg = null==loginStgVo?"":loginStgVo.getValue();
 	
-	if(venus.authority.helper.LoginHelper.getLoginId(request)!=null) {//如果是已经登录的
+	if(venus.oa.helper.LoginHelper.getLoginId(request)!=null) {//如果是已经登录的
 %>
 	<script language="javascript">
 		window.location.href="<%=request.getContextPath()%>/jsp/main.jsp";//index.jsp";//openNewWindow

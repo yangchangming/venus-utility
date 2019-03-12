@@ -1,26 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/jsp/include/global.jsp" %>
 <%@ page import="java.util.List" %>
-<%@ page import="venus.authority.au.aufunctree.vo.AuFunctreeVo" %>
-<%@ page import="venus.authority.helper.LoginHelper" %>
-<%@ page import="venus.authority.service.sys.vo.SysParamVo"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.au.aufunctree.bs.IAuFunctreeBs"%>
-<%@ page import="venus.authority.au.aufunctree.util.IAuFunctreeConstants"%>
+<%@ page import="venus.oa.authority.aufunctree.vo.AuFunctreeVo" %>
+<%@ page import="venus.oa.helper.LoginHelper" %>
+<%@ page import="venus.oa.sysparam.vo.SysParamVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.authority.aufunctree.bs.IAuFunctreeBs"%>
+<%@ page import="venus.oa.authority.aufunctree.util.IAuFunctreeConstants"%>
 <%@ page import="venus.frames.mainframe.util.Helper"%>
-<%@ page import="venus.authority.helper.OrgHelper"%>
-<%@ page import="venus.authority.login.vo.LoginSessionVo"%>
+<%@ page import="venus.oa.helper.OrgHelper"%>
+<%@ page import="venus.oa.login.vo.LoginSessionVo"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.Iterator"%>
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.HashMap"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.bs.IAuPartyRelationTypeBS"%>
-<%@ page import="venus.authority.org.aupartyrelation.bs.IAuPartyRelationBs"%>
-<%@ page import="venus.authority.org.aupartyrelation.vo.AuPartyRelationVo"%>
-<%@ page import="venus.authority.util.tree.DeepTreeSearch"%>
+<%@ page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS"%>
+<%@ page import="venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs"%>
+<%@ page import="venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo"%>
+<%@ page import="venus.oa.util.tree.DeepTreeSearch"%>
 <%@ page import="org.apache.struts.util.LabelValueBean"%>
 <%@ page import="org.apache.struts.action.SecurePlugIn"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.util.IConstants" %>
+<%@ page import="venus.oa.organization.aupartyrelationtype.util.IConstants" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <html>
 <head>
 <title>Top Menu</title>
@@ -56,9 +57,9 @@
 <%
     // 关系选择功能
     try {
-        IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
+        IAuFunctreeBs bs = (IAuFunctreeBs) BeanFactoryHelper.getBean("auFunctreeBs");
         List lTree = bs.queryByCondition("TOTAL_CODE like'101%' and TYPE='0'", "tree_level, order_code");
-        IAuPartyRelationTypeBS relBS = (IAuPartyRelationTypeBS) Helper.getBean(IConstants.BS_KEY);
+        IAuPartyRelationTypeBS relBS = (IAuPartyRelationTypeBS) BeanFactoryHelper.getBean("auPartyRelationTypeBS");
         LoginSessionVo sessionVo = LoginHelper.getLoginVo(request);
         List relTypeList = (sessionVo != null) ? relBS.getPartyAll() : new ArrayList();
         String relationtype_id= (sessionVo != null) ? sessionVo.getRelationtype_id() : null;
@@ -66,7 +67,7 @@
             relationtype_id = "-1";
         }
         //关系处理
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.authority.org.aupartyrelation.util.IConstants.BS_KEY);
+        IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
         String currentCode =  (sessionVo != null) ? sessionVo.getCurrent_code() : null;
         String currentRelStr = "";
         if(null!=currentCode)

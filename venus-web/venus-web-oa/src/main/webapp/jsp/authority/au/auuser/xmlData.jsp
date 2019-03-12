@@ -1,16 +1,16 @@
 <%@ include file="/jsp/authority/tree/include/globalTreeCache.jsp" %>
 <%@ page contentType="text/xml;charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.tree.DeepTreeXmlHandler"%>
+<%@ page import="venus.oa.util.tree.DeepTreeXmlHandler"%>
 <%@ page import="org.springframework.jdbc.core.RowMapper"%>
 <%@ page import="java.sql.ResultSet"%>
 <%@ page import="java.sql.SQLException"%>
-<%@ page import="venus.authority.util.tree.DeepTreeVo"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.util.ProjTools"%>
+<%@ page import="venus.oa.util.tree.DeepTreeVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.util.ProjTools"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
-<%@ page import="venus.authority.helper.LoginHelper"%>
+<%@ page import="venus.oa.helper.LoginHelper"%>
 <%
 try {
 	//参数：上级编码，如果为空则为全部组织的根节点

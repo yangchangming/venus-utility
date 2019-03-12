@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="java.util.List,java.util.Iterator" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
-<%@ page import="venus.authority.login.loginlog.vo.LoginLogVo" %>
-<%@ page import="venus.authority.login.loginlog.util.ILoginLogConstants" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.login.loginlog.vo.LoginLogVo" %>
+<%@ page import="venus.oa.login.loginlog.util.ILoginLogConstants" %>
 <%  //取出List
 	List lResult = null;  //定义结果列表的List变量
 	if(request.getAttribute(ILoginLogConstants.REQUEST_BEANS) != null) {  //如果request中的beans不为空

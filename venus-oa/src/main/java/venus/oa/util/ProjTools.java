@@ -123,7 +123,7 @@ public class ProjTools {
     }
     
     public static ICommonBs getCommonBsInstance() {
-        return (ICommonBs)BeanFactoryHelper.getBean("CommonBs");
+        return (ICommonBs)BeanFactoryHelper.getBean("commonBs");
     }
 
     /**

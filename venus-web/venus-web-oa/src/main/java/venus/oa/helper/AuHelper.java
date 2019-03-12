@@ -3,21 +3,18 @@ package venus.oa.helper;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.jdbc.core.RowMapper;
-import venus.frames.mainframe.util.Helper;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
-import venus.oa.authority.auauthorize.util.IConstants;
 import venus.oa.authority.auauthorize.vo.AuAuthorizeVo;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
-import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
 import venus.oa.authority.auresource.bs.IAuResourceBs;
-import venus.oa.authority.auresource.util.IAuResourceConstants;
 import venus.oa.authority.auresource.vo.AuResourceVo;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.ProjTools;
 import venus.oa.util.StringHelperTools;
+import venus.springsupport.BeanFactoryHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
@@ -37,7 +34,7 @@ public class AuHelper {
      * @return
      */
     public static boolean hasPriv(String partyId, String resCode, String resType) {
-        IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
+        IAuResourceBs resBs = (IAuResourceBs) BeanFactoryHelper.getBean("auResourceBs");
         String strSql = "";
         String resTypeCode = "";
         if ("menu".equals(resType)) {
@@ -65,7 +62,7 @@ public class AuHelper {
         if ("1".equals(resVo.getIs_public())) {
             return true;
         }
-        IAuAuthorizeBS auBs = (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY);
+        IAuAuthorizeBS auBs = (IAuAuthorizeBS) BeanFactoryHelper.getBean("auAuthorizeBS");
         Map m_all = auBs.getAuByPartyId(partyId, resTypeCode);//TODO:优化
         if (m_all.keySet().contains(resVo.getId())) {
             return true;
@@ -82,7 +79,7 @@ public class AuHelper {
      */
     public static Map getFuncPrivList(String partyId) {
         Map m_func = new HashMap();
-        IAuAuthorizeBS auBs = (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY);
+        IAuAuthorizeBS auBs = (IAuAuthorizeBS) BeanFactoryHelper.getBean("auAuthorizeBS");
         m_func.putAll(auBs.getAuByPartyId(partyId, GlobalConstants.getResType_menu()));
         m_func.putAll(auBs.getAuByPartyId(partyId, GlobalConstants.getResType_butn()));
         return m_func;
@@ -98,7 +95,7 @@ public class AuHelper {
      */
     public static Map getFuncPrivList(String partyId, String resType) {
         Map m_func = new HashMap();
-        IAuAuthorizeBS auBs = (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY);
+        IAuAuthorizeBS auBs = (IAuAuthorizeBS) BeanFactoryHelper.getBean("auAuthorizeBS");
         if ("menu".equals(resType)) {
             m_func = auBs.getAuByPartyId(partyId, GlobalConstants.getResType_menu());
         } else if ("button".equals(resType)) {
@@ -116,7 +113,7 @@ public class AuHelper {
      */
     public static Map getDataPrivList(String partyId) {
         Map m_data = new HashMap();
-        IAuAuthorizeBS auBs = (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY);
+        IAuAuthorizeBS auBs = (IAuAuthorizeBS) BeanFactoryHelper.getBean("auAuthorizeBS");
         m_data.putAll(auBs.getAuByPartyId(partyId, GlobalConstants.getResType_fild()));
         m_data.putAll(auBs.getAuByPartyId(partyId, GlobalConstants.getResType_recd()));
         if(m_data!=null) {
@@ -146,7 +143,7 @@ public class AuHelper {
      */
     public static Map getDataPrivList(String partyId, String resType) {
         Map m_data = new HashMap();
-        IAuAuthorizeBS auBs = (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY);
+        IAuAuthorizeBS auBs = (IAuAuthorizeBS) BeanFactoryHelper.getBean("auAuthorizeBS");
         if ("field".equals(resType)) {
             m_data = auBs.getAuByPartyId(partyId, GlobalConstants.getResType_fild());
         } else if ("record".equals(resType)) {
@@ -180,7 +177,7 @@ public class AuHelper {
      * @param request HttpServletRequest
      */
     public static void filterFieldPrivInVo(Object vo, String tableName, HttpServletRequest request) {
-        IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
+        IAuResourceBs resBs = (IAuResourceBs) BeanFactoryHelper.getBean("auResourceBs");
         List list = resBs.queryByCondition("table_name='" + tableName + "' and resource_type='"
                 + GlobalConstants.getResType_fild() + "'");
         if (list == null || list.size() == 0) {
@@ -224,7 +221,7 @@ public class AuHelper {
         }
 
         if(allField.get(tableName)==null){
-            IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
+            IAuResourceBs resBs = (IAuResourceBs) BeanFactoryHelper.getBean("auResourceBs");
             List list = resBs.queryByCondition("table_name='" + tableName + "' and resource_type='"
                     + GlobalConstants.getResType_fild() + "'");
             allField.put(tableName, list);
@@ -309,7 +306,6 @@ public class AuHelper {
         /*
          * String relFieldName = fieldName; int index = relFieldName.indexOf('.'); if( index != -1) { relFieldName =
          * relFieldName.substring(index+1, relFieldName.length()); } IAuResourceBs resBs = (IAuResourceBs)
-         * Helper.getBean(IAuResourceConstants.BS_KEY); List list = resBs.queryByCondition("table_name='"+tableName+"'
          * and field_name='"+relFieldName +"' and resource_type='"+GlobalConstants.getResType_recd()+"'"); if(list==null ||
          * list.size()==0) { return strSql; } //Map m_data = LoginHelper.getOwnerRecd(request); Map m_filter = new
          * HashMap();
@@ -371,11 +367,7 @@ public class AuHelper {
             AuResourceVo auResourceVo = new AuResourceVo();
             auResourceVo.setTable_name(nameOfTable.toUpperCase());
             auResourceVo.setResource_type("4");
-
-//            IAuResourceDao auResourceDao = (IAuResourceDao) Helper.getBean("AuResource_dao");
-//            List IdList = auResourceDao.queryIdByTableNameAndResourceType(auResourceVo);
-
-            IAuResourceBs auResourceBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
+            IAuResourceBs auResourceBs = (IAuResourceBs) BeanFactoryHelper.getBean("auResourceBs");
             List IdList = auResourceBs.queryIdByTableNameAndResourceType(auResourceVo);
 
             //每一个resource表对应的记录权限设置都去拼装sql
@@ -584,7 +576,7 @@ public class AuHelper {
 	 * @return
 	 */
 	public static String[] getUserPartyIdByMenuName(String name) {
-		IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
+		IAuFunctreeBs bs = (IAuFunctreeBs) BeanFactoryHelper.getBean("auFunctreeBs");
 		List list = bs.queryByCondition("name='"+name+"'");
 		if(list==null || list.size()==0) {
 			return null;
@@ -598,7 +590,7 @@ public class AuHelper {
 	 * @return
 	 */
 	public static String[] getUserPartyIdByMenuKeyword(String keyword) {
-		IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
+		IAuFunctreeBs bs = (IAuFunctreeBs) BeanFactoryHelper.getBean("auFunctreeBs");
 		List list = bs.queryByCondition("keyword='"+keyword+"'");
 		if(list==null || list.size()==0) {
 			return null;
@@ -612,7 +604,7 @@ public class AuHelper {
 	 * @return
 	 */
 	public static String[] getUserPartyIdByMenuTotalCode(String totalcode) {
-		IAuAuthorizeBS bs = (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY);
+		IAuAuthorizeBS bs = (IAuAuthorizeBS) BeanFactoryHelper.getBean("auAuthorizeBS");
 		return bs.getPartyIdByResourceCode(totalcode);
 	}
 	
@@ -622,9 +614,9 @@ public class AuHelper {
 	 * @return
 	 */
 	public static String[] getPartyIdByResourceId(String resourceId){
-	    IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
+	    IAuResourceBs resBs = (IAuResourceBs) BeanFactoryHelper.getBean("auResourceBs");
 	    AuResourceVo resourceVo = resBs.find(resourceId);
-	    IAuAuthorizeBS auBs = (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY);
+	    IAuAuthorizeBS auBs = (IAuAuthorizeBS) BeanFactoryHelper.getBean("auAuthorizeBS");
 	    return auBs.getPartyIdByResourceCode(resourceVo.getValue());	    
 	}
 

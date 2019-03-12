@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
 <%@ page import="java.io.PrintWriter" %>
-<%@ page import="venus.authority.helper.LoginHelper" %>
+<%@ page import="venus.oa.helper.LoginHelper" %>
 <%
 	String menuCode = request.getParameter("menuCode");
 	if (menuCode != null && !"".equals(menuCode)) {

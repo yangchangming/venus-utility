@@ -1,10 +1,9 @@
 package venus.oa.login.tools;
 
-import venus.frames.mainframe.util.Helper;
 import venus.oa.loginlog.bs.ILoginLogBs;
-import venus.oa.loginlog.util.ILoginLogConstants;
 import venus.oa.loginlog.vo.LoginLogVo;
 import venus.oa.util.DateTools;
+import venus.springsupport.BeanFactoryHelper;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
@@ -17,7 +16,7 @@ public class OnLineUser implements HttpSessionBindingListener {
     //private static CacheFactory users;
     
     private static ILoginLogBs getBs() {
-        return (ILoginLogBs) Helper.getBean(ILoginLogConstants.BS_KEY);  //得到BS对象,受事务控制
+        return (ILoginLogBs) BeanFactoryHelper.getBean("loginLogBs");  //得到BS对象,受事务控制
     }
     
     /**

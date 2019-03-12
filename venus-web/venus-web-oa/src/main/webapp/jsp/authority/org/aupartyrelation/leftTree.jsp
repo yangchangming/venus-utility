@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.util.IConstants"%>
+<%@ page import="venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
+<%@ page import="venus.oa.organization.aupartyrelationtype.util.IConstants"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
 <%

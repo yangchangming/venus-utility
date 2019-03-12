@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/jsp/include/global.jsp" %>
-<%@ page import = "venus.authority.util.VoHelperTools" %>
-<%@ page import = "venus.authority.util.StringHelperTools" %>
-<%@ page import="venus.authority.org.auconnectrule.vo.AuConnectRuleVo"%>
-<%@ page import="venus.authority.org.auconnectrule.util.IConstants" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.organization.auconnectrule.vo.AuConnectRuleVo"%>
+<%@ page import="venus.oa.organization.auconnectrule.util.IConstants" %>
 <%
     AuConnectRuleVo vo = (AuConnectRuleVo)request
 				.getAttribute(IConstants.REQUEST_BEAN_VALUE);

@@ -1,20 +1,21 @@
 <%@ include file="/jsp/authority/tree/include/globalTreeCache.jsp" %>
 <%@ page contentType="text/xml;charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.tree.DeepTreeXmlHandler"%>
-<%@ page import="venus.authority.util.tree.DeepTreeVo"%>
-<%@ page import="venus.authority.au.aufunctree.bs.IAuFunctreeBs"%>
-<%@ page import="venus.authority.au.aufunctree.vo.AuFunctreeVo"%>
-<%@ page import="venus.authority.helper.LoginHelper"%>
+<%@ page import="venus.oa.util.tree.DeepTreeXmlHandler"%>
+<%@ page import="venus.oa.util.tree.DeepTreeVo"%>
+<%@ page import="venus.oa.authority.aufunctree.bs.IAuFunctreeBs"%>
+<%@ page import="venus.oa.authority.aufunctree.vo.AuFunctreeVo"%>
+<%@ page import="venus.oa.helper.LoginHelper"%>
 <%@ page import="venus.frames.mainframe.util.Helper"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%> 
 <%@ page import="java.util.Map"%> 
 <%@ page import="org.apache.struts.action.SecurePlugIn"%>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%
 try {
 	String parent_code = request.getParameter("parent_code");
 
-	IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean("AuFunctree_bs");
+	IAuFunctreeBs bs = (IAuFunctreeBs) BeanFactoryHelper.getBean("auFunctreeBs");
 	String queryCondition = " PARENT_CODE = '"+parent_code+"' AND PARENT_CODE<>CODE ";
 	List lChild = bs.queryByCondition(queryCondition,"ORDER_CODE");//子节点
 	

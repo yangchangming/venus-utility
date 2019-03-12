@@ -6,7 +6,7 @@
 	<shortname>authority</shortname>
 	<tag>
 		<name>authorityBtn</name>
-		<tagclass>venus.authority.taglib.AuthorityBtnTag</tagclass>
+		<tagclass>venus.oa.taglib.AuthorityBtnTag</tagclass>
 		<bodycontent>empty</bodycontent>
 		<attribute>
 			<name>code</name>
@@ -21,7 +21,7 @@
 	</tag>	
 	<tag>
         <name>i18next</name>
-        <tagclass>venus.authority.taglib.I18nExtensionTag</tagclass>
+        <tagclass>venus.oa.taglib.I18nExtensionTag</tagclass>
         <bodycontent>empty</bodycontent>
     </tag>
 </taglib>

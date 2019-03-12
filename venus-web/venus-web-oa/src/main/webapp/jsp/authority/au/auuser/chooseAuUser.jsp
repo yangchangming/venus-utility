@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import = "venus.authority.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <title><fmt:message key='venus.authority.Query_Template' bundle='${applicationAuResources}' /></title>
 <script>

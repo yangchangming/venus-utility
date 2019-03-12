@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/jsp/include/global.jsp" %>
-<%@ page import="venus.authority.au.auresource.util.IAuResourceConstants" %>
+<%@ page import="venus.oa.authority.auresource.util.IAuResourceConstants" %>
 <%
 String isRight=(String)request.getAttribute(IAuResourceConstants.REQUEST_BEAN_VALUE);
 %>

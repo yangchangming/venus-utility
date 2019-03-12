@@ -1,16 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
-<%@ page import="venus.frames.mainframe.util.Helper"%>
-<%@ page import="venus.authority.org.aupartyrelation.bs.IAuPartyRelationBs"%>
-<%@ page import="venus.authority.org.aupartyrelation.vo.AuPartyRelationVo"%>
-<%@ page import="venus.authority.org.aupartyrelation.util.IConstants" %>
+<%@ page import="venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs"%>
+<%@ page import="venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo"%>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%
 try {
 	//父节点id
 	String parentRelId = request.getParameter("parentRelId");
 	
-	IAuPartyRelationBs relationBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
+	IAuPartyRelationBs relationBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
 	AuPartyRelationVo parentVo = relationBs.find(parentRelId);
 	
 	AuPartyRelationVo queryVo = new AuPartyRelationVo();

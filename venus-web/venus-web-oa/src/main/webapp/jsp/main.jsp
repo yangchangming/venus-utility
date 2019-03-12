@@ -2,20 +2,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.util.StringTokenizer" %>
-<%@ page import="venus.authority.util.BrowserDetect" %>
-<%@ page import="venus.authority.helper.LoginHelper"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.login.tools.OnlineUserVo" %>
+<%@ page import="venus.oa.util.BrowserDetect" %>
+<%@ page import="venus.oa.helper.LoginHelper"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.login.tools.OnlineUserVo" %>
 <%@ page import="venus.commons.xmlenum.EnumRepository" %>
 <%@ page import="venus.commons.xmlenum.EnumValueMap" %>
-<%@ page import="venus.authority.service.profile.model.UserProfileModel" %>
-<%@ page import="venus.authority.service.sys.vo.SysParamVo" %>
-<jsp:useBean id="onlineuser" class="venus.authority.login.tools.OnLineUser" scope="application"/>
+<%@ page import="venus.oa.profile.model.UserProfileModel" %>
+<%@ page import="venus.oa.sysparam.vo.SysParamVo" %>
+<jsp:useBean id="onlineuser" class="venus.oa.login.tools.OnLineUser" scope="application"/>
 <%
 	session = request.getSession(false);
 	String login_mac = (String)session.getAttribute("login_mac");
 	String session_id = session.getId(); 
-	if( venus.authority.login.tools.OnLineUser.isNewLogin(session_id) ) {
+	if( venus.oa.login.tools.OnLineUser.isNewLogin(session_id) ) {
 		String login_id = LoginHelper.getLoginId(request);//获得登录账号
 		if ( null == login_id ){
 %>

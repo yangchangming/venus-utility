@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
-<%@ page import="venus.authority.login.loginlog.vo.LoginLogVo" %>
-<%@ page import="venus.authority.login.loginlog.util.ILoginLogConstants" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.login.loginlog.vo.LoginLogVo" %>
+<%@ page import="venus.oa.login.loginlog.util.ILoginLogConstants" %>
 <%  //取出本条记录
 	LoginLogVo resultVo = null;  //定义一个临时的vo变量
 	resultVo = (LoginLogVo)request.getAttribute(ILoginLogConstants.REQUEST_BEAN);  //从request中取出vo, 赋值给resultVo

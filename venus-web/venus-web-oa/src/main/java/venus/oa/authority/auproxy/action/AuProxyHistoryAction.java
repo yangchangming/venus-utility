@@ -1,5 +1,6 @@
 package venus.oa.authority.auproxy.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.oa.authority.auproxy.bs.IProxyHistoryBs;
@@ -24,15 +25,9 @@ import java.util.List;
 @RequestMapping("/auProxyHistory")
 public class AuProxyHistoryAction implements IConstants {
     
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public IProxyHistoryBs getBs() {
-        return (IProxyHistoryBs) Helper.getBean(PROXY_HISTORY_BS);  //得到BS对象,受事务控制
-    }
-
+    @Autowired
+    private IProxyHistoryBs proxyHistoryBs;
+    
 
     /**
      * 简单查询，分页显示，支持表单回写
@@ -45,7 +40,7 @@ public class AuProxyHistoryAction implements IConstants {
     @RequestMapping("/simpleQuery")
     public String simpleQuery(HttpServletRequest _request, HttpServletResponse response) throws Exception {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IProxyHistoryBs bs = getBs();
+        IProxyHistoryBs bs = proxyHistoryBs;
         String queryCondition = queryCondition(request);
         //queryCondition = AuHelper.filterOrgPrivInSQL(queryCondition, "B.CODE", (HttpServletRequest) request.getServletRequest());//控制数据权限
         PageVo pageVo = Helper.findPageVo(request);

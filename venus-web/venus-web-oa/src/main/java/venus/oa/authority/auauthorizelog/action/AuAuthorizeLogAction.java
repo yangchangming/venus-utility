@@ -3,22 +3,20 @@ package venus.oa.authority.auauthorizelog.action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import venus.frames.base.action.IRequest;
+import venus.frames.mainframe.action.HttpRequest;
+import venus.frames.mainframe.util.Helper;
+import venus.frames.web.page.PageVo;
 import venus.oa.authority.auauthorizelog.bs.IAuAuthorizeLogBS;
 import venus.oa.authority.auauthorizelog.util.IConstants;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
-import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.auresource.bs.IAuResourceBs;
-import venus.oa.authority.auresource.util.IAuResourceConstants;
 import venus.oa.authority.auresource.vo.AuResourceVo;
 import venus.oa.helper.AuHelper;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.SqlBuilder;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.action.IRequest;
-import venus.frames.mainframe.action.HttpRequest;
-import venus.frames.mainframe.util.Helper;
-import venus.frames.web.page.PageVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +32,12 @@ public class AuAuthorizeLogAction implements IConstants {
     
     @Autowired
     private IAuAuthorizeLogBS auAuthorizeLogBS;
+
+    @Autowired
+    private IAuFunctreeBs auFunctreeBs;
+
+    @Autowired
+    private IAuResourceBs auResourceBs;
 
     /**
      * 查询授权日志全部记录
@@ -114,12 +118,10 @@ public class AuAuthorizeLogAction implements IConstants {
         
         //获取全部功能节点
         String strSql = "TOTAL_CODE like'101%' AND (TYPE='"+fType+"' OR TYPE='"+bType+"')";
-        IAuFunctreeBs funcBs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
-        List lFunctree = funcBs.queryByCondition(strSql, "tree_level, order_code");
+        List lFunctree = auFunctreeBs.queryByCondition(strSql, "tree_level, order_code");
 
         //获取公开访问的节点
-        IAuResourceBs resBs = (IAuResourceBs) Helper.getBean(IAuResourceConstants.BS_KEY);
-        List lResource = resBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and (RESOURCE_TYPE='"+fType+"' or RESOURCE_TYPE='"+bType+"')");
+        List lResource = auResourceBs.queryByCondition("IS_PUBLIC ='1' and ENABLE_STATUS='1' and (RESOURCE_TYPE='"+fType+"' or RESOURCE_TYPE='"+bType+"')");
         Map resMap = new HashMap();
         for(Iterator itLResource = lResource.iterator(); itLResource.hasNext(); ) {
             AuResourceVo resVo = (AuResourceVo) itLResource.next();

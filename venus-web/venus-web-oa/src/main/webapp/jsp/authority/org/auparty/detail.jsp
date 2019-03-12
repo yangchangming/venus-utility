@@ -2,10 +2,10 @@
 <%@ include file="/jsp/include/global.jsp" %>
 <%@ page import = "java.util.List,java.util.Iterator,java.util.ArrayList"%>
 <%@ page import="venus.frames.web.page.PageVo" %>
-<%@ page import = "venus.authority.util.VoHelperTools" %>
-<%@ page import = "venus.authority.util.StringHelperTools" %>
-<%@ page import="venus.authority.org.auparty.vo.PartyVo"%>
-<%@ page import="venus.authority.org.auparty.util.IConstants" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.organization.auparty.vo.PartyVo"%>
+<%@ page import="venus.oa.organization.auparty.util.IConstants" %>
 <%
     PartyVo vo = (PartyVo)request
 				.getAttribute(IConstants.REQUEST_BEAN_VALUE);

@@ -35,19 +35,19 @@ public class AuRoleAction implements IConstants {
     @Autowired
     private IAuPartyBs auPartyBs;
 
+    @Autowired
+    private IAuPartyRelationBs auPartyRelationBs;
+
     @RequestMapping("/showTree")
     public String showTree(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String parentCode = GlobalConstants.getRelaType_role();
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
-        int nCount = relBs.getCountByParentCode(parentCode);
+        int nCount = auPartyRelationBs.getCountByParentCode(parentCode);
 
         request.setAttribute("parent_code", parentCode);
         if (nCount > 0) {//有根节点
-//            return request.findForward(FORWARD_LIST_PAGE_KEY);
             return IConstants.FORWARD_LIST_PAGE_KEY;
 
         } else {//无根节点
-//            return request.findForward("noRoot");
             return "authority/au/aurole/noRoot";
         }
     }
@@ -147,9 +147,8 @@ public class AuRoleAction implements IConstants {
     @RequestMapping("/deleteMulti")
     public String deleteMulti(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String ids[] = request.getParameter("ids").split(",");
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
         for(int i=0; i<ids.length; i++){
-            relBs.deletePartyRelation(ids[i]);//删除团体关系
+            auPartyRelationBs.deletePartyRelation(ids[i]);//删除团体关系
         }
         return detail(request, response);
     }
@@ -342,9 +341,8 @@ public class AuRoleAction implements IConstants {
      * @return
      */
     public List queryLinkedUserList(AuPartyRelationVo vo) {
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
         vo.setPartytype_id(GlobalConstants.getPartyType_empl());
-        return relBs.queryAuPartyRelation(vo);
+        return auPartyRelationBs.queryAuPartyRelation(vo);
     }
     /**
      * 

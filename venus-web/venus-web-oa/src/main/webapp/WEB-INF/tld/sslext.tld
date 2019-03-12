@@ -8,7 +8,7 @@
 
 <tag>
 <name>form</name>
-<tagclass>venus.authority.taglib.SecureFormTag</tagclass>
+<tagclass>venus.oa.taglib.SecureFormTag</tagclass>
 <bodycontent>JSP</bodycontent>
 <attribute>
 <name>action</name>

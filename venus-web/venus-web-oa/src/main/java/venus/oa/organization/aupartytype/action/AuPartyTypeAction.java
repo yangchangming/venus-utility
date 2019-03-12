@@ -1,6 +1,7 @@
 package venus.oa.organization.aupartytype.action;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.oa.organization.aupartytype.bs.IAuPartyTypeBS;
@@ -28,14 +29,8 @@ import java.util.List;
 @RequestMapping("/auPartyType")
 public class AuPartyTypeAction implements IConstants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public IAuPartyTypeBS getBS() {
-        return (IAuPartyTypeBS) Helper.getBean(BS_KEY);
-    }
+    @Autowired
+    private IAuPartyTypeBS auPartyTypeBS;
 
     /**
      * 添加
@@ -55,11 +50,11 @@ public class AuPartyTypeAction implements IConstants {
         obj.setTable_name((isGenerateCode?"ORGANIZE_":"COLLECTIVE_")+obj.getTable_name().toUpperCase());
         obj.setCreate_date(DateTools.getSysTimestamp());
         obj.setModify_date(obj.getCreate_date());
-        obj.setId(getBS().insert(obj));
+        obj.setId(auPartyTypeBS.insert(obj));
         //tony 2011-05-13 dyna party bengin
         String paraValue = request.getParameter("paraValue");
         String paraArray = request.getParameter("paraArray");
-        getBS().generatePhysicsCode(paraValue,paraArray,obj);            
+        auPartyTypeBS.generatePhysicsCode(paraValue,paraArray,obj);            
         //tony 2011-05-13 dyna party end
         return forWard(_request);
 
@@ -74,7 +69,7 @@ public class AuPartyTypeAction implements IConstants {
     @RequestMapping("/queryAll")
     public String queryAll(HttpServletRequest _request, HttpServletResponse response) {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IAuPartyTypeBS bs = getBS();
+        IAuPartyTypeBS bs = auPartyTypeBS;
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {
             pageVo = Helper.updatePageVo(pageVo, request);
@@ -102,7 +97,7 @@ public class AuPartyTypeAction implements IConstants {
      */
     @RequestMapping("/delete")
     public String delete(HttpServletRequest request, HttpServletResponse response) {
-        getBS().delete(request.getParameter("ids"));
+        auPartyTypeBS.delete(request.getParameter("ids"));
         return forWard(request);
     }
 
@@ -121,7 +116,7 @@ public class AuPartyTypeAction implements IConstants {
 //            return MessageAgent.sendErrorMessage(request, DEFAULT_MSG_ERROR_STR, MessageStyle.ALERT_AND_BACK);
             return MESSAGE_AGENT_ERROR;
         }
-        IAuPartyTypeBS bs = getBS();
+        IAuPartyTypeBS bs = auPartyTypeBS;
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {
             pageVo = Helper.updatePageVo(pageVo, request);
@@ -153,7 +148,7 @@ public class AuPartyTypeAction implements IConstants {
     @RequestMapping("/find")
     public String find(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String ids = request.getParameter("ids");
-        AuPartyTypeVo obj = (AuPartyTypeVo) getBS().find(ids); //通过id获取vo
+        AuPartyTypeVo obj = (AuPartyTypeVo) auPartyTypeBS.find(ids); //通过id获取vo
         VoHelperTools.null2Nothing(obj);
         request.setAttribute(REQUEST_BEAN_VALUE, obj); //把vo放入request
         request.setAttribute(REQUEST_WRITE_BACK_FORM_VALUES, VoHelperTools.getMapFromVo(obj)); //回写表单
@@ -176,12 +171,12 @@ public class AuPartyTypeAction implements IConstants {
             return MESSAGE_AGENT_ERROR;
         }
         obj.setModify_date(DateTools.getSysTimestamp());
-        getBS().update(obj);
+        auPartyTypeBS.update(obj);
         //tony 2011-05-30 dyna party bengin
         String paraValue = request.getParameter("paraValue");
         if(StringUtils.isNotEmpty(paraValue)){
             String paraArray = request.getParameter("paraArray");
-            getBS().appendPhysicsCode(paraValue,paraArray,obj);            
+            auPartyTypeBS.appendPhysicsCode(paraValue,paraArray,obj);            
         }
         //tony 2011-05-30 dyna party end
         return forWard(_request);
@@ -195,7 +190,7 @@ public class AuPartyTypeAction implements IConstants {
      */
     @RequestMapping("/enable")
     public String enable(HttpServletRequest request, HttpServletResponse response) {
-        getBS().enable(request.getParameter("ids"));
+        auPartyTypeBS.enable(request.getParameter("ids"));
         return forWard(request);
     }
     
@@ -207,7 +202,7 @@ public class AuPartyTypeAction implements IConstants {
      */
     @RequestMapping("/disable")
     public String disable(HttpServletRequest request, HttpServletResponse response) {
-        getBS().disable(request.getParameter("ids"));
+        auPartyTypeBS.disable(request.getParameter("ids"));
         return forWard(request);
     }
     /**
@@ -219,7 +214,7 @@ public class AuPartyTypeAction implements IConstants {
     @RequestMapping("/detailPage")
     public String detailPage(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
-        AuPartyTypeVo obj = (AuPartyTypeVo) getBS().find(id); //通过id获取vo
+        AuPartyTypeVo obj = (AuPartyTypeVo) auPartyTypeBS.find(id); //通过id获取vo
         VoHelperTools.null2Nothing(obj);
         request.setAttribute(REQUEST_BEAN_VALUE, obj); //把vo放入request
         request.setAttribute(REQUEST_WRITE_BACK_FORM_VALUES, VoHelperTools.getMapFromVo(obj)); //回写表单

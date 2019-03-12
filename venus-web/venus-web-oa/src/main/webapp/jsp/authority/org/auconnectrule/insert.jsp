@@ -3,12 +3,12 @@
 <%@ page
 	import="java.util.List,java.util.Iterator,java.util.ArrayList,java.util.HashMap,java.util.Map"%>
 <%@ page import="org.apache.struts.util.LabelValueBean"%>
-<%@ page import="venus.authority.org.auconnectrule.vo.AuConnectRuleVo"%>
-<%@ page import="venus.authority.org.auconnectrule.util.IConstants"%>
-<%@ page import="venus.authority.util.VoHelperTools"%>
+<%@ page import="venus.oa.organization.auconnectrule.vo.AuConnectRuleVo"%>
+<%@ page import="venus.oa.organization.auconnectrule.util.IConstants"%>
+<%@ page import="venus.oa.util.VoHelperTools"%>
 <%@ page import="venus.commons.xmlenum.EnumRepository"%>
 <%@ page import="venus.commons.xmlenum.EnumValueMap"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
 <%
 	String linkage = GlobalConstants.getLinkage();
 	Map relationMap = (Map) request.getAttribute(IConstants.REQUEST_RELATION_TYPE);

@@ -3,19 +3,15 @@ package venus.oa.helper;
 import org.apache.commons.lang.StringUtils;
 import venus.oa.authority.appenddata.vo.AuAppendVo;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
-import venus.oa.authority.auauthorize.util.IConstants;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
-import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
 import venus.oa.authority.auuser.bs.IAuUserBs;
-import venus.oa.authority.auuser.util.IAuUserConstants;
 import venus.oa.authority.auuser.vo.AuUserVo;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.util.Encode;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.VoHelperTools;
-import venus.frames.mainframe.util.Helper;
 import venus.springsupport.BeanFactoryHelper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -329,7 +325,7 @@ public class LoginHelper {
     	LoginSessionVo vo = getLoginVo(req);
         if(vo==null)
             return null;
-        IAuAuthorizeBS bs = (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY);
+        IAuAuthorizeBS bs = (IAuAuthorizeBS)BeanFactoryHelper.getBean("auAuthorizeBS");
         List list = bs.parseVisitorToRelCode(vo.getOwner_org_arr()); //通过partyrelation表过滤掉历史数据权限的code
         if (null!=list&&list.size() < 1 && getIsAdmin(req))  //当前登陆人为管理员
             return vo.getOwner_org_arr();
@@ -377,11 +373,7 @@ public class LoginHelper {
      */
     public static List getPublicFuncTree(){
         List publicFuncTreeList = new ArrayList();
-//        IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
-
         IAuFunctreeBs bs = (IAuFunctreeBs)BeanFactoryHelper.getBean("auFunctreeBs");
-
-
         List publicMenuList = bs.queryByCondition(" type = '0' and is_public = '1' ", " TREE_LEVEL,ORDER_CODE ");
         if(null == publicMenuList)
             return Collections.emptyList();
@@ -411,7 +403,8 @@ public class LoginHelper {
         Map menuMap = getOwnerMenu(req);
         if (menuMap == null)
             return new ArrayList();
-        IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
+
+        IAuFunctreeBs bs = (IAuFunctreeBs) BeanFactoryHelper.getBean("auFunctreeBs");
         List allMenuList = bs.queryByCondition(" type = '0' ", " TREE_LEVEL,ORDER_CODE ");
         if (allMenuList == null)
             return new ArrayList();
@@ -540,7 +533,7 @@ public class LoginHelper {
     public static String getMenuPath(HttpServletRequest req,String totalCode) {
         if (totalCode == null || "".equals(totalCode))
             return null;
-        IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
+        IAuFunctreeBs bs = (IAuFunctreeBs) BeanFactoryHelper.getBean("auFunctreeBs");
         List allMenuList = bs.queryByCondition(" type = '0' ", " TREE_LEVEL,ORDER_CODE ");
         if (allMenuList == null)
             return null;        
@@ -733,7 +726,7 @@ public class LoginHelper {
      * @return 1 校验通过， -1 帐号被禁用，0 密码有误， -2 帐号不存在
      */
     public static int validate(String login_id, String password)  {
-    	IAuUserBs bs = (IAuUserBs) Helper.getBean(IAuUserConstants.BS_KEY);
+    	IAuUserBs bs = (IAuUserBs) BeanFactoryHelper.getBean("auUserBs");
         List lResult = bs.queryByCondition("login_id='" + login_id + "'");
         //用户身份校验
         if (lResult != null && lResult.size() > 0) {

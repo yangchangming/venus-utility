@@ -1,10 +1,10 @@
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ include file="/jsp/include/global.jsp" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
 <%@ page import = "venus.commons.xmlenum.EnumRepository" %>
 <%@ page import = "venus.commons.xmlenum.EnumValueMap" %>
-<%@ page import = "venus.authority.util.GlobalConstants"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
 <%@ page import="java.util.List" %>
 <%
 	EnumRepository er = EnumRepository.getInstance();

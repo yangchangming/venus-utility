@@ -5,10 +5,10 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Iterator" %>
-<%@ page import="venus.authority.helper.LoginHelper" %>
-<%@ page import="venus.authority.au.aufunctree.vo.AuFunctreeVo"%>
-<%@ page import="venus.authority.service.sys.vo.SysParamVo"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
+<%@ page import="venus.oa.helper.LoginHelper" %>
+<%@ page import="venus.oa.authority.aufunctree.vo.AuFunctreeVo"%>
+<%@ page import="venus.oa.service.sys.vo.SysParamVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
 <%
     String  totalCode = request.getParameter("totalCode");
     SysParamVo multiTab = GlobalConstants.getSysParam(GlobalConstants.MULTITAB);

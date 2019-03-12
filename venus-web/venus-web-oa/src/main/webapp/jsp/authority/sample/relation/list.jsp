@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.org.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
-<%@ page import="venus.authority.org.aupartyrelationtype.util.IConstants" %>
-<%@ page import="venus.authority.org.aupartyrelationtype.vo.AuPartyRelationTypeVo" %>
+<%@ page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
+<%@ page import="venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%
 	String parentCode = (String)request.getAttribute("parent_code");
-    IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS)venus.frames.mainframe.util.Helper.getBean(IConstants.BS_KEY);
+    IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS) BeanFactoryHelper.getBean("auPartyRelationTypeBS");
     String relationTypeName = ((AuPartyRelationTypeVo)bs.find(parentCode.substring(0,19))).getName();
     String relid = request.getParameter("parentRelId");
     if(null==relid||"".equals(relid)){

@@ -1,6 +1,8 @@
 package venus.oa.organization.aupartyrelationtype.action;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
@@ -33,14 +35,14 @@ import java.util.List;
 @RequestMapping("/auPartyRelationType")
 public class AuPartyRelationTypeAction implements IConstants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public IAuPartyRelationTypeBS getBS() {
-        return (IAuPartyRelationTypeBS) Helper.getBean(BS_KEY);
-    }
+    @Autowired
+    private IAuPartyRelationTypeBS auPartyRelationTypeBS;
+
+    @Autowired
+    private IAuFunctreeBs auFunctreeBs;
+
+    @Autowired
+    private IAuPartyTypeBS auPartyTypeBS;
 
     /**
      * 添加
@@ -59,12 +61,11 @@ public class AuPartyRelationTypeAction implements IConstants {
         obj.setCreate_date(DateTools.getSysTimestamp());
         obj.setModify_date(obj.getCreate_date());
         //OID oid = 
-        getBS().insert(obj);
+        auPartyRelationTypeBS.insert(obj);
         //增加菜单
         if(StringUtils.isNotEmpty(obj.getRoot_partytype_id())){
             //设置菜单 TODO 如果考虑机构和权限分离，这部分代码耦合就重了
             AuFunctreeVo vo = new AuFunctreeVo();
-            IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
             vo.setParent_code("101003");
             vo.setType("0");
             vo.setIs_leaf("1");
@@ -74,7 +75,7 @@ public class AuPartyRelationTypeAction implements IConstants {
 //            vo.setUrl("/RelationAction.do?cmd=showTree&relationtype_id="+obj.getId());
             vo.setUrl("/relation/showTree?relationtype_id="+obj.getId());
             vo.setCreate_date(DateTools.getSysTimestamp());
-            bs.insert(vo);
+            auFunctreeBs.insert(vo);
         }
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auPartyRelationType/queryAll";
@@ -89,7 +90,7 @@ public class AuPartyRelationTypeAction implements IConstants {
     @RequestMapping("/queryAll")
     public String queryAll(HttpServletRequest _request, HttpServletResponse response) {
         IRequest request = (IRequest)new HttpRequest(_request);
-        IAuPartyRelationTypeBS bs = getBS();
+        IAuPartyRelationTypeBS bs = auPartyRelationTypeBS;
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {
             pageVo = Helper.updatePageVo(pageVo, request);
@@ -112,7 +113,7 @@ public class AuPartyRelationTypeAction implements IConstants {
 
     @RequestMapping("/queryLeftTree")
     public String queryLeftTree(HttpServletRequest request, HttpServletResponse response) {
-        IAuPartyRelationTypeBS bs = getBS();
+        IAuPartyRelationTypeBS bs = auPartyRelationTypeBS;
         List list = bs.queryAllEnable(-1,-1,null);
         request.setAttribute(REQUEST_BEAN_VALUE, list);
 //        return request.findForward(FORWARD_LEFT_TREE_KEY);
@@ -129,7 +130,7 @@ public class AuPartyRelationTypeAction implements IConstants {
     @RequestMapping("/delete")
     public String delete(HttpServletRequest request, HttpServletResponse response) {
         //int deleteCount = 
-        getBS().delete(request.getParameter("ids"));
+        auPartyRelationTypeBS.delete(request.getParameter("ids"));
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auPartyRelationType/queryAll";
     }
@@ -151,7 +152,7 @@ public class AuPartyRelationTypeAction implements IConstants {
             return MESSAGE_AGENT_ERROR;
         }
 
-        IAuPartyRelationTypeBS bs = getBS();
+        IAuPartyRelationTypeBS bs = auPartyRelationTypeBS;
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {
             pageVo = Helper.updatePageVo(pageVo, request);
@@ -182,7 +183,7 @@ public class AuPartyRelationTypeAction implements IConstants {
     @RequestMapping("/find")
     public String find(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String ids = request.getParameter("ids");
-        AuPartyRelationTypeVo obj = (AuPartyRelationTypeVo) getBS().find(ids); //通过id获取vo
+        AuPartyRelationTypeVo obj = (AuPartyRelationTypeVo) auPartyRelationTypeBS.find(ids); //通过id获取vo
         VoHelperTools.null2Nothing(obj);
         request.setAttribute(REQUEST_BEAN_VALUE, obj); //把vo放入request
         request.setAttribute(REQUEST_WRITE_BACK_FORM_VALUES, VoHelperTools.getMapFromVo(obj)); //回写表单
@@ -205,7 +206,7 @@ public class AuPartyRelationTypeAction implements IConstants {
             return MESSAGE_AGENT_ERROR;
         }
         obj.setModify_date(DateTools.getSysTimestamp());
-        getBS().update(obj);
+        auPartyRelationTypeBS.update(obj);
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auPartyRelationType/queryAll";
     }
@@ -219,7 +220,7 @@ public class AuPartyRelationTypeAction implements IConstants {
      */
     @RequestMapping("/enable")
     public String enable(HttpServletRequest request, HttpServletResponse response) {
-        getBS().enable(request.getParameter("ids"));
+        auPartyRelationTypeBS.enable(request.getParameter("ids"));
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auPartyRelationType/queryAll";
     }
@@ -233,7 +234,7 @@ public class AuPartyRelationTypeAction implements IConstants {
      */
     @RequestMapping("/disable")
     public String disable(HttpServletRequest request, HttpServletResponse response) {
-        getBS().disable(request.getParameter("ids"));
+        auPartyRelationTypeBS.disable(request.getParameter("ids"));
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auPartyRelationType/queryAll";
     }
@@ -241,7 +242,6 @@ public class AuPartyRelationTypeAction implements IConstants {
 
     /**
      * 查看详细页面
-     * @param formBean
      * @param request
      * @param response
      * @return
@@ -249,10 +249,10 @@ public class AuPartyRelationTypeAction implements IConstants {
     @RequestMapping("/detailPage")
     public String detailPage(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
-        AuPartyRelationTypeVo obj = (AuPartyRelationTypeVo) getBS().find(id); //通过id获取vo
+        AuPartyRelationTypeVo obj = (AuPartyRelationTypeVo) auPartyRelationTypeBS.find(id); //通过id获取vo
         VoHelperTools.null2Nothing(obj);
         if(StringUtils.isNotEmpty(obj.getRoot_partytype_id())){
-            AuPartyTypeVo partyTypeVo = (AuPartyTypeVo)((IAuPartyTypeBS) Helper.getBean(venus.oa.organization.aupartytype.util.IConstants.BS_KEY)).find(obj.getRoot_partytype_id());
+            AuPartyTypeVo partyTypeVo = (AuPartyTypeVo)auPartyTypeBS.find(obj.getRoot_partytype_id());
             obj.setRoot_partytype_id(partyTypeVo.getName());
         }
         request.setAttribute(REQUEST_BEAN_VALUE, obj); //把vo放入request

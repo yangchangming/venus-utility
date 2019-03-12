@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.helper.LoginHelper"%>
+<%@ page import="venus.oa.helper.LoginHelper"%>
 <%@ include file="/jsp/include/global.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>VENUS<fmt:message key='venus.authority.Organizational_competence_system' bundle='${applicationAuResources}' /></title>

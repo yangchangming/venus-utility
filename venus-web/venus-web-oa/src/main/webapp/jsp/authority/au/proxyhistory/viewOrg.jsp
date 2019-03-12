@@ -1,21 +1,22 @@
 <%@ include file="/jsp/authority/tree/include/globalTreeCache.jsp" %>
 <%@ page contentType="text/xml;charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.tree.DeepTreeXmlHandler"%>
+<%@ page import="venus.oa.util.tree.DeepTreeXmlHandler"%>
 <%@ page import="org.springframework.jdbc.core.RowMapper"%>
 <%@ page import="java.sql.ResultSet"%>
 <%@ page import="java.sql.SQLException"%>
-<%@ page import="venus.authority.util.tree.DeepTreeVo"%>
-<%@ page import="venus.authority.util.ProjTools"%>
-<%@ page import="venus.authority.au.auauthorizelog.bs.IAuAuthorizeLogBS"%>
-<%@ page import="venus.authority.au.auauthorizelog.util.IConstants"%>
-<%@ page import="venus.authority.au.auauthorize.vo.AuAuthorizeVo"%>
+<%@ page import="venus.oa.util.tree.DeepTreeVo"%>
+<%@ page import="venus.oa.util.ProjTools"%>
+<%@ page import="venus.oa.authority.auauthorizelog.bs.IAuAuthorizeLogBS"%>
+<%@ page import="venus.oa.authority.auauthorizelog.util.IConstants"%>
+<%@ page import="venus.oa.authority.auauthorize.vo.AuAuthorizeVo"%>
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.Set"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
-<%@ page import="venus.authority.helper.LoginHelper"%>
+<%@ page import="venus.oa.helper.LoginHelper"%>
 <%@ page import="venus.frames.mainframe.util.Helper"%>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 
 <%
 try {
@@ -39,7 +40,7 @@ try {
             dataLimit = LoginHelper.getOwnerOrgWithoutHistory(request);//取数据权限
     }
 	
-	IAuAuthorizeLogBS auBs = (IAuAuthorizeLogBS) Helper.getBean(IConstants.BS_KEY);
+	IAuAuthorizeLogBS auBs = (IAuAuthorizeLogBS) BeanFactoryHelper.getBean("auAuthorizeLogBS");
 	//获取拥有权限的节点
 	Map allMap = null;
 	allMap = auBs.getOrgAuByVisitorCodeWithOutHistory(vCode,parent_code.substring(0,19),auHisTag);

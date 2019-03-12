@@ -1,25 +1,26 @@
 <%@ include file="/jsp/authority/tree/include/globalTreeCache.jsp" %>
 <%@ page contentType="text/xml;charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.tree.DeepTreeXmlHandler"%>
+<%@ page import="venus.oa.util.tree.DeepTreeXmlHandler"%>
 <%@ page import="org.springframework.jdbc.core.RowMapper"%>
 <%@ page import="java.sql.ResultSet"%>
 <%@ page import="java.sql.SQLException"%>
-<%@ page import="venus.authority.util.tree.DeepTreeVo"%>
-<%@ page import="venus.authority.util.ProjTools"%>
+<%@ page import="venus.oa.util.tree.DeepTreeVo"%>
+<%@ page import="venus.oa.util.ProjTools"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.Map"%>
-<%@ page import="venus.authority.util.transform.json.JsonDataTools"%>
+<%@ page import="venus.oa.util.transform.json.JsonDataTools"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
 <%@ page import="java.util.HashSet"%>
 <%@ page import="java.util.Set"%>
-<%@ page import="venus.authority.helper.LoginHelper"%>
-<%@ page import="venus.authority.helper.OrgHelper"%>
+<%@ page import="venus.oa.helper.LoginHelper"%>
+<%@ page import="venus.oa.helper.OrgHelper"%>
 <%@ page import="venus.frames.mainframe.util.Helper"%>
-<%@ page import="venus.authority.service.history.bs.IHistoryLogBs"%>
-<%@ page import="venus.authority.service.history.vo.HistoryLogVo"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.service.sys.vo.SysParamVo" %>
+<%@ page import="venus.oa.history.bs.IHistoryLogBs"%>
+<%@ page import="venus.oa.history.vo.HistoryLogVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.sysparam.vo.SysParamVo" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%
 try {
     //父级编码
@@ -52,7 +53,7 @@ try {
     if(!"".equals(currentRelid))
         currentCode = OrgHelper.getRelationCodeByRelationId(currentRelid);
     if(!"".equals(currentRelid)&&null==currentCode){
-        HistoryLogVo logVo = (HistoryLogVo)((IHistoryLogBs) Helper.getBean(venus.authority.service.history.util.IContants.BS_KEY)).queryByCondition("a.source_id='"+currentRelid+"' and a.operate_type='"+GlobalConstants.HISTORY_LOG_DELETE+"'"," a.operate_date desc").get(0);
+        HistoryLogVo logVo = (HistoryLogVo)((IHistoryLogBs) BeanFactoryHelper.getBean("historyLogBs")).queryByCondition("a.source_id='"+currentRelid+"' and a.operate_type='"+GlobalConstants.HISTORY_LOG_DELETE+"'"," a.operate_date desc").get(0);
         String deleteCodes[]=ProjTools.splitTreeCode(logVo.getSource_code());
         currentCode = deleteCodes.length>0?deleteCodes[1]:"";
         //currentCode = logVo.getSource_code();

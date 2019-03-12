@@ -1,18 +1,19 @@
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
-<%@page import="venus.authority.org.aupartyrelationtype.util.IConstants"%>
-<%@page import="venus.authority.org.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
+<%@page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
+<%@page import="venus.oa.organization.aupartyrelationtype.util.IConstants"%>
+<%@page import="venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
 <%@ page import="venus.frames.mainframe.util.Helper" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="venus.authority.util.GlobalConstants"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
 <%@ page import="java.util.List" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <html>
 <%
 String rootXmlSource=request.getContextPath()+"/jsp/authority/au/auauthorize/orgWithFunction.jsp?relId="+request.getParameter("relId")+"&pType="+request.getParameter("pType")+"&parent_code=";
 //关系类型
 java.util.Map relationTypeMap = new HashMap();
-IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS)Helper.getBean(IConstants.BS_KEY);
+IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS) BeanFactoryHelper.getBean("auPartyRelationTypeBS");
 AuPartyRelationTypeVo searchVo = new AuPartyRelationTypeVo();
 searchVo.setKeyword("4");
 List al = bs.simpleQuery(1,Short.MAX_VALUE,null,searchVo);

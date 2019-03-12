@@ -4,13 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.frames.base.action.DefaultServletException;
-import venus.frames.mainframe.util.Helper;
 import venus.oa.authority.appenddata.bs.IAppendDataBs;
-import venus.oa.authority.appenddata.util.IConstantsimplements;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
 import venus.oa.authority.auauthorize.vo.AuAuthorizeVo;
 import venus.oa.authority.aufunctree.bs.IAuFunctreeBs;
-import venus.oa.authority.aufunctree.util.IAuFunctreeConstants;
 import venus.oa.authority.aufunctree.vo.AuFunctreeVo;
 import venus.oa.authority.auuser.bs.IAuUserBs;
 import venus.oa.authority.auuser.util.IAuUserConstants;
@@ -21,7 +18,6 @@ import venus.oa.login.tools.OnLineUser;
 import venus.oa.login.tools.OnlineUserVo;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
-import venus.oa.organization.aupartyrelation.util.IConstants;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.DateTools;
@@ -46,11 +42,26 @@ public class LoginAction implements IAuUserConstants {
     @Autowired
     private ICheckCodeBs checkCodeBs;
 
+    @Autowired
+    private IAuUserBs auUserBs;
+
+    @Autowired
+    private IAuAuthorizeBS auAuthorizeBS;
+
+    @Autowired
+    private IAuFunctreeBs auFunctreeBs;
+
+    @Autowired
+    private IAppendDataBs appendDataBs;
+
+    @Autowired
+    private IAuPartyRelationBs auPartyRelationBs;
+
+
 
     @RequestMapping("/login")
     public String service(HttpServletRequest request, HttpServletResponse response) throws DefaultServletException {
 
-        IAuUserBs bs = (IAuUserBs) Helper.getBean(BS_KEY);
         String message = null;
 
 //        HttpServletRequest req = (HttpServletRequest) request.getServletRequest();
@@ -137,7 +148,7 @@ public class LoginAction implements IAuUserConstants {
             password = userMap.getPassword()==null?"":userMap.getPassword();*/
         }
         
-        List lResult = bs.queryByCondition("login_id='" + login_id + "'");
+        List lResult = auUserBs.queryByCondition("login_id='" + login_id + "'");
         
         //用户身份校验
         if (lResult != null && lResult.size() > 0) {
@@ -155,7 +166,7 @@ public class LoginAction implements IAuUserConstants {
             if((-1!=pwdLifeCycle)&&(null!=userVo.getRetire_date())&&(userVo.getRetire_date().before(new Date()))&&
                     (("1".equals(userVo.getIs_admin())&&"true".equals(admin_pwd_expired))||!"1".equals(userVo.getIs_admin()))){
                 userVo.setEnable_status("0");//禁用该账户
-                bs.update(userVo);//设置禁用
+                auUserBs.update(userVo);//设置禁用
                 if(isPortalLogin) {
                     message = venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Password_expiration_account_has_been_disabled_")+"<script>if(confirm('"+venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Password_expiration_account_has_been_disabled_")+"')){window.close()}</script>";
                     request.setAttribute("Message", message);
@@ -175,21 +186,20 @@ public class LoginAction implements IAuUserConstants {
                     if(null==userVo.getRetire_date())
                         if("1".equals(userVo.getIs_admin())&&"true".equals(admin_pwd_expired)||!"1".equals(userVo.getIs_admin()))
                             userVo.setRetire_date(DateTools.getRetireDate());
-                    bs.update(userVo);
+                    auUserBs.update(userVo);
                     LoginSessionVo loginVo = new LoginSessionVo();
                     //查询AuPartyRelation表
-                    IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IConstants.BS_KEY);
                     List relList = null;
                     SysParamVo chooseAuRel = GlobalConstants.getSysParam(GlobalConstants.CHOOSEAUREL);
                     if(!"1".equals(userVo.getIs_admin())&&relation_id == null&&chooseAuRel!=null&&"true".equals(chooseAuRel.getValue())){
                         AuPartyRelationVo queryVo = new AuPartyRelationVo();
                         queryVo.setPartyid(userVo.getParty_id());
-                        List currentRelList = relBs.queryAuPartyRelation(queryVo);//已经order by code了,自然order by relationType
+                        List currentRelList = auPartyRelationBs.queryAuPartyRelation(queryVo);//已经order by code了,自然order by relationType
                         relation_id=((AuPartyRelationVo)currentRelList.get(0)).getId();
                     }
                     if(relation_id != null){
                         relList = new ArrayList();
-                        AuPartyRelationVo currentRelVo = relBs.find(relation_id);
+                        AuPartyRelationVo currentRelVo = auPartyRelationBs.find(relation_id);
                         relList.add(currentRelVo);
                         //设置当前客户的code
                         loginVo.setCurrent_code(currentRelVo.getCode());
@@ -198,34 +208,33 @@ public class LoginAction implements IAuUserConstants {
                             AuPartyRelationVo searchRelVo = new AuPartyRelationVo();
                             searchRelVo.setPartyid(userVo.getParty_id());
                             searchRelVo.setRelationtype_id(GlobalConstants.getRelaType_role());
-                            List roleRelList = relBs.queryAuPartyRelation(searchRelVo);
+                            List roleRelList = auPartyRelationBs.queryAuPartyRelation(searchRelVo);
                             relList.addAll(roleRelList);
                         }
                     }else{
                         AuPartyRelationVo queryVo = new AuPartyRelationVo();
                         queryVo.setPartyid(userVo.getParty_id());
-                        relList = relBs.queryAuPartyRelation(queryVo);//员工信息
+                        relList = auPartyRelationBs.queryAuPartyRelation(queryVo);//员工信息
                     }   
                     if(relList != null) {
                         for(int i=0; i<relList.size(); i++) {
                             AuPartyRelationVo relVo = (AuPartyRelationVo)relList.get(i);
                             //查询当前节点的所有上级节点，一直到根节点
-                            List parList = relBs.queryParentRelation(relVo.getParent_code());
+                            List parList = auPartyRelationBs.queryParentRelation(relVo.getParent_code());
                             relVo.setAll_parent_vo(parList);
                         }
                     }
                     //获取全部权限
-                    IAuAuthorizeBS auBs = (IAuAuthorizeBS) Helper.getBean(venus.oa.authority.auauthorize.util.IConstants.BS_KEY);
                     Map auMap = null;
                     if(relationtype_id != null)
-                        auMap = auBs.getAuByPartyId(userVo.getParty_id(), null, relationtype_id);
+                        auMap = auAuthorizeBS.getAuByPartyId(userVo.getParty_id(), null, relationtype_id);
                     else
-                        auMap = auBs.getAuByRelList(relList, null);
+                        auMap = auAuthorizeBS.getAuByRelList(relList, null);
+
                     //获取全部菜单、按钮
                     String fType = GlobalConstants.getResType_menu();//功能菜单
                     String bType = GlobalConstants.getResType_butn();//功能按钮
-                    IAuFunctreeBs funcBs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
-                    List lFunc = funcBs.queryByCondition("TYPE='"+fType+"' OR TYPE='"+bType+"'");
+                    List lFunc = auFunctreeBs.queryByCondition("TYPE='"+fType+"' OR TYPE='"+bType+"'");
                     Map m_all_func = new HashMap();
                     for(Iterator it = lFunc.iterator(); it.hasNext(); ) {
                         AuFunctreeVo vo = (AuFunctreeVo) it.next();
@@ -387,7 +396,7 @@ public class LoginAction implements IAuUserConstants {
                         userVo.setEnable_status("0");//禁用该账户
                     }
                     if(-1!=retryMaxTimes)
-                        bs.update(userVo);//保存失败次数
+                        auUserBs.update(userVo);//保存失败次数
                     if(isPortalLogin) {
                         message = venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.The_password_is_incorrect_enter_the_correct_password_")+"<script>if(confirm('"+venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.The_password_is_incorrect_enter_the_correct_password_")+"')){window.close()}</script>";
                         request.setAttribute("Message", message);
@@ -437,17 +446,15 @@ public class LoginAction implements IAuUserConstants {
      * @return
      */
     private Map appendAuthority(String relation_id, List relList, AuAuthorizeVo auVo, AuUserVo userVo){
-        //获取附加数据
-        IAppendDataBs appendBs = (IAppendDataBs) Helper.getBean(IConstantsimplements.BS_KEY);
         Map appendData = null;
         if(relation_id != null){
             String relCode[]=new String[relList.size()];
             for(int i=0;i<relList.size();i++){
                 relCode[i]=((AuPartyRelationVo)relList.get(i)).getCode();
             }
-            appendData = appendBs.getExtendAppendAuByVisitorCode(relCode,auVo.getResource_id(),null);//根据code查询
+            appendData = appendDataBs.getExtendAppendAuByVisitorCode(relCode,auVo.getResource_id(),null);//根据code查询
         }else{
-            appendData = appendBs.getExtendAppendAuByPartyId(userVo.getParty_id(),auVo.getResource_id());//根据partyid查询
+            appendData = appendDataBs.getExtendAppendAuByPartyId(userVo.getParty_id(),auVo.getResource_id());//根据partyid查询
         }        
         return appendData;
     }

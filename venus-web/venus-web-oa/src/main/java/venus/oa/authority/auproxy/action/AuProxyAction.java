@@ -45,8 +45,10 @@ public class AuProxyAction implements IConstants {
     @Autowired
     private IAuPartyRelationBs auPartyRelationBs;
 
+    @Autowired
+    private IHistoryLogBs historyLogBs;
 
-    
+
     /**
      * 从页面表单获取信息注入vo，并插入单条记录，同时添加团体关系
      * 
@@ -79,7 +81,7 @@ public class AuProxyAction implements IConstants {
         AuPartyRelationVo proxyRelVo = (AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0);
         
         //记录新增代理团体的历史日志，该日志最终会用来实现代理与创建者的关联
-        IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean("proxyLogBs");
+
         Map map = new HashMap();
         map.put("OPERATERID", LoginHelper.getPartyId((HttpServletRequest) request));
         map.put("OPERATERNAME", LoginHelper.getLoginName((HttpServletRequest) request));
@@ -89,10 +91,9 @@ public class AuProxyAction implements IConstants {
         map.put("PROXYVO",vo);
         map.put("SOURCECODE",proxyRelVo.getCode());
         map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(proxyRelVo.getCode(), false)); //由于这里保存的是父节点，所以要显示最后一级节点
-        historyBs.insert(map);
+        historyLogBs.insert(map);
 
         request.setAttribute("parent_code", relType);
-//        return request.findForward(FORWARD_LIST_PAGE_KEY);//返回组织关系管理页面
         return "authority/au/auproxy/listAuProxy";
     }
     
@@ -217,7 +218,6 @@ public class AuProxyAction implements IConstants {
         }
         
         //记录修改历史
-        IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean("proxyLogBs");
         Map map = new HashMap();
         map.put("OPERATERID", LoginHelper.getPartyId((HttpServletRequest) request));
         map.put("OPERATERNAME", LoginHelper.getLoginName((HttpServletRequest) request));
@@ -232,7 +232,7 @@ public class AuProxyAction implements IConstants {
             AuPartyRelationVo relVo = (AuPartyRelationVo)rel.get(i);
             map.put("SOURCECODE",relVo.getCode());
             map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(relVo.getCode(),false));
-            historyBs.insert(map);
+            historyLogBs.insert(map);
         }
         vo.setModify_date(DateTools.getSysTimestamp());//打修改时间戳
         auPartyBs.updateParty(vo); //更新单条记录
@@ -309,7 +309,6 @@ public class AuProxyAction implements IConstants {
     public String delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String partyId = request.getParameter("id");
         //删除团体和团体关系记录历史
-        IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean("proxyLogBs");
         PartyVo partyVo = (PartyVo) auPartyBs.find(partyId);  //通过id获取vo
         Map map = new HashMap();
         map.put("OPERATERID", LoginHelper.getPartyId((HttpServletRequest) request));
@@ -323,7 +322,7 @@ public class AuProxyAction implements IConstants {
 
         auPartyBs.delete(partyId);//删除团体和团体关系
 
-        historyBs.insert(map);
+        historyLogBs.insert(map);
         request.setAttribute("parent_code", GlobalConstants.getRelaType_proxy());
 //        return request.findForward(FORWARD_LIST_PAGE_KEY);
         return "authority/au/auproxy/listAuProxy";

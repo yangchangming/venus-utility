@@ -1,14 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.au.aufunctree.bs.IAuFunctreeBs"%>
-<%@ page import="venus.authority.au.aufunctree.vo.AuFunctreeVo"%>
-<%@ page import="venus.authority.au.aufunctree.util.IAuFunctreeConstants"%>
-<%@ page import="venus.frames.mainframe.util.Helper"%>
+<%@ page import="venus.oa.authority.aufunctree.bs.IAuFunctreeBs"%>
+<%@ page import="venus.oa.authority.aufunctree.vo.AuFunctreeVo"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%
 try {
 	String call_code = ranmin.project.IToolsConstants.AUTHORIZE_CALL_CODE_FUNCTREE;
-	IAuFunctreeBs bs = (IAuFunctreeBs) Helper.getBean(IAuFunctreeConstants.BS_KEY);
+	IAuFunctreeBs bs = (IAuFunctreeBs) BeanFactoryHelper.getBean("auFunctreeBs");
 	List lTree = bs.queryByCondition("TOTAL_CODE like'101%' and TYPE='0'", "tree_level,order_code");
 %>
 <html>

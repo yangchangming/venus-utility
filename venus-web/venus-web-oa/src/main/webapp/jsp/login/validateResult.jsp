@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ include file="/jsp/include/global.jsp"%>
-<%@ page import = "venus.authority.au.auuser.util.IAuUserConstants" %>
+<%@ page import="venus.oa.au.auuser.util.IAuUserConstants" %>
 <%
     String hasLoginid = (String)request
 				.getAttribute(IAuUserConstants.REQUEST_BEAN_VALUE);

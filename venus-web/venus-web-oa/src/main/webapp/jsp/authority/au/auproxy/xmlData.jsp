@@ -1,17 +1,17 @@
 <%@ include file="/jsp/authority/tree/include/globalTreeCache.jsp" %>
 <%@ page contentType="text/xml;charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.tree.DeepTreeXmlHandler"%>
+<%@ page import="venus.oa.util.tree.DeepTreeXmlHandler"%>
 <%@ page import="org.springframework.jdbc.core.RowMapper"%>
 <%@ page import="java.sql.ResultSet"%>
 <%@ page import="java.sql.SQLException"%>
-<%@ page import="venus.authority.util.tree.DeepTreeVo"%>
-<%@ page import="venus.authority.util.ProjTools"%>
+<%@ page import="venus.oa.util.tree.DeepTreeVo"%>
+<%@ page import="venus.oa.util.ProjTools"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.helper.LoginHelper"%>
-<%@ page import="venus.authority.helper.AuHelper"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.helper.LoginHelper"%>
+<%@ page import="venus.oa.helper.AuHelper"%>
 <%
 try {
 	//标识是做导航还是做选择

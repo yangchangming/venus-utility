@@ -3,10 +3,14 @@
  */
 package venus.oa.history.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import venus.frames.base.action.IRequest;
+import venus.frames.mainframe.action.HttpRequest;
+import venus.frames.mainframe.util.Helper;
+import venus.frames.web.page.PageVo;
 import venus.oa.authority.auauthorize.bs.IAuAuthorizeBS;
-import venus.oa.authority.auauthorize.util.IConstants;
 import venus.oa.authority.auauthorize.vo.AuAuthorizeVo;
 import venus.oa.authority.auvisitor.bs.IAuVisitorBS;
 import venus.oa.authority.auvisitor.vo.AuVisitorVo;
@@ -21,10 +25,6 @@ import venus.oa.util.VoHelperTools;
 import venus.oa.util.sql.OrgPrivilege;
 import venus.oa.util.transform.TransformStrategy;
 import venus.oa.util.transform.json.JsonDataTools;
-import venus.frames.base.action.IRequest;
-import venus.frames.mainframe.action.HttpRequest;
-import venus.frames.mainframe.util.Helper;
-import venus.frames.web.page.PageVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,14 +39,15 @@ import java.util.*;
 @RequestMapping("/historyLog")
 public class HistoryLogAction implements IContants {
 
-	/**
-	 * 获得带事务的历史日志BS
-	 * @return
-	 */
-	public IHistoryLogBs getBs(){
-		return (IHistoryLogBs) Helper.getBean(BS_KEY);
-	}
-	
+	@Autowired
+	private IHistoryLogBs historyLogBs;
+
+	@Autowired
+	private IAuVisitorBS auVisitorBS;
+
+	@Autowired
+	private IAuAuthorizeBS auAuthorizeBS;
+
 	/**
 	 * 日志查询后跳转到显示页面
 	 * @param request
@@ -71,10 +72,8 @@ public class HistoryLogAction implements IContants {
 	@RequestMapping("/simpleQueryForLogFrame")
 	public String simpleQueryForLogFrame(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	    baseSimpleQueryForLog(request,response);
-		IAuVisitorBS visiBs = (IAuVisitorBS) Helper.getBean(venus.oa.authority.auvisitor.util.IConstants.BS_KEY);
-    	AuVisitorVo visiVo = visiBs.queryByRelationId(request.getParameter("relId"), request.getParameter("pType"));
-		IAuAuthorizeBS auBs = (IAuAuthorizeBS) Helper.getBean(IConstants.BS_KEY);
-		Map map = auBs.queryHistoryAuByVisitorId(visiVo.getId(), GlobalConstants.getResType_orga());
+    	AuVisitorVo visiVo = auVisitorBS.queryByRelationId(request.getParameter("relId"), request.getParameter("pType"));
+		Map map = auAuthorizeBS.queryHistoryAuByVisitorId(visiVo.getId(), GlobalConstants.getResType_orga());
 	 	Set keySet = new HashSet();
 	    for(Iterator it=map.keySet().iterator(); it.hasNext(); ) {
 	    	AuAuthorizeVo auVo = (AuAuthorizeVo)map.get((String)it.next());
@@ -107,7 +106,7 @@ public class HistoryLogAction implements IContants {
 	 * @throws Exception
 	 */	
 	private void baseSimpleQuery (HttpServletRequest _request, HttpServletResponse response) throws Exception {
-		IHistoryLogBs bs = getBs();
+		IHistoryLogBs bs = historyLogBs;
 		IRequest request = (IRequest)new HttpRequest(_request);
 		String operator_name = request.getParameter("operator_name");
 		String source_name = request.getParameter("source_name");
@@ -161,7 +160,7 @@ public class HistoryLogAction implements IContants {
 	 * @throws Exception
 	 */	
 	private void baseSimpleQueryForLog(HttpServletRequest _request, HttpServletResponse response) throws Exception {
-		IHistoryLogBs bs = getBs();
+		IHistoryLogBs bs = historyLogBs;
 		IRequest request = (IRequest)new HttpRequest(_request);
 		String operator_name = request.getParameter("operator_name");
 		String source_name = request.getParameter("source_name");
@@ -223,7 +222,7 @@ public class HistoryLogAction implements IContants {
         }
         queryCondition = AuHelper.filterOrgPrivInSQL(queryCondition, "B.CODE", (HttpServletRequest) request);//控制数据权限
 		List beans = null;  //定义结果集
-        beans = getBs().queryByCondition(queryCondition);  //按条件查询
+        beans = historyLogBs.queryByCondition(queryCondition);  //按条件查询
         request.setAttribute(REQUEST_BEANS_VALUE, beans);  //把结果集放入request
 //		return request.findForward(FORWARD_LIST_TREE_KEY);
 		return FORWARD_LIST_TREE_KEY;
@@ -236,7 +235,7 @@ public class HistoryLogAction implements IContants {
 	public String findDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String id = request.getParameter("id");
 		TransformStrategy ts = new JsonDataTools();
-		HistoryLogVo historyVo = getBs().findDetail(id);
+		HistoryLogVo historyVo = historyLogBs.findDetail(id);
 		request.setAttribute(REQUEST_BEANS_VALUE, ts.parse(historyVo.getSource_detail()));
 		if (GlobalConstants.getPartyType_comp().equals(historyVo.getSource_typeid())) {
 //			return request.findForward(FORWARD_LIST_DETAILCOMPANY);

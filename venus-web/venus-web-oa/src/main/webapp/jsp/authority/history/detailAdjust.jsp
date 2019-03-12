@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.service.history.util.IContants" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
-<%@ page import="venus.authority.service.history.vo.HistoryLogVo" %>
+<%@ page import="venus.oa.service.history.util.IContants" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.service.history.vo.HistoryLogVo" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <%
 	HistoryLogVo historyVo = (HistoryLogVo)request.getAttribute(IContants.REQUEST_BEANS_VALUE);

@@ -36,8 +36,7 @@ public class XSSSecurityFilter implements Filter {
      * 安全审核
      * 读取配置信息
      */
-    public void doFilter(ServletRequest request, ServletResponse response,
-                         FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         // 判断是否使用HTTP
         checkRequestResponse(request, response);

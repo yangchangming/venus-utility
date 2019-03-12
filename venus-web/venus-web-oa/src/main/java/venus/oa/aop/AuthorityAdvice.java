@@ -4,8 +4,8 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import venus.frames.mainframe.log.ILog;
 import venus.frames.mainframe.log.LogMgr;
-import venus.frames.mainframe.util.Helper;
 import venus.oa.notify.NotifyManager;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.lang.reflect.Method;
 
@@ -66,7 +66,7 @@ public class AuthorityAdvice implements MethodInterceptor  {
      */
     private void notify(Object obj, Method method, Object[] args,Object target,int position){
       //调用业务实现
-        NotifyManager manager = (NotifyManager) Helper.getBean(notifyManager);
+        NotifyManager manager = (NotifyManager) BeanFactoryHelper.getBean(notifyManager);
         Object object[] = new Object[]{
           obj,
           method,

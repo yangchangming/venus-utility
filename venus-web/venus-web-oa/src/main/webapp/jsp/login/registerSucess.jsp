@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ include file="/jsp/include/global.jsp"%>
-<%@ page import="venus.authority.au.auuser.vo.AuUserVo"%>
-<%@ page import="venus.authority.au.auuser.util.IAuUserConstants" %>
+<%@ page import="venus.oa.authority.auuser.vo.AuUserVo"%>
+<%@ page import="venus.oa.authority.auuser.util.IAuUserConstants" %>
 <%
     AuUserVo vo = (AuUserVo)request
 				.getAttribute(IAuUserConstants.REQUEST_BEANS_VALUE);

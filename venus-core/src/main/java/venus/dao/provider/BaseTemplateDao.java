@@ -45,7 +45,6 @@ public class BaseTemplateDao extends PaginationTemplateDao implements BaseDao {
 
     private static int DEFAULT_UNIFORM_TYPE = Types.VARCHAR;
 
-
     @Autowired
     private DataSource dataSource;
 

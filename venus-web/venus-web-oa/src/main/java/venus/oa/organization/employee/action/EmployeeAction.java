@@ -1,5 +1,6 @@
 package venus.oa.organization.employee.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.oa.helper.AuHelper;
@@ -22,36 +23,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-/**
- * 功能、用途、现存BUG:
- * 
- * @author 甘硕
- * @version 1.0.0
- * @since 1.0.0
- */
 @Controller
 @RequestMapping("/employee")
 public class EmployeeAction implements IEmployeeConstants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public IEmployeeBs getBs() {
-        return (IEmployeeBs) Helper.getBean(BS_KEY);  //得到BS对象,受事务控制
-    }
+    @Autowired
+    private IEmployeeBs employeeBs;
     
-    /**
-     * 得到Facade BS对象
-     * 
-     * @return BS对象
-     */
-    public IEmployeeFacadeBs getFacadeBs() {
-    	return (IEmployeeFacadeBs) Helper.getBean(FACADE_BS_KEY);//得到BS对象,受事务控制
-    }
-
-
+    @Autowired
+    private IEmployeeFacadeBs employeeFacadeBs;
+    
     /**
      * 从页面表单获取信息注入vo，并插入单条记录，同时添加团体、团体关系（如果parentRelId为空则不添加团体关系）
      * 
@@ -73,15 +54,15 @@ public class EmployeeAction implements IEmployeeConstants {
         
         String parentRelId = request.getParameter("parentRelId");
         if(parentRelId!=null && !"".equals(parentRelId) && !"null".equals(parentRelId)) {
-            //getBs().insert(vo, parentRelId);
-            getFacadeBs().insert(vo, parentRelId, AuthorizedContext);
+            //employeeBs.insert(vo, parentRelId);
+            employeeFacadeBs.insert(vo, parentRelId, AuthorizedContext);
             request.setAttribute("parent_code", GlobalConstants.getRelaType_comp());
 //            return request.findForward(FORWARD_QUERY_TREE_KEY);
             return FORWARD_QUERY_TREE_KEY;
         }else {
             String owner_party_id = request.getParameter("owner_party_id");
-            //getBs().insert(vo, owner_party_id);
-            getFacadeBs().insert(vo, owner_party_id, AuthorizedContext);
+            //employeeBs.insert(vo, owner_party_id);
+            employeeFacadeBs.insert(vo, owner_party_id, AuthorizedContext);
 //            return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
             return "redirect:/employee/queryAll";
         }
@@ -98,7 +79,7 @@ public class EmployeeAction implements IEmployeeConstants {
     @RequestMapping("/delete")
     public String delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	LoginSessionVo AuthorizedContext= LoginHelper.getLoginVo(request);//权限上下文
-    	getFacadeBs().delete(request.getParameter("relationId"),AuthorizedContext);
+    	employeeFacadeBs.delete(request.getParameter("relationId"),AuthorizedContext);
         request.setAttribute("parent_code", GlobalConstants.getRelaType_comp());
 //        return request.findForward(FORWARD_QUERY_TREE_KEY);
         return FORWARD_QUERY_TREE_KEY;
@@ -118,7 +99,7 @@ public class EmployeeAction implements IEmployeeConstants {
         String ids = request.getParameter(REQUEST_MULTI_ID_FLAG);  //从request获取多条记录id
         String id[] = ids.split(",");
         if (id != null && id.length != 0) {
-            getFacadeBs().delete(id,AuthorizedContext);  //删除多条记录
+            employeeFacadeBs.delete(id,AuthorizedContext);  //删除多条记录
         }
 //        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/employee/queryAll";
@@ -135,7 +116,7 @@ public class EmployeeAction implements IEmployeeConstants {
      */
     @RequestMapping("/find")
     public String find(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        EmployeeVo bean = getBs().find(request.getParameter(REQUEST_ID_FLAG));  //通过id获取vo
+        EmployeeVo bean = employeeBs.find(request.getParameter(REQUEST_ID_FLAG));  //通过id获取vo
         request.setAttribute(REQUEST_BEAN_VALUE, bean);  //把vo放入request
 //        return request.findForward(FORWARD_UPDATE_KEY);
         return FORWARD_UPDATE_KEY;
@@ -160,8 +141,8 @@ public class EmployeeAction implements IEmployeeConstants {
             return MESSAGE_AGENT_ERROR;
         }
         vo.setModify_date(DateTools.getSysTimestamp());//打修改时间戳
-        //getBs().update(vo);  //更新单条记录
-        getFacadeBs().update(vo, AuthorizedContext);
+        //employeeBs.update(vo);  //更新单条记录
+        employeeFacadeBs.update(vo, AuthorizedContext);
         String parentRelId = request.getParameter("parentRelId");
         if(parentRelId!=null && !"".equals(parentRelId) && !"null".equals(parentRelId)) {
             request.setAttribute("parent_code", GlobalConstants.getRelaType_comp());
@@ -184,7 +165,7 @@ public class EmployeeAction implements IEmployeeConstants {
      */
     @RequestMapping("/detail")
     public String detail(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        EmployeeVo bean = getBs().find(request.getParameter(REQUEST_ID_FLAG));  //通过id获取vo
+        EmployeeVo bean = employeeBs.find(request.getParameter(REQUEST_ID_FLAG));  //通过id获取vo
         request.setAttribute(REQUEST_BEAN_VALUE, bean);  //把vo放入request
 //        return request.findForward(FORWARD_DETAIL_KEY);
         return FORWARD_DETAIL_KEY;
@@ -201,7 +182,7 @@ public class EmployeeAction implements IEmployeeConstants {
      */
     @RequestMapping("/queryAll")
     public String queryAll(HttpServletRequest _request, HttpServletResponse response) throws Exception {
-        IEmployeeBs bs = getBs();
+        IEmployeeBs bs = employeeBs;
         IRequest request = (IRequest)new HttpRequest(_request);
         String queryCondition = "";  //查询条件
         queryCondition = AuHelper.filterOrgPrivInSQL(queryCondition, "B.CODE", _request);//控制数据权限
@@ -228,7 +209,7 @@ public class EmployeeAction implements IEmployeeConstants {
      */
     @RequestMapping("/simpleQuery")
     public String simpleQuery(HttpServletRequest _request, HttpServletResponse response) throws Exception {
-        IEmployeeBs bs = getBs();
+        IEmployeeBs bs = employeeBs;
         IRequest request = (IRequest)new HttpRequest(_request);
         String queryCondition = queryCondition(request);  //从request获得查询条件
         queryCondition = AuHelper.filterOrgPrivInSQL(queryCondition, "B.CODE", (HttpServletRequest) request.getServletRequest());//控制数据权限
@@ -257,10 +238,8 @@ public class EmployeeAction implements IEmployeeConstants {
      * @throws Exception
      */
     public String queryPosition(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        //IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper.getBean(IAuPartyRelationConstants.BS_KEY);//得到BS对象
         //String partyId = request.getParameter("party_id");
         //List beans = relBs.queryByCondition("PARTY_ID='"+partyId+"'");  //按条件查询
-      
         //request.setAttribute(REQUEST_BEANS_VALUE, beans);  //把结果集放入request
 //        return request.findForward(FORWARD_LIST_PAGE_KEY);
         return FORWARD_LIST_PAGE_KEY;

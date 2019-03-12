@@ -1,21 +1,20 @@
 <%@ include file="/jsp/authority/tree/include/globalTreeCache.jsp" %>
 <%@ page contentType="text/xml;charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.tree.DeepTreeXmlHandler"%>
+<%@ page import="venus.oa.util.tree.DeepTreeXmlHandler"%>
 <%@ page import="org.springframework.jdbc.core.RowMapper"%>
 <%@ page import="java.sql.ResultSet"%>
 <%@ page import="java.sql.SQLException"%>
-<%@ page import="venus.authority.util.tree.DeepTreeVo"%>
-<%@ page import="venus.authority.util.GlobalConstants"%>
-<%@ page import="venus.authority.util.ProjTools"%>
+<%@ page import="venus.oa.util.tree.DeepTreeVo"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
+<%@ page import="venus.oa.util.ProjTools"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
-<%@ page import="venus.authority.helper.LoginHelper"%>
-<%@ page import="venus.frames.mainframe.util.Helper"%>
-<%@ page import="venus.authority.org.aupartytype.bs.IAuPartyTypeBS"%>
-<%@ page import="venus.authority.org.aupartytype.vo.AuPartyTypeVo"%>
+<%@ page import="venus.oa.helper.LoginHelper"%>
+<%@ page import="venus.oa.organization.aupartytype.bs.IAuPartyTypeBS"%>
+<%@ page import="venus.oa.organization.aupartytype.vo.AuPartyTypeVo"%>
 <%@ page import="org.apache.commons.lang.StringUtils"%>
-<%@ page import="venus.authority.org.aupartytype.util.IConstants" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%
 try {
 	//参数：上级编码，如果为空则为全部组织的根节点
@@ -194,7 +193,7 @@ try {
 			}
 			//判断属性是否符合过滤条件，如果被过滤，则不再允许操作
             if(!"{}".equals(attributesFilter)){
-                String tableName = ((AuPartyTypeVo)((IAuPartyTypeBS)Helper.getBean(IConstants.BS_KEY)).find(partyTypeId)).getTable_name();
+                String tableName = ((AuPartyTypeVo)((IAuPartyTypeBS) BeanFactoryHelper.getBean("auPartyTypeBS")).find(partyTypeId)).getTable_name();
                 if(StringUtils.isNotEmpty(tableName)){
                     final String filters = attributesFilter.replace("{","").replace("}","");                    
                     Boolean shoot = (Boolean)ProjTools.getCommonBsInstance().doQueryForObject("select * from "+tableName+" where id='"+partyId+"' ",new RowMapper() {

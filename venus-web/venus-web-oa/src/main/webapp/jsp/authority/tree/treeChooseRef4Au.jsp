@@ -1,15 +1,16 @@
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
-<%@page import="venus.authority.org.aupartyrelationtype.util.IConstants"%>
-<%@page import="venus.authority.org.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
+<%@ page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
+<%@page import="venus.oa.organization.aupartyrelationtype.util.IConstants"%>
+<%@page import="venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
 <%@ page import="venus.frames.mainframe.util.Helper" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="venus.authority.util.GlobalConstants"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
 <%@ page import="java.util.List" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%
 //关系类型
 java.util.Map relationTypeMap = new HashMap();
-IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS)Helper.getBean(IConstants.BS_KEY);
+IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS) BeanFactoryHelper.getBean("auPartyRelationTypeBS");
 AuPartyRelationTypeVo searchVo = new AuPartyRelationTypeVo();
 searchVo.setKeyword("4");
 List al = bs.simpleQuery(1,Short.MAX_VALUE,null,searchVo);
@@ -21,7 +22,7 @@ for(int i=0;i<al.size();i++){
 }
 String src = "deeptree4Au.jsp?inputType="+request.getParameter("inputType")+"&submitType="+(request.getParameter("submitType")==null?"submitAll":request.getParameter("submitType"));
 src += ("&nodeRelationType="+(request.getParameter("nodeRelationType")==null?"hasRelation":request.getParameter("nodeRelationType"))+"&relId="+request.getParameter("relId")+"&pType=");
-src += (request.getParameter("pType")+"&rootXmlSource="+venus.authority.util.StringHelperTools.encodeUrl(request.getParameter("rootXmlSource"))+"%26parent_code%3D");
+src += (request.getParameter("pType")+"&rootXmlSource="+venus.oa.util.StringHelperTools.encodeUrl(request.getParameter("rootXmlSource"))+"%26parent_code%3D");
 %>
 <html>
 <head>

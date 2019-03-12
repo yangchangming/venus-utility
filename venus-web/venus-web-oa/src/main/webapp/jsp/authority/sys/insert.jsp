@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/jsp/include/global.jsp" %>
-<%@ page import = "venus.authority.util.VoHelperTools"%>
+<%@ page import="venus.oa.util.VoHelperTools"%>
 
 	<%  //判断是否为修改页面
 		boolean isModify = false;

@@ -1,8 +1,8 @@
-<%@ page import="venus.authority.org.aupartyrelationtype.util.IConstants" %>
-<%@ page import="venus.authority.org.aupartyrelationtype.vo.AuPartyRelationTypeVo" %>
-<%@ page import="venus.authority.org.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
-<%@ page import="venus.authority.org.aupartytype.vo.AuPartyTypeVo" %>
-<%@ page import="venus.authority.org.aupartytype.bs.IAuPartyTypeBS" %>
+<%@ page import="venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo" %>
+<%@ page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
+<%@ page import="venus.oa.organization.aupartytype.vo.AuPartyTypeVo" %>
+<%@ page import="venus.oa.organization.aupartytype.bs.IAuPartyTypeBS" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
 <%
@@ -11,10 +11,10 @@ String location = "/jsp/authority/sample/company/insertCompany.jsp?isAddRoot=1";
 String action = "company";
 boolean isCommon = false;
 if(org.apache.commons.lang.StringUtils.isNotEmpty(relationType_id)){
-    Object relationTypeVo = ((IAuPartyRelationTypeBS) venus.frames.mainframe.util.Helper.getBean(IConstants.BS_KEY)).find(relationType_id);
+    Object relationTypeVo = ((IAuPartyRelationTypeBS) BeanFactoryHelper.getBean("auPartyRelationTypeBS")).find(relationType_id);
     String partyType_id = ((AuPartyRelationTypeVo)relationTypeVo).getRoot_partytype_id();
     if(org.apache.commons.lang.StringUtils.isNotEmpty(partyType_id)){
-        Object partyTypeVo = ((IAuPartyTypeBS) venus.frames.mainframe.util.Helper.getBean(venus.authority.org.aupartytype.util.IConstants.BS_KEY)).find(partyType_id);
+        Object partyTypeVo = ((IAuPartyTypeBS) BeanFactoryHelper.getBean("auPartyTypeBS")).find(partyType_id);
         String tableName = ((AuPartyTypeVo)partyTypeVo).getTable_name();
         if(org.apache.commons.lang.StringUtils.isNotEmpty(tableName)){
             boolean isGenerateCode = tableName.contains("ORGANIZE_");

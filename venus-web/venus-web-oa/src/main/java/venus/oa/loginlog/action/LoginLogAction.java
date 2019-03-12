@@ -11,6 +11,7 @@
 
 package venus.oa.loginlog.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.oa.loginlog.bs.ILoginLogBs;
@@ -42,14 +43,8 @@ import java.util.List;
 @RequestMapping("/loginLog")
 public class LoginLogAction implements ILoginLogConstants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public ILoginLogBs getBs() {
-        return (ILoginLogBs) Helper.getBean(BS_KEY);  //得到BS对象,受事务控制
-    }
+    @Autowired
+    private ILoginLogBs loginLogBs;
 
     /**
      * 从页面表单获取信息注入vo，并插入单条记录
@@ -64,7 +59,7 @@ public class LoginLogAction implements ILoginLogConstants {
         IRequest request = (IRequest)new HttpRequest(_request);
         LoginLogVo vo = new LoginLogVo();
         VoHelperTools.populate(vo, request);  //从request中注值进去vo
-        getBs().insert(vo);  //插入单条记录
+        loginLogBs.insert(vo);  //插入单条记录
 //        return request.findForward(FORWARD_TO_QUERY_ALL);
         return "redirect:/loginLog/queryAll";
     }
@@ -79,7 +74,7 @@ public class LoginLogAction implements ILoginLogConstants {
      */
     @RequestMapping("/delete")
     public String delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        getBs().delete(request.getParameter(REQUEST_ID));  //删除单条记录
+        loginLogBs.delete(request.getParameter(REQUEST_ID));  //删除单条记录
 //        return request.findForward(FORWARD_TO_QUERY_ALL);
         return "redirect:/loginLog/queryAll";
     }
@@ -98,7 +93,7 @@ public class LoginLogAction implements ILoginLogConstants {
         //int deleteCount = 0;  //定义成功删除的记录数
         if (id != null && id.length != 0) {
             //deleteCount = 
-            getBs().delete(id);  //删除多条记录
+            loginLogBs.delete(id);  //删除多条记录
         }
 //        return request.findForward(FORWARD_TO_QUERY_ALL);
         return "redirect:/loginLog/queryAll";
@@ -114,7 +109,7 @@ public class LoginLogAction implements ILoginLogConstants {
     @RequestMapping("/deleteAll")
     public String deleteAll(HttpServletRequest request, HttpServletResponse response) throws Exception {
         //int deleteCount = 
-        getBs().deleteAll();
+        loginLogBs.deleteAll();
 //        return request.findForward(FORWARD_TO_QUERY_ALL);
         return "redirect:/loginLog/queryAll";
     }    
@@ -147,7 +142,7 @@ public class LoginLogAction implements ILoginLogConstants {
         LoginLogVo vo = new LoginLogVo();
         IRequest request = (IRequest)new HttpRequest(_request);
         VoHelperTools.populate(vo, request);  //从request中注值进去vo
-        getBs().update(vo);  //更新单条记录
+        loginLogBs.update(vo);  //更新单条记录
 //        return request.findForward(FORWARD_TO_QUERY_ALL);
         return "redirect:/loginLog/queryAll";
     }
@@ -178,7 +173,7 @@ public class LoginLogAction implements ILoginLogConstants {
      */
     @RequestMapping("/detail")
     public String detail(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        LoginLogVo bean = getBs().find(request.getParameter(REQUEST_ID));  //通过id获取vo
+        LoginLogVo bean = loginLogBs.find(request.getParameter(REQUEST_ID));  //通过id获取vo
         request.setAttribute(REQUEST_BEAN, bean);  //把vo放入request
 //        return request.findForward(FORWARD_DETAIL_PAGE);
         return FORWARD_DETAIL_PAGE;
@@ -194,7 +189,7 @@ public class LoginLogAction implements ILoginLogConstants {
      */
     @RequestMapping("/simpleQuery")
     public String simpleQuery(HttpServletRequest _request, HttpServletResponse response) throws Exception {
-        ILoginLogBs bs = getBs();
+        ILoginLogBs bs = loginLogBs;
         IRequest request = (IRequest)new HttpRequest(_request);
         String login_id = request.getParameter("login_id");
         String name = request.getParameter("name");

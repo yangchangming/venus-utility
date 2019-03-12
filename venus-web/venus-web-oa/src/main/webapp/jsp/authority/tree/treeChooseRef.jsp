@@ -1,11 +1,12 @@
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="venus.authority.org.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
-<%@page import="venus.authority.org.aupartyrelationtype.util.IConstants"%>
-<%@page import="venus.authority.org.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
+<%@ page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
+<%@page import="venus.oa.organization.aupartyrelationtype.util.IConstants"%>
+<%@page import="venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
 <%@ page import="venus.frames.mainframe.util.Helper" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="venus.authority.util.GlobalConstants"%>
+<%@ page import="venus.oa.util.GlobalConstants"%>
 <%@ page import="java.util.List" %>
+<%@ page import="venus.springsupport.BeanFactoryHelper" %>
 <html>
 <head>
 <%@ include file="/jsp/include/global.jsp" %>
@@ -22,7 +23,7 @@ String hierarchy=request.getParameter("hierarchy");
 String attributesFilter=request.getParameter("attributesFilter");
 //规则中和团体关系有关的关系类型
 java.util.Map relationTypeMap = new HashMap();
-IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS)Helper.getBean(IConstants.BS_KEY);
+IAuPartyRelationTypeBS bs = (IAuPartyRelationTypeBS) BeanFactoryHelper.getBean("auPartyRelationTypeBS");
 AuPartyRelationTypeVo searchVo = new AuPartyRelationTypeVo();
 searchVo.setKeyword("4");
 List al = bs.simpleQuery(1,Short.MAX_VALUE,null,searchVo);
@@ -38,7 +39,7 @@ String rootXmlSource=basePath+"/jsp/authority/tree/orgChooseTree.jsp?submit_all=
 <script language="javascript">
 	writeTableTop("<fmt:message key='venus.authority.Reference_page' bundle='${applicationAuResources}' />",'<venus:base/>/themes/<venus:theme/>/');  //显示本页的页眉
 	function changeRT(v){
-		var locationUrl = "deeptree.jsp?inputType=<%=request.getParameter("inputType")%>&submitType=<%=request.getParameter("submitType")==null?"submitAll":request.getParameter("submitType")%>&nodeRelationType=<%=request.getParameter("nodeRelationType")==null?"hasRelation":request.getParameter("nodeRelationType")%>&rootXmlSource=<%=venus.authority.util.StringHelperTools.encodeUrl(rootXmlSource)%>";
+		var locationUrl = "deeptree.jsp?inputType=<%=request.getParameter("inputType")%>&submitType=<%=request.getParameter("submitType")==null?"submitAll":request.getParameter("submitType")%>&nodeRelationType=<%=request.getParameter("nodeRelationType")==null?"hasRelation":request.getParameter("nodeRelationType")%>&rootXmlSource=<%=venus.oa.util.StringHelperTools.encodeUrl(rootXmlSource)%>";
 		document.myTree.location.href=locationUrl+v;
 	}
 	
@@ -77,7 +78,7 @@ String rootXmlSource=basePath+"/jsp/authority/tree/orgChooseTree.jsp?submit_all=
 			?inputType=<%=request.getParameter("inputType")%>
 			&submitType=<%=request.getParameter("submitType")==null?"submitAll":request.getParameter("submitType")%>
 			&nodeRelationType=<%=request.getParameter("nodeRelationType")==null?"hasRelation":request.getParameter("nodeRelationType")%>
-			&rootXmlSource=<%=venus.authority.util.StringHelperTools.encodeUrl(rootXmlSource)+firstParentCode%>">
+			&rootXmlSource=<%=venus.oa.util.StringHelperTools.encodeUrl(rootXmlSource)+firstParentCode%>">
 		</iframe>
 		<!--树结束-->
     </td>

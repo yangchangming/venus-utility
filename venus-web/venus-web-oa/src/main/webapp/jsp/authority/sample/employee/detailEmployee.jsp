@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.VoHelperTools" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
-<%@ page import="venus.authority.sample.employee.vo.EmployeeVo" %>
-<%@ page import="venus.authority.sample.employee.util.IEmployeeConstants" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.organization.employee.vo.EmployeeVo" %>
+<%@ page import="venus.oa.organization.employee.util.IEmployeeConstants" %>
 <%  //取出本条记录
 	EmployeeVo resultVo = null;  //定义一个临时的vo变量
 	resultVo = (EmployeeVo)request.getAttribute(IEmployeeConstants.REQUEST_BEAN_VALUE);  //从request中取出vo, 赋值给resultVo

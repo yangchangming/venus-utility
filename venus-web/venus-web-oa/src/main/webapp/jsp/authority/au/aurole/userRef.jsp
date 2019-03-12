@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.authority.util.StringHelperTools" %>
-<%@ page import = "venus.authority.util.VoHelperTools" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <%@ include file="/jsp/authority/org/aupartyrelation/organizeTooltip.jsp" %>
 <title><fmt:message key='venus.authority.Reference_page' bundle='${applicationAuResources}' /></title>

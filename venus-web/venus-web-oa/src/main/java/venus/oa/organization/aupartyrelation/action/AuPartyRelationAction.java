@@ -1,5 +1,6 @@
 package venus.oa.organization.aupartyrelation.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
@@ -18,24 +19,12 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * 
- * 翻页示例
- *  
- */
 @Controller
 @RequestMapping("/auPartyRelation")
 public class AuPartyRelationAction implements IConstants {
 
-    /**
-     * 得到BS对象
-     * 
-     * @return BS对象
-     */
-    public IAuPartyRelationBs getBS() {
-        return (IAuPartyRelationBs) Helper.getBean(BS_KEY);
-    }
+    @Autowired
+    private IAuPartyRelationBs auPartyRelationBs;
 
     /**
      * @param request
@@ -46,7 +35,7 @@ public class AuPartyRelationAction implements IConstants {
     @RequestMapping("/hasRoot")
     public String hasRoot(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String parentCode = request.getParameter("partyrelationtype_id");
-        int nCount = getBS().getCountByParentCode(parentCode);
+        int nCount = auPartyRelationBs.getCountByParentCode(parentCode);
         if(nCount>0) {//有根节点
             request.setAttribute("parent_code", parentCode); 
 //            return request.findForward(FORWARD_TREE_KEY);
@@ -73,7 +62,7 @@ public class AuPartyRelationAction implements IConstants {
         String partyRelationTypeId = request.getParameter("partyRelationTypeId");
         String partyId = request.getParameter("partyId");
         //添加团体关系根节点
-        getBS().initRoot(partyId, partyRelationTypeId);
+        auPartyRelationBs.initRoot(partyId, partyRelationTypeId);
         request.setAttribute("parent_code", partyRelationTypeId);
 //        return request.findForward(FORWARD_TREE_KEY);
         return FORWARD_TREE_KEY;
@@ -95,7 +84,7 @@ public class AuPartyRelationAction implements IConstants {
         String parentRelId = request.getParameter("parentRelId");
         String relTypeId = request.getParameter("relTypeId");
         String returnPage = request.getParameter("returnPage");
-        getBS().addPartyRelation(childPartyId, parentRelId, relTypeId);
+        auPartyRelationBs.addPartyRelation(childPartyId, parentRelId, relTypeId);
         if("party_detail".equals(returnPage)) {//有根节点
 //            return request.findForward(FORWARD_PARTY_DETAIL_KEY);
             return "forward:/auParty/detailPage";
@@ -123,7 +112,7 @@ public class AuPartyRelationAction implements IConstants {
         String relTypeId = request.getParameter("relTypeId");
         String returnPage = request.getParameter("returnPage");
         for(int i=0; i<childPartyIds.length; i++) {
-            getBS().addPartyRelation(childPartyIds[i], parentRelId, relTypeId);
+            auPartyRelationBs.addPartyRelation(childPartyIds[i], parentRelId, relTypeId);
         }
         if("party_detail".equals(returnPage)) {//有根节点
 //            return request.findForward(FORWARD_PARTY_DETAIL_KEY);
@@ -150,7 +139,7 @@ public class AuPartyRelationAction implements IConstants {
         String relId = request.getParameter("relId");
         String returnPage = request.getParameter("returnPage");
         String parentCode = request.getParameter("partyrelationtype_id");//返回关系树页面使用
-        getBS().deletePartyRelation(relId);
+        auPartyRelationBs.deletePartyRelation(relId);
         if("party_detail".equals(returnPage)) {//有根节点
 //            return request.findForward(FORWARD_PARTY_DETAIL_KEY);
             return "forward:/auParty/detailPage";
@@ -178,7 +167,7 @@ public class AuPartyRelationAction implements IConstants {
 //            return MessageAgent.sendErrorMessage(request, DEFAULT_MSG_ERROR_STR, MessageStyle.ALERT_AND_BACK);
             return MESSAGE_AGENT_ERROR;
         }
-        IAuPartyRelationBs bs = getBS();
+        IAuPartyRelationBs bs = auPartyRelationBs;
         PageVo pageVo = Helper.findPageVo(request);
         if (pageVo != null) {
             pageVo = Helper.updatePageVo(pageVo, request);
