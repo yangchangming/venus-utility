@@ -51,6 +51,8 @@ public class ExtensionLoader<T> {
 
     private ConcurrentMap<String, Class<T>> extensionClazzes = new ConcurrentHashMap<String, Class<T>>();
 
+    private ConcurrentMap<String, Object> extensionInstances = new ConcurrentHashMap<String, Object>();
+
     private Class<T> extension;
 
     private ClassLoader classLoader;
@@ -319,17 +321,25 @@ public class ExtensionLoader<T> {
 
     /**
      * fetch the extension instance by spiName
+     * return extension instance if has exist from extensionInstances
      *
      * @param spiName
      * @return
      */
     public T loadExtensionInstance(String spiName){
+        if (extensionInstances.containsKey(spiName)){
+            return (T)extensionInstances.get(spiName);
+        }
         Class<T> clazz = loadExtension(spiName);
         if (clazz==null){
             return null;
         }
         try {
-            return clazz.newInstance();
+            T t = clazz.newInstance();
+            if (!extensionInstances.containsKey(spiName)){
+                extensionInstances.putIfAbsent(spiName, t);
+            }
+            return t;
         } catch (Exception e) {
             logger.warn("Extension instance failure. " + clazz.getName());
             return null;
