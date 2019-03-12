@@ -26,7 +26,7 @@ public class VenusHelper {
     public static boolean VALIDATE_AT_POPULATE = false;
     public static boolean VALIDATE_AT_POPULATE_FROM_RESULTSET = false;
     public static int DEFAULT_PAGE_SIZE = 15;
-    public static String THEME = "default";
+    public static String THEME = "flat";
 
 
     public static Object getBean(String name) {
