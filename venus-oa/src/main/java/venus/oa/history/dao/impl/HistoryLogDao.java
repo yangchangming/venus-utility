@@ -1,5 +1,7 @@
 package venus.oa.history.dao.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.AbstractLobCreatingPreparedStatementCallback;
 import org.springframework.jdbc.support.lob.LobCreator;
@@ -23,15 +25,21 @@ import java.util.List;
 @Repository
 public class HistoryLogDao extends BaseTemplateDao implements IContants,IHistoryLogDao {
 
-	private LobHandler lobHandler = null;  
+	@Autowired
+	@Qualifier("defaultLobHandler")
+	private LobHandler lobHandler;
+
+
+
+
 
 	/**
 	 * 定义用于处理Oracle大字段的lobHandler(需要先在applicationContext.xml中加入lobHandler的定义)
 	 * @param lobHandler
 	 */
-	public void setLobHandler(LobHandler lobHandler) {
-		this.lobHandler = lobHandler;
-	}
+//	public void setLobHandler(LobHandler lobHandler) {
+//		this.lobHandler = lobHandler;
+//	}
 	
 	/**
 	 * 增加历史日志

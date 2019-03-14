@@ -7,21 +7,15 @@ import venus.oa.util.SqlBuilder;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *  2008-11-7
- * @author changming.Y <changming.yang.ah@gmail.com>
- */
-
-/**
- * 
  * 功能: 在sql语句中过滤组织机构数据权限
- * 
- * @param strSql 要过滤权限的sql语句（可以为空）
- * @param fieldName 要过滤的字段名称，可以带表名别名，例如 a.fieldname
- * @param request HttpServletRequest
+ *
  * @return
  */
+@Component("historyLogOrgPrivilege")
 public final class OrgPrivilege  implements SqlBuilder.Expression{
+
 	private String fieldName;
+
 	private HttpServletRequest request;
 	
 	/**

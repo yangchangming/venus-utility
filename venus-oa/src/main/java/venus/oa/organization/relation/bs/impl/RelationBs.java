@@ -24,7 +24,7 @@ public class RelationBs extends BaseBusinessService implements IRelationBs {
     private IEmployeeBs employeeBs;
 
     @Autowired
-    private IHistoryLogBs historyLogBs;
+    private IHistoryLogBs employeeLogBs;
 
     @Autowired
     private IAuPartyRelationBs auPartyRelationBs;
@@ -48,7 +48,7 @@ public class RelationBs extends BaseBusinessService implements IRelationBs {
                 map.put("SOURCEID",empRelVo.getId());
                 map.put("SOURCECODE",empRelVo.getCode());
                 map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(empRelVo.getCode(), true)); //由于这里保存的是父节点，所以要显示最后一级节点
-                historyLogBs.insert(map);
+                employeeLogBs.insert(map);
             }
         }
     }

@@ -27,7 +27,7 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
 	private IAuPartyRelationBs auPartyRelationBs;
 
 	@Autowired
-	private IHistoryLogBs historyLogBs;
+	private IHistoryLogBs departmentLogBs;
 	
 	/**
 	 * 添加新记录，同时添加团体、团体关系并记录历史日志（如果parentRelId为空则不添加团体关系）
@@ -49,7 +49,7 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
 		map.put("SOURCEID",departmentRelVo.getId());
 		map.put("SOURCECODE",departmentRelVo.getCode());
 		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(departmentRelVo.getCode(),true)); //由于这里保存的是父节点，所以要显示最后一级节点
-		historyLogBs.insert(map);
+		departmentLogBs.insert(map);
         	return partyid;	    
 	}
 	
@@ -57,9 +57,6 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
 	 * 更新单条记录，同时调用接口更新相应的团体、团体关系记录并记录历史日志
 	 */
 	public int update(DepartmentVo deptVo, LoginSessionVo vo) {
-//        	IHistoryLogBs historyBs = (IHistoryLogBs) Helper.getBean(LOG_BS_KEY);
-
-
         	Map map = new HashMap();
         	map.put("OPERATERID",vo.getParty_id());
         	map.put("OPERATERNAME",vo.getName());
@@ -78,7 +75,7 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
             	int rows = departmentBs.update(deptVo);
             	map.put("DEPARTMENTVO",departmentBs.find(deptVo.getId()));
 
-			historyLogBs.insert(map);
+			departmentLogBs.insert(map);
         	return rows;
 	}
 	
@@ -104,7 +101,7 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
                 map.put("SOURCEID",((AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0)).getId());
                 map.put("SOURCECODE",code[j]);
 	    		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code[j],false));
-	    		historyLogBs.insert(map);
+				departmentLogBs.insert(map);
 	    	}    		
     	}
 		return departmentBs.delete(partyId);
@@ -127,7 +124,7 @@ public class DepartmentFacadeBs implements IDepartmentFacadeBs,IDepartmentConsta
     	map.put("SOURCEID",relationId);
 		map.put("SOURCECODE",code);
 		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code,false));
-    	historyLogBs.insert(map);
+		departmentLogBs.insert(map);
 		return departmentBs.delete(relationId);
 	}
 }

@@ -7,7 +7,7 @@
             drvName="com.mysql.jdbc.Driver"
             usrName="root"
             pwd=""
-            conUrl="jdbc:mysql://localhost:3306/venus?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf8"
+            conUrl="jdbc:mysql://localhost:3306/gap41?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf8"
             maxActiveTime="1800000"
             maxActive="200"/>
 

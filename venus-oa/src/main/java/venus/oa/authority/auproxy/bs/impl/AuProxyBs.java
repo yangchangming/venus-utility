@@ -5,24 +5,22 @@ package venus.oa.authority.auproxy.bs.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import venus.frames.base.bs.BaseBusinessService;
+import venus.frames.base.exception.BaseApplicationException;
 import venus.oa.authority.auauthorizelog.bs.IAuAuthorizeLogBS;
 import venus.oa.authority.auauthorizelog.vo.AuAuthorizeLogVo;
 import venus.oa.authority.auproxy.bs.IAuProxyBs;
 import venus.oa.authority.auproxy.bs.IProxyHistoryBs;
 import venus.oa.authority.auproxy.vo.ProxyHistoryVo;
 import venus.oa.helper.OrgHelper;
+import venus.oa.history.bs.IHistoryLogBs;
+import venus.oa.history.vo.HistoryLogVo;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.organization.auparty.vo.PartyVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
-import venus.oa.organization.aupartyrelation.util.IConstants;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
-import venus.oa.history.bs.IHistoryLogBs;
-import venus.oa.history.vo.HistoryLogVo;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
-import venus.frames.base.bs.BaseBusinessService;
-import venus.frames.base.exception.BaseApplicationException;
-import venus.frames.mainframe.util.Helper;
 import venus.pub.lang.OID;
 import venus.springsupport.BeanFactoryHelper;
 
@@ -39,13 +37,16 @@ import java.util.Map;
 public class AuProxyBs extends BaseBusinessService implements IAuProxyBs, venus.oa.authority.auproxy.util.IConstants {
 
     @Autowired
-    private IHistoryLogBs historyLogBs;
+    private IHistoryLogBs proxyLogBs;
 
     @Autowired
     private IProxyHistoryBs proxyHistoryBs;
 
     @Autowired
     private IAuAuthorizeLogBS auAuthorizeLogBS;
+
+    @Autowired
+    private IAuPartyRelationBs auPartyRelationBs;
 
     /**
      * 关联用户时记录历史日志
@@ -71,7 +72,7 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs, venus.
         map.put("SOURCECODE", relVo.getCode());
         map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(relVo.getCode(), false)); // 由于这里保存的是父节点，所以要显示最后一级节点
         //记录关联历史
-        OID historyOid = historyLogBs.insert(map);
+        OID historyOid = proxyLogBs.insert(map);
         //记录代理业务历史
         addLog(historyOid,"1",now,relVo,vo);
         return oid;// 调用接口添加团体关系
@@ -81,12 +82,9 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs, venus.
      * 删除用户关联时记录历史日志
      * 
      * @param ids
-     * @param partyVo
      * @param vo
      */
     public void deleteMulti(String ids[], LoginSessionVo vo) {
-        IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper
-                .getBean(IConstants.BS_KEY);
         for (int i = 0; i < ids.length; i++) {
             Map map = new HashMap();
             map.put("OPERATERID", vo.getParty_id());
@@ -95,16 +93,16 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs, venus.
                     GlobalConstants.HISTORY_LOG_DELETE_PROXY_RELATION);
             Timestamp now = DateTools.getSysTimestamp();
             map.put("SYSDATE", now);
-            AuPartyRelationVo relVo = relBs.find(ids[i]);
+            AuPartyRelationVo relVo = auPartyRelationBs.find(ids[i]);
             map.put("PROXYRELATIONVO", relVo);
             map.put("SOURCECODE", relVo.getCode());
             map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(relVo.getCode(), false));
             //记录解除关联历史
-            historyLogBs.insert(map);
+            proxyLogBs.insert(map);
             //记录代理业务历史
             updateLog("2",now, relVo,vo);
             // 删除团体关系
-            relBs.deletePartyRelation(ids[i]);
+            auPartyRelationBs.deletePartyRelation(ids[i]);
         }
     }
     
@@ -118,7 +116,7 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs, venus.
      */
     private void addLog(OID historyOid, String operateType, Timestamp now, AuPartyRelationVo relVo, LoginSessionVo vo){
          //准备记录代理业务历史
-        List al = historyLogBs.queryByCondition(" SOURCE_CODE='"+relVo.getParent_code()+"' ", " A.ID DESC ");
+        List al = proxyLogBs.queryByCondition(" SOURCE_CODE='"+relVo.getParent_code()+"' ", " A.ID DESC ");
         HistoryLogVo historyLogVo = null;
         if(al.size()>0){
             historyLogVo = (HistoryLogVo)al.get(0);
@@ -153,7 +151,7 @@ public class AuProxyBs extends BaseBusinessService implements IAuProxyBs, venus.
     
     /**
      * 代理业务的历史
-     * @param historyOid 代理历史id
+     *
      * @param operateType 操作类型：1为关联人员，2为解除关联
      * @param now 操作时间
      * @param relVo 关系vo

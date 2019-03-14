@@ -122,7 +122,7 @@ public class ClassificationBs extends BaseBusinessService implements IClassifica
         ClassificationRelationVo relationVo = new ClassificationRelationVo();
         relationVo.setClassificationId(id);
         //删除该目录的关联的资源数据
-        IClassificationRelationBs bs = (IClassificationRelationBs) Helper.getBean(IClassificationRelationConstants.BS_KEY);
+        IClassificationRelationBs bs = (IClassificationRelationBs) beanfactory.getBean(IClassificationRelationConstants.BS_KEY);
         bs.delete(relationVo);
         //删除该目录关联的导入路径数据
         IResourceImportBs impBs = (IResourceImportBs) Helper.getBean(IResourceImportConstants.BS_KEY);

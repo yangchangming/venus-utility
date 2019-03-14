@@ -12,12 +12,16 @@ import venus.pub.lang.OID;
 
 import java.util.List;
 
+
+/**
+ * 公共日志类，被其他各种业务日志实现类实例化，并且传入的model不同，这了必须注入spring中，为了motan发布服务
+ */
 @Service
 public class HistoryLogBs extends BaseBusinessService implements IHistoryLogBs {
 
 	@Autowired
 	private IHistoryLogDao historyLogDao;
-    
+
     private HistoryLogModel model;
     
 	/**

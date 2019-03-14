@@ -28,7 +28,7 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
 	private IAuPartyRelationBs auPartyRelationBs;
 
 	@Autowired
-	private IHistoryLogBs historyLogBs;
+	private IHistoryLogBs companyLogBs;
 
 	/**
 	 * 添加新记录，同时添加团体、团体关系根节点并记录历史日志
@@ -48,7 +48,7 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
         	map.put("SOURCEID",companyRelVo.getId());
     		map.put("SOURCECODE", ProjTools.getNewTreeCode(5, GlobalConstants.getRelaType_comp()));
     		map.put("SOURCEORGTREE","");
-        	historyLogBs.insert(map);
+        	companyLogBs.insert(map);
         	return partyid;
 	}
 	
@@ -71,7 +71,7 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
         	map.put("SOURCEID",companyRelVo.getId());
     		map.put("SOURCECODE",companyRelVo.getCode());
     		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(companyRelVo.getCode(),true)); //由于这里保存的是父节点，所以要显示最后一级节点
-        	historyLogBs.insert(map);
+        	companyLogBs.insert(map);
         	return partyid;
 	} 
 	
@@ -95,7 +95,7 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
 	    	}
 	    	int rows = companyBs.update(companyVo); 
 	    	map.put("COMPANYVO",companyBs.find(companyVo.getId()));
-			historyLogBs.insert(map);
+			companyLogBs.insert(map);
         	return rows;
 	}
 	
@@ -121,7 +121,7 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
                         map.put("SOURCEID",((AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0)).getId());
                         map.put("SOURCECODE",code[j]);
         	    		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code[j],false));
-						historyLogBs.insert(map);
+						companyLogBs.insert(map);
         	    	}    		
         	}
 		return companyBs.delete(partyId);
@@ -144,7 +144,7 @@ public class CompanyFacadeBs implements ICompanyFacadeBs, ICompanyConstants {
         	map.put("SOURCEID",relationId);
     		map.put("SOURCECODE",code);
     		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code,false));
-        	historyLogBs.insert(map);
+        	companyLogBs.insert(map);
 		return companyBs.delete(relationId);
 	}	
 

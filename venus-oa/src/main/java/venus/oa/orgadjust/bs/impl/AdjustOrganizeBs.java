@@ -20,7 +20,7 @@ public class AdjustOrganizeBs extends BaseBusinessService implements IAdjustOrga
 	private IAuPartyRelationBs relationBs;
 
 	@Autowired
-	private IHistoryLogBs historyLogBs;
+	private IHistoryLogBs adjustOrgLogBs;
 
 	private AuPartyRelationVo destVo;
 
@@ -101,7 +101,7 @@ public class AdjustOrganizeBs extends BaseBusinessService implements IAdjustOrga
 			AuPartyRelationVo vo = (AuPartyRelationVo) list.get(i);
 			map.put("HISTORYVO",vo);
 			map.put("HISTORYDESTVO", destVo);
-			historyLogBs.insert(map);
+			adjustOrgLogBs.insert(map);
 			map.remove("HISTORYVO");
 			map.remove("HISTORYDESTVO");
 		}

@@ -27,7 +27,7 @@ public class EmployeeFacadeBs implements IEmployeeFacadeBs,IEmployeeConstants {
 	private IAuPartyRelationBs auPartyRelationBs;
 
 	@Autowired
-	private IHistoryLogBs historyLogBs;
+	private IHistoryLogBs employeeLogBs;
 	
 	/**
 	 * 添加新记录，同时添加团体、团体关系并记录历史日志（如果parentRelId为空则不添加团体关系）
@@ -48,7 +48,7 @@ public class EmployeeFacadeBs implements IEmployeeFacadeBs,IEmployeeConstants {
         	map.put("SOURCEID",employeeRelVo.getId());
     		map.put("SOURCECODE",employeeRelVo.getCode());//TODO ProjTools.getNewTreeCode(5, code)这种做法在多线程并发时不保险，合理的做法是先插入后获取在记录历史。
     		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(employeeRelVo.getCode(),true)); //由于这里保存的是父节点，所以要显示最后一级节点
-		historyLogBs.insert(map);
+			employeeLogBs.insert(map);
         	return partyid;	    
 	}
 	
@@ -71,7 +71,7 @@ public class EmployeeFacadeBs implements IEmployeeFacadeBs,IEmployeeConstants {
                     map.put("SOURCEID",((AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0)).getId());
                     map.put("SOURCECODE",code[j]);
             		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code[j],false));
-					historyLogBs.insert(map);
+					employeeLogBs.insert(map);
             	}         	
         	return rows;
 	}		
@@ -98,7 +98,7 @@ public class EmployeeFacadeBs implements IEmployeeFacadeBs,IEmployeeConstants {
 	    	    map.put("SOURCEID",((AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0)).getId());
 	    		map.put("SOURCECODE",code[j]);
 	    		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code[j],false));
-				historyLogBs.insert(map);
+				employeeLogBs.insert(map);
 	    	}
     	}
 		return employeeBs.delete(partyId);
@@ -122,7 +122,7 @@ public class EmployeeFacadeBs implements IEmployeeFacadeBs,IEmployeeConstants {
 	    	map.put("SOURCEID",relationId);
     		map.put("SOURCECODE",code);
     		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code,false));
-		historyLogBs.insert(map);
+			employeeLogBs.insert(map);
     	//}
 		return employeeBs.delete(relationId);
 	}

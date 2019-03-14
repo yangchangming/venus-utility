@@ -2,7 +2,118 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:motan="http://api.weibo.com/schema/motan"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="venus.oa"/>
+    <context:component-scan base-package="venus.oa">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+    <bean id="employeeLogBs" class="venus.oa.history.bs.impl.HistoryLogBs">
+        <!--<property name="historyLogDao">-->
+            <!--<ref bean="historyLogDao"/>-->
+        <!--</property>-->
+        <property name="model">
+            <ref local="employeeLogModel"/>
+        </property>
+    </bean>
+    <bean id="employeeLogModel" class="venus.oa.history.model.HistoryLogModel">
+        <property name="adaptor">
+            <bean class="venus.oa.organization.employee.adaptor.EmployeeAdaptor"/>
+        </property>
+    </bean>
+
+
+
+    <bean id="positionLogBs" class="venus.oa.history.bs.impl.HistoryLogBs">
+        <!--<property name="dao">-->
+            <!--<ref bean="historyLogDao"/>-->
+        <!--</property>-->
+        <property name="model">
+            <ref local="positionLogModel"/>
+        </property>
+    </bean>
+    <bean id="positionLogModel" class="venus.oa.history.model.HistoryLogModel">
+        <property name="adaptor">
+            <bean class="venus.oa.organization.position.adaptor.PositionAdaptor"/>
+        </property>
+    </bean>
+
+
+
+
+
+    <bean id="departmentLogBs" class="venus.oa.history.bs.impl.HistoryLogBs">
+        <!--<property name="dao">-->
+            <!--<ref bean="historyLogDao"/>-->
+        <!--</property>-->
+        <property name="model">
+            <ref local="departmentLogModel"/>
+        </property>
+    </bean>
+    <!-- 记录日志的模块层 -->
+    <bean id="departmentLogModel" class="venus.oa.history.model.HistoryLogModel">
+        <property name="adaptor">
+            <bean class="venus.oa.organization.department.adaptor.DepartmentAdaptor"/>
+        </property>
+    </bean>
+
+
+
+
+
+    <bean id="companyLogBs" class="venus.oa.history.bs.impl.HistoryLogBs">
+        <!--<property name="dao">-->
+            <!--<ref bean="historyLogDao"/>-->
+        <!--</property>-->
+        <property name="model">
+            <ref local="companyLogModel"/>
+        </property>
+    </bean>
+    <bean id="companyLogModel" class="venus.oa.history.model.HistoryLogModel">
+        <property name="adaptor">
+            <bean class="venus.oa.organization.company.adaptor.CompanyAdaptor"/>
+        </property>
+    </bean>
+
+
+
+    <bean id="adjustOrgLogBs" class="venus.oa.history.bs.impl.HistoryLogBs">
+        <!--<property name="dao">-->
+            <!--<ref bean="historyLogDao"/>-->
+        <!--</property>-->
+        <property name="model">
+            <ref local="adjustOrgLogModel"/>
+        </property>
+    </bean>
+    <bean id="adjustOrgLogModel" class="venus.oa.history.model.HistoryLogModel">
+        <property name="adaptor">
+            <bean id="adjustOrgLogAdaptor" class="venus.oa.orgadjust.logadaptor.AdjustOrgLogAdaptor">
+                <property name="partyBs">
+                    <ref bean="auPartyBs"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+
+
+
+
+    <bean id="proxyLogBs" class="venus.oa.history.bs.impl.HistoryLogBs">
+        <!--<property name="dao">-->
+            <!--<ref bean="historyLogDao"/>-->
+        <!--</property>-->
+        <property name="model">
+            <ref local="proxyLogModel"/>
+        </property>
+    </bean>
+    <bean id="proxyLogModel" class="venus.oa.history.model.HistoryLogModel">
+        <property name="adaptor">
+            <bean class="venus.oa.authority.auproxy.adaptor.ProxyAdaptor" />
+        </property>
+    </bean>
+
+
 </beans>

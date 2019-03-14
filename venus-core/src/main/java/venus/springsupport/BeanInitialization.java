@@ -196,20 +196,20 @@ public class BeanInitialization implements Initialization {
 
         BeanDefinition lobHandlerBeanDefinition = BeanDefinitionBuilder.
                 genericBeanDefinition(org.springframework.jdbc.support.lob.DefaultLobHandler.class).getBeanDefinition();
-        lobHandlerBeanDefinition.setLazyInit(true);
+//        lobHandlerBeanDefinition.setLazyInit(true);
         if (!_context.containsBeanDefinition("defaultLobHandler")){
             _context.registerBeanDefinition("defaultLobHandler", lobHandlerBeanDefinition);
         }
 
         BeanDefinition nativeJdbcExtractorBeanDefinition = BeanDefinitionBuilder
                 .genericBeanDefinition(org.springframework.jdbc.support.nativejdbc.SimpleNativeJdbcExtractor.class).getBeanDefinition();
-        nativeJdbcExtractorBeanDefinition.setLazyInit(true);
+//        nativeJdbcExtractorBeanDefinition.setLazyInit(true);
         if (!_context.containsBeanDefinition("nativeJdbcExtractor")){
             _context.registerBeanDefinition("nativeJdbcExtractor", nativeJdbcExtractorBeanDefinition);
         }
 
         BeanDefinition oracleLobHandlerBeanDefinition = BeanDefinitionBuilder.genericBeanDefinition(org.springframework.jdbc.support.lob.OracleLobHandler.class).getBeanDefinition();
-        oracleLobHandlerBeanDefinition.setLazyInit(true);
+//        oracleLobHandlerBeanDefinition.setLazyInit(true);
         if (!_context.containsBeanDefinition("oracleLobHandler")){
             _context.registerBeanDefinition("oracleLobHandler", oracleLobHandlerBeanDefinition);
         }

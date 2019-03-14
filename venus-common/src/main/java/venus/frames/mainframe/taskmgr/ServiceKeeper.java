@@ -65,9 +65,7 @@ public class ServiceKeeper {
 	/**
 	 * 启动任务列表
 	 */
-	private String[] m_aryServices =
-		{
-			"venus.frames.mainframe.oid.OidMgr" };
+	private String[] m_aryServices = {"venus.frames.mainframe.oid.OidMgr" };
 
 	/**
 	 * 用于存储各启动任务实例的列表，便于以后最该列表做操作
@@ -400,19 +398,14 @@ public class ServiceKeeper {
 		for (int i = 0; i < m_aryServices.length; i++) {
 			try {
 				//将列表中每一个任务的入口启动类实例化
-				final IService srv =
-					(IService)
-							ClassLocator
-						.loadClass(m_aryServices[i])
-						.newInstance();
-				//为每一个任务新建一个线程
+				final IService srv = (IService) ClassLocator.loadClass(m_aryServices[i]).newInstance();
 				Thread t = new Thread(srv.getServiceName()) {
 					public void run() {
-							//在线程中启动任务
-	srv.startup();
+						srv.startup();
 					}
 				};
-				//将每一个线程（Thread）加入列表，以供维护
+
+							//将每一个线程（Thread）加入列表，以供维护
 				m_vecSrvThreads.addElement(t);
 				//启动线程
 				t.start();

@@ -51,7 +51,6 @@
             <version>${project.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.weibo</groupId>
             <artifactId>motan-core</artifactId>
@@ -125,6 +124,11 @@
         <dependency>
             <groupId>gap</groupId>
             <artifactId>use-tool</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
         </dependency>
 
         <dependency>

@@ -24,7 +24,7 @@ public class PositionFacadeBs implements IPositionFacadeBs, IPositionConstants {
 	private IPositionBs positionBs;
 
 	@Autowired
-	private IHistoryLogBs historyLogBs;
+	private IHistoryLogBs positionLogBs;
 
 	@Autowired
 	private IAuPartyRelationBs auPartyRelationBs;
@@ -49,7 +49,7 @@ public class PositionFacadeBs implements IPositionFacadeBs, IPositionConstants {
         	map.put("SOURCEID",positionRelVo.getId());
     		map.put("SOURCECODE",positionRelVo.getCode());
     		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(positionRelVo.getCode(),true)); //由于这里保存的是父节点，所以要显示最后一级节点
-		historyLogBs.insert(map);
+			positionLogBs.insert(map);
         	return partyid;	    
 	}
 	
@@ -74,7 +74,7 @@ public class PositionFacadeBs implements IPositionFacadeBs, IPositionConstants {
             	}         	
             	int rows = positionBs.update(postionVo); 
             	map.put("POSITIONVO",positionBs.find(postionVo.getId()));
-		historyLogBs.insert(map);
+				positionLogBs.insert(map);
         	return rows;   
 	}	
 	
@@ -100,7 +100,7 @@ public class PositionFacadeBs implements IPositionFacadeBs, IPositionConstants {
                 map.put("SOURCEID",((AuPartyRelationVo)auPartyRelationBs.queryAuPartyRelation(relvo).get(0)).getId());
                 map.put("SOURCECODE",code[j]);
 	    		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code[j],false));
-	    		historyLogBs.insert(map);
+	    		positionLogBs.insert(map);
 	    	}	    	
     	}
 		return positionBs.delete(partyId);
@@ -123,7 +123,7 @@ public class PositionFacadeBs implements IPositionFacadeBs, IPositionConstants {
     	map.put("SOURCEID",relationId);
 		map.put("SOURCECODE",code);
 		map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(code,false));
-    	historyLogBs.insert(map);
+    	positionLogBs.insert(map);
 		return positionBs.delete(relationId);
 	}
 }

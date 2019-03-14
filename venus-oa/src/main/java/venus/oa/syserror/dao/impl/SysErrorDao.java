@@ -1,8 +1,7 @@
-/**
- * Copyright 2003-2010 UFIDA Software Engineering Co., Ltd. 
- */
 package venus.oa.syserror.dao.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.AbstractLobCreatingPreparedStatementCallback;
 import org.springframework.jdbc.support.lob.LobCreator;
@@ -22,18 +21,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * @author zangjian
- *
- */
 @Repository
 public class SysErrorDao extends BaseTemplateDao implements IContants, ISysErrorDao {
-    
+
+    @Autowired
+    @Qualifier("defaultLobHandler")
     private LobHandler lobHandler = null;  
 
-    public void setLobHandler(LobHandler lobHandler) {
-        this.lobHandler = lobHandler;
-    }
+//    public void setLobHandler(LobHandler lobHandler) {
+//        this.lobHandler = lobHandler;
+//    }
 
     public int getRecordCount() {
         return queryForInt(SQL_QUERY_COUNT);

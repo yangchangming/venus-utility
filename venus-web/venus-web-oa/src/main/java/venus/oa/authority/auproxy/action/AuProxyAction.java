@@ -3,24 +3,24 @@ package venus.oa.authority.auproxy.action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import venus.frames.base.action.IRequest;
+import venus.frames.mainframe.action.HttpRequest;
+import venus.frames.mainframe.util.Helper;
+import venus.frames.web.page.PageVo;
 import venus.oa.authority.auproxy.bs.IAuProxyBs;
 import venus.oa.helper.AuHelper;
 import venus.oa.helper.LoginHelper;
 import venus.oa.helper.OrgHelper;
+import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.login.vo.LoginSessionVo;
 import venus.oa.organization.auparty.bs.IAuPartyBs;
 import venus.oa.organization.auparty.util.IConstants;
 import venus.oa.organization.auparty.vo.PartyVo;
 import venus.oa.organization.aupartyrelation.bs.IAuPartyRelationBs;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
-import venus.oa.history.bs.IHistoryLogBs;
 import venus.oa.util.DateTools;
 import venus.oa.util.GlobalConstants;
 import venus.oa.util.VoHelperTools;
-import venus.frames.base.action.IRequest;
-import venus.frames.mainframe.action.HttpRequest;
-import venus.frames.mainframe.util.Helper;
-import venus.frames.web.page.PageVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +46,7 @@ public class AuProxyAction implements IConstants {
     private IAuPartyRelationBs auPartyRelationBs;
 
     @Autowired
-    private IHistoryLogBs historyLogBs;
+    private IHistoryLogBs proxyLogBs;
 
 
     /**
@@ -91,7 +91,7 @@ public class AuProxyAction implements IConstants {
         map.put("PROXYVO",vo);
         map.put("SOURCECODE",proxyRelVo.getCode());
         map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(proxyRelVo.getCode(), false)); //由于这里保存的是父节点，所以要显示最后一级节点
-        historyLogBs.insert(map);
+        proxyLogBs.insert(map);
 
         request.setAttribute("parent_code", relType);
         return "authority/au/auproxy/listAuProxy";
@@ -170,7 +170,6 @@ public class AuProxyAction implements IConstants {
         request.setAttribute("proxyId", proxyId);
         request.setAttribute(PROJECT_VALUE, list);
         request.setAttribute(REQUEST_WRITE_BACK_FORM_VALUES, VoHelperTools.getMapFromRequest((HttpServletRequest) request)); //回写表单
-//        return request.findForward(FORWARD_USER_LIST_KEY);
         return "authority/au/auproxy/userRef";
     }
 
@@ -191,10 +190,8 @@ public class AuProxyAction implements IConstants {
 
         request.setAttribute("parent_code", parentCode);
         if (nCount > 0) {//有根节点
-//            return request.findForward(FORWARD_LIST_PAGE_KEY);
             return "authority/au/auproxy/listAuProxy";
         } else {//无根节点
-//            return request.findForward("noRoot");
             return "authority/au/auproxy/noRoot";
         }
     }
@@ -232,7 +229,7 @@ public class AuProxyAction implements IConstants {
             AuPartyRelationVo relVo = (AuPartyRelationVo)rel.get(i);
             map.put("SOURCECODE",relVo.getCode());
             map.put("SOURCEORGTREE", OrgHelper.getOrgNameByCode(relVo.getCode(),false));
-            historyLogBs.insert(map);
+            proxyLogBs.insert(map);
         }
         vo.setModify_date(DateTools.getSysTimestamp());//打修改时间戳
         auPartyBs.updateParty(vo); //更新单条记录
@@ -322,7 +319,7 @@ public class AuProxyAction implements IConstants {
 
         auPartyBs.delete(partyId);//删除团体和团体关系
 
-        historyLogBs.insert(map);
+        proxyLogBs.insert(map);
         request.setAttribute("parent_code", GlobalConstants.getRelaType_proxy());
 //        return request.findForward(FORWARD_LIST_PAGE_KEY);
         return "authority/au/auproxy/listAuProxy";
