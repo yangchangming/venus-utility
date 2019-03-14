@@ -30,8 +30,6 @@ import java.util.Vector;
  * 
  */
 public class DefaultServlet extends HttpServlet implements ILog, IGlobalsKeys {
-	
-	//protected final ILog logger = LogMgr.getLogger(this);
 
 	/**
 	 * 用以标识初始化方法运行的标识
@@ -484,8 +482,6 @@ public class DefaultServlet extends HttpServlet implements ILog, IGlobalsKeys {
 //			if ( strexmsg.length()>0 ) MSG_ON_EXCEPTION = strexmsg;		
 //		} 		
 		
-		//调用本类私有方法getClassary(String),以";"分割并构建出该字符串数组,
-		//达到从WEB.XML的servlet中读取INIT_KEY标识的Classes列表
 		String[] initClasses = getClassary(INIT_KEY);
 		if (initClasses.length > 0) {
 			m_hashPluginName.put(INIT_KEY, initClasses);

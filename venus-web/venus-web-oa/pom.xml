@@ -49,11 +49,6 @@
         </dependency>
 
         <dependency>
-            <groupId>venus</groupId>
-            <artifactId>struts-layout</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.datavens</groupId>
             <artifactId>venus-common</artifactId>
             <version>${project.version}</version>
@@ -85,6 +80,14 @@
     </dependencies>
 
     <build>
+
+        <directory>target</directory>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -118,16 +121,7 @@
                     <uriEncoding>UTF-8</uriEncoding>
                 </configuration>
             </plugin>
-
         </plugins>
-
-
-
-
-
-
     </build>
-
-
 
 </project>

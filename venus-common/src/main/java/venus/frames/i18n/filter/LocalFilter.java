@@ -10,19 +10,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Locale;
 
-/**
- * @author pguo
- *
- */
 public class LocalFilter implements Filter {
     
     private static String LOCALE_STRING_SPLIT = "_"; 
 
-    /*
-     *
-     */
-    public void destroy() {
-    }
+    public void destroy() {}
 
     /**
      * 如果session中没有设置locale串或者locale串不合法，默认采用request的locale，否则采用session中设置的locale。
@@ -61,10 +53,5 @@ public class LocalFilter implements Filter {
         filterChain.doFilter(request, res);
     }
 
-    /*
-     *
-     */
-    public void init(FilterConfig arg0) throws ServletException {
-    }
-
+    public void init(FilterConfig arg0) throws ServletException {}
 }

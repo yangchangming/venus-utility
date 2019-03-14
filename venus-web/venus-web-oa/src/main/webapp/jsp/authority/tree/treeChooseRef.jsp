@@ -2,7 +2,7 @@
 <%@ page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
 <%@page import="venus.oa.organization.aupartyrelationtype.util.IConstants"%>
 <%@page import="venus.oa.organization.aupartyrelationtype.vo.AuPartyRelationTypeVo"%>
-<%@ page import="venus.frames.mainframe.util.Helper" %>
+<%@ page import="venus.frames.mainframe.oid.Helper" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="venus.oa.util.GlobalConstants"%>
 <%@ page import="java.util.List" %>

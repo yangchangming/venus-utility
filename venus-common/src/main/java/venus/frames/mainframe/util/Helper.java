@@ -206,7 +206,7 @@ public class Helper extends PageTool implements IGlobalsKeys {
     public static IProfile getSessionProfile(String sessionid)
             throws ProfileException {
 
-        return ProfileMgr.getSessionProfile(WEB_CONTEXT_KEY, sessionid);
+        return ProfileMgr.getSessionProfile(IGlobalsKeys.WEB_CONTEXT_KEY, sessionid);
 
     }
 
@@ -226,7 +226,7 @@ public class Helper extends PageTool implements IGlobalsKeys {
     public static IProfile getSessionProfile(HttpServletRequest request)
             throws ProfileException {
 
-        return ProfileMgr.getSessionProfile(WEB_CONTEXT_KEY, request
+        return ProfileMgr.getSessionProfile(IGlobalsKeys.WEB_CONTEXT_KEY, request
                 .getSession().getId());
 
     }
@@ -246,7 +246,7 @@ public class Helper extends PageTool implements IGlobalsKeys {
     public static Object getAppAttributeFromProfile(HttpServletRequest request,
                                                     String key) throws ProfileException {
 
-        IProfile p = ProfileMgr.getSessionProfile(WEB_CONTEXT_KEY, request
+        IProfile p = ProfileMgr.getSessionProfile(IGlobalsKeys.WEB_CONTEXT_KEY, request
                 .getSession().getId());
 
         return p.getAppAttribute(key);
@@ -268,7 +268,7 @@ public class Helper extends PageTool implements IGlobalsKeys {
     public static Object getAttributeFromProfile(HttpServletRequest request,
                                                  String key) throws ProfileException {
 
-        IProfile p = ProfileMgr.getSessionProfile(WEB_CONTEXT_KEY, request
+        IProfile p = ProfileMgr.getSessionProfile(IGlobalsKeys.WEB_CONTEXT_KEY, request
                 .getSession().getId());
 
         return p.getAttribute(key);
@@ -278,7 +278,7 @@ public class Helper extends PageTool implements IGlobalsKeys {
     public static void setAttributeIntoProfile(HttpServletRequest request,
                                                String key, Object obj) throws ProfileException {
 
-        IProfile p = ProfileMgr.getSessionProfile(WEB_CONTEXT_KEY, request
+        IProfile p = ProfileMgr.getSessionProfile(IGlobalsKeys.WEB_CONTEXT_KEY, request
                 .getSession().getId());
 
         p.setAttribute(key, obj);
@@ -309,7 +309,7 @@ public class Helper extends PageTool implements IGlobalsKeys {
     public static Object getSysAttributeFromProfile(HttpServletRequest request,
                                                     String key) throws ProfileException {
 
-        IProfile p = ProfileMgr.getSessionProfile(WEB_CONTEXT_KEY, request
+        IProfile p = ProfileMgr.getSessionProfile(IGlobalsKeys.WEB_CONTEXT_KEY, request
                 .getSession().getId());
 
         return p.getSysAttribute(key);
@@ -331,7 +331,7 @@ public class Helper extends PageTool implements IGlobalsKeys {
     public static String getLoginName(HttpServletRequest request)
             throws ProfileException {
 
-        IProfile p = ProfileMgr.getSessionProfile(WEB_CONTEXT_KEY, request
+        IProfile p = ProfileMgr.getSessionProfile(IGlobalsKeys.WEB_CONTEXT_KEY, request
                 .getSession().getId());
 
         return (String) p.getSysAttribute(SimpleProfile.SYS_LOGIN_NAME);
@@ -413,7 +413,7 @@ public class Helper extends PageTool implements IGlobalsKeys {
 
     public static void eraseProfile(String sessionid) {
 
-        ProfileMgr.eraseProfile(WEB_CONTEXT_KEY, sessionid);
+        ProfileMgr.eraseProfile(IGlobalsKeys.WEB_CONTEXT_KEY, sessionid);
     }
 
     /**
@@ -601,7 +601,6 @@ public class Helper extends PageTool implements IGlobalsKeys {
      * @return venus.pub.lang.OID[] 该表新的最大的OID对象组
      */
     public static OID[] requestOIDArray(String tableName, Integer len) {
-
         return OidMgr.requestOIDArray(tableName, len);
     }
 
@@ -612,7 +611,6 @@ public class Helper extends PageTool implements IGlobalsKeys {
      * @return venus.pub.lang.OID 该表新的最大的OID对象
      */
     public static OID requestOID(String tableName) {
-
         return OidMgr.requestOID(tableName);
     }
 
@@ -841,7 +839,7 @@ public class Helper extends PageTool implements IGlobalsKeys {
 
             PathMgr.WEB_CONTEXT_PATH = request.getContextPath();
             Helper.WEB_CONTEXT_PATH = PathMgr.WEB_CONTEXT_PATH;
-            Helper.getContext().setAttribute(WEB_CONTEXT_PATH_KEY,
+            Helper.getContext().setAttribute(IGlobalsKeys.WEB_CONTEXT_PATH_KEY,
                     PathMgr.WEB_CONTEXT_PATH);
 
         }

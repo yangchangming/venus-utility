@@ -40,7 +40,6 @@ import java.util.List;
  */
 public class PaginationTemplateDao extends JdbcDaoSupport {
 
-
     /**
      * spring3*版本，JdbcTemplate中存在queryForInt方法，而spring4*中不存在，所以自定义
      *
@@ -51,19 +50,12 @@ public class PaginationTemplateDao extends JdbcDaoSupport {
     public int queryForInt(String sql, Object[] args) {
 //        logStrartSQL(sql, args);
         long time = System.currentTimeMillis();
-
         if (VenusHelper.SQL_FILTER) {
             sql = VenusHelper.doSqlFilter(sql);
         }
-
-//        int res = queryForInt(sql, checkArgs(args));
-
         Number number = getJdbcTemplate().queryForObject(sql, checkArgs(args), Integer.class);
         return (number != null ? number.intValue() : 0);
-
-
 //        logEndSQL(sql, args, time);
-
     }
 
     /**
@@ -81,27 +73,14 @@ public class PaginationTemplateDao extends JdbcDaoSupport {
         if (VenusHelper.SQL_FILTER) {
             sql = VenusHelper.doSqlFilter(sql);
         }
-
         List result = query(sql, (PreparedStatementSetter) (new ArgPreparedStatementSetter(args,null)), mapper, firstResult, maxResult);
-
 //        logEndSQL(sql, args, time);
         return result;
     }
 
 
-
-
     public List query(String sql, final PreparedStatementSetter pss, final RowMapper rch, int firstResult, int maxResult) throws DataAccessException {
         DataSource tmpds = this.getDataSource();
-
-//        if( (tmpds!=null) && (tmpds instanceof ConfDataSource) ){
-//            IPageSqlProvider psp = ((ConfDataSource)tmpds).getPageSqlProvider();
-//
-//            if( psp!=null ){
-//                return (List) pageQuery(psp.getSql(sql,firstResult, maxResult), pss, new RowMapperResultSetExtractor(rch));
-//            }
-//        }
-
         PaginationProvider paginationProvider = ExtensionLoader.getExtensionLoader(PaginationProvider.class).loadUniqueExtensionInstance();
         if (paginationProvider!=null){
             return (List) pageQuery(paginationProvider.getSql(sql,firstResult, maxResult), pss, new RowMapperResultSetExtractor(rch));

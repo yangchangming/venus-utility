@@ -3,7 +3,7 @@
 <%@ page import="venus.oa.util.StringHelperTools" %>
 <%@ page import="venus.oa.helper.LoginHelper"%>
 <%@ page import="java.util.List" %>
-<jsp:useBean id="onlineuser" class="venus.authority.login.tools.OnLineUser" scope="application"/>
+<jsp:useBean id="onlineuser" class="venus.oa.login.tools.OnLineUser" scope="application"/>
 <%
 	String ids = request.getParameter("ids");
 	if(ids!=null && ids.length()>0) {

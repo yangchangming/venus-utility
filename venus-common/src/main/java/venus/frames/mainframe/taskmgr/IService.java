@@ -1,5 +1,3 @@
-//Source file: D:\\venus_view\\Tech_Department\\Platform\\Venus\\4项目开发\\1工作区\\4实现\\venus\\frames\\mainframe\\taskmgr\\IService.java
-
 package venus.frames.mainframe.taskmgr;
 
 /**

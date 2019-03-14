@@ -1,6 +1,3 @@
-/**
- * Copyright 2003-2010 UFIDA Software Engineering Co., Ltd. 
- */
 package venus.frames.mainframe.util;
 
 import venus.commons.xmlenum.EnumRepository;
@@ -12,7 +9,6 @@ import venus.frames.base.action.plugin.IServletPlugin;
 
 /**
  * @author changming.y
- *
  */
 public class InitEnumLoaderPlugin implements IServletPlugin {
 
@@ -20,8 +16,6 @@ public class InitEnumLoaderPlugin implements IServletPlugin {
 	 * @see venus.frames.base.action.plugin.IServletPlugin#destroy(venus.frames.base.action.DefaultServlet)
 	 */
 	public void destroy(DefaultServlet arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	/* 
@@ -35,10 +29,6 @@ public class InitEnumLoaderPlugin implements IServletPlugin {
 	/* 
 	 * @see venus.frames.base.action.plugin.IServletPlugin#service(venus.frames.base.action.DefaultServlet, venus.frames.base.action.IRequest, venus.frames.base.action.IResponse)
 	 */
-	public void service(DefaultServlet arg0, IRequest arg1, IResponse arg2)
-			throws DefaultServletException {
-		// TODO Auto-generated method stub
-		
+	public void service(DefaultServlet arg0, IRequest arg1, IResponse arg2) throws DefaultServletException {
 	}
-
 }

@@ -3,7 +3,7 @@
 <%@ page import="venus.oa.util.StringHelperTools" %>
 <%@ page import="venus.oa.authority.auuser.vo.AuUserVo" %>
 <%@ page import="venus.oa.authority.auuser.util.IAuUserConstants" %>
-<%@ page import="venus.frames.mainframe.util.Helper"%>
+<%@ page import="venus.frames.mainframe.oid.Helper"%>
 <%@ page import="venus.oa.util.GlobalConstants"%>
 <%@ page import="venus.oa.organization.aupartyrelationtype.bs.IAuPartyRelationTypeBS" %>
 <%@page import="venus.oa.organization.aupartyrelationtype.util.IConstants"%>

@@ -15,7 +15,7 @@
 <%@ page import="java.util.Set"%>
 <%@ page import="venus.oa.helper.LoginHelper"%>
 <%@ page import="venus.oa.helper.OrgHelper"%>
-<%@ page import="venus.frames.mainframe.util.Helper"%>
+<%@ page import="venus.frames.mainframe.oid.Helper"%>
 <%@ page import="venus.oa.history.bs.IHistoryLogBs"%>
 <%@ page import="venus.oa.history.vo.HistoryLogVo"%>
 <%@ page import="venus.oa.util.GlobalConstants"%>

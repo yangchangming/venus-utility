@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ page import="venus.frames.mainframe.util.Helper"%>
+<%@ page import="venus.frames.mainframe.oid.Helper"%>
 <%@ page import="venus.VenusHelper"%>
 <%
     String theme=(String)request.getParameter("theme");

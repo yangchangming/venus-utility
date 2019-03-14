@@ -7,10 +7,10 @@
 	</name-map>
 
 	<venus.frames.mainframe.util.Helper VALIDATE_AT_POPULATE="0" VALIDATE_AT_POPULATE_FROM_RESULTSET="0" IS_LOG_SQL_START_ENABLED="0" IS_LOG_SQL_END_ENABLED="0">
-		<ConstantSetting className="venus.frames.mainframe.util.Helper" propertyName="DEFAULT_PAGE_SIZE" value="15" />
-        <ConstantSetting className="venus.frames.mainframe.util.Helper" propertyName="THEME" value="default" />
-		<ConstantSetting className="venus.frames.mainframe.util.Helper" propertyName="DEFAULT_UPLOAD_PATH" value="/WEB-INF/upload/" />
-		<ConstantSetting className="venus.frames.mainframe.util.Helper" propertyName="SQL_FILTER" value="0" />
+		<ConstantSetting className="venus.frames.mainframe.oid.Helper" propertyName="DEFAULT_PAGE_SIZE" value="15" />
+        <ConstantSetting className="venus.frames.mainframe.oid.Helper" propertyName="THEME" value="default" />
+		<ConstantSetting className="venus.frames.mainframe.oid.Helper" propertyName="DEFAULT_UPLOAD_PATH" value="/WEB-INF/upload/" />
+		<ConstantSetting className="venus.frames.mainframe.oid.Helper" propertyName="SQL_FILTER" value="0" />
 		
 	</venus.frames.mainframe.util.Helper>
 
@@ -25,8 +25,8 @@
 			plugin="venus.frames.mainframe.util.DatePopulatePlugin" />
 	</venus.frames.mainframe.util.PopulateUtil>
 
-	<oid-conf SYSID="1099" TableCodeLen="4" 
-		OidDMImpl="venus.frames.mainframe.oid.TableInfoDM4Xml" IsClient="0" />
+	<oid-conf SYSID="1099" TableCodeLen="4"
+			  OidDMImpl="venus.frames.mainframe.oid.TableInfoDM4Xml" IsClient="0" />
 	<!--oid-conf link="file://c:\oid-conf.xml"/-->
 
 	<venus.frames.mainframe.oid.TableInfoDM 

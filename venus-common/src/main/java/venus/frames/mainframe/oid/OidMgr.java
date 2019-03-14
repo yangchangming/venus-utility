@@ -1,5 +1,3 @@
-//Source file: D:\\venus_view\\Tech_Department\\Platform\\Venus\\4项目开发\\1工作区\\4实现\\venus\\frames\\mainframe\\oid\\OidMgr.java
-
 package venus.frames.mainframe.oid;
 
 import venus.frames.base.IGlobalsKeys;
@@ -249,9 +247,10 @@ public class OidMgr implements IService, IGlobalsKeys {
     public Connection getConnection(String strDBUser) {
         Connection result = null;
         try {
-            // result = ConnectionHelper.requestConnection(strDBUser);
             result = ConnectionHelper.getConnectionByDS();
-        } catch (SQLException e) {
+//            result = venus.helper.ConnectionHelper.getConnection();
+
+        } catch (Exception e) {
             try {
                 if (result != null)
                     result.close();
@@ -402,10 +401,7 @@ public class OidMgr implements IService, IGlobalsKeys {
                             con = getConnection(teo.getOidDBSrc());
 
                             if (con == null || con.isClosed()) {
-                                LogMgr.getLogger(this).debug(
-                                        "error in getMaxOIDOfTable in table : "
-                                                + aTableName
-                                                + " , Pls check oid config");
+                                LogMgr.getLogger(this).debug("error in getMaxOIDOfTable in table : " + aTableName + " , Pls check oid config");
                                 continue;
                             }
 
@@ -722,9 +718,8 @@ public class OidMgr implements IService, IGlobalsKeys {
 
     /**
      * 根据传入的表名得到该表的OID生成器
-     * 
-     * @param tableName
-     *            相应的表名
+     *
+     * @param tblName
      * @return OidGenerator 该表对应的OID生成器
      */
     public OidGenerator getOIDGenerator(String tblName) {
