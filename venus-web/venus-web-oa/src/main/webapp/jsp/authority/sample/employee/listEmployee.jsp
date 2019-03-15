@@ -1,7 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="venus.oa.util.VoHelperTools" %>
-<%@ page import="venus.oa.util.StringHelperTools" %>
 <%@ page import="venus.oa.organization.employee.util.IEmployeeConstants" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="java.util.List" %>
+<%@ page import="venus.oa.organization.employee.vo.EmployeeVo" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><fmt:message key='venus.authority.Personnel_management' bundle='${applicationAuResources}' /></title>
@@ -240,37 +242,87 @@
 </div>
 <div id="ccChild1"> 
 <table class="table_div_content2" width="100%">
+
 	<tr>
 		<td>
-		<layout:collection onRowDblClick="detail_onClick(getRowHiddenId())" name="beans" id="rmBean" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0">
-			<layout:collectionItem width="30" title="<input type='checkbox' pdType='control' control='checkbox_template'/>" style="text-align:center;">
-				<bean:define id="rmValue" name="rmBean" property="id"/>
-				<bean:define id="rmDisplayName" name="rmBean" property="id"/>
-				<input type="checkbox" name="checkbox_template" value="<%=rmValue%>" displayName="<%=rmDisplayName%>"/>
-			</layout:collectionItem>
-			<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">
-				<venus:sequence/>
-				<bean:define id="rmValue" name="rmBean" property="id"/>
-				<input type="hidden" signName="hiddenId" value="<%=rmValue%>"/>
-			</layout:collectionItem>
-			<layout:collectionItem width="160" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Staff_numbers") %>' property="person_no"/>
-			<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Name0") %>' property="person_name"/>
-			<layout:collectionItem width="40" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sex0") %>' style="text-align:center;">
-			     <logic:notEmpty name="rmBean" property="sex">
-				    <bean:define id="sex" name="rmBean" property="sex"/>
-			        <%="1".equals(sex)?venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Male"):venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Female")%>
-			     </logic:notEmpty>
-			</layout:collectionItem>
-			<layout:collectionItem width="100" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Staff_Type") %>' property="person_type"/>
-			<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.E_mail") %>' property="email"/>
-			<layout:collectionItem width="140" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Created") %>'>
-				<bean:define id="create_date" name="rmBean" property="create_date"/>
-		    	<%=StringHelperTools.prt(create_date,19)%>
-			</layout:collectionItem>
-			</layout:collection>
-		<jsp:include page="/jsp/include/page.jsp" />
+			<div style="width=100%;overflow-x:visible;overflow-y:visible;">
+				<table cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="listCss">
+					<tr>
+						<td valign="top">
+							<table cellspacing="1" cellpadding="1" border="0" width="100%">
+								<tr valign="top">
+									<th class="listCss" ></th>
+									<th class="listCss" width="30"><fmt:message key='venus.authority.Sequence' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="50"><fmt:message key='venus.authority.Staff_numbers' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Name0' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Sex0' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Staff_Type' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.E_mail' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="180"><fmt:message key='venus.authority.Created' bundle='${applicationAuResources}' /></th>
+								</tr>
+								<%
+									List beans = (List) request.getAttribute("beans");
+									for(int i=0;  i<beans.size();) {
+										EmployeeVo vo= (EmployeeVo)beans.get(i);
+										i++;
+								%>
+								<tr>
+									<td class="listCss" align="center">
+										<input type="radio" name="checkbox_template" value="<%=vo.getId()%>"/>
+									</td>
+									<td class="listCss" align="center"><%=i%><input type="hidden" signName="hiddenId" value="<%=vo.getId()%>" /></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getPerson_no())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getPerson_name())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getSex())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getPerson_type())%> </td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getEmail())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getCreate_date(), 19)%></td>
+								</tr>
+								<%
+									}
+								%>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<jsp:include page="/jsp/include/page.jsp" />
+			</div>
 		</td>
 	</tr>
+
+
+
+	<%--<tr>--%>
+		<%--<td>--%>
+		<%--<layout:collection onRowDblClick="detail_onClick(getRowHiddenId())" name="beans" id="rmBean" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0">--%>
+			<%--<layout:collectionItem width="30" title="<input type='checkbox' pdType='control' control='checkbox_template'/>" style="text-align:center;">--%>
+				<%--<bean:define id="rmValue" name="rmBean" property="id"/>--%>
+				<%--<bean:define id="rmDisplayName" name="rmBean" property="id"/>--%>
+				<%--<input type="checkbox" name="checkbox_template" value="<%=rmValue%>" displayName="<%=rmDisplayName%>"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">--%>
+				<%--<venus:sequence/>--%>
+				<%--<bean:define id="rmValue" name="rmBean" property="id"/>--%>
+				<%--<input type="hidden" signName="hiddenId" value="<%=rmValue%>"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="160" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Staff_numbers") %>' property="person_no"/>--%>
+			<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Name0") %>' property="person_name"/>--%>
+			<%--<layout:collectionItem width="40" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sex0") %>' style="text-align:center;">--%>
+			     <%--<logic:notEmpty name="rmBean" property="sex">--%>
+				    <%--<bean:define id="sex" name="rmBean" property="sex"/>--%>
+			        <%--<%="1".equals(sex)?venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Male"):venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Female")%>--%>
+			     <%--</logic:notEmpty>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="100" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Staff_Type") %>' property="person_type"/>--%>
+			<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.E_mail") %>' property="email"/>--%>
+			<%--<layout:collectionItem width="140" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Created") %>'>--%>
+				<%--<bean:define id="create_date" name="rmBean" property="create_date"/>--%>
+		    	<%--<%=StringHelperTools.prt(create_date,19)%>--%>
+			<%--</layout:collectionItem>--%>
+			<%--</layout:collection>--%>
+		<%--<jsp:include page="/jsp/include/page.jsp" />--%>
+		<%--</td>--%>
+	<%--</tr>--%>
 </table>
 </div>
 <input type="hidden" name="id" value="">

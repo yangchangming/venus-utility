@@ -7,7 +7,7 @@
 <%@ page import="venus.oa.util.GlobalConstants"%>
 <%@ page import="venus.oa.authority.aufunctree.bs.IAuFunctreeBs"%>
 <%@ page import="venus.oa.authority.aufunctree.util.IAuFunctreeConstants"%>
-<%@ page import="venus.frames.mainframe.oid.Helper"%>
+<%@ page import="venus.frames.mainframe.util.Helper"%>
 <%@ page import="venus.oa.helper.OrgHelper"%>
 <%@ page import="venus.oa.login.vo.LoginSessionVo"%>
 <%@ page import="java.util.ArrayList"%>

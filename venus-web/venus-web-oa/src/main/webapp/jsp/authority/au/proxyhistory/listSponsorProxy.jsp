@@ -1,7 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="venus.oa.authority.auproxy.util.IConstants" %>
+<%@ page import="venus.oa.authority.auproxy.vo.ProxyHistoryVo" %>
+<%@page import="venus.oa.util.StringHelperTools"%>
 <%@ page import="venus.oa.util.VoHelperTools" %>
-<%@ page import="venus.oa.util.StringHelperTools" %>
-<%@page import="venus.oa.authority.auproxy.util.IConstants"%>
+<%@ page import="java.util.List" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><fmt:message key='venus.authority.Acting_History' bundle='${applicationAuResources}' /></title>
@@ -120,41 +122,97 @@
 </div>
 <div id="ccChild1"> 
 <table class="table_div_content2" width="100%">
+
     <tr>
         <td>
-        <layout:collection onRowDblClick="detail_onClick(getRowHiddenId())"  name="beans" id="rmBean" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0">
-            <layout:collectionItem width="30" title="" style="text-align:center;">
-                <bean:define id="rmValue" name="rmBean" property="id"/>
-                <input type="radio" name="checkbox_template" value="<%=rmValue%>"/>
-            </layout:collectionItem>
-            <layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">
-                <venus:sequence/>
-                <bean:define id="rmValue" name="rmBean" property="id"/>
-                <input type="hidden" signName="hiddenId" value="<%=rmValue%>"/>
-            </layout:collectionItem>
-            <layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Authorized") %>' property="sponsor"/>
-            <layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Proxy") %>' property="proxy"/>
-            <layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Proxy0") %>' property="recipient"/>
-            <layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Status") %>' style="text-align:center;">
-                <bean:define id="sex" name="rmBean" property="operater_type"/>
-                <%="1".equals(sex)?venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Proxy"):venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Revocation")%>
-            </layout:collectionItem>
-            <layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Acting_time") %>'>
-                <bean:define id="create_date" name="rmBean" property="operater_date"/>
-                <%=StringHelperTools.prt(create_date,19)%>
-            </layout:collectionItem>
-            <layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Agency_operator") %>' property="operater_name"/>
-            <layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Withdrawal_time") %>'>
-            <logic:notEmpty name="rmBean" property="canel_date">
-                <bean:define id="canel_date" name="rmBean" property="canel_date"/>
-                <%=StringHelperTools.prt(canel_date,19)%>
-            </logic:notEmpty>
-            </layout:collectionItem>
-            <layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Revocation_of_the_operator") %>' property="canel_name"/>
-            </layout:collection>
-        <jsp:include page="/jsp/include/page.jsp" />
+            <div style="width=100%;overflow-x:visible;overflow-y:visible;">
+                <table cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="listCss">
+                    <tr>
+                        <td valign="top">
+                            <table cellspacing="1" cellpadding="1" border="0" width="100%">
+                                <tr valign="top">
+                                    <th class="listCss" ></th>
+                                    <th class="listCss" width="30"><fmt:message key='venus.authority.Sequence' bundle='${applicationAuResources}' /></th>
+                                    <th class="listCss"><fmt:message key='venus.authority.Authorized' bundle='${applicationAuResources}' /></th>
+                                    <th class="listCss"><fmt:message key='venus.authority.Proxy' bundle='${applicationAuResources}' /></th>
+                                    <th class="listCss"><fmt:message key='venus.authority.Proxy0' bundle='${applicationAuResources}' /></th>
+                                    <th class="listCss"><fmt:message key='venus.authority.Status' bundle='${applicationAuResources}' /></th>
+                                    <th class="listCss"><fmt:message key='venus.authority.Acting_time' bundle='${applicationAuResources}' /></th>
+                                    <th class="listCss"><fmt:message key='venus.authority.Agency_operator' bundle='${applicationAuResources}' /></th>
+                                    <th class="listCss"><fmt:message key='venus.authority.Withdrawal_time' bundle='${applicationAuResources}' /></th>
+                                    <th class="listCss"><fmt:message key='venus.authority.Revocation_of_the_operator' bundle='${applicationAuResources}' /></th>
+                                </tr>
+                                <%
+                                    List beans = (List) request.getAttribute("beans");
+                                    for(int i=0;  i<beans.size();) {
+                                        ProxyHistoryVo vo= (ProxyHistoryVo)beans.get(i);
+                                        i++;
+                                %>
+                                <tr>
+                                    <td class="listCss" align="center">
+                                        <input type="radio" name="checkbox_template" value="<%=vo.getId()%>"/>
+                                    </td>
+                                    <td class="listCss" align="center"><%=i%><input type="hidden" signName="hiddenId" value="<%=vo.getId()%>" /></td>
+                                    <td class="listCss"><%=StringHelperTools.prt(vo.getSponsor())%></td>
+                                    <td class="listCss"><%=StringHelperTools.prt(vo.getProxy())%></td>
+                                    <td class="listCss"><%=StringHelperTools.prt(vo.getRecipient())%></td>
+                                    <td class="listCss">
+                                        <%="1".equals(vo.getOperater_type())?venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Proxy"):venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Revocation")%>
+                                    </td>
+                                    <td class="listCss"><%=StringHelperTools.prt(vo.getOperater_date(), 19)%></td>
+                                    <td class="listCss"><%=StringHelperTools.prt(vo.getOperater_name())%></td>
+                                    <td class="listCss"><%=StringHelperTools.prt(vo.getCanel_date(), 19)%></td>
+                                    <td class="listCss"><%=StringHelperTools.prt(vo.getCanel_name())%></td>
+                                </tr>
+                                <%
+                                    }
+                                %>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <jsp:include page="/jsp/include/page.jsp" />
+            </div>
         </td>
     </tr>
+
+
+
+    <%--<tr>--%>
+        <%--<td>--%>
+        <%--<layout:collection onRowDblClick="detail_onClick(getRowHiddenId())"  name="beans" id="rmBean" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0">--%>
+            <%--<layout:collectionItem width="30" title="" style="text-align:center;">--%>
+                <%--<bean:define id="rmValue" name="rmBean" property="id"/>--%>
+                <%--<input type="radio" name="checkbox_template" value="<%=rmValue%>"/>--%>
+            <%--</layout:collectionItem>--%>
+            <%--<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">--%>
+                <%--<venus:sequence/>--%>
+                <%--<bean:define id="rmValue" name="rmBean" property="id"/>--%>
+                <%--<input type="hidden" signName="hiddenId" value="<%=rmValue%>"/>--%>
+            <%--</layout:collectionItem>--%>
+            <%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Authorized") %>' property="sponsor"/>--%>
+            <%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Proxy") %>' property="proxy"/>--%>
+            <%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Proxy0") %>' property="recipient"/>--%>
+            <%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Status") %>' style="text-align:center;">--%>
+                <%--<bean:define id="sex" name="rmBean" property="operater_type"/>--%>
+                <%--<%="1".equals(sex)?venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Proxy"):venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Revocation")%>--%>
+            <%--</layout:collectionItem>--%>
+            <%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Acting_time") %>'>--%>
+                <%--<bean:define id="create_date" name="rmBean" property="operater_date"/>--%>
+                <%--<%=StringHelperTools.prt(create_date,19)%>--%>
+            <%--</layout:collectionItem>--%>
+            <%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Agency_operator") %>' property="operater_name"/>--%>
+            <%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Withdrawal_time") %>'>--%>
+            <%--<logic:notEmpty name="rmBean" property="canel_date">--%>
+                <%--<bean:define id="canel_date" name="rmBean" property="canel_date"/>--%>
+                <%--<%=StringHelperTools.prt(canel_date,19)%>--%>
+            <%--</logic:notEmpty>--%>
+            <%--</layout:collectionItem>--%>
+            <%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Revocation_of_the_operator") %>' property="canel_name"/>--%>
+            <%--</layout:collection>--%>
+        <%--<jsp:include page="/jsp/include/page.jsp" />--%>
+        <%--</td>--%>
+    <%--</tr>--%>
 </table>
 </div>
 <input type="hidden" name="id" value="">

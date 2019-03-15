@@ -198,22 +198,67 @@
 
 <div id="auChild1"> 
 <table align=center class="table_div_content">
+
 	<tr>
 		<td>
-			<layout:collection name="linkedUserList" id="linkedUserList" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >
-				<layout:collectionItem width="30" title="" style="text-align:center;">
-					<bean:define id="partyRelationId" name="linkedUserList" property="id"/>
-					<input type="radio" name="checkbox_template" value="<%=partyRelationId%>"/>
-				</layout:collectionItem>
-				<layout:collectionItem width="5%" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">
-					<venus:sequence/>
-				</layout:collectionItem>	
-				<layout:collectionItem width="25%" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Number") %>' property="partyid" />
-				<layout:collectionItem width="20%" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Name") %>' property="name"/>			
-				<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Mailbox") %>' property="email" />
-			</layout:collection>
+			<div style="width=100%;overflow-x:visible;overflow-y:visible;">
+				<table cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="listCss">
+					<tr>
+						<td valign="top">
+							<table cellspacing="1" cellpadding="1" border="0" width="100%">
+								<tr valign="top">
+									<th class="listCss" ></th>
+									<th class="listCss" width="30"><fmt:message key='venus.authority.Sequence' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Number' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Mailbox' bundle='${applicationAuResources}' /></th>
+								</tr>
+								<%
+									List beans = (List) request.getAttribute("linkedUserList");
+									for(int i=0;  i<beans.size();) {
+										AuPartyRelationVo vo= (AuPartyRelationVo)beans.get(i);
+										i++;
+								%>
+								<tr>
+									<td class="listCss" align="center">
+										<input type="radio" name="checkbox_template" value="<%=vo.getId()%>"/>
+									</td>
+									<td class="listCss" align="center"><%=i%><input type="hidden" signName="hiddenId" value="<%=vo.getId()%>" /></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getPartyid())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getName())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getEmail())%></td>
+								</tr>
+								<%
+									}
+								%>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<jsp:include page="/jsp/include/page.jsp" />
+			</div>
 		</td>
 	</tr>
+
+
+
+
+	<%--<tr>--%>
+		<%--<td>--%>
+			<%--<layout:collection name="linkedUserList" id="linkedUserList" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >--%>
+				<%--<layout:collectionItem width="30" title="" style="text-align:center;">--%>
+					<%--<bean:define id="partyRelationId" name="linkedUserList" property="id"/>--%>
+					<%--<input type="radio" name="checkbox_template" value="<%=partyRelationId%>"/>--%>
+				<%--</layout:collectionItem>--%>
+				<%--<layout:collectionItem width="5%" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">--%>
+					<%--<venus:sequence/>--%>
+				<%--</layout:collectionItem>	--%>
+				<%--<layout:collectionItem width="25%" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Number") %>' property="partyid" />--%>
+				<%--<layout:collectionItem width="20%" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Name") %>' property="name"/>			--%>
+				<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Mailbox") %>' property="email" />--%>
+			<%--</layout:collection>--%>
+		<%--</td>--%>
+	<%--</tr>--%>
 </table>
 </div>
 <%}%>
@@ -237,7 +282,8 @@ owner_org
 	writeTableBottom('<venus:base/>/themes/<venus:theme/>/');  //显示本页的页脚
 </script>
 </body>
-<%@page import="venus.authority.helper.OrgHelper;"%>
+<%@ page import="venus.oa.helper.OrgHelper" %>
+<%@ page import="venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo" %>
 </html>
 	
 

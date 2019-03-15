@@ -271,7 +271,6 @@ public class AuProxyAction implements IConstants {
         List list = queryLinkedUserList(id);//查询已经关联的用户列表
         request.setAttribute(REQUEST_BEAN_VALUE, bean); //把vo放入request
         request.setAttribute("linkedUserList", list);
-//        return request.findForward(FORWARD_DETAIL_KEY);
         return "authority/au/auproxy/detailAuProxy";
     }
 

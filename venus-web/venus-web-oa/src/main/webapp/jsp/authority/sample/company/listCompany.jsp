@@ -2,6 +2,8 @@
 <%@ page import="venus.oa.util.VoHelperTools" %>
 <%@ page import="venus.oa.util.StringHelperTools" %>
 <%@ page import="venus.oa.organization.company.util.ICompanyConstants" %>
+<%@ page import="java.util.List" %>
+<%@ page import="venus.oa.organization.company.vo.CompanyVo" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><fmt:message key='venus.authority.Company_Management' bundle='${applicationAuResources}' /></title>
@@ -261,38 +263,100 @@
 </table>
 </div>
 
-<div id="ccChild1"> 
+<div id="ccChild1">
 <table class="table_div_content2" width="100%">
+
 	<tr>
-		<td width="100%">
-		<layout:collection onRowDblClick="detail_onClick(getRowHiddenId())"  name="beans" id="rmBean" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0">
-			
-			<layout:collectionItem width="30" title="<input type='checkbox' pdType='control' control='checkbox_template'/>" style="text-align:center;">
-				<bean:define id="rmValue" name="rmBean" property="id"/>
-				<bean:define id="rmDisplayName" name="rmBean" property="id"/>
-				<input type="checkbox" name="checkbox_template" value="<%=rmValue%>" displayName="<%=rmDisplayName%>"/>
-			</layout:collectionItem>
-			
-			<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">
-				<venus:sequence/>
-				<bean:define id="rmValue" name="rmBean" property="id"/>
-				<input type="hidden" signName="hiddenId" value="<%=rmValue%>"/>
-			</layout:collectionItem>
-			<layout:collectionItem width="160" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Company_Number") %>' property="company_no"/>
-			<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Company_Name") %>' property="company_name"/>
-			<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Company_referred_to") %>' property="short_name"/>
-			<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Type") %>' property="company_type"/>
-			<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Your_area") %>' property="area"/>
-			<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Contact0") %>' property="linkman"/>
-			<layout:collectionItem width="140" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Created") %>'>
-				<bean:define id="create_date" name="rmBean" property="create_date"/>
-		    	<%=StringHelperTools.prt(create_date,19)%>
-			</layout:collectionItem>
-			</layout:collection>
-		
-		<jsp:include page="/jsp/include/page.jsp" />
+		<td>
+			<div style="width=100%;overflow-x:visible;overflow-y:visible;">
+				<table cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="listCss">
+					<tr>
+						<td valign="top">
+							<table cellspacing="1" cellpadding="1" border="0" width="100%">
+								<tr valign="top">
+									<th class="listCss" ></th>
+									<th class="listCss" width="30"><fmt:message key='venus.authority.Sequence' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Company_Number' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Company_Name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Company_referred_to' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Type' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Your_area' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Contact0' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="140">
+										<fmt:message key='venus.authority.Created' bundle='${applicationAuResources}' />
+									</th>
+								</tr>
+								<%
+									List beans = (List) request.getAttribute("beans");
+									for(int i=0;  i<beans.size();) {
+										CompanyVo vo= (CompanyVo)beans.get(i);
+										i++;
+								%>
+								<tr>
+									<td class="listCss" align="center">
+										<input type="radio" name="checkbox_template" value="<%=vo.getId()%>"/>
+									</td>
+									<td class="listCss" align="center"><%=i%><input type="hidden" signName="hiddenId" value="<%=vo.getId()%>" /></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getCompany_no())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getCompany_name())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getShort_name())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getCompany_type())%> </td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getArea())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getLinkman())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getCreate_date(), 19)%></td>
+								</tr>
+								<%
+									}
+								%>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<jsp:include page="/jsp/include/page.jsp" />
+			</div>
 		</td>
 	</tr>
+
+
+
+
+	<%--<tr>--%>
+		<%--<td width="100%">--%>
+		<%--<layout:collection onRowDblClick="detail_onClick(getRowHiddenId())"  name="beans" id="rmBean" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0">--%>
+			<%----%>
+			<%--<layout:collectionItem width="30" title="<input type='checkbox' pdType='control' control='checkbox_template'/>" style="text-align:center;">--%>
+				<%--<bean:define id="rmValue" name="rmBean" property="id"/>--%>
+				<%--<bean:define id="rmDisplayName" name="rmBean" property="id"/>--%>
+				<%--<input type="checkbox" name="checkbox_template" value="<%=rmValue%>" displayName="<%=rmDisplayName%>"/>--%>
+			<%--</layout:collectionItem>--%>
+
+			<%--<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">--%>
+				<%--<venus:sequence/>--%>
+				<%--&lt;%&ndash;<bean:define id="rmValue" name="rmBean" property="id"/>&ndash;%&gt;--%>
+
+				<%--<c:set var="rmValue" value="${rmBean.id}"/>--%>
+				<%--<jsp:useBean id="rmValue" class="java.lang.String" />--%>
+
+				<%--<input type="hidden" signName="hiddenId" value="<%=rmValue%>"/>--%>
+			<%--</layout:collectionItem>--%>
+
+			<%--<layout:collectionItem width="160" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Company_Number") %>' property="company_no"/>--%>
+			<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Company_Name") %>' property="company_name"/>--%>
+			<%--<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Company_referred_to") %>' property="short_name"/>--%>
+			<%--<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Type") %>' property="company_type"/>--%>
+			<%--<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Your_area") %>' property="area"/>--%>
+			<%--<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Contact0") %>' property="linkman"/>--%>
+			<%--<layout:collectionItem width="140" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Created") %>'>--%>
+				<%--<bean:define id="create_date" name="rmBean" property="create_date"/>--%>
+		    	<%--<%=StringHelperTools.prt(create_date,19)%>--%>
+			<%--</layout:collectionItem>--%>
+
+		<%--</layout:collection>--%>
+
+		<%--<jsp:include page="/jsp/include/page.jsp" />--%>
+		<%--</td>--%>
+	<%--</tr>--%>
+
 </table>
 </div>
 

@@ -6,6 +6,7 @@
 <%@ page import = "venus.commons.xmlenum.EnumValueMap" %>
 <%@ page import="venus.oa.util.GlobalConstants"%>
 <%@ page import="java.util.List" %>
+<%@ page import="venus.oa.history.vo.HistoryLogVo" %>
 <%
 	EnumRepository er = EnumRepository.getInstance();
 	er.loadFromDir();
@@ -152,34 +153,83 @@
 
 <div id="auDivChild1"> 
 <table class="table_div_content">
+
 	<tr>
 		<td>
-		<layout:collection name="beans" id="wy1" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >
-			<layout:collectionItem width="40" title="" style="text-align:center;">
-				<bean:define id="wy3" name="wy1" property="id"/>
-				<input type="radio" name="checkbox_template" value="<%=null==wy3?"":wy3%>"/>
-			</layout:collectionItem>
-			<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">
-				<venus:sequence/>
-				<bean:define id="id" name="wy1" property="id"/>
-				<bean:define id="operateType" name="wy1" property="operate_type"/>
-				<input type="hidden" signName="hiddenId" value="<%=id%>" operate_type="<%=operateType%>"/>
-			</layout:collectionItem>
-			<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Resource_Name") %>' property="source_name" />
-			<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Original_organization") %>' property="source_orgtree" />
-			<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Operation_Name") %>' property="operate_name" />
-			<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Operating_time") %>'>
-				<bean:define id="operate_date" name="wy1" property="operate_date"/>
-		    	<%=StringHelperTools.prt(operate_date,19)%>			
-			</layout:collectionItem>
-			<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Action_Type") %>' style="text-align:center;">
-				<bean:define id="wy5" name="wy1" property="operate_type"/>
-			    <%=typeMap.getLabel(wy5.toString())%>
-			 </layout:collectionItem>
-		</layout:collection>
-		<jsp:include page="/jsp/include/page.jsp" />
+			<div style="width=100%;overflow-x:visible;overflow-y:visible;">
+				<table cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="listCss">
+					<tr>
+						<td valign="top">
+							<table cellspacing="1" cellpadding="1" border="0" width="100%">
+								<tr valign="top">
+									<th class="listCss" ></th>
+									<th class="listCss" width="30"><fmt:message key='venus.authority.Sequence' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Resource_Name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Original_organization' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Operation_Name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Operating_time' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Action_Type' bundle='${applicationAuResources}' /></th>
+								</tr>
+								<%
+									List beans = (List) request.getAttribute("beans");
+									for(int i=0;  i<beans.size();) {
+										HistoryLogVo vo= (HistoryLogVo) beans.get(i);
+										i++;
+								%>
+								<tr>
+									<td class="listCss" align="center">
+										<input type="radio" name="checkbox_template" value="<%=vo.getId()%>"/>
+									</td>
+									<td class="listCss" align="center"><%=i%><input type="hidden" signName="hiddenId" value="<%=vo.getId()%>" /></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getSource_name())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getSource_orgtree())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getOperate_name())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getOperate_date(), 19)%></td>
+									<td class="listCss"><%=StringHelperTools.prt(typeMap.getLabel(vo.getOperate_type()))%></td>
+								</tr>
+								<%
+									}
+								%>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<jsp:include page="/jsp/include/page.jsp" />
+			</div>
 		</td>
 	</tr>
+
+
+
+
+	<%--<tr>--%>
+		<%--<td>--%>
+		<%--<layout:collection name="beans" id="wy1" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >--%>
+			<%--<layout:collectionItem width="40" title="" style="text-align:center;">--%>
+				<%--<bean:define id="wy3" name="wy1" property="id"/>--%>
+				<%--<input type="radio" name="checkbox_template" value="<%=null==wy3?"":wy3%>"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">--%>
+				<%--<venus:sequence/>--%>
+				<%--<bean:define id="id" name="wy1" property="id"/>--%>
+				<%--<bean:define id="operateType" name="wy1" property="operate_type"/>--%>
+				<%--<input type="hidden" signName="hiddenId" value="<%=id%>" operate_type="<%=operateType%>"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Resource_Name") %>' property="source_name" />--%>
+			<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Original_organization") %>' property="source_orgtree" />--%>
+			<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Operation_Name") %>' property="operate_name" />--%>
+			<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Operating_time") %>'>--%>
+				<%--<bean:define id="operate_date" name="wy1" property="operate_date"/>--%>
+		    	<%--<%=StringHelperTools.prt(operate_date,19)%>			--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Action_Type") %>' style="text-align:center;">--%>
+				<%--<bean:define id="wy5" name="wy1" property="operate_type"/>--%>
+			    <%--<%=typeMap.getLabel(wy5.toString())%>--%>
+			 <%--</layout:collectionItem>--%>
+		<%--</layout:collection>--%>
+		<%--<jsp:include page="/jsp/include/page.jsp" />--%>
+		<%--</td>--%>
+	<%--</tr>--%>
 </table>
 </div>
 <!-- 参照显示层 -->

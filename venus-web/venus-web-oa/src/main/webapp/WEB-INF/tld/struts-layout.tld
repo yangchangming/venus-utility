@@ -2524,7 +2524,7 @@
 
  <tag>
     <name>collectionItem</name>
-    <!--<tagclass>venus.authority.taglib.CollectionItemTag</tagclass>-->
+    <!--<tagclass>venus.oa.taglib.CollectionItemTag</tagclass>-->
      <tagclass>fr.improve.struts.taglib.layout.collection.CollectionItemTag</tagclass>
     <bodycontent>JSP</bodycontent>   
 	<attribute>

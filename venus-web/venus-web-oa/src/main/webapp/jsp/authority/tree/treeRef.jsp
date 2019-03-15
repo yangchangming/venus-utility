@@ -31,7 +31,7 @@
 			?inputType=<%=request.getParameter("inputType")%>
 			&submitType=<%=request.getParameter("submitType")==null?"submitAll":request.getParameter("submitType")%>
 			&nodeRelationType=<%=request.getParameter("nodeRelationType")==null?"hasRelation":request.getParameter("nodeRelationType")%>
-			&rootXmlSource=<%=venus.authority.util.StringHelperTools.encodeUrl(request.getParameter("rootXmlSource"))%>">
+			&rootXmlSource=<%=venus.oa.util.StringHelperTools.encodeUrl(request.getParameter("rootXmlSource"))%>">
 		</iframe>
 		<!--树结束-->
     </td>

@@ -2,7 +2,7 @@
 <%@ page import="venus.oa.authority.aufunctree.bs.IAuFunctreeBs"%>
 <%@ page import="venus.oa.authority.aufunctree.vo.AuFunctreeVo" %>
 <%@ page import="venus.oa.authority.aufunctree.util.IAuFunctreeConstants" %>
-<%@ page import="venus.frames.mainframe.oid.Helper"%>
+<%@ page import="venus.frames.mainframe.util.Helper"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
 <%@ page import="venus.springsupport.BeanFactoryHelper" %>

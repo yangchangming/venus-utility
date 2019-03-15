@@ -498,8 +498,7 @@ public class DefaultServlet extends HttpServlet implements ILog, IGlobalsKeys {
 		String[] dispatchClasses = getClassary(DISPATCH_KEY);
 		if (dispatchClasses.length > 0) {
 			for (int i = 0; i < dispatchClasses.length; i++) {
-				StringTokenizer st =
-					new StringTokenizer(dispatchClasses[i], ":");
+				StringTokenizer st = new StringTokenizer(dispatchClasses[i], ":");
 				while (st.hasMoreTokens()) {
 					m_hashPluginName.put(st.nextToken(), st.nextToken());
 				}

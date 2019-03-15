@@ -6,6 +6,7 @@
 <%@ page import="venus.commons.xmlenum.EnumRepository" %>
 <%@ page import="venus.commons.xmlenum.EnumValueMap" %>
 <%@ page import="venus.oa.helper.LoginHelper" %>
+<%@ page import="venus.oa.authority.auuser.vo.AuUserVo" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <%@ include file="/jsp/authority/org/aupartyrelation/organizeTooltip.jsp" %>
 <%
@@ -390,58 +391,118 @@ function returnValueName(rtObj){//组织机构参照返回赋值
 
 <div id="auDivChild1"> 
 <table class="table_div_content2" width="100%">
+
 	<tr>
 		<td>
-		<layout:collection onRowDblClick="detail_onClick(getRowHiddenId())"  name="beans" id="rmBean" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >
-			
-			<layout:collectionItem width="30" title="" style="text-align:center;">
-				<bean:define id="rmValue" name="rmBean" property="id"/>
-				<bean:define id="rmDisplayName" name="rmBean" property="id"/>
-				<input type="radio" name="checkbox_template" value="<%=rmValue%>" displayName="<%=rmDisplayName%>"/>
-			</layout:collectionItem>
- 
-			<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">
-				<venus:sequence/>
-				<bean:define id="rmValue" name="rmBean" property="id"/>
-				<bean:define id="login_id" name="rmBean" property="login_id"/>
-				<bean:define id="real_name" name="rmBean" property="name"/>
-				<bean:define id="party_id" name="rmBean" property="party_id"/>
-				<bean:define id="is_admin" name="rmBean" property="is_admin"/>
-				<bean:define id="enable_status" name="rmBean" property="enable_status"/>
-				<input type="hidden" signName="hiddenId" value="<%=rmValue%>" login_id="<%=login_id%>" real_name="<%=real_name%>" party_id="<%=party_id%>" is_admin="<%=is_admin%>" enable_status="<%=enable_status%>"/>
-			</layout:collectionItem>
-			
-		<layout:collectionItem width="15%" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Number") %>' property="party_id" sortable="false"/>
-		<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Login_Account") %>' property="login_id" sortable="false"/>
-		<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Real_Name") %>' property="name" sortable="false"/>
-		<%if (organizeTooltip == null) { %>
-		<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Organization") %>' sortable="false">
-			<logic:notEmpty name="rmBean" property="owner_org">
-				<bean:define id="owner_org" name="rmBean"  property="owner_org"/>
-				 <%=StringHelperTools.replaceStringToHtml(owner_org)%>
-			 </logic:notEmpty>
-		</layout:collectionItem>		
-		<%} %>
-		<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Status") %>' sortable="false" style="text-align:center;">
-			<bean:define id="enable_status" name="rmBean" property="enable_status"/>
-		    <%="1".equals(enable_status)?venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Enabled"):venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Disable")%>
-		</layout:collectionItem>
-		<layout:collectionItem width="150" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Created") %>' sortable="false">
-			<bean:define id="create_date" name="rmBean" property="create_date"/>
-		    <%=StringHelperTools.prt(create_date,19)%>
-		</layout:collectionItem>
-		<layout:collectionItem width="150" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Password_expiration") %>'  sortable="false">
-			<logic:notEmpty name="rmBean" property="retire_date">
-				<bean:define id="retire_date" name="rmBean" property="retire_date"/>
-		    	<%=StringHelperTools.prt(retire_date,19)%>
-			</logic:notEmpty>
-		</layout:collectionItem>
+			<div style="width=100%;overflow-x:visible;overflow-y:visible;">
+				<table cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="listCss">
+					<tr>
+						<td valign="top">
+							<table cellspacing="1" cellpadding="1" border="0" width="100%">
+								<tr valign="top">
+									<th class="listCss" ></th>
+									<th class="listCss" width="30"><fmt:message key='venus.authority.Sequence' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Number' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Login_Account' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Real_Name' bundle='${applicationAuResources}' /></th>
 
-		</layout:collection>
-		
-		<jsp:include page="/jsp/include/page.jsp" />
+									<%if (organizeTooltip == null) { %>
+										<th class="listCss"><fmt:message key='venus.authority.Organization' bundle='${applicationAuResources}' /></th>
+									<%} %>
+
+									<th class="listCss"><fmt:message key='venus.authority.Status' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="140"><fmt:message key='venus.authority.Created' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Password_expiration' bundle='${applicationAuResources}' /></th>
+								</tr>
+								<%
+									List beans = (List) request.getAttribute("beans");
+									for(int i=0;  i<beans.size();) {
+										AuUserVo vo= (AuUserVo)beans.get(i);
+										i++;
+								%>
+								<tr>
+									<td class="listCss" align="center">
+										<input type="radio" name="checkbox_template" value="<%=vo.getId()%>"/>
+									</td>
+									<td class="listCss" align="center"><%=i%><input type="hidden" signName="hiddenId" value="<%=vo.getId()%>" /></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getParty_id())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getLogin_id())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getName())%></td>
+
+									<%if (organizeTooltip==null) { %>
+									<td class="listCss"><%=StringHelperTools.replaceStringToHtml(vo.getOwner_org())%> </td>
+									<%} %>
+
+									<td class="listCss"><%=StringHelperTools.prt(vo.getEnable_status())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getCreate_date(), 19)%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getRetire_date(), 19)%></td>
+								</tr>
+								<%
+									}
+								%>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<jsp:include page="/jsp/include/page.jsp" />
+			</div>
 		</td>
 	</tr>
+
+
+
+	<%--<tr>--%>
+		<%--<td>--%>
+		<%--<layout:collection onRowDblClick="detail_onClick(getRowHiddenId())"  name="beans" id="rmBean" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >--%>
+			<%----%>
+			<%--<layout:collectionItem width="30" title="" style="text-align:center;">--%>
+				<%--<bean:define id="rmValue" name="rmBean" property="id"/>--%>
+				<%--<bean:define id="rmDisplayName" name="rmBean" property="id"/>--%>
+				<%--<input type="radio" name="checkbox_template" value="<%=rmValue%>" displayName="<%=rmDisplayName%>"/>--%>
+			<%--</layout:collectionItem>--%>
+ <%----%>
+			<%--<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">--%>
+				<%--<venus:sequence/>--%>
+				<%--<bean:define id="rmValue" name="rmBean" property="id"/>--%>
+				<%--<bean:define id="login_id" name="rmBean" property="login_id"/>--%>
+				<%--<bean:define id="real_name" name="rmBean" property="name"/>--%>
+				<%--<bean:define id="party_id" name="rmBean" property="party_id"/>--%>
+				<%--<bean:define id="is_admin" name="rmBean" property="is_admin"/>--%>
+				<%--<bean:define id="enable_status" name="rmBean" property="enable_status"/>--%>
+				<%--<input type="hidden" signName="hiddenId" value="<%=rmValue%>" login_id="<%=login_id%>" real_name="<%=real_name%>" party_id="<%=party_id%>" is_admin="<%=is_admin%>" enable_status="<%=enable_status%>"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%----%>
+		<%--<layout:collectionItem width="15%" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Number") %>' property="party_id" sortable="false"/>--%>
+		<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Login_Account") %>' property="login_id" sortable="false"/>--%>
+		<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Real_Name") %>' property="name" sortable="false"/>--%>
+		<%--<%if (organizeTooltip == null) { %>--%>
+		<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Organization") %>' sortable="false">--%>
+			<%--<logic:notEmpty name="rmBean" property="owner_org">--%>
+				<%--<bean:define id="owner_org" name="rmBean"  property="owner_org"/>--%>
+				 <%--<%=StringHelperTools.replaceStringToHtml(owner_org)%>--%>
+			 <%--</logic:notEmpty>--%>
+		<%--</layout:collectionItem>		--%>
+		<%--<%} %>--%>
+		<%--<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Status") %>' sortable="false" style="text-align:center;">--%>
+			<%--<bean:define id="enable_status" name="rmBean" property="enable_status"/>--%>
+		    <%--<%="1".equals(enable_status)?venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Enabled"):venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Disable")%>--%>
+		<%--</layout:collectionItem>--%>
+		<%--<layout:collectionItem width="150" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Created") %>' sortable="false">--%>
+			<%--<bean:define id="create_date" name="rmBean" property="create_date"/>--%>
+		    <%--<%=StringHelperTools.prt(create_date,19)%>--%>
+		<%--</layout:collectionItem>--%>
+		<%--<layout:collectionItem width="150" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Password_expiration") %>'  sortable="false">--%>
+			<%--<logic:notEmpty name="rmBean" property="retire_date">--%>
+				<%--<bean:define id="retire_date" name="rmBean" property="retire_date"/>--%>
+		    	<%--<%=StringHelperTools.prt(retire_date,19)%>--%>
+			<%--</logic:notEmpty>--%>
+		<%--</layout:collectionItem>--%>
+
+		<%--</layout:collection>--%>
+		<%----%>
+		<%--<jsp:include page="/jsp/include/page.jsp" />--%>
+		<%--</td>--%>
+	<%--</tr>--%>
 </table>
 </div>
 

@@ -5,6 +5,7 @@
 <%@ page import = "venus.commons.xmlenum.EnumRepository" %>
 <%@ page import = "venus.commons.xmlenum.EnumValueMap" %>
 <%@ page import="java.util.List" %>
+<%@ page import="venus.oa.authority.auauthorizelog.vo.AuAuthorizeLogVo" %>
 <%
 	EnumRepository er = EnumRepository.getInstance();
 	er.loadFromDir();
@@ -98,33 +99,82 @@
 
 <div id="auDivChild1"> 
 <table class="table_div_content">
+
 	<tr>
 		<td>
-		<layout:collection name="beans" id="logList" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >
-			<layout:collectionItem width="40" title="" style="text-align:center;">
-				<bean:define id="wy3" name="logList" property="id"/>
-				<input type="radio" name="checkbox_template" value="<%=null==wy3?"":wy3%>"/>
-			</layout:collectionItem>
-			<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">
-				<venus:sequence/>
-				<bean:define id="id" name="logList" property="id"/>
-			</layout:collectionItem>
-			<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Resource_Name") %>' property="resource_name" />
-			<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Authorized") %>' property="operate_name" />
-			<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Authorized_to_object") %>' property="visitor_name" />
-			<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Authorized_time") %>'>
-				<bean:define id="create_date" name="logList" property="create_date"/>
-		    	<%=StringHelperTools.prt(create_date,19)%>			
-		    </layout:collectionItem>
-			<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.License_type") %>'>
-				<bean:define id="wy5" name="logList" property="accredit_type"/>
-			    <%=typeMap.getLabel(wy5.toString())%>			
-			</layout:collectionItem>
-			<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Authorized_version") %>' property="authorize_tag" />
-		</layout:collection>
-		<jsp:include page="/jsp/include/page.jsp" />
+			<div style="width=100%;overflow-x:visible;overflow-y:visible;">
+				<table cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="listCss">
+					<tr>
+						<td valign="top">
+							<table cellspacing="1" cellpadding="1" border="0" width="100%">
+								<tr valign="top">
+									<th class="listCss" ></th>
+									<th class="listCss" width="30"><fmt:message key='venus.authority.Sequence' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Resource_Name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Authorized' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Authorized_to_object' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Authorized_time' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.License_type' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Authorized_version' bundle='${applicationAuResources}' /></th>
+								</tr>
+								<%
+									List beans = (List) request.getAttribute("beans");
+									for(int i=0;  i<beans.size();) {
+										AuAuthorizeLogVo vo= (AuAuthorizeLogVo)beans.get(i);
+										i++;
+								%>
+								<tr>
+									<td class="listCss" align="center">
+										<input type="radio" name="checkbox_template" value="<%=vo.getId()%>"/>
+									</td>
+									<td class="listCss" align="center"><%=i%><input type="hidden" signName="hiddenId" value="<%=vo.getId()%>" /></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getResource_name())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getOperate_name())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getVisitor_name())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getCreate_date(), 19)%> </td>
+									<td class="listCss"><%=StringHelperTools.prt(typeMap.getLabel(vo.getAccredit_type()))%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getAuthorize_tag())%></td>
+								</tr>
+								<%
+									}
+								%>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<jsp:include page="/jsp/include/page.jsp" />
+			</div>
 		</td>
 	</tr>
+
+
+	<%--<tr>--%>
+		<%--<td>--%>
+		<%--<layout:collection name="beans" id="logList" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >--%>
+			<%--<layout:collectionItem width="40" title="" style="text-align:center;">--%>
+				<%--<bean:define id="wy3" name="logList" property="id"/>--%>
+				<%--<input type="radio" name="checkbox_template" value="<%=null==wy3?"":wy3%>"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">--%>
+				<%--<venus:sequence/>--%>
+				<%--<bean:define id="id" name="logList" property="id"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Resource_Name") %>' property="resource_name" />--%>
+			<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Authorized") %>' property="operate_name" />--%>
+			<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Authorized_to_object") %>' property="visitor_name" />--%>
+			<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Authorized_time") %>'>--%>
+				<%--<bean:define id="create_date" name="logList" property="create_date"/>--%>
+		    	<%--<%=StringHelperTools.prt(create_date,19)%>			--%>
+		    <%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.License_type") %>'>--%>
+				<%--<bean:define id="wy5" name="logList" property="accredit_type"/>--%>
+			    <%--<%=typeMap.getLabel(wy5.toString())%>			--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Authorized_version") %>' property="authorize_tag" />--%>
+		<%--</layout:collection>--%>
+		<%--<jsp:include page="/jsp/include/page.jsp" />--%>
+		<%--</td>--%>
+	<%--</tr>--%>
 </table>
 </div>
 <!-- 参照显示层 -->

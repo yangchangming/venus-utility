@@ -310,14 +310,14 @@
 //    window.name = "mywindow";
 
 </script>
-<%@ include file="/jsp/ewp/au/include/doctype_js.jsp"%>
+<%--<%@ include file="/jsp/ewp/au/include/doctype_js.jsp"%>--%>
 
 </head>
 <body>
 <script language="javascript">
 	writeTableTop("<fmt:message key='venus.authority.Details' bundle='${applicationAuResources}' />",'<venus:base/>/themes/<venus:theme/>/');
 </script>
-<%@ include file="/jsp/ewp/au/include/doctype_reference_pram.jsp"%>
+<%--<%@ include file="/jsp/ewp/au/include/doctype_reference_pram.jsp"%>--%>
 
 <form name="form" method="post">
 <input type="hidden" name="partyId" value="<%=vo.getId()%>">
@@ -406,7 +406,7 @@
 					<td nowrap="true" class="button_ellipse" title="<%=msgResourceMap.getLabel("charDataDesc") %>" onClick="javascript:toAuPage('getDataAu','<%=GlobalConstants.getResType_fild()%>');" ><img src="<venus:base/>/themes/<venus:theme/>/images/icon/add.gif" class="div_control_image"><fmt:message key='venus.authority.Field_level_data_permissions' bundle='${applicationAuResources}' /></td>
 					<td nowrap="true" class="button_ellipse" title="<%=msgResourceMap.getLabel("recordDataDesc") %>" onClick="javascript:toAuPage('getDataAu','<%=GlobalConstants.getResType_recd()%>');" ><img src="<venus:base/>/themes/<venus:theme/>/images/icon/add.gif" class="div_control_image"><fmt:message key='venus.authority.Record_level_data_permissions' bundle='${applicationAuResources}' /></td>
 					<td nowrap="true" class="button_ellipse" title="<%=msgResourceMap.getLabel("viewAuDesc") %>" onClick="javascript:viewAllAu();"><img src="<venus:base/>/themes/<venus:theme/>/images/icon/refresh.gif" class="div_control_image"><fmt:message key='venus.authority.View_authorization' bundle='${applicationAuResources}' /></td>
-                    <%@ include file="/jsp/ewp/au/include/doctype_button.jsp"%>
+                    <%--<%@ include file="/jsp/ewp/au/include/doctype_button.jsp"%>--%>
 				</tr>
 			</table>
 		</td>
@@ -470,7 +470,7 @@
 </table>
 </div>
 <!-- 参照显示层 -->
-    <%@ include file="/jsp/ewp/au/include/doctype_reference.jsp"%>
+    <%--<%@ include file="/jsp/ewp/au/include/doctype_reference.jsp"%>--%>
 <div id="iframeDialog" style="display:none"></div>
 </form>
 <script language="javascript">

@@ -1,9 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/jsp/include/global.jsp" %>
-<%@ page import="venus.oa.util.StringHelperTools" %>
-<%@ page import="venus.oa.helper.LoginHelper" %>
-<%@ page import = "venus.commons.xmlenum.EnumRepository" %>
-<%@ page import = "venus.commons.xmlenum.EnumValueMap" %>
+<%@ page import="venus.commons.xmlenum.EnumRepository" %>
+<%@ page import="venus.commons.xmlenum.EnumValueMap" %>
+<%@ page import = "venus.oa.helper.LoginHelper" %>
+<%@ page import = "venus.oa.util.StringHelperTools" %>
+<%@ page import="java.util.List" %>
+<%@ page import="venus.oa.sysparam.vo.SysParamVo" %>
 
 <%
 	boolean isAdmin = LoginHelper.getIsAdmin(request);
@@ -186,38 +188,90 @@
 
 <div id="auDivChild1"> 
 <table class="table_div_content">
+
 	<tr>
 		<td>
-		<layout:collection name="beans" id="wy1" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" onRowClick="javascript:buttonControl_onClick(getRowHiddenId());">
-			<layout:collectionItem width="40" title="" style="text-align:center;">
-				<bean:define id="wy3" name="wy1" property="id"/>
-				<bean:define id="enable" name="wy1" property="enable"/>
-				<bean:define id="propertytype" name="wy1" property="propertytype"/>
-					<input type="radio" name="checkbox_template" value="<%=wy3%>"/>
-					<input type="hidden" signName="hiddenId" value="<%=wy3%>" enable="<%= enable %>" propertytype="<%= propertytype %>"/>
-			</layout:collectionItem>
-			<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">
-				<venus:sequence/>
-			</layout:collectionItem>
-			<layout:collectionItem width="200"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Parameter_name") %>' property="propertykey" />
-			<layout:collectionItem width="120"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Parameter_values") %>' property="value" />
-			<layout:collectionItem width="120"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Parameter_type") %>'>
-				<bean:define id="propertytype" name="wy1" property="propertytype"/>
-				<%=paramTypeMap.getLabel(propertytype.toString()) %>
-			</layout:collectionItem>
-			<layout:collectionItem width="180" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Set_the_time") %>' property="updateTime">
-				<bean:define id="updateTime" name="wy1" property="updateTime"/>
-				<%=StringHelperTools.prt(updateTime, 19)%>
-			</layout:collectionItem>
-			<layout:collectionItem width="100" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Set_of_people") %>' property="creatorName" />
-			<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Description") %>' property="description" />
-			<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Status") %>' style="text-align:center;">
-				<bean:define id="enable" name="wy1" property="enable"/>
-				<%=enableStatusMap.getLabel(enable.toString()) %>
-			 </layout:collectionItem>
-		 </layout:collection>
+			<div style="width=100%;overflow-x:visible;overflow-y:visible;">
+				<table cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="listCss">
+					<tr>
+						<td valign="top">
+							<table cellspacing="1" cellpadding="1" border="0" width="100%">
+								<tr valign="top">
+									<th class="listCss" ></th>
+									<th class="listCss" width="30"><fmt:message key='venus.authority.Sequence' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="200"><fmt:message key='venus.authority.Parameter_name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="80"><fmt:message key='venus.authority.Parameter_values' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="80"><fmt:message key='venus.authority.Parameter_type' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="150"><fmt:message key='venus.authority.Set_the_time' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="100"><fmt:message key='venus.authority.Set_of_people' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Description' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="140"><fmt:message key='venus.authority.Status' bundle='${applicationAuResources}' /></th>
+								</tr>
+								<%
+									List beans = (List) request.getAttribute("beans");
+									for(int i=0;  i<beans.size();) {
+										SysParamVo vo= (SysParamVo)beans.get(i);
+										i++;
+								%>
+								<tr>
+									<td class="listCss" align="center">
+										<input type="radio" name="checkbox_template" value="<%=vo.getId()%>"/>
+									</td>
+									<td class="listCss" align="center"><%=i%><input type="hidden" signName="hiddenId" value="<%=vo.getId()%>" /></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getPropertykey())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getValue())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getPropertytype())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getUpdateTime(), 19)%> </td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getCreatorName())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getDescription())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(enableStatusMap.getLabel(vo.getEnable()))%></td>
+								</tr>
+								<%
+									}
+								%>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<jsp:include page="/jsp/include/page.jsp" />
+			</div>
 		</td>
 	</tr>
+
+
+
+	<%--<tr>--%>
+		<%--<td>--%>
+		<%--<layout:collection name="beans" id="wy1" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" onRowClick="javascript:buttonControl_onClick(getRowHiddenId());">--%>
+			<%--<layout:collectionItem width="40" title="" style="text-align:center;">--%>
+				<%--<bean:define id="wy3" name="wy1" property="id"/>--%>
+				<%--<bean:define id="enable" name="wy1" property="enable"/>--%>
+				<%--<bean:define id="propertytype" name="wy1" property="propertytype"/>--%>
+					<%--<input type="radio" name="checkbox_template" value="<%=wy3%>"/>--%>
+					<%--<input type="hidden" signName="hiddenId" value="<%=wy3%>" enable="<%= enable %>" propertytype="<%= propertytype %>"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">--%>
+				<%--<venus:sequence/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="200"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Parameter_name") %>' property="propertykey" />--%>
+			<%--<layout:collectionItem width="120"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Parameter_values") %>' property="value" />--%>
+			<%--<layout:collectionItem width="120"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Parameter_type") %>'>--%>
+				<%--<bean:define id="propertytype" name="wy1" property="propertytype"/>--%>
+				<%--<%=paramTypeMap.getLabel(propertytype.toString()) %>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="180" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Set_the_time") %>' property="updateTime">--%>
+				<%--<bean:define id="updateTime" name="wy1" property="updateTime"/>--%>
+				<%--<%=StringHelperTools.prt(updateTime, 19)%>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="100" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Set_of_people") %>' property="creatorName" />--%>
+			<%--<layout:collectionItem  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Description") %>' property="description" />--%>
+			<%--<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Status") %>' style="text-align:center;">--%>
+				<%--<bean:define id="enable" name="wy1" property="enable"/>--%>
+				<%--<%=enableStatusMap.getLabel(enable.toString()) %>--%>
+			 <%--</layout:collectionItem>--%>
+		 <%--</layout:collection>--%>
+		<%--</td>--%>
+	<%--</tr>--%>
 	<tr>
 		<td><br/></td>
 	</tr>

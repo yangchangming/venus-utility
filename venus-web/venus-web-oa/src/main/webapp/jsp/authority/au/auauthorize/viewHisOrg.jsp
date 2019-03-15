@@ -8,7 +8,7 @@
 <%@ page import="java.util.Set"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.Iterator"%>
-<%@ page import="venus.frames.mainframe.oid.Helper"%>
+<%@ page import="venus.frames.mainframe.util.Helper"%>
 <%@ page import = "venus.commons.xmlenum.EnumRepository" %>
 <%@ page import = "venus.commons.xmlenum.EnumValueMap" %>
 <%@ page import="venus.springsupport.BeanFactoryHelper" %>

@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="venus.oa.util.VoHelperTools" %>
 <%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="java.util.List" %>
+<%@ page import="venus.oa.authority.auvisitor.vo.AuVisitorVo" %>
 <%@ include file="/jsp/include/global.jsp" %>
 <%
     String partyTypes = request.getParameter("partyTypes");
@@ -160,31 +162,79 @@
 
 <div id="auDivChild1"> 
 <table class="table_div_content">
+
 	<tr>
 		<td>
-		<layout:collection onRowDblClick="auth_onClick(getRowHiddenId())" name="wy" id="wy1" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >
-			<layout:collectionItem width="30" title="" style="text-align:center;">
-				<bean:define id="wy3" name="wy1" property="id"/>
-					<input type="radio" name="checkbox_template" value="<%=wy3%>"/>
-					<input type="hidden" signName="hiddenId" value="<%=wy3%>"/>
-			</layout:collectionItem>
-			<layout:collectionItem width="30" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">
-				<venus:sequence/>
-			</layout:collectionItem>
-			<layout:collectionItem width="160" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Number") %>' property="id" />	
-			<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Name") %>' property="name" />	
-				<layout:collectionItem width="400" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Organization") %>' sortable="false">
-					<logic:notEmpty name="wy1" property="owner_org">
-						<bean:define id="owner_org" name="wy1"  property="owner_org"/>
-						 <%=StringHelperTools.replaceStringToHtml(owner_org)%>
-					 </logic:notEmpty>
-				</layout:collectionItem>		
-			<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Notes") %>' property="remark" />
-		</layout:collection>
-		
-		<jsp:include page="/jsp/include/page.jsp" />
+			<div style="width=100%;overflow-x:visible;overflow-y:visible;">
+				<table cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="listCss">
+					<tr>
+						<td valign="top">
+							<table cellspacing="1" cellpadding="1" border="0" width="100%">
+								<tr valign="top">
+									<th class="listCss" width="5%"></th>
+									<th class="listCss" width="5%"><fmt:message key='venus.authority.Sequence' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="20%"><fmt:message key='venus.authority.Number' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="20%"><fmt:message key='venus.authority.Name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="35%"><fmt:message key='venus.authority.Organization' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Notes' bundle='${applicationAuResources}' /></th>
+								</tr>
+								<%
+									List beans = (List) request.getAttribute("wy");
+									for(int i=0;  i<beans.size();) {
+										AuVisitorVo vo= (AuVisitorVo)beans.get(i);
+										i++;
+								%>
+								<tr>
+									<td class="listCss" align="center">
+										<input type="radio" name="checkbox_template" value="<%=vo.getId()%>"/>
+									</td>
+									<td class="listCss" align="center"><%=i%><input type="hidden" signName="hiddenId" value="<%=vo.getId()%>" /></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getId())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getName())%></td>
+
+									<%if (vo.getOwner_org()!=null) {%>
+									<td class="listCss"><%=StringHelperTools.prt(StringHelperTools.replaceStringToHtml(vo.getOwner_org()))%></td>
+									<%}%>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getRemark())%></td>
+								</tr>
+								<%
+									}
+								%>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<jsp:include page="/jsp/include/page.jsp" />
+			</div>
 		</td>
 	</tr>
+
+
+	<%--<tr>--%>
+		<%--<td>--%>
+		<%--<layout:collection onRowDblClick="auth_onClick(getRowHiddenId())" name="wy" id="wy1" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >--%>
+			<%--<layout:collectionItem width="30" title="" style="text-align:center;">--%>
+				<%--<bean:define id="wy3" name="wy1" property="id"/>--%>
+					<%--<input type="radio" name="checkbox_template" value="<%=wy3%>"/>--%>
+					<%--<input type="hidden" signName="hiddenId" value="<%=wy3%>"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="30" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">--%>
+				<%--<venus:sequence/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="160" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Number") %>' property="id" />	--%>
+			<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Name") %>' property="name" />	--%>
+				<%--<layout:collectionItem width="400" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Organization") %>' sortable="false">--%>
+					<%--<logic:notEmpty name="wy1" property="owner_org">--%>
+						<%--<bean:define id="owner_org" name="wy1"  property="owner_org"/>--%>
+						 <%--<%=StringHelperTools.replaceStringToHtml(owner_org)%>--%>
+					 <%--</logic:notEmpty>--%>
+				<%--</layout:collectionItem>		--%>
+			<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Notes") %>' property="remark" />--%>
+		<%--</layout:collection>--%>
+		<%----%>
+		<%--<jsp:include page="/jsp/include/page.jsp" />--%>
+		<%--</td>--%>
+	<%--</tr>--%>
 </table>
 </div>
 <!-- 参照显示层 -->

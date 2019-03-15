@@ -1,11 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/jsp/include/global.jsp" %>
-<%@ page import = "java.util.List,java.util.Iterator,java.util.ArrayList"%>
-<%@ page import="venus.frames.web.page.PageVo" %>
-<%@ page import="venus.oa.authority.auresource.vo.AuResourceVo"%>
-<%@ page import="venus.oa.util.VoHelperTools" %>
-<%@ page import="venus.oa.util.StringHelperTools" %>
 <%@ page import="venus.oa.authority.auresource.util.IAuResourceConstants" %>
+<%@ page import="venus.oa.authority.auresource.vo.AuResourceVo" %>
+<%@ page import="venus.oa.util.StringHelperTools" %>
+<%@ page import="venus.oa.util.VoHelperTools" %>
+<%@ page import="java.util.List" %>
 
 <title><fmt:message key='venus.authority.Record_level_data_permissions' bundle='${applicationAuResources}' /></title>
 <script>    
@@ -156,30 +155,82 @@
 
 <div id="auDivChild1"> 
 <table class="table_div_content">
+
 	<tr>
 		<td>
-		<layout:collection name="beans" id="wy1" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >
-			<layout:collectionItem width="20" title="" style="text-align:center;">
-				<bean:define id="wy3" name="wy1" property="id"/>
-					<input type="radio" name="checkbox_template" value="<%=wy3%>"/>
-			</layout:collectionItem>
-			<layout:collectionItem width="20"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">
-				<venus:sequence/>
-			</layout:collectionItem>
-			<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Resource_Name") %>' property="name" />    
-			<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Field_name") %>' property="field_name" />
-            <layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Table_Chinese_name") %>' property="table_chinesename" />    
-            <layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Table_name") %>' property="table_name" /> 
-			<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Filters") %>' property="value" /> 
-            <layout:collectionItem width="40" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Status") %>' sortable="false" style="text-align:center;">
-			<bean:define id="enable_status" name="wy1" property="enable_status"/>
-		    <%="1".equals(enable_status)?venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Enabled"):venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Disable")%>
-		    </layout:collectionItem>
-		</layout:collection>
-		
-		<jsp:include page="/jsp/include/page.jsp" />
+			<div style="width=100%;overflow-x:visible;overflow-y:visible;">
+				<table cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="listCss">
+					<tr>
+						<td valign="top">
+							<table cellspacing="1" cellpadding="1" border="0" width="100%">
+								<tr valign="top">
+									<th class="listCss" ></th>
+									<th class="listCss" width="30"><fmt:message key='venus.authority.Sequence' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Resource_Name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Field_name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Table_Chinese_name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Table_name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Filters' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Status' bundle='${applicationAuResources}' /></th>
+								</tr>
+								<%
+									List beans = (List) request.getAttribute("beans");
+									for(int i=0;  i<beans.size();) {
+										AuResourceVo vo= (AuResourceVo)beans.get(i);
+										i++;
+								%>
+								<tr>
+									<td class="listCss" align="center">
+										<input type="radio" name="checkbox_template" value="<%=vo.getId()%>"/>
+									</td>
+									<td class="listCss" align="center"><%=i%><input type="hidden" signName="hiddenId" value="<%=vo.getId()%>" /></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getName())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getField_name())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getTable_chinesename())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getTable_name())%> </td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getValue())%></td>
+									<td class="listCss">
+										<%="1".equals(vo.getEnable_status())?venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Enabled"):venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Disable")%>
+									</td>
+								</tr>
+								<%
+									}
+								%>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<jsp:include page="/jsp/include/page.jsp" />
+			</div>
 		</td>
 	</tr>
+
+
+
+	<%--<tr>--%>
+		<%--<td>--%>
+		<%--<layout:collection name="beans" id="wy1" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0" >--%>
+			<%--<layout:collectionItem width="20" title="" style="text-align:center;">--%>
+				<%--<bean:define id="wy3" name="wy1" property="id"/>--%>
+					<%--<input type="radio" name="checkbox_template" value="<%=wy3%>"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem width="20"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">--%>
+				<%--<venus:sequence/>--%>
+			<%--</layout:collectionItem>--%>
+			<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Resource_Name") %>' property="name" />    --%>
+			<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Field_name") %>' property="field_name" />--%>
+            <%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Table_Chinese_name") %>' property="table_chinesename" />    --%>
+            <%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Table_name") %>' property="table_name" /> --%>
+			<%--<layout:collectionItem width="60" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Filters") %>' property="value" /> --%>
+            <%--<layout:collectionItem width="40" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Status") %>' sortable="false" style="text-align:center;">--%>
+			<%--<bean:define id="enable_status" name="wy1" property="enable_status"/>--%>
+		    <%--<%="1".equals(enable_status)?venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Enabled"):venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Disable")%>--%>
+		    <%--</layout:collectionItem>--%>
+		<%--</layout:collection>--%>
+		<%----%>
+		<%--<jsp:include page="/jsp/include/page.jsp" />--%>
+		<%--</td>--%>
+	<%--</tr>--%>
 </table>
 </div>
 </form>

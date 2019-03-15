@@ -203,58 +203,112 @@
 
 <div id="auDivChild1"> 
 <table class="table_div_content2" width="100%" >
+
 	<tr>
 		<td>
-		<layout:collection onRowDblClick="detail_onClick(getRowHiddenId())"  name="beans" id="rmBean" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0">
-			
-			<layout:collectionItem width="30" title="<input type='checkbox' pdType='control' control='checkbox_template'/>" style="text-align:center;">
-				<bean:define id="rmValue" name="rmBean" property="id"/>
-				<bean:define id="rmDisplayName" name="rmBean" property="id"/>
-				<input type="checkbox" name="checkbox_template" value="<%=rmValue%>" displayName="<%=rmDisplayName%>" sequenceValue="<venus:sequence/>"/>
-			</layout:collectionItem>
-			
-			<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">
-				<venus:sequence/>
-				<bean:define id="rmValue" name="rmBean" property="id"/>
-				<input type="hidden" signName="hiddenId" value="<%=rmValue%>"/>
-			</layout:collectionItem>
-			
-
-			<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Account") %>' property="login_id" sortable="false"/>
-			
-			<layout:collectionItem width="80" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Name0") %>' property="name" sortable="false"/>
-			
-			<layout:collectionItem title="IP<fmt:message key='venus.authority.Address' bundle='${applicationAuResources}' />" property="login_ip" sortable="false"/>
-			
-			<layout:collectionItem width="60" title="IE<fmt:message key='venus.authority.Version' bundle='${applicationAuResources}' />" property="ie" sortable="false"/>
-			
-			<layout:collectionItem width="110" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Operating_system") %>' property="os" sortable="false"/>
-			
-			<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Host_name") %>' property="host" sortable="false"/>
-			
-			<!--layout:collectionItem width="60" title="退出类型" property="logout_type" sortable="false"/-->
-			
-			<layout:collectionItem width="150" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Login_time") %>' property="login_time" sortable="false">
-				<bean:define id="rmValue" name="rmBean" property="login_time"/>
-				<%=StringHelperTools.prt(rmValue, 19)%>
-			</layout:collectionItem>
-			
-	        <layout:collectionItem width="150" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Exit_time") %>'  sortable="false">
-	            <logic:notEmpty name="rmBean" property="logout_time">
-	                <bean:define id="logout_time" name="rmBean" property="logout_time"/>
-	                <%=StringHelperTools.prt(logout_time,19)%>
-	            </logic:notEmpty>
-	        </layout:collectionItem>			
-			
-			<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Login_Status") %>' property="login_state" sortable="false"/>
-			
-
-		</layout:collection>
-		
-		<!-- 下边这句是翻页, 如果去掉就不带翻页了,同时注意Action中也要调整方法 -->
-		<jsp:include page="/jsp/include/page.jsp" />
+			<div style="width=100%;overflow-x:visible;overflow-y:visible;">
+				<table cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="listCss">
+					<tr>
+						<td valign="top">
+							<table cellspacing="1" cellpadding="1" border="0" width="100%">
+								<tr valign="top">
+									<th class="listCss" ></th>
+									<th class="listCss" width="30"><fmt:message key='venus.authority.Sequence' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Account' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Name0' bundle='${applicationAuResources}' /></th>
+									<th class="listCss">IP<fmt:message key='venus.authority.Address' bundle='${applicationAuResources}' /></th>
+									<th class="listCss">IE<fmt:message key='venus.authority.Version' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Operating_system' bundle='${applicationAuResources}' /></th>
+									<th class="listCss"><fmt:message key='venus.authority.Host_name' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="140"><fmt:message key='venus.authority.Login_time' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="140"><fmt:message key='venus.authority.Exit_time' bundle='${applicationAuResources}' /></th>
+									<th class="listCss" width="140"><fmt:message key='venus.authority.Login_Status' bundle='${applicationAuResources}' /></th>
+								</tr>
+								<%
+									List beans = (List) request.getAttribute("beans");
+									for(int i=0;  i<beans.size();) {
+										LoginLogVo vo= (LoginLogVo)beans.get(i);
+										i++;
+								%>
+								<tr>
+									<td class="listCss" align="center">
+										<input type="radio" name="checkbox_template" value="<%=vo.getId()%>"/>
+									</td>
+									<td class="listCss" align="center"><%=i%><input type="hidden" signName="hiddenId" value="<%=vo.getId()%>" /></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getLogin_id())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getName())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getLogin_ip())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getIe())%> </td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getOs())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getHost())%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getLogin_time(), 19)%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getLogout_time(), 19)%></td>
+									<td class="listCss"><%=StringHelperTools.prt(vo.getLogin_state())%></td>
+								</tr>
+								<%
+									}
+								%>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<jsp:include page="/jsp/include/page.jsp" />
+			</div>
 		</td>
 	</tr>
+
+
+	<%--<tr>--%>
+		<%--<td>--%>
+		<%--<layout:collection onRowDblClick="detail_onClick(getRowHiddenId())"  name="beans" id="rmBean" styleClass="listCss" width="100%" indexId="orderNumber" align="center" sortAction="0">--%>
+			<%----%>
+			<%--<layout:collectionItem width="30" title="<input type='checkbox' pdType='control' control='checkbox_template'/>" style="text-align:center;">--%>
+				<%--<bean:define id="rmValue" name="rmBean" property="id"/>--%>
+				<%--<bean:define id="rmDisplayName" name="rmBean" property="id"/>--%>
+				<%--<input type="checkbox" name="checkbox_template" value="<%=rmValue%>" displayName="<%=rmDisplayName%>" sequenceValue="<venus:sequence/>"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%----%>
+			<%--<layout:collectionItem width="30"  title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Sequence") %>' style="text-align:center;">--%>
+				<%--<venus:sequence/>--%>
+				<%--<bean:define id="rmValue" name="rmBean" property="id"/>--%>
+				<%--<input type="hidden" signName="hiddenId" value="<%=rmValue%>"/>--%>
+			<%--</layout:collectionItem>--%>
+			<%----%>
+
+			<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Account") %>' property="login_id" sortable="false"/>--%>
+			<%----%>
+			<%--<layout:collectionItem width="80" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Name0") %>' property="name" sortable="false"/>--%>
+			<%----%>
+			<%--<layout:collectionItem title="IP<fmt:message key='venus.authority.Address' bundle='${applicationAuResources}' />" property="login_ip" sortable="false"/>--%>
+			<%----%>
+			<%--<layout:collectionItem width="60" title="IE<fmt:message key='venus.authority.Version' bundle='${applicationAuResources}' />" property="ie" sortable="false"/>--%>
+			<%----%>
+			<%--<layout:collectionItem width="110" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Operating_system") %>' property="os" sortable="false"/>--%>
+			<%----%>
+			<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Host_name") %>' property="host" sortable="false"/>--%>
+			<%----%>
+			<%--<!--layout:collectionItem width="60" title="退出类型" property="logout_type" sortable="false"/-->--%>
+			<%----%>
+			<%--<layout:collectionItem width="150" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Login_time") %>' property="login_time" sortable="false">--%>
+				<%--<bean:define id="rmValue" name="rmBean" property="login_time"/>--%>
+				<%--<%=StringHelperTools.prt(rmValue, 19)%>--%>
+			<%--</layout:collectionItem>--%>
+			<%----%>
+	        <%--<layout:collectionItem width="150" title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Exit_time") %>'  sortable="false">--%>
+	            <%--<logic:notEmpty name="rmBean" property="logout_time">--%>
+	                <%--<bean:define id="logout_time" name="rmBean" property="logout_time"/>--%>
+	                <%--<%=StringHelperTools.prt(logout_time,19)%>--%>
+	            <%--</logic:notEmpty>--%>
+	        <%--</layout:collectionItem>			--%>
+			<%----%>
+			<%--<layout:collectionItem title='<%=venus.frames.i18n.util.LocaleHolder.getMessage("venus.authority.Login_Status") %>' property="login_state" sortable="false"/>--%>
+			<%----%>
+
+		<%--</layout:collection>--%>
+		<%----%>
+		<%--<jsp:include page="/jsp/include/page.jsp" />--%>
+		<%--</td>--%>
+	<%--</tr>--%>
 </table>
 </div>
 

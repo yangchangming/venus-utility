@@ -31,6 +31,7 @@ import venus.config.ConfigFactory;
 import venus.core.SpiMeta;
 import venus.datasource.GenericDataSource;
 import venus.exception.VenusFrameworkException;
+import venus.frames.mainframe.util.BeanFactoryHolder;
 import venus.init.Initialization;
 import venus.util.VenusPathUtil;
 
@@ -75,6 +76,10 @@ public class BeanInitialization implements Initialization {
                 subContext = rootApplicationContext;
             }
             BeanFactoryHelper.setBeanFactory(subContext);
+
+            //todo 兼容老的udp框架容器,要删掉
+            BeanFactoryHolder.setBeanFactory(subContext);
+
 
             finish = true;
 

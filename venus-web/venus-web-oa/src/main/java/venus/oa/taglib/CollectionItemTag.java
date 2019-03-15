@@ -13,7 +13,6 @@ import javax.servlet.jsp.tagext.BodyTag;
  * header - The key of the title to display for this property<br>
  * property - The property to display<br>
  * <br>
- * @see BaseCollectionTag BaseCollectionTag
  *
  * @author: Jean-Noel Ribette
  **/

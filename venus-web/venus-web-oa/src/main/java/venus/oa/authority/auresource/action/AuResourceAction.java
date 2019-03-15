@@ -55,10 +55,8 @@ public class AuResourceAction implements IAuResourceConstants {
         vo.setCreate_date(DateTools.getSysTimestamp()); //打创建时间戳
         auResourceBs.insert(vo); //插入单条记录
         if ("3".equals(vo.getResource_type())) {
-//            return request.findForward("queryAllfield");
             return "redirect:/auResource/queryAllfield";
         }
-//        return request.findForward(FORWARD_TO_QUERY_ALL_KEY);
         return "redirect:/auResource/queryAll";
     }
 
@@ -286,7 +284,6 @@ public class AuResourceAction implements IAuResourceConstants {
             beans = bs.queryByCondition(pageVo.getCurrentPage(), pageVo.getPageSize(), condition); //查询全部
         }
         request.setAttribute(REQUEST_BEANS_VALUE, beans); //把结果集放入request
-//        return request.findForward(FORWARD_LIST_PAGE_KEY);
         return FORWARD_LIST_PAGE_KEY;
     }
 

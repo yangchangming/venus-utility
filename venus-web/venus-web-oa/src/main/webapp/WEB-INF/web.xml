@@ -138,10 +138,15 @@
     </filter-mapping>
 
 
-<!-- venus-udp core servlet -->
+    <!-- venus-udp core servlet -->
     <servlet>
         <servlet-name>action</servlet-name>
         <servlet-class>venus.frames.base.action.DefaultServlet</servlet-class>
+
+        <init-param>
+            <param-name>detail</param-name>
+            <param-value>2</param-value>
+        </init-param>
 
         <init-param>
             <param-name>CLASS_CAN_NO_FOUND</param-name>
@@ -156,17 +161,7 @@
             </param-value>
         </init-param>
 
-        <!--<init-param>-->
-            <!--<param-name>config</param-name>-->
-            <!--<param-value>-->
-                <!--/WEB-INF/conf/struts-config/struts-config.xml,-->
-            <!--</param-value>-->
-        <!--</init-param>-->
-
-        <init-param>
-            <param-name>detail</param-name>
-            <param-value>2</param-value>
-        </init-param>
+        
         <load-on-startup>0</load-on-startup>
     </servlet>
 
