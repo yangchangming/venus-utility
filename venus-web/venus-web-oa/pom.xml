@@ -39,11 +39,6 @@
         </dependency>
 
         <dependency>
-            <groupId>venus</groupId>
-            <artifactId>struts-layout</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>sslext</groupId>
             <artifactId>sslext</artifactId>
         </dependency>

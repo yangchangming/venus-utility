@@ -1,10 +1,5 @@
 <%@ page errorPage="/jsp/include/errorpage.jsp" %>
 
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<%@ taglib uri="/WEB-INF/struts-template.tld" prefix="template" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-layout.tld" prefix="layout" %>
 <%@ taglib uri="/WEB-INF/gap-html.tld" prefix="venus" %>
 <%@ taglib uri="/WEB-INF/gap-i18n.tld" prefix="i18n" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
