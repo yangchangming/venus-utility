@@ -1,5 +1,6 @@
 package venus.frames.mainframe.oid;
 
+import org.apache.log4j.Logger;
 import venus.frames.base.IGlobalsKeys;
 import venus.frames.mainframe.db.conpool.ConnectionHelper;
 import venus.frames.mainframe.log.LogMgr;
@@ -27,6 +28,9 @@ import java.util.Hashtable;
  * @author 张文韬
  */
 public class OidMgr implements IService, IGlobalsKeys {
+
+    private static Logger logger = Logger.getLogger(OidMgr.class);
+
 
     /**
      * 线程的是否运行停止的开关
@@ -85,7 +89,7 @@ public class OidMgr implements IService, IGlobalsKeys {
 
     private static boolean m_bIsAllLocalCall = true;
 
-    // private Hashtable m_hashOidSrvTable = new Hashtable() ;
+    private Connection connection = null;
 
     /**
      * 默认构造函数
@@ -95,6 +99,18 @@ public class OidMgr implements IService, IGlobalsKeys {
     public OidMgr() {
         super();
     }
+
+    /**
+     * Constructor
+     *
+     * @param connection
+     */
+    public OidMgr(final Connection connection){
+        if (connection!=null){
+            this.connection = connection;
+        }
+    }
+
 
     /**
      * 加载配置数据<br>
@@ -204,13 +220,23 @@ public class OidMgr implements IService, IGlobalsKeys {
      */
     public void startup() {
         m_Singleton = this;
-        // 加载配置数据
         loadConf();
         if (m_bIsAllLocalCall) {
-            // 加载所有表信息及其相对应的OID生成器信息
             loadAllGenerators();
-            // 启动线程
-            // m_Singleton.start();
+
+            logger.info("");
+            logger.info("------------------------------------------------------------------------");
+            logger.info("OID Generator load success.");
+
+            for (Object key : m_hashOIDGenTable.keySet()) {
+                if (key!=null && !"".equals(key)){
+                    OidGenerator oidGenerator = (OidGenerator)m_hashOIDGenTable.get(key);
+                    logger.info("Max(OID): "+ key.toString() + " = " + oidGenerator.getMaxOID().toString());
+                }
+            }
+
+            logger.info("------------------------------------------------------------------------");
+            logger.info("");
         }
     }
 
@@ -223,7 +249,12 @@ public class OidMgr implements IService, IGlobalsKeys {
     public Connection getConnection() {
         Connection result = null;
         try {
-            result = ConnectionHelper.requestConnection();
+            if (this.connection!=null){
+                result = this.connection;
+            }else {
+                //已经没有效果，数据库连接对象已经被重写，老方法无法获取
+                result = ConnectionHelper.requestConnection();
+            }
         } catch (SQLException e) {
             try {
                 if (result != null)
@@ -247,10 +278,13 @@ public class OidMgr implements IService, IGlobalsKeys {
     public Connection getConnection(String strDBUser) {
         Connection result = null;
         try {
-            result = ConnectionHelper.getConnectionByDS();
-//            result = venus.helper.ConnectionHelper.getConnection();
-
-        } catch (Exception e) {
+            if (this.connection!=null){
+                result = this.connection;
+            }else {
+                //已经没有效果，数据库连接对象已经被重写，老方法无法获取
+                result = ConnectionHelper.getConnectionByDS();
+            }
+        } catch (SQLException e) {
             try {
                 if (result != null)
                     result.close();
@@ -422,25 +456,18 @@ public class OidMgr implements IService, IGlobalsKeys {
                             m_hashOIDGenTable.remove(aTableName);
 
                         m_hashOIDGenTable.put(aTableName, oidGen);
-                        LogMgr.getLogger(this).debug(
-                                "oid :" + aTableName + " :"
-                                        + oidMax.longValue());
+
+//                        LogMgr.getLogger(this).debug("oid :" + aTableName + " :" + oidMax.longValue());
 
                     } catch (SQLException e) {
                         // 对任何表OID装入的错误，不影响其他表OID的装入
-                        LogMgr.getLogger(this.getClass().getName()).error(
-                                "error in loadAllGenerators(...): getMaxOIDOfTable in table : "
-                                        + aTableName, e);
+                        LogMgr.getLogger(this.getClass().getName()).error("error in loadAllGenerators(...): getMaxOIDOfTable in table : " + aTableName, e);
                     } catch (Exception e) {
-                        LogMgr.getLogger(this.getClass().getName()).error(
-                                "error in loadAllGenerators(...): getMaxOIDOfTable in table : "
-                                        + aTableName, e);
-
+                        LogMgr.getLogger(this.getClass().getName()).error("error in loadAllGenerators(...): getMaxOIDOfTable in table : " + aTableName, e);
                         if (con != null)
                             con.close();
                         conTable.remove(teo.getOidDBSrc());
                         // 对任何表OID装入的错误，不影响其他表OID的装入
-
                     }
 
                 }

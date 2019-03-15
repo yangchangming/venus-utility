@@ -157,10 +157,7 @@
             <param-name>init-classes</param-name>
             <param-value>
                 venus.frames.mainframe.util.InitPathPlugIn;
-                venus.frames.mainframe.util.InitBeanFactoryPlugIn;
-                venus.frames.mainframe.taskmgr.ServiceKeeperStartPlugIn;
                 venus.frames.mainframe.util.InitEnumLoaderPlugin
-                <!--venus.frames.mainframe.ncache.InitCachePlugin-->
             </param-value>
         </init-param>
 

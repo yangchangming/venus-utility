@@ -405,50 +405,32 @@ public class ServiceKeeper {
 					}
 				};
 
-							//将每一个线程（Thread）加入列表，以供维护
 				m_vecSrvThreads.addElement(t);
-				//启动线程
 				t.start();
-				//将每一个任务加入任务列表，以供维护
 				m_vecServices.addElement(srv);
 
-				//输出当前哪一个任务被启动
 				showMessage(srv.getServiceName() + " started!");
-
 			} catch (ClassNotFoundException cnfe) {
-				LogMgr.getLogger(this.getClass().getName()).error(
-					"startService(): ClassNotFoundException",
-					cnfe);
+				LogMgr.getLogger(this.getClass().getName()).error("startService(): ClassNotFoundException", cnfe);
 			} catch (IllegalAccessException iae) {
-				LogMgr.getLogger(this.getClass().getName()).error(
-					"startService(): IllegalAccessException",
-					iae);
+				LogMgr.getLogger(this.getClass().getName()).error("startService(): IllegalAccessException", iae);
 			} catch (InstantiationException ie) {
-				LogMgr.getLogger(this.getClass().getName()).error(
-					"startService(): InstantiationException",
-					ie);
+				LogMgr.getLogger(this.getClass().getName()).error("startService(): InstantiationException", ie);
 			}
 		}
 
-		//输出启动成功信息
 		showMessage("Task scheduler started successfully");
-		showMessage(
-			"Service Keeper listening at port: " + String.valueOf(m_nPort));
+		showMessage("Service Keeper listening at port: " + String.valueOf(m_nPort));
 
-	
-		// 进入命令监听状态
-		/***/
 		LogMgr.getLogger(this.getClass().getName()).info(" 进入命令监听状态....");
-		/***/
         try {
           listen();
         }
         catch (InterruptedException ex) {
           try {
-            showMessage("Task service shutdown successfully!");
-            this.finalize();
-          }
-          catch (Throwable ex1) {
+			  showMessage("Task service shutdown successfully!");
+            	this.finalize();
+          } catch (Throwable ex1) {
             ex1.printStackTrace();
           }
         }

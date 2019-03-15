@@ -41,7 +41,6 @@ public abstract class AbstractTableInfoDM implements ITableInfoDM {
         if (m_connect == null)
             return null;
         String connStr = m_connect.toString().toLowerCase();
-        System.out.println( "连接池字符串：" + connStr );
         if( connStr.indexOf("ibm.db2") != -1 )
             DB_TYPE = DB2;
         else if ( connStr.indexOf("mysql") != -1 )
@@ -71,35 +70,29 @@ public abstract class AbstractTableInfoDM implements ITableInfoDM {
         String tableCode = ti.getTableCode();
         String tableName = ti.getTableName();
         if (!OidMgr.checkTableCode(tableCode)) {
-            String err = "Table: "
-                    + tableName
-                    + ", TableCode: "
-                    + tableCode
-                    + ". Length is above sys tableCode length setting. Check it.";
+            String err = "Table: " + tableName + ", TableCode: " + tableCode + ". Length is above sys tableCode length setting. Check it.";
             LogMgr.getLogger(this).error(err);
             return null;
         }
+
         Statement stmt = getConnection().createStatement();
         ResultSet rs = null;
-        //取数据
         try {
             String strSQL = null;
             if (DB_TYPE == DB2) {
-                strSQL = "select max(" + oidName + ") as a from " + tableName + " where CHAR(" + oidName + ") like '" + OidMgr.getSYSCode()
-                        + tableCode + "%'";
+                strSQL = "select max(" + oidName + ") as a from " + tableName + " where CHAR(" + oidName + ") like '" + OidMgr.getSYSCode() + tableCode + "%'";
             } else if (DB_TYPE == MYSQL) {
                 strSQL = "select max(" + oidName + ") as a from " + tableName + " where cast( " + oidName + " as char(19) ) > '" + OidMgr.getSYSCode()
                 + tableCode + "00000000000' and cast( " + oidName + " as char(19) ) <= '" + OidMgr.getSYSCode() + tableCode + "99999999999'";
             } else {
-                strSQL = "select max(" + oidName + ") as a from " + tableName + " where " + oidName + " > '" + OidMgr.getSYSCode()
-                        + tableCode + "00000000000' and " + oidName + " <= '" + OidMgr.getSYSCode() + tableCode + "99999999999'";
+                strSQL = "select max(" + oidName + ") as a from " + tableName + " where " + oidName + " > '" + OidMgr.getSYSCode() + tableCode + "00000000000' and " + oidName + " <= '" + OidMgr.getSYSCode() + tableCode + "99999999999'";
             }
                 
-            LogMgr.getLogger(this).debug("SQL: " + strSQL);
+//            LogMgr.getLogger(this).debug("SQL: " + strSQL);
+
             rs = stmt.executeQuery(strSQL);
             if (rs == null) {
-                LogMgr.getLogger(this).error(
-                        tableName + " Error in SQL: " + strSQL + ", Check it.");
+                LogMgr.getLogger(this).error(tableName + " Error in SQL: " + strSQL + ", Check it.");
                 return null;
             }
             try {
@@ -110,9 +103,7 @@ public abstract class AbstractTableInfoDM implements ITableInfoDM {
                     }
                     //如果表中没有数据，需要根据系统编号和表编号初始化一个OID的最大值
                     else {
-                        maxOID = OidMgr.getSysPrefix()
-                                + Long.parseLong(ti.getTableCode())
-                                * OidMgr.getTablePrefix();
+                        maxOID = OidMgr.getSysPrefix() + Long.parseLong(ti.getTableCode()) * OidMgr.getTablePrefix();
                     }
                 }
             } catch (Exception e) {
