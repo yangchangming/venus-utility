@@ -2,8 +2,8 @@
 <%@ page import="java.util.List,java.util.Iterator" %>
 <%@ page import="venus.oa.util.VoHelperTools" %>
 <%@ page import="venus.oa.util.StringHelperTools" %>
-<%@ page import="venus.oa.login.loginlog.vo.LoginLogVo" %>
-<%@ page import="venus.oa.login.loginlog.util.ILoginLogConstants" %>
+<%@ page import="venus.oa.loginlog.vo.LoginLogVo" %>
+<%@ page import="venus.oa.loginlog.util.ILoginLogConstants" %>
 <%  //取出List
 	List lResult = null;  //定义结果列表的List变量
 	if(request.getAttribute(ILoginLogConstants.REQUEST_BEANS) != null) {  //如果request中的beans不为空

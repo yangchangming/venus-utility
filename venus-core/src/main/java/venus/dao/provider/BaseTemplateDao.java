@@ -256,7 +256,8 @@ public class BaseTemplateDao extends PaginationTemplateDao implements BaseDao {
         if (VenusHelper.SQL_FILTER) {
             sql = VenusHelper.doSqlFilter(sql);
         }
-        List res = getJdbcTemplate().query(sql, mapper, firstResult, maxResult);
+        Object[] args = null;
+        List res = query(sql, checkArgs(args), mapper, firstResult, maxResult);
         logEndSQL(sql, null, time);
         return res;
     }

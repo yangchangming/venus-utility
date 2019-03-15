@@ -4,12 +4,12 @@
 package venus.oa.util.tree;
 
 import org.springframework.jdbc.core.RowMapper;
+import venus.frames.base.dao.BaseTemplateDao;
 import venus.oa.helper.OrgHelper;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
+import venus.oa.organization.aupartyrelationtype.dao.impl.AuPartyRelationTypeDao;
 import venus.oa.sysparam.vo.SysParamVo;
 import venus.oa.util.GlobalConstants;
-import venus.frames.base.dao.BaseTemplateDao;
-import venus.frames.mainframe.util.Helper;
 import venus.springsupport.BeanFactoryHelper;
 
 import java.sql.ResultSet;
@@ -90,8 +90,8 @@ public class DeepTreeSearch {
                 sql.append(" OR RELATIONTYPE_ID= '").append(sysVo.getValue()).append("'").append(")"); 
             } 
 	    }
-	    
-		BaseTemplateDao dao=(BaseTemplateDao) BeanFactoryHelper.getBean("auPartyRelationTypeDao");
+
+		AuPartyRelationTypeDao dao=(AuPartyRelationTypeDao) BeanFactoryHelper.getBean("auPartyRelationTypeDao");
 
                 RowMapper rowMapper = new RowMapper() {
                     public Object mapRow(ResultSet rs, int i) throws SQLException {    
@@ -154,7 +154,7 @@ public class DeepTreeSearch {
 	}
 	/**
 	 * 通过code获得上级所有的机构名称
-	 * @param code
+	 *
 	 * @param showUserYn 是否显示最后一级的用户
 	 * @return 返回上级所有的关系名称并用→隔开
 	 */	
