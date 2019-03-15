@@ -15,6 +15,7 @@ import venus.oa.util.tree.DeepTreeSearch;
 import venus.frames.base.bs.BaseBusinessService;
 import venus.frames.base.exception.BaseApplicationException;
 import venus.frames.mainframe.util.Helper;
+import venus.springsupport.BeanFactoryHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,8 +160,7 @@ public class AuVisitorBS extends BaseBusinessService implements IAuVisitorBS, IC
 //        log.debug("根据团体关系ID和团体类型查询相应的访问者Vo，如果查不到则自动生成一个访问者vo并添加到访问者表中，然后返回新添加的访问者vo");
         AuVisitorVo vo = (AuVisitorVo) auVisitorDao.findByOrgId(relId, GlobalConstants.getVisiTypeByPartyType(pType));
         if (vo == null) {
-            IAuPartyRelationBs relBs = (IAuPartyRelationBs) Helper
-                    .getBean(venus.oa.organization.aupartyrelation.util.IConstants.BS_KEY);
+            IAuPartyRelationBs relBs = (IAuPartyRelationBs) BeanFactoryHelper.getBean("auPartyRelationBs");
             AuPartyRelationVo relVo = relBs.find(relId);
             vo = new AuVisitorVo();
             vo.setCode(relVo.getCode());
