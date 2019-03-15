@@ -32,7 +32,13 @@ public class ConfigInitialization implements Initialization {
 
     private static final Logger logger = Logger.getLogger(ConfigInitialization.class);
 
+    private static boolean finish = false;
+
     public void init() {
+        if (isFinish()){
+            logger.info("Configuration Initialization has finished!");
+            return;
+        }
         ConfigFactory.init();
 
         Map<URL, Config> configs = ConfigFactory.fetchAllConfig();
@@ -42,7 +48,12 @@ public class ConfigInitialization implements Initialization {
             configNames[index] = url.getUrl().getFile();
             index++;
         }
+        finish = true;
         venus.log.Logger.keyInfos(logger, configNames);
         venus.log.Logger.keyInfo(logger, "Configuration initial Success!");
+    }
+
+    public boolean isFinish() {
+        return finish;
     }
 }

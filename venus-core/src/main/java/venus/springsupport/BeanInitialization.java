@@ -52,7 +52,13 @@ public class BeanInitialization implements Initialization {
 
     private static final Logger logger = Logger.getLogger(BeanInitialization.class);
 
-    public void init() {
+    private static boolean finish = false;
+
+    public synchronized void init() {
+        if (isFinish()){
+            logger.info("Bean Initialization has finished!");
+            return;
+        }
         try {
             ApplicationContext subContext = null;
             ApplicationContext rootApplicationContext = buildRootApplicationContext();
@@ -70,6 +76,8 @@ public class BeanInitialization implements Initialization {
             }
             BeanFactoryHelper.setBeanFactory(subContext);
 
+            finish = true;
+
             // TODO: 18/5/28 all bean initial has order? such as datasource bean must before other business bean?
 
             venus.log.Logger.keyInfo(logger, "RootApplicationContext initial Success![" + VenusPathUtil.getSystemEnv() + "]");
@@ -78,6 +86,10 @@ public class BeanInitialization implements Initialization {
             logger.error("Initial Root ApplicationContext failure. [" + e.getMessage() + "]");
             throw new VenusFrameworkException(e.getMessage());
         }
+    }
+
+    public boolean isFinish() {
+        return finish;
     }
 
     /**

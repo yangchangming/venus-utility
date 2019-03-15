@@ -16,6 +16,7 @@
 package venus.oa.init;
 
 import venus.core.SpiMeta;
+import venus.frames.mainframe.oid.OidMgr;
 import venus.init.Initialization;
 
 /**
@@ -27,8 +28,23 @@ import venus.init.Initialization;
 @SpiMeta(name = "oid")
 public class OidInitialization implements Initialization {
 
+    private static boolean finish = false;
+
+    org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(OidInitialization.class);
+
     @Override
     public void init() {
+        if (isFinish()){
+            logger.info("OID Initialization has finished!");
+            return;
+        }
+        OidMgr oidMgr = new OidMgr(venus.helper.ConnectionHelper.getConnection());
+        oidMgr.startup();
+        finish = true;
+    }
 
+    @Override
+    public boolean isFinish() {
+        return finish;
     }
 }

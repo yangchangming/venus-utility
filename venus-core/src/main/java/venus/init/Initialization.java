@@ -27,4 +27,6 @@ import venus.core.Spi;
 public interface Initialization {
 
     void init();
+
+    boolean isFinish();
 }
