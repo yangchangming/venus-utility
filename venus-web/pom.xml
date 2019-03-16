@@ -13,6 +13,5 @@
     <packaging>pom</packaging>
     <modules>
         <module>venus-web-oa</module>
-        <module>venus-web-portal</module>
     </modules>
 </project>

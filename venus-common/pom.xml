@@ -39,14 +39,9 @@
             <artifactId>spring-jdbc</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>struts</groupId>
-            <artifactId>struts</artifactId>
-        </dependency>
-
         <!--<dependency>-->
-        <!--<groupId>org.apache.struts</groupId>-->
-        <!--<artifactId>struts2-core</artifactId>-->
+            <!--<groupId>struts</groupId>-->
+            <!--<artifactId>struts</artifactId>-->
         <!--</dependency>-->
 
         <dependency>
