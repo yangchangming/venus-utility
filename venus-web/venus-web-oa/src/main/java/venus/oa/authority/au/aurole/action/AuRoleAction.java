@@ -329,7 +329,6 @@ public class AuRoleAction implements IConstants {
         request.setAttribute("roleId", roleId);
         request.setAttribute(IConstants.PROJECT_VALUE, list);
         request.setAttribute(IConstants.REQUEST_WRITE_BACK_FORM_VALUES, VoHelperTools.getMapFromRequest((HttpServletRequest) request)); //回写表单
-//        return request.findForward(FORWARD_USER_LIST_KEY);
         return "authority/au/aurole/userRef";
     }
 

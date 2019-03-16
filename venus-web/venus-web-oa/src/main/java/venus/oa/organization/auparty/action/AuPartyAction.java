@@ -252,18 +252,16 @@ public class AuPartyAction implements IConstants {
         request.setAttribute(REQUEST_LIST_VALUE, list); //把vo放入request
         request.setAttribute(REQUEST_WRITE_BACK_FORM_VALUES, VoHelperTools.getMapFromVo(obj)); //回写表单
         if (pageFlag == null) {
-//            return request.findForward(FORWARD_DETAIL_KEY);
             return FORWARD_DETAIL_KEY;
         } else {
             if(pageFlag.equals(GlobalConstants.getAuPartyTypePeop())) {
                 List userList = auUserBs.queryByCondition("PARTY_ID='" + id + "'");
                 if(userList!=null && userList.size()>0) {
                     AuUserVo userVo = (AuUserVo)userList.get(0);
-                    request.setAttribute("UserVo", userVo); //把vo放入request
+                    request.setAttribute("UserVo", userVo);
                 }
             }
-            request.setAttribute("pageFlag", pageFlag); //回写pageFlag
-//            return request.findForward(FORWARD_DETAIL_FORPARTY_KEY);
+            request.setAttribute("pageFlag", pageFlag);
             return FORWARD_DETAIL_FORPARTY_KEY;
         }
 
