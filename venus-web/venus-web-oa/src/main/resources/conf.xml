@@ -36,13 +36,11 @@
 
 	<venus.frames.mainframe.log.LogMgr ImplName="venus.frames.mainframe.log.Log4jImpl" />
 
-	<venus.frames.mainframe.context.ContextMgr 
-		ImplName="venus.frames.mainframe.context.DefaultConextImpl" />
+	<venus.frames.mainframe.context.ContextMgr ImplName="venus.frames.mainframe.context.DefaultConextImpl" />
 	<!-- for Cluster: venus.frames.mainframe.context.ClusterContextImpl
 		for Common: venus.frames.mainframe.context.DefaultConextImpl -->
 
-	<venus.frames.mainframe.ncache.CacheFactory 
-		cacheMgrImplName="venus.frames.mainframe.ncache.impl.UdpCacheManager" />
+	<venus.frames.mainframe.ncache.CacheFactory cacheMgrImplName="venus.frames.mainframe.ncache.impl.UdpCacheManager" />
 
 	<venus.frames.mainframe.taskmgr.ServiceKeeper Port="10020">
 		<startup name="venus.frames.mainframe.oid.OidMgr" />
@@ -50,8 +48,7 @@
 
 	<venus.frames.mainframe.db.conpool.ConnectionHelper link="frmConf://db.xml" />
 
-	<venus.frames.util.exception.GlobalExceptionHandlerWithMessageAgent MassageStyle="ALERT_AND_BACK"  DisplayRealError="1"/>
-
+	<!--<venus.frames.util.exception.GlobalExceptionHandlerWithMessageAgent MassageStyle="ALERT_AND_BACK"  DisplayRealError="1"/>-->
 	<!--<venus.frames.mainframe.action.OperationHintUtil link="frmConf://OperationHint.xml" />-->
 
 	<!-- DefaultProfileSizeForCache: 1 forCluster -1 forCommon -->
@@ -61,15 +58,11 @@
 			<plugin name="venus.frames.mainframe.currentlogin.DefaultSysWebProfile" loc="WEB_CONTEXT_KEY" who="0" />
 			<plugin name="venus.frames.mainframe.currentlogin.DefaultSysAppProfile" loc="WEB_CONTEXT_KEY" who="1" />
 		</plugins>
-		<listeners>
-			<!--listener name="venus.frames.mainframe.actionevent.action.DefaultActionListener" loc="WEB_CONTEXT_KEY"/>
-				<listener name="venus.frames.mainframe.actionevent.bs.DefaultActionBSListener" loc="APP_CONTEXT_KEY"/-->
-		</listeners>
 	</venus.frames.mainframe.currentlogin.ProfileMgr>
 
-	<venus.frames.mainframe.actionevent.bs.ActionEventBS>
-		<plugin name="venus.frames.mainframe.actionevent.bs.DefaultActionEventBSPlugIn" type="0" />
-		<plugin name="venus.frames.mainframe.actionevent.bs.DefaultPathEventBSPlugIn" type="1" />
-	</venus.frames.mainframe.actionevent.bs.ActionEventBS>
+	<!--<venus.frames.mainframe.actionevent.bs.ActionEventBS>-->
+		<!--<plugin name="venus.frames.mainframe.actionevent.bs.DefaultActionEventBSPlugIn" type="0" />-->
+		<!--<plugin name="venus.frames.mainframe.actionevent.bs.DefaultPathEventBSPlugIn" type="1" />-->
+	<!--</venus.frames.mainframe.actionevent.bs.ActionEventBS>-->
 
 </venus>

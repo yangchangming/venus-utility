@@ -39,10 +39,11 @@
             <artifactId>spring-jdbc</artifactId>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>struts</groupId>-->
-            <!--<artifactId>struts</artifactId>-->
-        <!--</dependency>-->
+        <!--RequestUtil工具类中的需要从request注入对象到bean中，依赖struts-->
+        <dependency>
+            <groupId>struts</groupId>
+            <artifactId>struts</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>net.sourceforge.jtds</groupId>

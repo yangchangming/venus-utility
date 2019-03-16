@@ -899,20 +899,15 @@ public class Helper extends PageTool implements IGlobalsKeys {
      * @param ignoreProperties ignore target bean's property name
      * @return
      */
-    public static boolean populate(Object obj, IRequest request, Map map,
-                                   String[] ignoreProperties) {
-
+    public static boolean populate(Object obj, IRequest request, Map map, String[] ignoreProperties) {
         return PopulateUtil.populate(obj, request, map, ignoreProperties);
-
     }
 
     /*
      * Bean注值工具方法 @param obj target bean @param rs source ResultSet @return
      * @throws SQLException @throws BeansException
      */
-    public static boolean populate(Object obj, java.sql.ResultSet rs)
-            throws SQLException {
-
+    public static boolean populate(Object obj, java.sql.ResultSet rs) throws SQLException {
         return PopulateUtil.populate(obj, rs);
 
     }
@@ -965,11 +960,8 @@ public class Helper extends PageTool implements IGlobalsKeys {
      * @param effectiveProperties 参与注值的有效属性
      * @author lihong@use.com.cn
      */
-    public static boolean populateFromRequest(Object obj, IRequest request,
-                                              String prefix, String postfix, String[] effectiveProperties) {
-
-        return PopulateUtil.populateFromRequest(obj, request, prefix, postfix,
-                effectiveProperties);
+    public static boolean populateFromRequest(Object obj, IRequest request, String prefix, String postfix, String[] effectiveProperties) {
+        return PopulateUtil.populateFromRequest(obj, request, prefix, postfix, effectiveProperties);
 
     }
 
@@ -984,11 +976,8 @@ public class Helper extends PageTool implements IGlobalsKeys {
      * @param effectiveProperties 参与注值的有效属性
      * @author lihong@use.com.cn
      */
-    public static boolean populateFromRequest(Object obj, IRequest request,
-                                              String prefix, String suffix, Map map, String[] effectiveProperties) {
-
-        return PopulateUtil.populateFromRequest(obj, request, prefix, suffix,
-                map, effectiveProperties);
+    public static boolean populateFromRequest(Object obj, IRequest request, String prefix, String suffix, Map map, String[] effectiveProperties) {
+        return PopulateUtil.populateFromRequest(obj, request, prefix, suffix, map, effectiveProperties);
 
     }
 

@@ -311,9 +311,7 @@ public class RequestUtil extends org.apache.struts.util.RequestUtils {
 	 * @return
 	 */
     public static void populate(Object bean, HttpServletRequest request,String[] ignoreProperties)
-        throws ServletException
-    {
-
+        throws ServletException {
         populate(bean, null, null, request,null,ignoreProperties);
     }
     
@@ -335,14 +333,13 @@ public class RequestUtil extends org.apache.struts.util.RequestUtils {
     
 	/**
 	 * Bean复制工具方法
-	 * @param obj target bean
+     *
 	 * @param request  source request
 	 * @param map rename property map:  key: srcName, value:targetName
 	 * @param ignoreProperties   ignore target bean's property name	
 	 * @return
 	 */
-    public static void populate(Object bean, HttpServletRequest request,Map map,String[] ignoreProperties)
-        throws ServletException
+    public static void populate(Object bean, HttpServletRequest request,Map map,String[] ignoreProperties) throws ServletException
     {
         populate(bean, null, null, request,map,ignoreProperties);
     }

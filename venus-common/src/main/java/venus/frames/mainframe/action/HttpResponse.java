@@ -1,5 +1,6 @@
 package venus.frames.mainframe.action;
 
+import org.springframework.validation.Errors;
 import venus.frames.base.action.IForward;
 import venus.frames.base.action.IResponse;
 import venus.frames.mainframe.log.LogMgr;
@@ -29,7 +30,7 @@ public class HttpResponse extends HttpServletResponseWrapper implements IRespons
 	/**
 	 * 存储响应对象中的需返回的错误对象列表
 	 */
-	private Errors m_errs = null;
+//	private Errors m_errs = null;
 
 	/**
 	 * 根据传入的响应对象来构造本对象
@@ -72,7 +73,7 @@ public class HttpResponse extends HttpServletResponseWrapper implements IRespons
 			LogMgr.getLogger(this.getClass().getName()).error(
 				"sendErrors(...):参数为空!");
 		} else {
-			this.m_errs = errs;
+//			this.m_errs = errs;
 			return;
 		}
 	}
@@ -84,7 +85,8 @@ public class HttpResponse extends HttpServletResponseWrapper implements IRespons
 	 * @roseuid 3FAE26900360
 	 */
 	public Errors getErrors() {
-		return this.m_errs;
+//		return this.m_errs;
+		return null;
 	}
 
 	/**

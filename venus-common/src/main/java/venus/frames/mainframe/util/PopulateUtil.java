@@ -189,11 +189,9 @@ public class PopulateUtil implements IGlobalsKeys {
      *            ignore target bean's property name
      * @return
      */
-    public static boolean populate(Object obj, IRequest request, Map map,
-                                   String[] ignoreProperties) {
+    public static boolean populate(Object obj, IRequest request, Map map, String[] ignoreProperties) {
         try {
-            RequestUtil.populate(obj, (HttpServletRequest) request
-                    .getServletRequest(), map, ignoreProperties);
+            RequestUtil.populate(obj, (HttpServletRequest) request.getServletRequest(), map, ignoreProperties);
         } catch (ServletException e) {
             getIlog().error("In populate bean: " + obj, e);
             return false;
@@ -212,8 +210,7 @@ public class PopulateUtil implements IGlobalsKeys {
      * @throws SQLException
      * @throws BeansException
      */
-    public static boolean populate(Object obj, java.sql.ResultSet rs)
-            throws SQLException {
+    public static boolean populate(Object obj, java.sql.ResultSet rs) throws SQLException {
         return populate(obj, rs, null, null);
     }
 
@@ -230,8 +227,7 @@ public class PopulateUtil implements IGlobalsKeys {
      * @throws SQLException
      * @throws BeansException
      */
-    public static boolean populate(Object obj, java.sql.ResultSet rs, Map map)
-            throws SQLException {
+    public static boolean populate(Object obj, java.sql.ResultSet rs, Map map) throws SQLException {
         return populate(obj, rs, map, null);
     }
 
@@ -294,10 +290,8 @@ public class PopulateUtil implements IGlobalsKeys {
                 if (amap != null && amap.containsKey(targetName)) {
                     name = (String) amap.get(name);
                 }
-                if (!"class".equals(targetName)
-                        && colNameList.contains(name.toUpperCase())
-                        && (ignoreProperties == null || (!ignoreList
-                                .contains(targetName)))) {
+                if (!"class".equals(targetName) && colNameList.contains(name.toUpperCase())
+                        && (ignoreProperties == null || (!ignoreList.contains(targetName)))) {
                     try {
                         Object res = rs.getObject(name);
                         Class targetTypeClazz = bw.getPropertyType(targetName);
@@ -349,10 +343,8 @@ public class PopulateUtil implements IGlobalsKeys {
      * @param effectiveProperties
      *            参与注值的有效属性
      */
-    public static boolean populateFromRequest(Object obj, IRequest request,
-            String prefix, String postfix, String[] effectiveProperties) {
-        return populateFromRequest(obj, request, null, null, null,
-                effectiveProperties);
+    public static boolean populateFromRequest(Object obj, IRequest request, String prefix, String postfix, String[] effectiveProperties) {
+        return populateFromRequest(obj, request, null, null, null, effectiveProperties);
     }
 
     /**
@@ -372,11 +364,9 @@ public class PopulateUtil implements IGlobalsKeys {
      * @param effectiveProperties
      *            参与注值的有效属性
      */
-    public static boolean populateFromRequest(Object obj, IRequest request,
-            String prefix, String suffix, Map map, String[] effectiveProperties) {
+    public static boolean populateFromRequest(Object obj, IRequest request, String prefix, String suffix, Map map, String[] effectiveProperties) {
         try {
-            List effectList = (effectiveProperties != null) ? Arrays
-                    .asList(effectiveProperties) : null;
+            List effectList = (effectiveProperties != null) ? Arrays.asList(effectiveProperties) : null;
             Enumeration names = request.getServletRequest().getParameterNames();
             List ignoreList = new ArrayList();
             while (names.hasMoreElements()) {
@@ -406,8 +396,7 @@ public class PopulateUtil implements IGlobalsKeys {
                     ignoreProperties[i] = (String) ignoreList.get(i);
                 }
             }
-            RequestUtil.populate(obj, null, null, (HttpServletRequest) request
-                    .getServletRequest(), map, ignoreProperties);
+            RequestUtil.populate(obj, null, null, (HttpServletRequest) request.getServletRequest(), map, ignoreProperties);
         } catch (ServletException e) {
             getIlog().error("In populate bean: " + obj, e);
             return false;
@@ -428,10 +417,8 @@ public class PopulateUtil implements IGlobalsKeys {
      */
     private static boolean copyPropertiesWithBeanUtils(Object source,
             Object target, String[] ignoreProperties) {
-        List ignoreList = (ignoreProperties != null) ? Arrays
-                .asList(ignoreProperties) : null;
-        BeanWrapper sourceBw = new BeanWrapperImpl(
-                source);
+        List ignoreList = (ignoreProperties != null) ? Arrays.asList(ignoreProperties) : null;
+        BeanWrapper sourceBw = new BeanWrapperImpl(source);
         for (int i = 0; i < sourceBw.getPropertyDescriptors().length; i++) {
             PropertyDescriptor sourceDesc = sourceBw.getPropertyDescriptors()[i];
             String name = sourceDesc.getName();
@@ -439,9 +426,7 @@ public class PopulateUtil implements IGlobalsKeys {
                 try {
                     BeanUtils.copyProperty(target, name, source);
                 } catch (Exception e) {
-                    getIlog().error(
-                            "BeanUtils.copyProperty(" + target + "," + name
-                                    + "," + source + ")", e);
+                    getIlog().error("BeanUtils.copyProperty(" + target + "," + name + "," + source + ")", e);
                 }
             }
         }
@@ -459,8 +444,7 @@ public class PopulateUtil implements IGlobalsKeys {
      *            ignore target bean's property name
      * @return
      */
-    public static boolean copyProperties(Object source, Object target,
-            String[] ignoreProperties) {
+    public static boolean copyProperties(Object source, Object target, String[] ignoreProperties) {
         return copyProperties(source, target, null, ignoreProperties);
     }
 
@@ -480,12 +464,8 @@ public class PopulateUtil implements IGlobalsKeys {
     /**
      * Bean复制工具方法
      *
-     * @param srcObj
-     *            source bean
-     * @param targetObj
-     *            target bean
      * @param map
-     *            rename property map: key: srcName, value:targetName
+     *    rename property map: key: srcName, value:targetName
      * @return
      */
     public static boolean copyProperties(Object source, Object target, Map map) {
@@ -505,13 +485,9 @@ public class PopulateUtil implements IGlobalsKeys {
      *            ignore target bean's property name
      * @return
      */
-    public static boolean copyProperties(Object source, Object target, Map map,
-            String ignoreProperties[]) {
-        List ignoreList = ignoreProperties == null ? null : Arrays
-                .asList(ignoreProperties);
-
+    public static boolean copyProperties(Object source, Object target, Map map, String ignoreProperties[]) {
+        List ignoreList = ignoreProperties == null ? null : Arrays.asList(ignoreProperties);
         if (target != null && target instanceof Map) {
-
             if (source instanceof Map) {
                 Map m = (Map) source;
                 for (Iterator iter = m.keySet().iterator(); iter.hasNext();) {
