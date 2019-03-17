@@ -2,8 +2,8 @@
 <%@ page import="venus.oa.util.DateTools" %>
 <%@ page import="java.util.List, java.util.Iterator" %>
 <%@ page import="venus.oa.util.StringHelperTools" %>
-<%@ page import="venus.oa.login.loginlog.vo.LoginLogVo" %>
-<%@ page import="venus.oa.login.loginlog.util.ILoginLogConstants" %>
+<%@ page import="venus.oa.loginlog.vo.LoginLogVo" %>
+<%@ page import="venus.oa.loginlog.util.ILoginLogConstants" %>
 <%@ page import="jxl.Workbook" %>
 <%@ page import="jxl.write.WritableWorkbook" %>
 <%@ page import="jxl.write.WritableSheet" %>
