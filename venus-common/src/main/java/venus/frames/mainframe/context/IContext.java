@@ -1,11 +1,8 @@
-//Source file: D:\\venus_view\\Tech_Department\\Platform\\Venus\\4项目开发\\1工作区\\4实现\\venus\\frames\\mainframe\\context\\IContext.java
-
 package venus.frames.mainframe.context;
 
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Map;
-
 
 /**
  * 上下文对象的统一接口<br>
