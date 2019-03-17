@@ -24,8 +24,8 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
 import venus.VenusHelper;
 import venus.core.ExtensionLoader;
+import venus.datasource.GenericDataSource;
 import venus.datasource.PaginationProvider;
-import venus.frames.jdbc.datasource.ConfDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -209,20 +209,19 @@ public class PaginationTemplateDao extends JdbcDaoSupport {
     }
 
 
-
-
-
-
-
-
-
-
+    /**
+     * check args of sql params
+     *
+     * @param args
+     * @return
+     */
     protected Object[] checkArgs(Object[] args) {
         Object ds = this.getDataSource();
-        if ((ds == null) || !(ds instanceof ConfDataSource)) {
+        if ((ds == null) || !(ds instanceof GenericDataSource)) {
             return args;
         } else {
-            String replaceStr = ((ConfDataSource) ds).getNullEscapeStr();
+//            String replaceStr = ((ConfDataSource) ds).getNullEscapeStr();
+            String replaceStr = null;
             if (replaceStr != null) {
                 if (args == null || args.length < 1) {
                     Object[] re = {};

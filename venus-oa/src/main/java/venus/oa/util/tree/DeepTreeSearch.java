@@ -4,7 +4,6 @@
 package venus.oa.util.tree;
 
 import org.springframework.jdbc.core.RowMapper;
-import venus.frames.base.dao.BaseTemplateDao;
 import venus.oa.helper.OrgHelper;
 import venus.oa.organization.aupartyrelation.vo.AuPartyRelationVo;
 import venus.oa.organization.aupartyrelationtype.dao.impl.AuPartyRelationTypeDao;
@@ -38,7 +37,7 @@ public class DeepTreeSearch {
 		sql.append("%' AND NAME LIKE '%");
 		sql.append(name);
 		sql.append("%'");
-		BaseTemplateDao dao=(BaseTemplateDao) BeanFactoryHelper.getBean("auPartyRelationTypeDao");
+		AuPartyRelationTypeDao dao=(AuPartyRelationTypeDao) BeanFactoryHelper.getBean("auPartyRelationTypeDao");
 		int count=dao.queryForInt(sql.toString());
 		return count>0;
 	}

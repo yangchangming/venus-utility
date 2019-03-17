@@ -115,7 +115,7 @@ public class GlobalConstants {
     }
     
     /**
-     * 功能: 从xml读取团体关系类型ID
+     * 功能: 从authority.xml中读取配置
      */
     public static boolean isHasLoad() {
         if (!hasLoad){
@@ -154,9 +154,11 @@ public class GlobalConstants {
         }
         return hasLoad;
     }
-    
-	public GlobalConstants() {
-	}
+
+    /**
+	 * Constaructor
+	 */
+	public GlobalConstants() {}
 	
 	/**
 	 * 功能: 获取访问者类型——人员

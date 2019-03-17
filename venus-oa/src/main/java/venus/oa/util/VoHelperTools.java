@@ -7,8 +7,8 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.TypeMismatchException;
+import venus.dao.provider.BaseTemplateDao;
 import venus.frames.base.action.IRequest;
-import venus.frames.base.dao.BaseTemplateDao;
 import venus.frames.mainframe.util.Helper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -472,7 +472,7 @@ public class VoHelperTools  {
      * @param strsql
      * @param aObj
      */
-    public static void update( BaseTemplateDao btd, Object thisVo, String[] aField, String strsql, Object[] aObj) {
+    public static void update(BaseTemplateDao btd, Object thisVo, String[] aField, String strsql, Object[] aObj) {
         if(aObj != null && aObj.length > 0) {
             boolean hasNull = false;
             for(int i=0; i<aObj.length; i++) {

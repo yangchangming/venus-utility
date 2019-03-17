@@ -16,17 +16,12 @@ import javax.sql.DataSource;
  */
 public abstract class BaseBusinessService implements IGlobalsKeys {
 	
-	//	日志
-//	protected final ILog logger = LogMgr.getLogger(this);
-	
 	/**
 	 * 获取数据源
 	 * @param dsSrc db.xml文件中配置的数据源
 	 * @return DataSource 数据源
 	 */
-	public DataSource getDataSource(String dsSrc)
-	{
+	public DataSource getDataSource(String dsSrc) {
 		return new ConfDataSource(dsSrc);
 	}
-
 }

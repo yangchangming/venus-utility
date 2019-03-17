@@ -1,8 +1,8 @@
 package venus.oa.util;
 
 import org.springframework.jdbc.core.RowMapper;
-import venus.frames.base.dao.BaseTemplateDao;
 import venus.oa.util.common.bs.ICommonBs;
+import venus.oa.util.common.dao.impl.CommonDao;
 import venus.springsupport.BeanFactoryHelper;
 
 import java.lang.reflect.Field;
@@ -159,18 +159,18 @@ public class ProjTools {
     }
     
     private static Map currentDataBase = new HashMap();
-    
+
     public static String getDataBaseProductType(String daoName) {
         if(currentDataBase.containsKey(daoName))
             return (String)currentDataBase.get(daoName);
+
         String databaseProductName = null;
-        BaseTemplateDao baseDao = null;
+        CommonDao baseDao = null;
         if(null==daoName)
-//            baseDao = (BaseTemplateDao) getCommonBsInstance().getDao();
-            baseDao = (BaseTemplateDao)BeanFactoryHelper.getBean("commonDao");
+            baseDao = (CommonDao)BeanFactoryHelper.getBean("commonDao");
         else
-//            baseDao = (BaseTemplateDao) Helper.getBean(daoName);
-            baseDao = (BaseTemplateDao) BeanFactoryHelper.getBean(daoName);
+            baseDao = (CommonDao) BeanFactoryHelper.getBean(daoName);
+
         Connection con = null;
         try {
             con = baseDao.getDataSource().getConnection();
@@ -209,8 +209,6 @@ public class ProjTools {
         }
         return null;
     }
-    
-    
     
 }
 

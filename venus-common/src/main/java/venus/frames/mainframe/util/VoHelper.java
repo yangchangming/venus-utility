@@ -491,8 +491,7 @@ public class VoHelper {
 	 * @param strsql
 	 * @param aObj
 	 */
-	public static void update(BaseTemplateDao btd, Object thisVo,
-			String[] aField, String strsql, Object[] aObj) {
+	public static void update(BaseTemplateDao baseTemplateDao, Object thisVo, String[] aField, String strsql, Object[] aObj) {
 		if (aObj != null && aObj.length > 0) {
 			boolean hasNull = false;
 			for (int i = 0; i < aObj.length; i++) {
@@ -506,12 +505,12 @@ public class VoHelper {
 				for (int i = 0; i < aType.length; i++) {
 					aType[i] = getTypeByVoField(thisVo, aField[i]);
 				}
-				btd.update(strsql, aObj, aType);
+				baseTemplateDao.update(strsql, aObj, aType);
 			} else {
-				btd.update(strsql, aObj);
+				baseTemplateDao.update(strsql, aObj);
 			}
 		} else {
-			btd.update(strsql);
+			baseTemplateDao.update(strsql);
 		}
 	}
 
