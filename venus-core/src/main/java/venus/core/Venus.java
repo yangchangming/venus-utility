@@ -81,4 +81,9 @@ public class Venus {
     public static String timeZone(){
         return System.getProperties().get("user.timezone").toString();
     }
+
+    public static String webContainer(){
+        // TODO: 19/5/20 fetch web container info, if exist web container
+        return "";
+    }
 }
