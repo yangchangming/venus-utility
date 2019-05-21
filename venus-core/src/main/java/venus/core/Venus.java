@@ -27,6 +27,9 @@ public class Venus {
 
     private String type;
 
+    /**
+     * app name
+     */
     private String name;
 
     public String getEnv() {
@@ -55,6 +58,10 @@ public class Venus {
 
     public static String version(){
         return "0.1-SNAPSHOT";
+    }
+
+    public static String frameworkName(){
+        return "venus";
     }
 
     public static Class<?> bootstrap(){

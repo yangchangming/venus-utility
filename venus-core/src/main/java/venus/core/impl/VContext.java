@@ -25,7 +25,7 @@ import venus.ioc.Ioc;
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-05-20 19:06
  */
-public class VenusContext implements Context {
+public class VContext implements Context {
 
     private Ioc ioc;
 
@@ -34,7 +34,7 @@ public class VenusContext implements Context {
     /**
      * Constructor
      */
-    public VenusContext(){}
+    public VContext(){}
 
     /**
      * Constructor
@@ -42,7 +42,7 @@ public class VenusContext implements Context {
      * @param ioc
      * @param venus
      */
-    public VenusContext(Ioc ioc, Venus venus){
+    public VContext(Ioc ioc, Venus venus){
         this.ioc = ioc;
         this.venus = venus;
     }
