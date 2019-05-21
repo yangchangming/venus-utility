@@ -13,53 +13,28 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.core.impl;
+package venus.core.event;
 
 import venus.core.Context;
-import venus.core.Venus;
-import venus.ioc.Ioc;
+
+import java.util.EventObject;
 
 /**
- * <p> Default context implements </p>
+ * <p> Event model for venus </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-05-20 19:06
+ * @since 2019-05-21 14:36
  */
-public class VenusContext implements Context {
+public class Event extends EventObject {
 
-    private Ioc ioc;
+    private Context context;
 
-    private Venus venus;
-
-    /**
-     * Constructor
-     */
-    public VenusContext(){}
-
-    /**
-     * Constructor
-     *
-     * @param ioc
-     * @param venus
-     */
-    public VenusContext(Ioc ioc, Venus venus){
-        this.ioc = ioc;
-        this.venus = venus;
+    public Event(Object source, Context context){
+        super(source);
+        this.context = context;
     }
 
-    public void setIoc(Ioc ioc) {
-        this.ioc = ioc;
-    }
-
-    public void setVenus(Venus venus) {
-        this.venus = venus;
-    }
-
-    public Ioc ioc() {
-        return ioc;
-    }
-
-    public Venus venus() {
-        return venus;
+    public Context context(){
+        return context;
     }
 }
