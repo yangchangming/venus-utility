@@ -22,4 +22,9 @@ package venus.ioc;
  * @since 2019-05-20 18:45
  */
 public interface Ioc {
+
+    /**
+     * load all bean from the package specified by path
+     */
+    void loadBeans();
 }

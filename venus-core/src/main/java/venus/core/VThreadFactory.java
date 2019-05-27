@@ -15,7 +15,6 @@
  */
 package venus.core;
 
-
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -32,7 +31,14 @@ public class VThreadFactory implements ThreadFactory {
     private boolean isDaemon = false;
     private int priority = Thread.NORM_PRIORITY;
 
-    public VThreadFactory(String threadName, boolean isDaemon, int priority){
+    /**
+     * Constructor
+     *
+     * @param threadName
+     * @param isDaemon
+     * @param priority
+     */
+    public VThreadFactory(String threadName, boolean isDaemon, int priority) {
         this.threadName = "[" + Venus.frameworkName() + "-" + threadName + "-" + this.threadNo.getAndIncrement() + "]";
         this.isDaemon = isDaemon;
         if (priority>0){
