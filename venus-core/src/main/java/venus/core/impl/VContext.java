@@ -17,6 +17,8 @@ package venus.core.impl;
 
 import venus.core.Context;
 import venus.core.Venus;
+import venus.core.event.EventEngine;
+import venus.ioc.Beans;
 import venus.ioc.Ioc;
 
 /**
@@ -28,7 +30,7 @@ import venus.ioc.Ioc;
 public class VContext implements Context {
 
     private Ioc ioc;
-
+    private EventEngine eventEngine;
     private Venus venus;
 
     /**
@@ -45,21 +47,37 @@ public class VContext implements Context {
     public VContext(Ioc ioc, Venus venus){
         this.ioc = ioc;
         this.venus = venus;
+        this.eventEngine = new EventEngine();
     }
 
-    public void setIoc(Ioc ioc) {
-        this.ioc = ioc;
+    @Override
+    public Ioc ioc() {
+        return ioc;
+    }
+
+    @Override
+    public Venus venus() {
+        return venus;
+    }
+
+    @Override
+    public Beans beans() {
+        return Beans.of();
+    }
+
+    @Override
+    public EventEngine eventEngine() {
+        if (this.eventEngine==null){
+            this.eventEngine = new EventEngine();
+        }
+        return this.eventEngine;
     }
 
     public void setVenus(Venus venus) {
         this.venus = venus;
     }
 
-    public Ioc ioc() {
-        return ioc;
-    }
-
-    public Venus venus() {
-        return venus;
+    public void setIoc(Ioc ioc) {
+        this.ioc = ioc;
     }
 }

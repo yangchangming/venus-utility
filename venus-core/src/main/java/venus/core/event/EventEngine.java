@@ -18,6 +18,8 @@ package venus.core.event;
 import org.apache.log4j.Logger;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.core.GenericTypeResolver;
+import venus.core.VThreadExecutor;
+import venus.core.VThreadFactory;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -31,7 +33,7 @@ import java.util.concurrent.ExecutorService;
 public class EventEngine {
 
     private static final Logger logger = Logger.getLogger(EventEngine.class);
-    private ExecutorService executorService;
+    private ExecutorService executorService = new VThreadExecutor(new VThreadFactory("event.engine", false, Thread.NORM_PRIORITY));
     private Set<Listener> eventListenerSet = new HashSet<Listener>();
     private Map<Class<? extends Event>,ListenerRegistry> cachedEventListeners = new HashMap<Class<? extends Event>, ListenerRegistry>();
 
@@ -145,10 +147,6 @@ public class EventEngine {
                 }
             }
         });
-    }
-
-    public void setExecutorService(ExecutorService executorService) {
-        this.executorService = executorService;
     }
 
     /**

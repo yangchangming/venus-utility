@@ -19,6 +19,7 @@ import venus.exception.VenusFrameworkException;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
@@ -38,7 +39,6 @@ public final class Clazz {
 
     public static String FILE_PROTOCAL = "file";
     public static String JAR_PROTOCAL = "jar";
-
 
     public static <T> T newInstance(Class<?> clazz){
         try {
@@ -104,6 +104,27 @@ public final class Clazz {
             }
         }catch (IOException exception){
             throw new VenusFrameworkException(exception.getMessage());
+        }
+    }
+
+
+    /**
+     * set field value
+     *
+     * @param field
+     * @param target
+     * @param value
+     */
+    public static void setFieldValue(Field field, Object target, Object value) {
+        if (!field.isAccessible()){
+            field.setAccessible(true);
+        }
+        try {
+            if (field.get(target)==null){
+                field.set(target, value);
+            }
+        } catch (IllegalAccessException e) {
+            throw new VenusFrameworkException(e.getMessage());
         }
     }
 

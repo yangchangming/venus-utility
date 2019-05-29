@@ -15,16 +15,83 @@
  */
 package venus.ioc;
 
+import venus.core.Context;
+import venus.core.impl.VContext;
+import venus.exception.VenusFrameworkException;
+import venus.lang.Clazz;
+
+import java.lang.reflect.Field;
+import java.util.Optional;
+
 /**
- * <p> Ioc interface definition </p>
+ * <p> Ioc </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-05-20 18:45
  */
-public interface Ioc {
+public final class Ioc {
+
+    private Context context;
 
     /**
-     * load all bean from the package specified by path
+     * Constructor
      */
-    void loadBeans();
+    public Ioc(Context context){
+        this.context = context==null ? new VContext() : context;
+        if (context!=null && this.context.ioc()==null){
+            if (this.context instanceof VContext){
+                ((VContext)this.context).setIoc(this);
+            }
+        }
+    }
+
+    /**
+     * injection all bean
+     */
+    public void doInjection(){
+        for (Class<?> clazz : context.beans().loadClass()){
+            Object target = context.beans().getBean(clazz);
+            for(Field field : clazz.getDeclaredFields()){
+                if (field.isAnnotationPresent(Autowired.class)){
+                    final Class<?> fieldClass = field.getType();
+                    Object fieldValue = loadImplementsBySuper(fieldClass);
+                    if (fieldValue!=null){
+                        Clazz.setFieldValue(field, target, fieldValue);
+                    }else {
+                        throw new VenusFrameworkException("No such bean for injection! Target field is " + field);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * load implements of super class
+     *
+     * @param superClass
+     * @return
+     */
+    protected Object loadImplementsBySuper(final Class<?> superClass){
+        return Optional.ofNullable(context.beans().getBean(superClass))
+                .orElseGet(() -> {
+                    Class<?> implementsClass = loadClassesBySuper(superClass);
+                    if (null != implementsClass) {
+                        return context.beans().getBean(implementsClass);
+                    }else {
+                        context.beans().addBean(implementsClass, Clazz.newInstance(implementsClass));
+                        return context.beans().getBean(implementsClass);
+                    }
+                });
+    }
+
+    /**
+     * load implements class from bean container, just first when multi implements?
+     *
+     * @param superClass
+     * @return
+     */
+    protected Class<?> loadClassesBySuper(final Class<?> superClass){
+        return context.beans().loadClassesBySuper(superClass).stream().findFirst().orElse(null);
+    }
+
 }

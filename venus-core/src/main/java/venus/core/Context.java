@@ -15,6 +15,8 @@
  */
 package venus.core;
 
+import venus.core.event.EventEngine;
+import venus.ioc.Beans;
 import venus.ioc.Ioc;
 
 /**
@@ -38,4 +40,18 @@ public interface Context {
      * @return
      */
     Venus venus();
+
+    /**
+     * fetch beans
+     *
+     * @return
+     */
+    Beans beans();
+
+    /**
+     * fetch event engine
+     *
+     * @return
+     */
+    EventEngine eventEngine();
 }

@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 
 /**
  * <p> Bean container, must singleton and do not extends and new instance by other class </p>
+ * usage: Beans.of()......
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-05-28 17:14
@@ -62,7 +63,7 @@ public final class Beans {
      *
      * @throws Exception
      */
-    private static void loading(){
+    private synchronized static void loading(){
         if (hasLoading){
             logger.warn("all bean has loading.");
             return;
@@ -130,7 +131,7 @@ public final class Beans {
      * @param interfaceClass
      * @return
      */
-    public Set<Class<?>> getClassesBySuper(Class<?> interfaceClass) {
+    public Set<Class<?>> loadClassesBySuper(Class<?> interfaceClass) {
         return beanContainer.keySet().stream().filter(interfaceClass::isAssignableFrom)
                 .filter(clz -> !clz.equals(interfaceClass)).collect(Collectors.toSet());
     }

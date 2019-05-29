@@ -15,22 +15,19 @@
  */
 package venus.ioc;
 
-import venus.core.Context;
-import venus.core.Venus;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * <p> Ioc context </p>
+ * <p> IOC annotation for field </p>
+ * just interface injection and cycle depends problem ?
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-05-20 19:21
+ * @since 2019-05-29 14:07
  */
-public class IocContext implements Context {
-
-    public Ioc ioc() {
-        return null;
-    }
-
-    public Venus venus() {
-        return null;
-    }
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Autowired {
 }
