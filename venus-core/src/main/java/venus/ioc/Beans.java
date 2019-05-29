@@ -17,9 +17,15 @@ package venus.ioc;
 
 
 import org.apache.log4j.Logger;
+import venus.aop.Aspect;
+import venus.lang.Clazz;
 import venus.lang.Scanner;
 
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -34,6 +40,7 @@ public final class Beans {
     private static Map<Class<?>, Object> beanContainer = new ConcurrentHashMap<Class<?>, Object>();
     private static Beans instance = new Beans();
     private boolean hasLoading = false;
+    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION_TYPE = Arrays.asList(Component.class, Controller.class, Service.class, Repository.class, Aspect.class);
 
     /**
      * Constructor
@@ -53,14 +60,20 @@ public final class Beans {
      * @throws Exception
      */
     public void loading(){
-        String classPath = Scanner.classPath();
         if (hasLoading){
             logger.warn("all bean has loading.");
             return;
         }
-
-
-
+        Set<Class<?>> classes = Clazz.loadClassByPackage(Scanner.classPath());
+        classes.stream().filter(clz -> {
+          for (Class<? extends Annotation> annotation : BEAN_ANNOTATION_TYPE){
+              if (clz.isAnnotationPresent(annotation)) {
+                  return true;
+              }
+          }
+          return false;
+        }).forEach(clz -> beanContainer.put(clz, Clazz.newInstance(clz)));
+        hasLoading = true;
     }
 
 
