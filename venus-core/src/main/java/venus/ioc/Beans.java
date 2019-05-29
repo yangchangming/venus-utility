@@ -19,7 +19,6 @@ package venus.ioc;
 import org.apache.log4j.Logger;
 import venus.aop.Aspect;
 import venus.lang.Clazz;
-import venus.lang.Scanner;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -68,7 +67,7 @@ public final class Beans {
             logger.warn("all bean has loading.");
             return;
         }
-        Set<Class<?>> classes = Clazz.loadClassByPackage(Scanner.classPath());
+        Set<Class<?>> classes = Clazz.loadClassByPackage("");
         classes.stream().filter(clz -> {
           for (Class<? extends Annotation> annotation : BEAN_ANNOTATION_TYPE){
               if (clz.isAnnotationPresent(annotation)) {

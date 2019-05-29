@@ -42,7 +42,11 @@ public final class Clazz {
 
     public static <T> T newInstance(Class<?> clazz){
         try {
-            return (T) clazz.newInstance();
+            if (clazz!=null && !clazz.isInterface()){
+                return (T) clazz.newInstance();
+            }else {
+                throw new VenusFrameworkException("Class must not a interface when new instance.");
+            }
         } catch (InstantiationException e) {
             throw new VenusFrameworkException(e.getMessage());
         } catch (IllegalAccessException e) {
@@ -80,7 +84,7 @@ public final class Clazz {
      */
     public static Set<Class<?>> loadClassByPackage(String  basePackage){
         if (basePackage==null || "".equals(basePackage)){
-            basePackage = Scanner.classPath();
+            basePackage = "";
         }
         URL url = java.lang.Thread.currentThread().getContextClassLoader().getResource(basePackage.replace(".", "/"));
         if (url==null){

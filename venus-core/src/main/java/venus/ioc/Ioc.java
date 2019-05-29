@@ -47,6 +47,7 @@ public final class Ioc {
 
     /**
      * injection all bean
+     * just depends on interface
      */
     public void doInjection(){
         for (Class<?> clazz : context.beans().loadClass()){
@@ -78,8 +79,7 @@ public final class Ioc {
                     if (null != implementsClass) {
                         return context.beans().getBean(implementsClass);
                     }else {
-                        context.beans().addBean(implementsClass, Clazz.newInstance(implementsClass));
-                        return context.beans().getBean(implementsClass);
+                        return null;
                     }
                 });
     }
