@@ -22,11 +22,9 @@ import venus.lang.Clazz;
 import venus.lang.Scanner;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * <p> Bean container, must singleton and do not extends and new instance by other class </p>
@@ -39,8 +37,9 @@ public final class Beans {
     private static Logger logger = Logger.getLogger(Beans.class);
     private static Map<Class<?>, Object> beanContainer = new ConcurrentHashMap<Class<?>, Object>();
     private static Beans instance = new Beans();
-    private boolean hasLoading = false;
-    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION_TYPE = Arrays.asList(Component.class, Controller.class, Service.class, Repository.class, Aspect.class);
+    private static boolean hasLoading = false;
+    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION_TYPE = Arrays.asList
+            (Component.class, Controller.class, Service.class, Repository.class, Aspect.class);
 
     /**
      * Constructor
@@ -51,15 +50,19 @@ public final class Beans {
         if (instance==null){
             Beans.instance = new Beans();
         }
+        if (!hasLoading){
+            instance.loading();
+        }
         return Beans.instance;
     }
 
     /**
      * loading all bean, that will be find by scanner
+     * is not invoke by outer class
      *
      * @throws Exception
      */
-    public void loading(){
+    private static void loading(){
         if (hasLoading){
             logger.warn("all bean has loading.");
             return;
@@ -76,5 +79,60 @@ public final class Beans {
         hasLoading = true;
     }
 
+    public Object getBean(Class<?> clazz){
+        return beanContainer.get(clazz);
+    }
+
+    public Set<Object> getBeans(){
+        return new HashSet<>(beanContainer.values());
+    }
+
+    public Object addBean(Class<?> clazz, Object object){
+        beanContainer.put(clazz, object);
+        return getBean(clazz);
+    }
+
+    /**
+     * erase bean specified by clazz
+     *
+     * @param clazz
+     */
+    public void eraseBean(Class<?> clazz){
+        beanContainer.remove(clazz);
+    }
+
+    public int size(){
+        return beanContainer.size();
+    }
+
+    /**
+     * load all class
+     *
+     * @return
+     */
+    public Set<Class<?>> loadClass(){
+        return beanContainer.keySet();
+    }
+
+    /**
+     * load the class by annotation specified by the param annotation
+     *
+     * @param annotation
+     * @return
+     */
+    public Set<Class<?>> loadClassByAnnotation(Class<? extends Annotation> annotation){
+        return loadClass().stream().filter(clz -> clz.isAnnotationPresent(annotation)).collect(Collectors.toSet());
+    }
+
+    /**
+     * load implements class of the super class or interface specified by interfaceClass param
+     *
+     * @param interfaceClass
+     * @return
+     */
+    public Set<Class<?>> getClassesBySuper(Class<?> interfaceClass) {
+        return beanContainer.keySet().stream().filter(interfaceClass::isAssignableFrom)
+                .filter(clz -> !clz.equals(interfaceClass)).collect(Collectors.toSet());
+    }
 
 }
