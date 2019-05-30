@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public final class Beans {
 
     private static Logger logger = Logger.getLogger(Beans.class);
-    private static Map<Class<?>, Object> beanContainer = new ConcurrentHashMap<Class<?>, Object>();
+    private static Map<Class<?>, Object> beanContainer = new ConcurrentHashMap<>();
     private static Beans instance = new Beans();
     private static boolean hasLoading = false;
     private static final List<Class<? extends Annotation>> BEAN_ANNOTATION_TYPE = Arrays.asList
