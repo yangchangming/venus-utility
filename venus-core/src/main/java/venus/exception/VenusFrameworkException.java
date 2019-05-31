@@ -9,5 +9,6 @@ package venus.exception;
 public class VenusFrameworkException extends RuntimeException {
 
     public VenusFrameworkException(String message){
+        super(message);
     }
 }

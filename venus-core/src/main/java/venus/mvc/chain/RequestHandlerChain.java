@@ -13,37 +13,33 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package user.controller;
+package venus.mvc.chain;
 
-import user.service.IUserService;
-import venus.ioc.Autowired;
-import venus.ioc.Controller;
-import venus.mvc.annotation.RequestMapping;
+import venus.core.Context;
+import venus.mvc.handler.RequestHandler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p> User Controller </p>
+ * <p> Request handler chain </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2018-06-05 14:59
+ * @since 2019-05-30 11:37
  */
-@Controller
-@RequestMapping("/user")
-public class UserController {
+public class RequestHandlerChain {
 
-    @Autowired
-    private IUserService userService;
+    private Context context;
+    private List<RequestHandler> handlerList = new ArrayList<>();
 
-    @RequestMapping("/list")
-    public String list(HttpServletRequest request , HttpServletResponse response){
-        List result = userService.queryAll();
-        request.setAttribute("result_list", result);
-        return "user/list";
+    /**
+     * Constructor
+     *
+     * @param context
+     */
+    public RequestHandlerChain(Context context){
+        this.context = context;
     }
-
 
 
 }

@@ -13,37 +13,38 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package user.controller;
-
-import user.service.IUserService;
-import venus.ioc.Autowired;
-import venus.ioc.Controller;
-import venus.mvc.annotation.RequestMapping;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+package venus.mvc;
 
 /**
- * <p> User Controller </p>
+ * <p> Request path </p>
+ * 1. generate a requestpath instance for every http request
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2018-06-05 14:59
+ * @since 2019-05-31 11:37
  */
-@Controller
-@RequestMapping("/user")
-public class UserController {
+public class RequestPath {
 
-    @Autowired
-    private IUserService userService;
+    private String httpMethod;
+    private String path;
 
-    @RequestMapping("/list")
-    public String list(HttpServletRequest request , HttpServletResponse response){
-        List result = userService.queryAll();
-        request.setAttribute("result_list", result);
-        return "user/list";
+    public RequestPath(String httpMethod, String path){
+        this.httpMethod = httpMethod;
+        this.path = path;
     }
 
+    public String getHttpMethod() {
+        return httpMethod;
+    }
 
+    public void setHttpMethod(String httpMethod) {
+        this.httpMethod = httpMethod;
+    }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 }

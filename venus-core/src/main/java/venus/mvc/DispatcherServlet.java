@@ -15,7 +15,14 @@
  */
 package venus.mvc;
 
+import venus.core.Context;
+import venus.mvc.chain.RequestHandlerChainFactory;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * <p> The core servlet for handle http request </p>
@@ -24,4 +31,17 @@ import javax.servlet.http.HttpServlet;
  * @since 2019-05-29 15:39
  */
 public class DispatcherServlet extends HttpServlet {
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        RequestHandlerChainFactory.initialChain();
+    }
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Context context = new MvcContext(req, resp, getServletContext());
+
+        RequestHandlerChainFactory.chain(context).toString();
+    }
 }
