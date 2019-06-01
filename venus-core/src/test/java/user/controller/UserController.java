@@ -18,6 +18,7 @@ package user.controller;
 import user.service.IUserService;
 import venus.ioc.Autowired;
 import venus.ioc.Controller;
+import venus.mvc.annotation.RequestChain;
 import venus.mvc.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,7 @@ public class UserController {
     private IUserService userService;
 
     @RequestMapping("/list")
+    @RequestChain({"2","4"})
     public String list(HttpServletRequest request , HttpServletResponse response){
         List result = userService.queryAll();
         request.setAttribute("result_list", result);

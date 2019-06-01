@@ -19,6 +19,7 @@ package venus.ioc;
 import org.apache.log4j.Logger;
 import venus.aop.Aspect;
 import venus.lang.Clazz;
+import venus.mvc.annotation.RequestHandler;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -39,7 +40,7 @@ public final class Beans {
     private static Beans instance = new Beans();
     private static boolean hasLoading = false;
     private static final List<Class<? extends Annotation>> BEAN_ANNOTATION_TYPE = Arrays.asList
-            (Component.class, Controller.class, Service.class, Repository.class, Aspect.class);
+            (Component.class, Controller.class, Service.class, Repository.class, Aspect.class, RequestHandler.class);
 
     /**
      * Constructor

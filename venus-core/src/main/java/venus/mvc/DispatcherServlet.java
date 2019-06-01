@@ -42,6 +42,7 @@ public class DispatcherServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Context context = new MvcContext(req, resp, getServletContext());
 
-        RequestHandlerChainFactory.chain(context).toString();
+        RequestHandlerChainFactory.chain(context).doNext();
+
     }
 }

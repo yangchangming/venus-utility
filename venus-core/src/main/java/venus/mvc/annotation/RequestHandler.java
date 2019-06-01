@@ -13,18 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.mvc.handler;
+package venus.mvc.annotation;
 
-import venus.core.Context;
+import java.lang.annotation.*;
 
 /**
- * <p> The handler for http request definition </p>
- * 1. handler is singleton in ioc container
+ * <p> Request handler annotation </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-05-31 14:16
+ * @since 2019-06-01 15:05
  */
-public interface RequestHandler {
-
-    void handler(Context context);
+@Inherited
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequestHandler {
+    String value() default "";
+    RequestHandlerType type() default RequestHandlerType.CUSTOMIZE;
+    int order() default 0;
 }

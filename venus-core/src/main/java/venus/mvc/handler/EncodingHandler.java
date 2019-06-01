@@ -16,15 +16,19 @@
 package venus.mvc.handler;
 
 import venus.core.Context;
+import venus.mvc.annotation.RequestHandlerType;
 
 /**
- * <p> The handler for http request definition </p>
- * 1. handler is singleton in ioc container
+ * <p> Encoding http request handler </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-05-31 14:16
+ * @since 2019-06-01 14:00
  */
-public interface RequestHandler {
+@venus.mvc.annotation.RequestHandler(value = "encoding" ,type = RequestHandlerType.COMMON)
+public class EncodingHandler implements RequestHandler {
 
-    void handler(Context context);
+    @Override
+    public void handler(Context context) {
+
+    }
 }

@@ -15,7 +15,16 @@
  */
 package venus.mvc;
 
+import org.apache.log4j.Logger;
 import venus.core.Context;
+import venus.mvc.annotation.RequestChain;
+import venus.mvc.annotation.RequestHandlerType;
+import venus.mvc.bean.RequestHandlerWrapper;
+
+import java.lang.reflect.Method;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p> MVC util </p>
@@ -24,6 +33,8 @@ import venus.core.Context;
  * @since 2019-05-31 12:24
  */
 public class Mvcs {
+
+    private static Logger logger = Logger.getLogger(Mvcs.class);
 
     /**
      * build RequestPath instance by http request
@@ -48,7 +59,34 @@ public class Mvcs {
         }
     }
 
+    /**
+     * build the handlers by the method
+     * 1. common handler and the handler by RequestChain annotation
+     * 2. handler order by annotation field specified by order
+     *
+     * @param method
+     * @return
+     */
+    public static List<Object> loadHandlers(List<RequestHandlerWrapper> allHandlers , Method method){
+        if (method==null) {
+            return null;
+        }
+        List<Object> handlers = allHandlers.stream().filter(wrapper -> _filterHandler(wrapper, method))
+                .sorted(Comparator.comparing(wrapper -> wrapper.getOrder())).collect(Collectors.toList());
+        return handlers;
+    }
 
+    private static boolean _filterHandler(RequestHandlerWrapper wrapper, Method method){
+        String[] chainValue = method.getAnnotation(RequestChain.class).value();
+        for (String handlerName : chainValue) {
+            if (wrapper.getValue().equalsIgnoreCase(handlerName) || wrapper.getType().equals(String.valueOf(RequestHandlerType.COMMON))) {
+                return true;
+            }else {
+                return false;
+            }
+        }
+        return false;
+    }
 
 
 

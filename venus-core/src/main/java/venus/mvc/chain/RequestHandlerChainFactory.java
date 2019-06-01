@@ -16,11 +16,19 @@
 package venus.mvc.chain;
 
 import venus.core.Context;
+import venus.exception.VenusFrameworkException;
 import venus.ioc.Beans;
 import venus.mvc.Mvcs;
 import venus.mvc.RequestPath;
+import venus.mvc.annotation.RequestHandlerType;
 import venus.mvc.annotation.RequestMapping;
+import venus.mvc.annotation.RequestMethod;
+import venus.mvc.bean.RequestHandlerWrapper;
+import venus.mvc.handler.RequestHandler;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,14 +43,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class RequestHandlerChainFactory {
 
+    private static List<RequestHandlerWrapper> allHandlers = new ArrayList<>();
     private static Map<RequestPath, RequestHandlerChain> chains = new ConcurrentHashMap<>();
 
     public static void initialChain(){
+        loadAllHandler();
         Set<Class<?>> mappingClz = Beans.of().loadClassByAnnotation(RequestMapping.class);
-        
-
-
-
+        mappingClz.stream().forEach(clz -> buildPathChainMapping(clz));
     }
 
     /**
@@ -62,7 +69,7 @@ public class RequestHandlerChainFactory {
     }
 
     /**
-     * build chain for every http request
+     * build chain for every diff http request
      *
      * @param context
      * @return
@@ -70,9 +77,63 @@ public class RequestHandlerChainFactory {
     protected static RequestHandlerChain buildChain(Context context){
         RequestHandlerChain chain = new RequestHandlerChain(context);
 
-        // TODO: 19/5/31 build chain
+        // TODO: 19/6/1 fetch method by request
 
+        Method method = null;
+
+        chain.setHandlerList(Mvcs.loadHandlers(allHandlers, method));
         return chain;
+    }
+
+    private static void loadAllHandler(){
+        if (allHandlers.size()>0){
+            allHandlers.clear();
+        }
+        Beans.of().loadClassByAnnotation(venus.mvc.annotation.RequestHandler.class).stream().
+                forEach(clz -> {
+                    Object obj = Beans.of().getBean(clz);
+                    String handlerName = clz.getAnnotation(venus.mvc.annotation.RequestHandler.class).value();
+                    RequestHandlerType handlerType = clz.getAnnotation(venus.mvc.annotation.RequestHandler.class).type();
+
+                    if (obj!=null && obj instanceof RequestHandler && !"".equals(handlerName)){
+                        final RequestHandlerWrapper requestHandlerWrapper = new RequestHandlerWrapper();
+                        requestHandlerWrapper.setValue(handlerName);
+                        requestHandlerWrapper.setType(String.valueOf(handlerType));
+                        requestHandlerWrapper.setOrder(clz.getAnnotation(venus.mvc.annotation.RequestHandler.class).order());
+                        requestHandlerWrapper.setRequestHandler(obj);
+                        allHandlers.add(requestHandlerWrapper);
+                    }
+                });
+    }
+
+    /**
+     * build url to chain mapping
+     *
+     * @param clz
+     */
+    protected static void buildPathChainMapping(Class<?> clz){
+        String basePath = clz.getAnnotation(RequestMapping.class).value();
+        if (basePath != null && !basePath.startsWith("/")){
+            basePath = "/" + basePath;
+        }
+        for (Method method : clz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(RequestMapping.class)){
+                String methodPath = method.getAnnotation(RequestMapping.class).value();
+                if (methodPath!=null && !methodPath.startsWith("/")){
+                    methodPath = "/" + methodPath;
+                }
+                String path = basePath + methodPath;
+                RequestMethod httpMethod = method.getAnnotation(RequestMapping.class).method();
+                String _httpMethod = String.valueOf(httpMethod);
+                RequestPath requestPath = new RequestPath(_httpMethod, path);
+                List<Object> handlers = Mvcs.loadHandlers(allHandlers, method);
+                if (handlers==null || handlers.size()<=0){
+                    throw new VenusFrameworkException("Request handler chain is null.");
+                }
+                RequestHandlerChain requestHandlerChain = new RequestHandlerChain(handlers);
+                chains.putIfAbsent(requestPath, requestHandlerChain);
+            }
+        }
     }
 
 

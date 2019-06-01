@@ -16,7 +16,6 @@
 package venus.mvc.chain;
 
 import venus.core.Context;
-import venus.mvc.handler.RequestHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,22 @@ import java.util.List;
 public class RequestHandlerChain {
 
     private Context context;
-    private List<RequestHandler> handlerList = new ArrayList<>();
+    private List<Object> handlerList = new ArrayList<>();
+
+
+    /**
+     * Constructor
+     */
+    public RequestHandlerChain(){}
+
+    /**
+     * Constructor
+     *
+     * @param handlerList
+     */
+    public RequestHandlerChain(List<Object> handlerList){
+        this.handlerList = handlerList;
+    }
 
     /**
      * Constructor
@@ -41,5 +55,11 @@ public class RequestHandlerChain {
         this.context = context;
     }
 
+    public void doNext(){
 
+    }
+
+    public void setHandlerList(List<Object> handlerList) {
+        this.handlerList = handlerList;
+    }
 }
