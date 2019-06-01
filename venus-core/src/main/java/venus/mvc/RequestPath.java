@@ -26,6 +26,8 @@ public class RequestPath {
 
     private String httpMethod;
     private String path;
+    private String basePath;
+    private String methodPath;
 
     public RequestPath(String httpMethod, String path){
         this.httpMethod = httpMethod;
@@ -46,5 +48,21 @@ public class RequestPath {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getBasePath() {
+        return basePath;
+    }
+
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
+    }
+
+    public String getMethodPath() {
+        return methodPath;
+    }
+
+    public void setMethodPath(String methodPath) {
+        this.methodPath = methodPath;
     }
 }
