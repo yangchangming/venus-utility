@@ -13,23 +13,30 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.mvc.handler;
+package venus.mvc;
 
-import venus.mvc.MvcContext;
-import venus.mvc.annotation.RequestHandlerType;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * <p> Encoding http request handler </p>
+ * <p>  </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-06-01 14:00
+ * @since 2019-06-03 12:45
  */
-@venus.mvc.annotation.RequestHandler(value = "encoding" ,type = RequestHandlerType.COMMON, order = 0)
-public class EncodingHandler implements RequestHandler {
+public class RequestPathTest {
 
-    @Override
-    public boolean handle(MvcContext context) throws Exception {
-        context.getRequest().setCharacterEncoding("utf-8");
-        return true;
+    @Test
+    public void testEquals(){
+
+        RequestPath requestPath = new RequestPath("post", "/user/list");
+        RequestPath requestPath1 = new RequestPath("post", "/user/list");
+        Map map = new HashMap<>();
+        map.put(requestPath, "value");
+        Assert.assertEquals(true, map.containsKey(requestPath1));
+
     }
 }

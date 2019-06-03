@@ -15,7 +15,14 @@
  */
 package venus.mvc.chain;
 
+import org.apache.log4j.Logger;
 import venus.core.Context;
+import venus.exception.VenusFrameworkException;
+import venus.mvc.MvcContext;
+import venus.mvc.bean.RequestHandlerWrapper;
+import venus.mvc.render.DefaultRender;
+import venus.mvc.render.InternalErrorRender;
+import venus.mvc.render.Render;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,22 +35,18 @@ import java.util.List;
  */
 public class RequestHandlerChain {
 
+    private static Logger logger = Logger.getLogger(RequestHandlerChain.class);
     private Context context;
-    private List<Object> handlerList = new ArrayList<>();
-
-
-    /**
-     * Constructor
-     */
-    public RequestHandlerChain(){}
+    private List<Object> handlerWrapperList = new ArrayList<>(); //RequestHandlerWrapper
+    private Render render;
 
     /**
      * Constructor
      *
-     * @param handlerList
+     * @param handlerWrapperList
      */
-    public RequestHandlerChain(List<Object> handlerList){
-        this.handlerList = handlerList;
+    public RequestHandlerChain(List<Object> handlerWrapperList){
+        this.handlerWrapperList = handlerWrapperList;
     }
 
     /**
@@ -55,11 +58,46 @@ public class RequestHandlerChain {
         this.context = context;
     }
 
+    /**
+     * do handler chain
+     */
     public void doNext(){
-
+        try{
+            for (Object handlerWrapper : handlerWrapperList) {
+                if (handlerWrapper!=null && handlerWrapper instanceof RequestHandlerWrapper){
+                    Object handler = ((RequestHandlerWrapper) handlerWrapper).getRequestHandler();
+                    if(!((venus.mvc.handler.RequestHandler) handler).handle((MvcContext) context)){
+                        break;
+                    }
+                }else{
+                    logger.warn("Type of RequestHandler is diff, or null. [" + handlerWrapper.toString() + "]");
+                }
+            }
+        }catch (Exception e){
+            logger.error("Do request handler chain error. " + e.getMessage());
+            render = new InternalErrorRender();
+        }finally {
+            if (render==null){
+                render = new DefaultRender();
+            }
+            try {
+                render.render((MvcContext) context);
+            } catch (Exception e) {
+                logger.error("Render failure. " + e.getMessage());
+                throw new VenusFrameworkException("Render failure");
+            }
+        }
     }
 
-    public void setHandlerList(List<Object> handlerList) {
-        this.handlerList = handlerList;
+    public void setHandlerWrapperList(List<Object> handlerWrapperList) {
+        this.handlerWrapperList = handlerWrapperList;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }

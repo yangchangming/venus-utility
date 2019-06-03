@@ -13,23 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.mvc.handler;
+package venus.mvc.render;
 
 import venus.mvc.MvcContext;
-import venus.mvc.annotation.RequestHandlerType;
 
 /**
- * <p> Encoding http request handler </p>
+ * <p> Default Render, 200 </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-06-01 14:00
+ * @since 2019-06-03 16:40
  */
-@venus.mvc.annotation.RequestHandler(value = "encoding" ,type = RequestHandlerType.COMMON, order = 0)
-public class EncodingHandler implements RequestHandler {
+public class DefaultRender implements Render {
 
     @Override
-    public boolean handle(MvcContext context) throws Exception {
-        context.getRequest().setCharacterEncoding("utf-8");
-        return true;
+    public void render(MvcContext context) throws Exception {
+        context.getResponse().setStatus(Render.SC_OK);
     }
 }

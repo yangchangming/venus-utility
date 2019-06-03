@@ -118,7 +118,7 @@ public class Mvcs {
     }
 
     /**
-     * fetch method by request, strictly follow by:
+     * fetch method by request, equals strictly follow by:
      * 1. request path
      * 2. http method
      *

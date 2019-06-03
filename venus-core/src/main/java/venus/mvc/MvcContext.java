@@ -20,6 +20,7 @@ import venus.core.impl.VContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 
 /**
  * <p> Context for mvc </p>
@@ -33,6 +34,7 @@ public class MvcContext extends VContext {
     private HttpServletResponse response;
     private ServletContext servletContext;
     private RequestPath requestPath;
+    private Method targetMethod;
 
     /**
      * Constructor
@@ -76,5 +78,13 @@ public class MvcContext extends VContext {
 
     public void setRequestPath(RequestPath requestPath) {
         this.requestPath = requestPath;
+    }
+
+    public Method getTargetMethod() {
+        return targetMethod;
+    }
+
+    public void setTargetMethod(Method targetMethod) {
+        this.targetMethod = targetMethod;
     }
 }

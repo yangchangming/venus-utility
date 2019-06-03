@@ -50,6 +50,7 @@ public class RequestHandlerChainFactory {
 
     /**
      * fetch request handler chain
+     * 1. after fetch chain, set context to chain
      *
      * @param context
      * @return
@@ -57,7 +58,11 @@ public class RequestHandlerChainFactory {
     public static RequestHandlerChain chain(Context context){
         RequestPath path = Mvcs.buildPath(context);
         if (chains.containsKey(path)){
-            return chains.get(path);
+            RequestHandlerChain chain = chains.get(path);
+            if (chain.getContext()==null){
+                chain.setContext(context);
+            }
+            return chain;
         }else {
             chains.putIfAbsent(path, RequestHandlerChainFactory.buildChain(context));
         }
@@ -72,7 +77,7 @@ public class RequestHandlerChainFactory {
      */
     protected static RequestHandlerChain buildChain(Context context){
         RequestHandlerChain chain = new RequestHandlerChain(context);
-        chain.setHandlerList(Mvcs.loadHandlers(allHandlers, Mvcs.request2Method(context)));
+        chain.setHandlerWrapperList(Mvcs.loadHandlers(allHandlers, Mvcs.request2Method(context)));
         return chain;
     }
 

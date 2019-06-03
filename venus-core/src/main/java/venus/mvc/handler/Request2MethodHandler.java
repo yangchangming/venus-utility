@@ -15,21 +15,34 @@
  */
 package venus.mvc.handler;
 
+import org.apache.log4j.Logger;
+import venus.exception.VenusFrameworkException;
 import venus.mvc.MvcContext;
+import venus.mvc.Mvcs;
 import venus.mvc.annotation.RequestHandlerType;
 
+import java.lang.reflect.Method;
+
 /**
- * <p> Encoding http request handler </p>
+ * <p> Mapping method for this request </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-06-01 14:00
+ * @since 2019-06-03 17:54
  */
-@venus.mvc.annotation.RequestHandler(value = "encoding" ,type = RequestHandlerType.COMMON, order = 0)
-public class EncodingHandler implements RequestHandler {
+@venus.mvc.annotation.RequestHandler(value = "request2Method", type = RequestHandlerType.COMMON, order = 1)
+public class Request2MethodHandler implements RequestHandler {
+
+    Logger logger = Logger.getLogger(Request2MethodHandler.class);
 
     @Override
     public boolean handle(MvcContext context) throws Exception {
-        context.getRequest().setCharacterEncoding("utf-8");
-        return true;
+        Method method = Mvcs.request2Method(context);
+        if (method==null){
+            logger.error("No method match for this request.");
+            throw new VenusFrameworkException("No method match for this request.");
+        }else {
+            context.setTargetMethod(method);
+            return true;
+        }
     }
 }

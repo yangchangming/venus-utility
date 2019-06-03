@@ -34,15 +34,12 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        super.init();
         RequestHandlerChainFactory.initialChain();
     }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Context context = new MvcContext(req, resp, getServletContext());
-
         RequestHandlerChainFactory.chain(context).doNext();
-
     }
 }
