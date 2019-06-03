@@ -65,4 +65,25 @@ public class RequestPath {
     public void setMethodPath(String methodPath) {
         this.methodPath = methodPath;
     }
+
+
+    @Override
+    public int hashCode() {
+        if (this.path!=null){
+            return this.path.hashCode();
+        }else {
+            return super.hashCode();
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RequestPath that = (RequestPath) o;
+        if (httpMethod != null ? !httpMethod.equals(that.httpMethod) : that.httpMethod != null) return false;
+        if (path != null ? !path.equals(that.path) : that.path != null) return false;
+        return methodPath != null ? methodPath.equals(that.methodPath) : that.methodPath == null;
+
+    }
 }
