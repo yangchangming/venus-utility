@@ -132,4 +132,30 @@ public final class Clazz {
         }
     }
 
+    /**
+     * true if class is primitive
+     *
+     * @param clz
+     * @return
+     */
+    public static boolean isPrimitive(Class<?> clz) {
+        return clz == boolean.class
+                || clz == Boolean.class
+                || clz == double.class
+                || clz == Double.class
+                || clz == float.class
+                || clz == Float.class
+                || clz == short.class
+                || clz == Short.class
+                || clz == int.class
+                || clz == Integer.class
+                || clz == long.class
+                || clz == Long.class
+                || clz == String.class
+                || clz == byte.class
+                || clz == Byte.class
+                || clz == char.class
+                || clz == Character.class;
+    }
+
 }

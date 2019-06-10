@@ -15,11 +15,14 @@
  */
 package user.controller;
 
+import org.springframework.web.bind.annotation.RequestBody;
+import user.model.User;
 import user.service.IUserService;
 import venus.ioc.Autowired;
 import venus.ioc.Controller;
 import venus.mvc.annotation.RequestChain;
 import venus.mvc.annotation.RequestMapping;
+import venus.mvc.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,12 +43,17 @@ public class UserController {
 
     @RequestMapping("/list")
     @RequestChain({"2","4"})
-    public String list(HttpServletRequest request , HttpServletResponse response){
+    public String list(HttpServletRequest request , HttpServletResponse response,
+                       @RequestParam(value = "user", required = true) User user,
+                       @RequestBody(required = true) int number, long length){
+
         List result = userService.queryAll();
+
+
+
         request.setAttribute("result_list", result);
         return "user/list";
     }
-
 
 
 }

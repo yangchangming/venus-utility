@@ -13,23 +13,25 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.mvc.annotation;
+package venus.mvc.handler;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import venus.exception.VenusFrameworkException;
+import venus.mvc.MvcContext;
+import venus.mvc.annotation.RequestHandlerType;
 
 /**
- * <p> The handler annotation for executing all handler at this method </p>
- * 1. executing order by the param order value
- * 2. order value must be 100 - 1000, is not be Integer.MAX_VALUE
+ * <p> Wrapper method args handler </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-06-01 15:46
+ * @since 2019-06-03 18:30
  */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface RequestChain {
-    String[] value() default {};
+@venus.mvc.annotation.RequestHandler(value = "args", type = RequestHandlerType.COMMON, order = 3)
+public class ArgsHandler implements RequestHandler {
+
+    @Override
+    public boolean handle(MvcContext context) throws VenusFrameworkException {
+
+
+        return false;
+    }
 }

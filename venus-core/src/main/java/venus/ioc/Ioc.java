@@ -46,8 +46,7 @@ public final class Ioc {
     }
 
     /**
-     * injection all bean
-     * just depends on interface
+     * injection all bean, just depends on interface
      */
     public void doInjection(){
         for (Class<?> clazz : context.beans().loadClass()){

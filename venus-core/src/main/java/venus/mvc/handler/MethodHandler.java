@@ -17,17 +17,28 @@ package venus.mvc.handler;
 
 import venus.exception.VenusFrameworkException;
 import venus.mvc.MvcContext;
+import venus.mvc.Mvcs;
+import venus.mvc.annotation.RequestHandlerType;
+
+import java.lang.reflect.Method;
 
 /**
- * <p> The handler for http request definition </p>
- * 1. handler is singleton in ioc container
- * 2. must be annotation by @RequestHandler(value, type, order)
- * 3. keep go on handler chain if return true, or break chain if return false
+ * <p> Mapping method for this request </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-05-31 14:16
+ * @since 2019-06-03 17:54
  */
-public interface RequestHandler {
+@venus.mvc.annotation.RequestHandler(value = "method", type = RequestHandlerType.COMMON, order = 1)
+public class MethodHandler implements RequestHandler {
 
-    boolean handle(MvcContext context) throws VenusFrameworkException;
+    @Override
+    public boolean handle(MvcContext context) throws VenusFrameworkException {
+        Method method = Mvcs.request2Method(context);
+        if (method==null){
+            throw new VenusFrameworkException("No method match for this request.");
+        }else {
+            context.setTargetMethod(method);
+            return true;
+        }
+    }
 }

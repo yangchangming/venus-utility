@@ -21,6 +21,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * <p> Context for mvc </p>
@@ -35,6 +36,7 @@ public class MvcContext extends VContext {
     private ServletContext servletContext;
     private RequestPath requestPath;
     private Method targetMethod;
+    private Map<String, String> httpParamMap;
 
     /**
      * Constructor
@@ -86,5 +88,13 @@ public class MvcContext extends VContext {
 
     public void setTargetMethod(Method targetMethod) {
         this.targetMethod = targetMethod;
+    }
+
+    public Map<String, String> getHttpParamMap() {
+        return httpParamMap;
+    }
+
+    public void setHttpParamMap(Map<String, String> httpParamMap) {
+        this.httpParamMap = httpParamMap;
     }
 }

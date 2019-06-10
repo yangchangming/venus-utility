@@ -15,34 +15,22 @@
  */
 package venus.mvc.handler;
 
-import org.apache.log4j.Logger;
 import venus.exception.VenusFrameworkException;
 import venus.mvc.MvcContext;
-import venus.mvc.Mvcs;
 import venus.mvc.annotation.RequestHandlerType;
 
-import java.lang.reflect.Method;
-
 /**
- * <p> Mapping method for this request </p>
+ * <p> Invoke method handler </p>
+ * 1. finally handler for request handler chain
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-06-03 17:54
+ * @since 2019-06-03 18:33
  */
-@venus.mvc.annotation.RequestHandler(value = "request2Method", type = RequestHandlerType.COMMON, order = 1)
-public class Request2MethodHandler implements RequestHandler {
-
-    Logger logger = Logger.getLogger(Request2MethodHandler.class);
+@venus.mvc.annotation.RequestHandler(value = "invoke", type = RequestHandlerType.COMMON, order = Integer.MAX_VALUE)
+public class InvokeHandler implements RequestHandler {
 
     @Override
-    public boolean handle(MvcContext context) throws Exception {
-        Method method = Mvcs.request2Method(context);
-        if (method==null){
-            logger.error("No method match for this request.");
-            throw new VenusFrameworkException("No method match for this request.");
-        }else {
-            context.setTargetMethod(method);
-            return true;
-        }
+    public boolean handle(MvcContext context) throws VenusFrameworkException {
+        return false;
     }
 }

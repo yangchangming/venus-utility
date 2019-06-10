@@ -15,8 +15,11 @@
  */
 package venus.mvc.handler;
 
+import venus.exception.VenusFrameworkException;
 import venus.mvc.MvcContext;
 import venus.mvc.annotation.RequestHandlerType;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * <p> Encoding http request handler </p>
@@ -24,12 +27,16 @@ import venus.mvc.annotation.RequestHandlerType;
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-06-01 14:00
  */
-@venus.mvc.annotation.RequestHandler(value = "encoding" ,type = RequestHandlerType.COMMON, order = 0)
+@venus.mvc.annotation.RequestHandler(value = "encoding", type = RequestHandlerType.COMMON, order = 0)
 public class EncodingHandler implements RequestHandler {
 
     @Override
-    public boolean handle(MvcContext context) throws Exception {
-        context.getRequest().setCharacterEncoding("utf-8");
+    public boolean handle(MvcContext context) throws VenusFrameworkException {
+        try {
+            context.getRequest().setCharacterEncoding("utf-8");
+        }catch (UnsupportedEncodingException e){
+            throw new VenusFrameworkException(e.getMessage());
+        }
         return true;
     }
 }

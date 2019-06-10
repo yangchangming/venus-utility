@@ -17,6 +17,8 @@ package venus.mvc.annotation;
 
 /**
  * <p> Request handler type </p>
+ * 1. common, will be execute by all handler
+ * 2. customize, just be execute by the handler for annotation @RequestChain
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-06-01 15:07
