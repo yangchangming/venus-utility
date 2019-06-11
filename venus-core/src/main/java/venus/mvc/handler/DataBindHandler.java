@@ -51,73 +51,89 @@ public class DataBindHandler implements RequestHandler {
     public boolean handle(MvcContext context) throws VenusFrameworkException {
         if (context.getTargetMethod()!=null){
             Method targetMethod = context.getTargetMethod();
-            List<Object> methodParams = new ArrayList<>();
-
-            for (Class<?> parameterType : targetMethod.getParameterTypes()) {
-
-                if (parameterType.isAnnotationPresent(RequestParam.class)){
-                    String methodParamName = parameterType.getAnnotation(RequestParam.class).value();
-                    if (methodParamName==null || "".equals(methodParamName)){
-                        throw new VenusFrameworkException("The value of RequestParam Annotation is not null.");
-                    }
-                    Map<String, String> httpParamMap = parseRequestParam(context.getRequest());
-                    context.setHttpParamMap(httpParamMap);
-
-                    if (httpParamMap.containsKey(methodParamName) && Clazz.isPrimitive(parameterType)){
-                        Object o = Castor.stringToClzInstance(httpParamMap.get(methodParamName), parameterType);
-                        methodParams.add(o);
-
-                    } else if (Array.class.equals(parameterType) || List.class.equals(parameterType)){
-                        Object o =bindNonPrimitiveSet(httpParamMap, methodParamName, parameterType);
-                        methodParams.add(o);
-
-                    } else if (!Clazz.isPrimitive(parameterType)){
-                        Object o = bindNonPrimitive(httpParamMap, methodParamName, parameterType);
-                        methodParams.add(o);
-                    } else {
-                        methodParams.add(null);
-                    }
-
-                }else if (parameterType.isAnnotationPresent(RequestBody.class)){
-                    String bodyContent = Mvcs.requestBody2Str(context.getRequest());
-
-                    if (MIMEType.MIME_TYPE_JSON.equals(context.getRequest().getContentType())){
-                       //todo json to object
-
-                    }else {
-                        Map<String, String> httpBodyMap = new HashMap<>();
-                        if (bodyContent!=null && !"".equals(bodyContent)
-                                && bodyContent.indexOf("=")>-1){
-                            String[] bodies = bodyContent.split("&");
-                            for (String body : bodies) {
-                                String[] keyValue = body.split("=");
-                                httpBodyMap.put(keyValue[0], keyValue[1]==null?"":keyValue[1]);
-                            }
-                        }
-                        Object o = Castor.stringToNonPrimitive(httpBodyMap, parameterType);
-                        methodParams.add(o);
-                    }
-
-                }else {
-                    Object o;
-                    if (parameterType==HttpServletRequest.class){
-                        o = context.getRequest();
-                    }else if (parameterType== HttpServletResponse.class){
-                        o = context.getResponse();
-                    }else {
-                        o = Castor.stringToClzInstance(null, parameterType);
-                    }
-                    methodParams.add(o);
-                }
-            }
-
+            List<Object> methodParams = _bind(targetMethod, context);
             if (methodParams==null || methodParams.size()!=targetMethod.getParameterTypes().length){
                 throw new VenusFrameworkException("Data bind to method params failure.");
             }
+            context.setMethodParamValue(methodParams.toArray());
             return true;
         }else {
             throw new VenusFrameworkException("Target method is not found!");
         }
+    }
+
+    /**
+     * Http请求数据注入调用方法参数
+     * 1. 支持自定义类型注入，自定义类型属性必须是原生类型
+     * 2. 支持List 和 array集合注入，集合中的对象必须是自定义类型，自定义类型属性必须是原生类型
+     * 3. 支持原生类型注入
+     * 4. 支持注解RequestParam和RequestBody，RequestBody从http的body获取数据，只获取键值对，不支持json
+     * 5. 没有注解的参数，原生类型默认注入默认值，非原生类型默认注入null
+     *
+     * @param targetMethod
+     * @param context
+     * @return
+     */
+    protected List<Object> _bind(Method targetMethod, MvcContext context){
+        List<Object> methodParams = new ArrayList<>();
+        for (Class<?> parameterType : targetMethod.getParameterTypes()) {
+
+            if (parameterType.isAnnotationPresent(RequestParam.class)){
+                String methodParamName = parameterType.getAnnotation(RequestParam.class).value();
+                if (methodParamName==null || "".equals(methodParamName)){
+                    throw new VenusFrameworkException("The value of RequestParam Annotation is not null.");
+                }
+                Map<String, String> httpParamMap = parseRequestParam(context.getRequest());
+                context.setHttpParamMap(httpParamMap);
+
+                if (httpParamMap.containsKey(methodParamName) && Clazz.isPrimitive(parameterType)){
+                    Object o = Castor.stringToClzInstance(httpParamMap.get(methodParamName), parameterType);
+                    methodParams.add(o);
+
+                } else if (Array.class.equals(parameterType) || List.class.equals(parameterType)){
+                    Object o =bindNonPrimitiveSet(httpParamMap, methodParamName, parameterType);
+                    methodParams.add(o);
+
+                } else if (!Clazz.isPrimitive(parameterType)){
+                    Object o = bindNonPrimitive(httpParamMap, methodParamName, parameterType);
+                    methodParams.add(o);
+                } else {
+                    methodParams.add(null);
+                }
+
+            }else if (parameterType.isAnnotationPresent(RequestBody.class)){
+                String bodyContent = Mvcs.requestBody2Str(context.getRequest());
+
+                if (MIMEType.MIME_TYPE_JSON.equals(context.getRequest().getContentType())){
+                    //todo json to object
+
+                }else {
+                    Map<String, String> httpBodyMap = new HashMap<>();
+                    if (bodyContent!=null && !"".equals(bodyContent)
+                            && bodyContent.indexOf("=")>-1){
+                        String[] bodies = bodyContent.split("&");
+                        for (String body : bodies) {
+                            String[] keyValue = body.split("=");
+                            httpBodyMap.put(keyValue[0], keyValue[1]==null?"":keyValue[1]);
+                        }
+                    }
+                    Object o = Castor.stringToNonPrimitive(httpBodyMap, parameterType);
+                    methodParams.add(o);
+                }
+
+            }else {
+                Object o;
+                if (parameterType==HttpServletRequest.class){
+                    o = context.getRequest();
+                }else if (parameterType== HttpServletResponse.class){
+                    o = context.getResponse();
+                }else {
+                    o = Castor.stringToClzInstance(null, parameterType);
+                }
+                methodParams.add(o);
+            }
+        }
+        return methodParams;
     }
 
     protected Map<String, String> parseRequestParam(HttpServletRequest request){
