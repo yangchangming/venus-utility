@@ -15,6 +15,7 @@
  */
 package venus.mvc.render;
 
+import venus.mvc.HttpStatus;
 import venus.mvc.MvcContext;
 
 /**
@@ -27,6 +28,6 @@ public class NotFoundRender implements Render {
 
     @Override
     public void render(MvcContext context) throws Exception {
-        context.getResponse().sendError(Render.SC_NOT_FOUND);
+        context.getResponse().sendError(HttpStatus.SC_NOT_FOUND);
     }
 }

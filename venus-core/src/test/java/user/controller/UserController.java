@@ -47,6 +47,7 @@ public class UserController {
                        @RequestParam(value = "user", required = true) User user,
                        @RequestBody(required = true) int number, long length){
 
+
         List result = userService.queryAll();
 
 

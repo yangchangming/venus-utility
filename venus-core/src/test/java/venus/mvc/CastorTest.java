@@ -13,21 +13,27 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.mvc.render;
+package venus.mvc;
 
-import venus.mvc.HttpStatus;
-import venus.mvc.MvcContext;
+import org.junit.Test;
 
 /**
- * <p> Default Render, 200 </p>
+ * <p>  </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-06-03 16:40
+ * @since 2019-06-11 11:06
  */
-public class DefaultRender implements Render {
+public class CastorTest {
 
-    @Override
-    public void render(MvcContext context) throws Exception {
-        context.getResponse().setStatus(HttpStatus.SC_OK);
+    @Test
+    public void testArrayBuild(){
+        String[] arr = new String[]{};
+        Class clz = arr.getClass();
+        if (clz.isArray()){
+            System.out.println("yes");
+        }
+//        System.out.println((String) Clazz.newInstance(clz));
+
     }
+
 }

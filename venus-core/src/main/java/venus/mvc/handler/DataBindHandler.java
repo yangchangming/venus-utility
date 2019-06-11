@@ -62,15 +62,14 @@ public class DataBindHandler implements RequestHandler {
                         Object o = Castor.stringToClzInstance(httpParamMap.get(methodParamName), parameterType);
                         methodParams.add(o);
 
-                    } else if (Array.class.equals(parameterType) || List.class.equals(parameterType) || Set.class.equals(parameterType)){
+                    } else if (Array.class.equals(parameterType) || List.class.equals(parameterType)){
                         Object o =bindNonPrimitiveSet(httpParamMap, methodParamName, parameterType);
+                        methodParams.add(o);
 
                     } else if (!Clazz.isPrimitive(parameterType)){
                         Object o = bindNonPrimitive(httpParamMap, methodParamName, parameterType);
+                        methodParams.add(o);
                     }
-
-
-
                 }else if (parameterType.isAnnotationPresent(RequestBody.class)){
 
 
@@ -112,7 +111,8 @@ public class DataBindHandler implements RequestHandler {
      * @return
      */
     protected Object bindNonPrimitive(Map<String, String> httpParamMap, final String methodParamName, Class<?> parameterType){
-        Map<String, String> targetMap = new HashMap<>(); //{(age->18),(name->"中本聪"),...}
+        //{(age->18),(name->"中本聪"),...}
+        Map<String, String> targetMap = new HashMap<>();
         httpParamMap.keySet().stream().forEach(key -> {
             if (key.startsWith(methodParamName + ".")){
                 String[] keys  = key.split(".");
@@ -130,7 +130,7 @@ public class DataBindHandler implements RequestHandler {
     }
 
     /**
-     * bind http param to set of non-primitive
+     * bind http param to list or array of non-primitive
      *
      * @param httpParamMap
      * @param methodParamName
@@ -140,27 +140,14 @@ public class DataBindHandler implements RequestHandler {
     protected Object bindNonPrimitiveSet(Map<String, String> httpParamMap, final String methodParamName, Class<?> parameterType){
         //{(user[0]->((name->"中本聪"),(age->33),...)),(user[1]->((age->22),(name->"中本聪"),...)),...}
         Map<String, Map<String, String>> targetSetMap = new HashMap<>();
-
-        Class<?> componentClz = null;
-        if (parameterType.isArray()){
-            componentClz = parameterType.getComponentType();
-        }else {
-            //todo ??
-            componentClz = parameterType.getGenericSuperclass().getClass();
-        }
-
-
         httpParamMap.keySet().stream().forEach(key -> {
             if (key.startsWith(methodParamName + "[")){
-                //user[0].name
+                //key: user[0].name
                 String[] keys  = key.split(".");
                 String preKey = keys[0];
                 String postKey = keys[keys.length-1];
-
                 if (postKey!=null && !"".equals(postKey)){
-
                     for (Field field : parameterType.getDeclaredFields()) {
-
                         if (field.getName().equals(postKey)){
                             if (targetSetMap.containsKey(preKey)){
                                 targetSetMap.get(preKey).put(postKey, httpParamMap.get(key));
@@ -172,10 +159,9 @@ public class DataBindHandler implements RequestHandler {
                         }
                     }
                 }
-
             }
         });
-        return Castor.stringSetToNonPrimitive(targetSetMap, componentClz);
+        return Castor.stringToNonPrimitiveSet(targetSetMap, parameterType);
     }
 
 }

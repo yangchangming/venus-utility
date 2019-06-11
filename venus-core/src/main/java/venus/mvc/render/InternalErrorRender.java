@@ -15,6 +15,7 @@
  */
 package venus.mvc.render;
 
+import venus.mvc.HttpStatus;
 import venus.mvc.MvcContext;
 
 /**
@@ -27,6 +28,6 @@ public class InternalErrorRender implements Render {
 
     @Override
     public void render(MvcContext context) throws Exception {
-        context.getResponse().sendError(Render.SC_INTERNAL_SERVER_ERROR);
+        context.getResponse().sendError(HttpStatus.SC_INTERNAL_SERVER_ERROR);
     }
 }

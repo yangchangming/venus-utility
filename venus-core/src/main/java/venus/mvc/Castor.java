@@ -17,7 +17,13 @@ package venus.mvc;
 
 import venus.lang.Clazz;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,11 +52,11 @@ public final class Castor {
     }
 
     /**
-     * 属性map集合转为自定义对象
-     * 1. 必须是自定义对象
-     * 2. 自定义对象属性必须为原生类型，暂时不支持属性为自定义对象或者集合
-     * 3. map中存放的是自定义对象的属性
-     * 4. todo日期类型？
+     * 属性map集合转为自定义类型
+     * 1. 必须是自定义类型
+     * 2. 自定义类型属性必须为原生类型，暂时不支持属性为自定义类型或者集合
+     * 3. map中存放的是自定义类型对象的属性
+     * 4. todo 日期类型？
      *
      * @param httpParamMap {(age->18),(name->"中本聪"),...}
      * @param targetClz 自定义对象class
@@ -71,17 +77,59 @@ public final class Castor {
 
     /**
      * 属性map集合转为自定义对象集合
+     * 1. 集合中的对象必须是自定义类型
+     * 2. 目标集合类型 List Array
+     * 3. 自定义类型属性必须是原生类型，暂时不支持属性为自定义类型或者集合
+     * 4. todo 日期类型?
      *
      * @param httpParamMap {(user[0]->((name->"中本聪"),(age->33),...)),(user[1]->((age->22),(name->"中本聪"),...)),...}
-     * @param targetClz Array or Set or List
+     * @param targetClz Array List
      * @return
      */
-    public static Object stringSetToNonPrimitive(Map<String, Map<String, String>> httpParamMap, Class<?> targetClz){
+    public static Object stringToNonPrimitiveSet(Map<String, Map<String, String>> httpParamMap, Class<?> targetClz){
+        Class<?> componentClz = null;
+        if (targetClz.isArray()){
+            Object arrObj;
+            componentClz = targetClz.getComponentType();
+            arrObj = Array.newInstance(componentClz, httpParamMap.size());
+            int index = 0;
+            Iterator<String> iterator = httpParamMap.keySet().iterator();
+            while (iterator.hasNext()){
+                String key = iterator.next();
+                Object o = Clazz.newInstance(componentClz);
+                Map<String, String> fieldMap = httpParamMap.get(key);
+                for (Field field : componentClz.getDeclaredFields()) {
+                    if (fieldMap.containsKey(field.getName())){
+                        Clazz.setFieldValue(field, o, stringToClzInstance(fieldMap.get(field.getName()), field.getDeclaringClass()));
+                    }
+                }
+                Array.set(arrObj, index, o);
+                index++;
+            }
+            return arrObj;
 
-        //todo convert
+        }else if (targetClz == List.class){
+            Type genType = targetClz.getGenericSuperclass();
+            if (ParameterizedType.class.isInstance(genType)){
+                ParameterizedType parameterizedType = (ParameterizedType)genType;
+                componentClz = (Class)parameterizedType.getActualTypeArguments()[0];
+            }
+            final Class<?> _comonentClz = componentClz;
+            List result = new ArrayList();
+            httpParamMap.keySet().stream().forEach(key -> {
+                Object o = Clazz.newInstance(_comonentClz);
+                Map<String, String> fieldMap = httpParamMap.get(key);
+                for (Field field : _comonentClz.getDeclaredFields()) {
+                    if (fieldMap.containsKey(field.getName())){
+                        Clazz.setFieldValue(field, o, stringToClzInstance(fieldMap.get(field.getName()), field.getDeclaringClass()));
+                    }
+                }
+                result.add(o);
+            });
+            return result;
+        }
         return null;
     }
-
 
     /**
      * cast string to primitive value, source must be String
@@ -112,7 +160,6 @@ public final class Castor {
         }
         return null;
     }
-
 
     public static Object primitiveToNull(Class<?> clz) {
         if (clz.equals(int.class) || clz.equals(double.class) || clz.equals(short.class) ||
