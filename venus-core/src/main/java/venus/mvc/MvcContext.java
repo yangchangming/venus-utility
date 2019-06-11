@@ -37,6 +37,7 @@ public class MvcContext extends VContext {
     private RequestPath requestPath;
     private Method targetMethod;
     private Map<String, String> httpParamMap;
+    private Object[] methodParamValue;
 
     /**
      * Constructor
@@ -96,5 +97,13 @@ public class MvcContext extends VContext {
 
     public void setHttpParamMap(Map<String, String> httpParamMap) {
         this.httpParamMap = httpParamMap;
+    }
+
+    public Object[] getMethodParamValue() {
+        return methodParamValue;
+    }
+
+    public void setMethodParamValue(Object[] methodParamValue) {
+        this.methodParamValue = methodParamValue;
     }
 }

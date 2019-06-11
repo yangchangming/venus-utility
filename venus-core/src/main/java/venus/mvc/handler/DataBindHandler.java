@@ -15,19 +15,25 @@
  */
 package venus.mvc.handler;
 
-import org.springframework.web.bind.annotation.RequestBody;
 import venus.exception.VenusFrameworkException;
 import venus.lang.Clazz;
 import venus.mvc.Castor;
+import venus.mvc.MIMEType;
 import venus.mvc.MvcContext;
+import venus.mvc.Mvcs;
+import venus.mvc.annotation.RequestBody;
 import venus.mvc.annotation.RequestHandlerType;
 import venus.mvc.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p> Http request data binder handler </p>
@@ -54,7 +60,6 @@ public class DataBindHandler implements RequestHandler {
                     if (methodParamName==null || "".equals(methodParamName)){
                         throw new VenusFrameworkException("The value of RequestParam Annotation is not null.");
                     }
-
                     Map<String, String> httpParamMap = parseRequestParam(context.getRequest());
                     context.setHttpParamMap(httpParamMap);
 
@@ -69,23 +74,47 @@ public class DataBindHandler implements RequestHandler {
                     } else if (!Clazz.isPrimitive(parameterType)){
                         Object o = bindNonPrimitive(httpParamMap, methodParamName, parameterType);
                         methodParams.add(o);
+                    } else {
+                        methodParams.add(null);
                     }
+
                 }else if (parameterType.isAnnotationPresent(RequestBody.class)){
+                    String bodyContent = Mvcs.requestBody2Str(context.getRequest());
 
+                    if (MIMEType.MIME_TYPE_JSON.equals(context.getRequest().getContentType())){
+                       //todo json to object
 
-
+                    }else {
+                        Map<String, String> httpBodyMap = new HashMap<>();
+                        if (bodyContent!=null && !"".equals(bodyContent)
+                                && bodyContent.indexOf("=")>-1){
+                            String[] bodies = bodyContent.split("&");
+                            for (String body : bodies) {
+                                String[] keyValue = body.split("=");
+                                httpBodyMap.put(keyValue[0], keyValue[1]==null?"":keyValue[1]);
+                            }
+                        }
+                        Object o = Castor.stringToNonPrimitive(httpBodyMap, parameterType);
+                        methodParams.add(o);
+                    }
 
                 }else {
-
-
-
+                    Object o;
+                    if (parameterType==HttpServletRequest.class){
+                        o = context.getRequest();
+                    }else if (parameterType== HttpServletResponse.class){
+                        o = context.getResponse();
+                    }else {
+                        o = Castor.stringToClzInstance(null, parameterType);
+                    }
+                    methodParams.add(o);
                 }
             }
 
-
-            //todo method param array build
+            if (methodParams==null || methodParams.size()!=targetMethod.getParameterTypes().length){
+                throw new VenusFrameworkException("Data bind to method params failure.");
+            }
             return true;
-
         }else {
             throw new VenusFrameworkException("Target method is not found!");
         }
@@ -99,7 +128,6 @@ public class DataBindHandler implements RequestHandler {
         // TODO: Body、Path、Header 请求参数获取
         return paramMap;
     }
-
 
     /**
      * bind http param to non-primitive object

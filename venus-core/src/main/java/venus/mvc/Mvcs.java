@@ -17,6 +17,7 @@ package venus.mvc;
 
 import org.apache.log4j.Logger;
 import venus.core.Context;
+import venus.exception.VenusFrameworkException;
 import venus.ioc.Beans;
 import venus.mvc.annotation.RequestChain;
 import venus.mvc.annotation.RequestHandlerType;
@@ -25,6 +26,9 @@ import venus.mvc.annotation.RequestMethod;
 import venus.mvc.bean.RequestHandlerWrapper;
 import venus.mvc.handler.RequestHandler;
 
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -150,7 +154,6 @@ public class Mvcs {
                 }
             }
         });
-
         if (methods!=null && methods.size()>1){
             logger.warn("Multi method corresponding to a http request.");
             return methods.get(0);
@@ -160,6 +163,30 @@ public class Mvcs {
         }
         return null;
     }
+
+    /**
+     * convert http body to string
+     *
+     * @param request
+     * @return
+     */
+    public static String requestBody2Str(HttpServletRequest request){
+        try {
+            ServletInputStream bodyStream = request.getInputStream();
+            byte[] contentByte = new byte[request.getContentLength()];
+            int retVal = -1;
+            StringBuilder bodyContent = new StringBuilder();
+            while ((retVal=bodyStream.read(contentByte))!=-1){
+                for (int i = 0; i < retVal; i++) {
+                    bodyContent.append((char)contentByte[i]);
+                }
+            }
+            return bodyContent.toString();
+        } catch (IOException e) {
+            throw new VenusFrameworkException(e.getMessage());
+        }
+    }
+
 
 
 }
