@@ -44,7 +44,7 @@ import java.util.Map;
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-06-05 09:55
  */
-@venus.mvc.annotation.RequestHandler(value = "dataBind", type = RequestHandlerType.COMMON, order = 2)
+@venus.mvc.annotation.RequestHandler(value = "dataBind", type = RequestHandlerType.COMMON, order = 3)
 public class DataBindHandler implements RequestHandler {
 
     @Override
