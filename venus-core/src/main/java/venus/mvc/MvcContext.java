@@ -16,6 +16,7 @@
 package venus.mvc;
 
 import venus.core.impl.VContext;
+import venus.mvc.render.Render;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -35,9 +36,12 @@ public class MvcContext extends VContext {
     private HttpServletResponse response;
     private ServletContext servletContext;
     private RequestPath requestPath;
+    private Object targetController;
     private Method targetMethod;
-    private Map<String, String> httpParamMap;
-    private Object[] methodParamValue;
+    private Object result; //return result of execute target method
+    private Map<String, String> httpParamMap; //all query params map for this http request
+    private Object[] methodParamValue; //all params values of the method for this http request
+    private Render render;
 
     /**
      * Constructor
@@ -105,5 +109,29 @@ public class MvcContext extends VContext {
 
     public void setMethodParamValue(Object[] methodParamValue) {
         this.methodParamValue = methodParamValue;
+    }
+
+    public Object getTargetController() {
+        return targetController;
+    }
+
+    public void setTargetController(Object targetController) {
+        this.targetController = targetController;
+    }
+
+    public Object getResult() {
+        return result;
+    }
+
+    public void setResult(Object result) {
+        this.result = result;
+    }
+
+    public Render getRender() {
+        return render;
+    }
+
+    public void setRender(Render render) {
+        this.render = render;
     }
 }

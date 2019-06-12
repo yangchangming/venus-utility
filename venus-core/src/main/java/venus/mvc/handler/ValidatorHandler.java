@@ -16,8 +16,10 @@
 package venus.mvc.handler;
 
 import venus.exception.VenusFrameworkException;
+import venus.mvc.ModelAndView;
 import venus.mvc.MvcContext;
 import venus.mvc.annotation.RequestHandlerType;
+import venus.mvc.annotation.RequestMapping;
 import venus.mvc.annotation.RequestParam;
 
 import java.lang.reflect.Method;
@@ -35,13 +37,20 @@ public class ValidatorHandler implements RequestHandler {
     public boolean handle(MvcContext context) throws VenusFrameworkException {
         if (context.getTargetMethod()!=null){
            Method method = context.getTargetMethod();
-            for (Class<?> paramClz : method.getParameterTypes()) {
-                if (paramClz.isAnnotationPresent(RequestParam.class)){
-                    if (paramClz.getAnnotation(RequestParam.class).required() && "".equals(paramClz.getAnnotation(RequestParam.class).value())){
-                        throw new VenusFrameworkException("The RequestParam annotation of method [" + method.getName() + "] is null.");
-                    }
-                }
-            }
+           String value = method.getAnnotation(RequestMapping.class).value();
+           if (value==null || "".equals(value)){
+               throw new VenusFrameworkException("The RequestMapping annotation of method ["+ method.getName() +"] is null.");
+           }
+           if (!(method.getReturnType()==String.class) || !(method.getReturnType()== ModelAndView.class)){
+               throw new VenusFrameworkException("Return type of method [" + method.getName() + "] is error.");
+           }
+           for (Class<?> paramClz : method.getParameterTypes()) {
+               if (paramClz.isAnnotationPresent(RequestParam.class)){
+                   if (paramClz.getAnnotation(RequestParam.class).required() && "".equals(paramClz.getAnnotation(RequestParam.class).value())){
+                       throw new VenusFrameworkException("The RequestParam annotation of method [" + method.getName() + "] is null.");
+                   }
+               }
+           }
         }else {
             throw new VenusFrameworkException("The target method is null.");
         }

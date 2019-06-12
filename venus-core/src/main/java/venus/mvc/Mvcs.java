@@ -132,6 +132,7 @@ public class Mvcs {
     public static Method request2Method(Context context){
         RequestPath requestPath = buildPath(context);
         List<Method> methods = new ArrayList<>();
+        List<Class<?>> clzz = new ArrayList<>();
         Beans.of().loadClassByAnnotation(RequestMapping.class).stream().forEach(clz -> {
             String basePath = clz.getAnnotation(RequestMapping.class).value();
             if (basePath != null && !basePath.startsWith("/")){
@@ -150,15 +151,25 @@ public class Mvcs {
                     RequestMethod httpMethod = method.getAnnotation(RequestMapping.class).method();
                     if (path.equals(requestPath.getPath()) && requestPath.getHttpMethod().equals(String.valueOf(httpMethod)) ){
                         methods.add(method);
+                        clzz.add(clz);
                     }
                 }
             }
+
         });
         if (methods!=null && methods.size()>1){
             logger.warn("Multi method corresponding to a http request.");
+            Object o = Beans.of().getBean(clzz.get(0));
+            if (context!=null && context instanceof MvcContext){
+                ((MvcContext) context).setTargetController(o);
+            }
             return methods.get(0);
         }
         if (methods !=null && methods.size()==1 ){
+            Object o = Beans.of().getBean(clzz.get(0));
+            if (context!=null && context instanceof MvcContext){
+                ((MvcContext) context).setTargetController(o);
+            }
             return methods.get(0);
         }
         return null;

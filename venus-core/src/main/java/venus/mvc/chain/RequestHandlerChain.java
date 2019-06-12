@@ -38,7 +38,7 @@ public class RequestHandlerChain {
     private static Logger logger = Logger.getLogger(RequestHandlerChain.class);
     private Context context;
     private List<Object> handlerWrapperList = new ArrayList<>(); //RequestHandlerWrapper
-    private Render render;
+    private Render render = new DefaultRender();
 
     /**
      * Constructor
@@ -62,6 +62,7 @@ public class RequestHandlerChain {
      * do handler chain
      */
     public void doNext(){
+
         try{
             for (Object handlerWrapper : handlerWrapperList) {
                 if (handlerWrapper!=null && handlerWrapper instanceof RequestHandlerWrapper){
@@ -73,6 +74,7 @@ public class RequestHandlerChain {
                     logger.warn("Type of RequestHandler is diff, or null. [" + handlerWrapper.toString() + "]");
                 }
             }
+            setRender(((MvcContext)context).getRender());
         }catch (Exception e){
             logger.error("Do request handler chain error. " + e.getMessage());
             render = new InternalErrorRender();
@@ -99,5 +101,9 @@ public class RequestHandlerChain {
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public void setRender(Render render) {
+        this.render = render;
     }
 }

@@ -19,6 +19,8 @@ import venus.exception.VenusFrameworkException;
 import venus.mvc.MvcContext;
 import venus.mvc.annotation.RequestHandlerType;
 
+import java.lang.reflect.Method;
+
 /**
  * <p> Invoke method handler </p>
  * 1. finally handler for request handler chain
@@ -26,11 +28,29 @@ import venus.mvc.annotation.RequestHandlerType;
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-06-03 18:33
  */
-@venus.mvc.annotation.RequestHandler(value = "invoke", type = RequestHandlerType.COMMON, order = Integer.MAX_VALUE)
+@venus.mvc.annotation.RequestHandler(value = "invoke", type = RequestHandlerType.COMMON, order = Integer.MAX_VALUE-1)
 public class InvokeHandler implements RequestHandler {
 
     @Override
     public boolean handle(MvcContext context) throws VenusFrameworkException {
-        return false;
+        Object[] methodParamValue = context.getMethodParamValue();
+        Method method = context.getTargetMethod();
+        Object controller = context.getTargetController();
+        Object result;
+        if (method!=null && controller!=null && methodParamValue!=null){
+            try {
+                if (methodParamValue.length==0){
+                    result = method.invoke(controller);
+                }else {
+                    result = method.invoke(controller, methodParamValue);
+                }
+                context.setResult(result);
+            }catch (Exception e){
+                throw new VenusFrameworkException("Invoke method failure. " + e.getMessage());
+            }
+        }else {
+           throw new VenusFrameworkException("Cannot execute method, no condition.");
+        }
+        return true;
     }
 }

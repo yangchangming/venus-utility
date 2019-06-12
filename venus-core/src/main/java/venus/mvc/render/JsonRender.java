@@ -13,25 +13,33 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.mvc.handler;
+package venus.mvc.render;
 
-import venus.exception.VenusFrameworkException;
+import venus.mvc.MIMEType;
 import venus.mvc.MvcContext;
-import venus.mvc.annotation.RequestHandlerType;
+
+import java.io.PrintWriter;
 
 /**
- * <p> Wrapper method args handler </p>
+ * <p> Json render </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-06-03 18:30
+ * @since 2019-06-12 16:20
  */
-@venus.mvc.annotation.RequestHandler(value = "args", type = RequestHandlerType.COMMON, order = 3)
-public class ArgsHandler implements RequestHandler {
+public class JsonRender implements Render {
+
+    private Object jsonData;
+
+    public JsonRender(Object jsonData){
+        this.jsonData = jsonData;
+    }
 
     @Override
-    public boolean handle(MvcContext context) throws VenusFrameworkException {
-
-
-        return false;
+    public void render(MvcContext context) throws Exception {
+        context.getResponse().setContentType(MIMEType.MIME_TYPE_JSON);
+        context.getResponse().setCharacterEncoding("UTF-8");
+        PrintWriter writer = context.getResponse().getWriter();
+        writer.write(jsonData.toString());
+        writer.flush();
     }
 }
