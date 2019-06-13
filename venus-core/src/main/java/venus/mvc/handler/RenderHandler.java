@@ -20,10 +20,7 @@ import venus.mvc.ModelAndView;
 import venus.mvc.MvcContext;
 import venus.mvc.annotation.RequestHandlerType;
 import venus.mvc.annotation.ResponseBody;
-import venus.mvc.render.ForwardRender;
-import venus.mvc.render.JsonRender;
-import venus.mvc.render.RedirectRender;
-import venus.mvc.render.ViewRender;
+import venus.mvc.render.*;
 
 /**
  * <p> Render handler </p>
@@ -39,14 +36,19 @@ public class RenderHandler implements RequestHandler {
         if (context.getResult()==null || !(context.getResult() instanceof String) || !(context.getResult() instanceof ModelAndView)){
             throw new VenusFrameworkException("Return value type error for method [" + context.getTargetMethod().getName() + "].");
         }
+        Object result = context.getResult();
         if (context.getTargetMethod().isAnnotationPresent(ResponseBody.class)){
             context.setRender(new JsonRender(context.getResult()));
-        }else if (context.getResult() instanceof ModelAndView){
+            //jsp velocity freemarker etc. template engine
+        }else if (result instanceof ModelAndView || (result instanceof String && !(((String) result).startsWith("redirect:"))
+                && !(((String) result).startsWith("forward:")) )){
             context.setRender(new ViewRender(context.getResult()));
-        }else if ((context.getResult() instanceof String) && ((String) context.getResult()).startsWith("redirect:")){
+        }else if ((result instanceof String) && ((String) result).startsWith("redirect:")){
             context.setRender(new RedirectRender(context.getResult()));
-        }else if ((context.getResult() instanceof String) && ((String) context.getResult()).startsWith("forward:")){
+        }else if ((result instanceof String) && ((String) result).startsWith("forward:")){
             context.setRender(new ForwardRender(context.getResult()));
+        } else {
+            context.setRender(new InternalErrorRender());
         }
         return true;
     }

@@ -52,7 +52,7 @@ public class UserController {
         List result = userService.queryAll();
 
         request.setAttribute("result_list", result);
-        return "redirect:/user/list";
+        return "/jsp/user/list";
     }
 
 

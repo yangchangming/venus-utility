@@ -45,6 +45,6 @@ public class RedirectRender implements Render {
         if (!redirectPath.startsWith("/")){
             redirectPath = "/" + redirectPath;
         }
-        context.getResponse().sendRedirect(redirectPath);
+        context.getResponse().sendRedirect(context.getRequest().getContextPath() + redirectPath);
     }
 }

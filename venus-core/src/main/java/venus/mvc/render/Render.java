@@ -25,5 +25,10 @@ import venus.mvc.MvcContext;
  */
 public interface Render {
 
+    String JSP_TOMCAT_DISPATCHER = "jsp";
+    String DEFAULT_TOMCAT_DISPACTHER = "default";
+    String ASSET_PATH_PRE = "/static/";
+    String TEMPLATE_PATH_PRE = "/template/";
+
     void render(MvcContext context) throws Exception;
 }
