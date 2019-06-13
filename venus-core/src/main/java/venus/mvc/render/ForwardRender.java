@@ -19,7 +19,6 @@ import venus.mvc.MvcContext;
 
 /**
  * <p> Forward render </p>
- * 1. forward path must be full path
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-06-12 17:17

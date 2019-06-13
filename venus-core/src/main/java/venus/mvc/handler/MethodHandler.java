@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-06-03 17:54
  */
-@venus.mvc.annotation.RequestHandler(value = "method", type = RequestHandlerType.COMMON, order = 1)
+@venus.mvc.annotation.RequestHandler(value = "method", type = RequestHandlerType.COMMON, order = 2)
 public class MethodHandler implements RequestHandler {
 
     @Override

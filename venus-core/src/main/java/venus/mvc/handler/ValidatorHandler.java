@@ -30,7 +30,7 @@ import java.lang.reflect.Method;
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-06-12 09:46
  */
-@venus.mvc.annotation.RequestHandler(value = "validator", type = RequestHandlerType.COMMON, order = 2)
+@venus.mvc.annotation.RequestHandler(value = "validator", type = RequestHandlerType.COMMON, order = 3)
 public class ValidatorHandler implements RequestHandler {
 
     @Override
