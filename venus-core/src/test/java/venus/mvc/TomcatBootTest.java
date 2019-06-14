@@ -15,28 +15,19 @@
  */
 package venus.mvc;
 
-import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.Map;
+import venus.bootstrap.TomcatBoot;
 
 /**
- * <p>  </p>
+ * <p> Tomcat bootstrap test case </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-06-03 12:45
+ * @since 2019-06-14 10:13
  */
-public class RequestPathTest {
+public class TomcatBootTest {
 
     @Test
-    public void testEquals(){
-        RequestPath requestPath = new RequestPath("post", "/user/list");
-        RequestPath requestPath1 = new RequestPath("post", "/user/list");
-        Map map = new HashMap<>();
-        map.put(requestPath, "value");
-        Assert.assertEquals(true, map.containsKey(requestPath1));
-
+    public void testBoot(){
+        TomcatBoot.of().start();
     }
-
 }
