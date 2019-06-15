@@ -158,4 +158,21 @@ public final class Clazz {
                 || clz == Character.class;
     }
 
+    /**
+     * true if clz implements interface specified by interfaceClz
+     *
+     * @param clz
+     * @param interfaceClz
+     * @return
+     */
+    public static boolean isImplementsInterface(Class<?> clz, Class<?> interfaceClz){
+        if (clz==null || interfaceClz==null || !interfaceClz.isInterface()){
+            return false;
+        }
+        for (Class<?> clzInterface : clz.getInterfaces()) {
+            if (interfaceClz==clzInterface) return true;
+        }
+        return false;
+    }
+
 }

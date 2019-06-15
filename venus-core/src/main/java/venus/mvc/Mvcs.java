@@ -90,17 +90,28 @@ public class Mvcs {
     }
 
     private static boolean _filterHandler(RequestHandlerWrapper wrapper, Method method){
-        String[] chainValue = method.getAnnotation(RequestChain.class).value();
-        for (String handlerName : chainValue) {
-            if (wrapper.getValue().equalsIgnoreCase(handlerName) || wrapper.getType().equals(String.valueOf(RequestHandlerType.COMMON))) {
-                return true;
-            }else {
-                return false;
+        if (method==null || wrapper==null){
+            throw new VenusFrameworkException("Params is null.");
+        }
+        if (String.valueOf(RequestHandlerType.COMMON).equals(wrapper.getType())){
+            return true;
+        }
+        if (method.isAnnotationPresent(RequestChain.class) && String.valueOf(RequestHandlerType.CUSTOMIZE).equals(wrapper.getType())){
+            String[] chainValue = method.getAnnotation(RequestChain.class).value();
+            for (String handlerName : chainValue) {
+                if (wrapper.getValue().equalsIgnoreCase(handlerName)) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
+    /**
+     * load all handlers
+     *
+     * @return
+     */
     public static List<RequestHandlerWrapper> loadAllHandler(){
         List<RequestHandlerWrapper> allHandlers = new ArrayList<>();
         Beans.of().loadClassByAnnotation(venus.mvc.annotation.RequestHandler.class).stream().
@@ -108,8 +119,7 @@ public class Mvcs {
                     Object obj = Beans.of().getBean(clz);
                     String handlerName = clz.getAnnotation(venus.mvc.annotation.RequestHandler.class).value();
                     RequestHandlerType handlerType = clz.getAnnotation(venus.mvc.annotation.RequestHandler.class).type();
-
-                    if (obj!=null && obj instanceof RequestHandler && !"".equals(handlerName)){
+                    if (obj!=null && RequestHandler.class.isAssignableFrom(clz) && !"".equals(handlerName)){
                         final RequestHandlerWrapper requestHandlerWrapper = new RequestHandlerWrapper();
                         requestHandlerWrapper.setValue(handlerName);
                         requestHandlerWrapper.setType(String.valueOf(handlerType));

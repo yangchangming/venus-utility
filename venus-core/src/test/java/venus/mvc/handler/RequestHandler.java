@@ -13,33 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.mvc;
+package venus.mvc.handler;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import venus.bootstrap.TomcatBoot;
+import venus.exception.VenusFrameworkException;
+import venus.mvc.MvcContext;
 
 /**
- * <p> Tomcat bootstrap test case </p>
+ * <p> The handler for http request definition </p>
+ * 1. handler is singleton in ioc container
+ * 2. must be annotation by @RequestHandler(value, type, order)
+ * 3. keep go on handler chain if return true, or break chain if return false
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-06-14 10:13
+ * @since 2019-05-31 14:16
  */
-public class TomcatBootTest {
+public interface RequestHandler {
 
-    @Before
-    public void setUp(){
-        TomcatBoot.of().start();
-    }
-
-    @After
-    public void tearDown(){
-        TomcatBoot.of().stop();
-    }
-
-    @Test
-    public void testBoot(){
-//        TomcatBoot.of().start();
-    }
+    boolean handle(MvcContext context) throws VenusFrameworkException;
 }

@@ -20,10 +20,7 @@ import user.model.User;
 import user.service.IUserService;
 import venus.ioc.Autowired;
 import venus.ioc.Controller;
-import venus.mvc.annotation.RequestChain;
-import venus.mvc.annotation.RequestMapping;
-import venus.mvc.annotation.RequestParam;
-import venus.mvc.annotation.ResponseBody;
+import venus.mvc.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,17 +40,14 @@ public class UserController {
     private IUserService userService;
 
     @RequestMapping("/list")
-    @RequestChain({"2","4"})
+//    @RequestChain({"2","4"})
     @ResponseBody
     public String list(HttpServletRequest request , HttpServletResponse response,
                        @RequestParam(value = "user", required = true) User user,
                        @RequestBody(required = true) int number, long length){
-
         List result = userService.queryAll();
-
         request.setAttribute("result_list", result);
         return "/jsp/user/list";
     }
-
 
 }
