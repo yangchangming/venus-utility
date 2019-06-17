@@ -19,6 +19,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import user.dao.IUserDao;
 import user.dao.impl.UserDao;
+import user.service.impl.UserService;
+import venus.core.impl.VContext;
+
+import java.lang.reflect.Field;
 
 /**
  * <p> Ioc test </p>
@@ -53,4 +57,13 @@ public class IocTest {
         Beans.of().getBeans().stream().forEach(obj -> System.out.println(obj.getClass().getName()));
     }
 
+    @Test
+    public void injectionTest() throws Exception{
+        VContext context = new VContext();
+        Ioc ioc = new Ioc(context);
+        ioc.doInjection();
+        Field field =  context.beans().getBean(UserService.class).getClass().getDeclaredField("userDao");
+        field.setAccessible(true);
+        Assert.assertNotNull(field.get(context.beans().getBean(UserService.class)));
+    }
 }

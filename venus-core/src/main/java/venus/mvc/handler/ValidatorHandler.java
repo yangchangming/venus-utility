@@ -41,7 +41,7 @@ public class ValidatorHandler implements RequestHandler {
            if (value==null || "".equals(value)){
                throw new VenusFrameworkException("The RequestMapping annotation of method ["+ method.getName() +"] is null.");
            }
-           if (!(method.getReturnType()==String.class) || !(method.getReturnType()== ModelAndView.class)){
+           if ((method.getReturnType()!= String.class) && (method.getReturnType()!= ModelAndView.class)){
                throw new VenusFrameworkException("Return type of method [" + method.getName() + "] is error.");
            }
            for (Class<?> paramClz : method.getParameterTypes()) {
