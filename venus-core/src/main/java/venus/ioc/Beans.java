@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
  * @since 2019-05-28 17:14
  */
 public final class Beans {
-
     private static Logger logger = Logger.getLogger(Beans.class);
     private static Map<Class<?>, Object> beanContainer = new ConcurrentHashMap<>();
     private static Beans instance = new Beans();
@@ -54,6 +53,7 @@ public final class Beans {
         if (!hasLoading){
             instance.loading();
         }
+        Ioc.of(instance);
         return Beans.instance;
     }
 
@@ -65,7 +65,7 @@ public final class Beans {
      */
     private synchronized static void loading(){
         if (hasLoading){
-            logger.warn("all bean has loading.");
+            logger.warn("All bean has loading.");
             return;
         }
         Set<Class<?>> classes = Clazz.loadClassByPackage("");

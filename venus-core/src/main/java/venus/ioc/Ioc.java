@@ -15,8 +15,6 @@
  */
 package venus.ioc;
 
-import venus.core.Context;
-import venus.core.impl.VContext;
 import venus.exception.VenusFrameworkException;
 import venus.lang.Clazz;
 
@@ -30,31 +28,47 @@ import java.util.Optional;
  * @since 2019-05-20 18:45
  */
 public final class Ioc {
-
-    private Context context;
+    private static boolean hasInjection = false;
+    private static Ioc instance = null;
 
     /**
      * Constructor
      */
-    public Ioc(Context context){
-        this.context = context==null ? new VContext() : context;
-        if (context!=null && this.context.ioc()==null){
-            if (this.context instanceof VContext){
-                ((VContext)this.context).setIoc(this);
-            }
+    private Ioc(){}
+
+    /**
+     * Ioc util
+     * 1. not recommend do injection by invoke this function
+     *
+     * @param beans
+     * @return
+     */
+    public static Ioc of(Beans beans){
+        if (instance==null){
+            instance = new Ioc();
         }
+        if (!hasInjection){
+            instance.doInjection(beans);
+        }
+        return instance;
     }
 
     /**
      * injection all bean, just depends on interface
+     * 1. not open for other class, just inner invoke
+     * 2. thread safe
+     * 3. must be invoke after beans.of()...
      */
-    public void doInjection(){
-        for (Class<?> clazz : context.beans().loadClass()){
-            Object target = context.beans().getBean(clazz);
+    private synchronized void doInjection(Beans beans){
+        if (hasInjection){
+            return;
+        }
+        for (Class<?> clazz : beans.loadClass()){
+            Object target = beans.getBean(clazz);
             for(Field field : clazz.getDeclaredFields()){
                 if (field.isAnnotationPresent(Autowired.class)){
                     final Class<?> fieldClass = field.getType();
-                    Object fieldValue = loadImplementsBySuper(fieldClass);
+                    Object fieldValue = loadImplementsBySuper(fieldClass, beans);
                     if (fieldValue!=null){
                         Clazz.setFieldValue(field, target, fieldValue);
                     }else {
@@ -63,6 +77,7 @@ public final class Ioc {
                 }
             }
         }
+        hasInjection = true;
     }
 
     /**
@@ -71,12 +86,12 @@ public final class Ioc {
      * @param superClass
      * @return
      */
-    protected Object loadImplementsBySuper(final Class<?> superClass){
-        return Optional.ofNullable(context.beans().getBean(superClass))
+    private Object loadImplementsBySuper(final Class<?> superClass, Beans beans){
+        return Optional.ofNullable(beans.getBean(superClass))
                 .orElseGet(() -> {
-                    Class<?> implementsClass = loadClassesBySuper(superClass);
+                    Class<?> implementsClass = loadClassesBySuper(superClass, beans);
                     if (null != implementsClass) {
-                        return context.beans().getBean(implementsClass);
+                        return beans.getBean(implementsClass);
                     }else {
                         return null;
                     }
@@ -89,8 +104,8 @@ public final class Ioc {
      * @param superClass
      * @return
      */
-    protected Class<?> loadClassesBySuper(final Class<?> superClass){
-        return context.beans().loadClassesBySuper(superClass).stream().findFirst().orElse(null);
+    private Class<?> loadClassesBySuper(final Class<?> superClass, Beans beans){
+        return beans.loadClassesBySuper(superClass).stream().findFirst().orElse(null);
     }
 
 }
