@@ -84,6 +84,5 @@ public class RequestPath {
         if (httpMethod != null ? !httpMethod.equals(that.httpMethod) : that.httpMethod != null) return false;
         if (path != null ? !path.equals(that.path) : that.path != null) return false;
         return methodPath != null ? methodPath.equals(that.methodPath) : that.methodPath == null;
-
     }
 }

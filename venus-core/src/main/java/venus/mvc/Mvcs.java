@@ -139,6 +139,28 @@ public class Mvcs {
         return allHandlers;
     }
 
+    public static RequestPath buildRequestPathByMethod(Method method, String basePath){
+        if (method==null){
+            return null;
+        }
+        String methodPath = method.getAnnotation(RequestMapping.class).value();
+        if (methodPath!=null && !methodPath.startsWith("/")){
+            methodPath = "/" + methodPath;
+        }
+        if (methodPath!=null && methodPath.endsWith("/")){
+            methodPath = methodPath.substring(0, methodPath.length()-1);
+        }
+        String path = basePath + methodPath;
+        RequestMethod httpMethod = method.getAnnotation(RequestMapping.class).method();
+        String _httpMethod = String.valueOf(httpMethod);
+
+        RequestPath requestPath = new RequestPath(_httpMethod, path);
+        requestPath.setBasePath(basePath);
+        requestPath.setMethodPath(methodPath);
+        return requestPath;
+    }
+
+
     /**
      * fetch method by request, equals strictly follow by:
      * 1. request path
@@ -159,17 +181,13 @@ public class Mvcs {
             }
             for (Method method : clz.getDeclaredMethods()) {
                 if (method.isAnnotationPresent(RequestMapping.class)) {
-                    String methodPath = method.getAnnotation(RequestMapping.class).value();
-                    if (methodPath != null && !methodPath.startsWith("/")) {
-                        methodPath = "/" + methodPath;
+                    RequestPath _requestPath = buildRequestPathByMethod(method, basePath);
+                    if (_requestPath==null){
+                        logger.warn("Can not build RequestPath for the method. [" + method.getName() + "]");
+                        break;
                     }
-                    if (methodPath != null && methodPath.endsWith("/")) {
-                        methodPath = methodPath.substring(0, methodPath.length() - 1);
-                    }
-                    String path = basePath + methodPath;
-                    RequestMethod httpMethod = method.getAnnotation(RequestMapping.class).method();
-
-                    if (path.equals(requestPath.getPath()) && requestPath.getHttpMethod().equals(String.valueOf(httpMethod)) ){
+                    if (_requestPath.getPath().equals(requestPath.getPath())
+                            && requestPath.getHttpMethod().equals(_requestPath.getHttpMethod()) ){
                         methods.add(method);
                         clzz.add(clz);
                     }
