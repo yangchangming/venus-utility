@@ -21,6 +21,7 @@ import venus.ioc.Ioc;
 
 /**
  * <p> Application context, and super context </p>
+ * 1. a context must be new in proper location, such as system initial or http request
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-05-20 18:36

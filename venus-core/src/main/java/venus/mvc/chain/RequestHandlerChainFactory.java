@@ -57,7 +57,7 @@ public class RequestHandlerChainFactory {
      */
     public static RequestHandlerChain chain(Context context){
         RequestPath path = Mvcs.buildPath(context);
-        if (chains.containsKey(path)){
+        if (chains.containsKey(path)){ //todo bug 没有办法比较requestpath
             RequestHandlerChain chain = chains.get(path);
             if (chain.getContext()==null){
                 chain.setContext(context);

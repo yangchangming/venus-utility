@@ -47,7 +47,7 @@ public class UserController {
                        @RequestBody(required = true) int number, long length){
         List result = userService.queryAll();
         request.setAttribute("result_list", result);
-        return "/jsp/user/list";
+        return "/jsp/user/list/杨昌明";
     }
 
 }

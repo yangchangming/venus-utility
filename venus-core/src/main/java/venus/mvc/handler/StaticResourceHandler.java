@@ -44,6 +44,8 @@ public class StaticResourceHandler implements RequestHandler {
             } catch (Exception e){
                 throw new VenusFrameworkException(e.getMessage());
             }
+        }else if (context.getRequest().getPathInfo().endsWith("favicon.ico")){
+            return false;
         }
         return true;
     }

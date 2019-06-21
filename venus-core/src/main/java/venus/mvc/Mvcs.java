@@ -73,16 +73,24 @@ public class Mvcs {
     }
 
     /**
-     * build the handlers by the method
+     * build the handlers chain by the method
      * 1. common handler and the handler by RequestChain annotation
      * 2. handler order by annotation field specified by order
+     * 3. fetch static and encoding handler if request static resource or no match method (ugly)
      *
      * @param method
      * @return
      */
     public static List<Object> loadHandlers(List<RequestHandlerWrapper> allHandlers , Method method){
         if (method==null) {
-            return null;
+            List<Object> handlers = allHandlers.stream().filter(wrapper -> {
+                if (String.valueOf(RequestHandlerType.COMMON).equals(wrapper.getType()) &&
+                        ("static".equals(wrapper.getValue()) || "encoding".equals(wrapper.getValue())) ) {
+                    return true;
+                }
+                return false;
+            }).sorted(Comparator.comparing(wrapper -> wrapper.getOrder())).collect(Collectors.toList());
+            return handlers;
         }
         List<Object> handlers = allHandlers.stream().filter(wrapper -> _filterHandler(wrapper, method))
                 .sorted(Comparator.comparing(wrapper -> wrapper.getOrder())).collect(Collectors.toList());

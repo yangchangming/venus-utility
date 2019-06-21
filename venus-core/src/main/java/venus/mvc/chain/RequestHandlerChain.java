@@ -62,7 +62,9 @@ public class RequestHandlerChain {
      * do handler chain
      */
     public void doNext(){
-
+        if (handlerWrapperList==null){
+            handlerWrapperList = new ArrayList<>();
+        }
         try{
             for (Object handlerWrapper : handlerWrapperList) {
                 if (handlerWrapper!=null && handlerWrapper instanceof RequestHandlerWrapper){
@@ -76,7 +78,7 @@ public class RequestHandlerChain {
             }
             setRender(((MvcContext)context).getRender());
         }catch (Exception e){
-            logger.error("Do request handler chain error. " + e.getMessage());
+            logger.error("Do request handler chain error. " + e.getCause().toString());
             render = new InternalErrorRender();
         }finally {
             if (render==null){

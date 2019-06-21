@@ -33,7 +33,7 @@ public class RenderHandler implements RequestHandler {
 
     @Override
     public boolean handle(MvcContext context) throws VenusFrameworkException {
-        if (context.getResult()==null || !(context.getResult() instanceof String) || !(context.getResult() instanceof ModelAndView)){
+        if (context.getResult()==null && !(context.getResult() instanceof String) && !(context.getResult() instanceof ModelAndView)){
             throw new VenusFrameworkException("Return value type error for method [" + context.getTargetMethod().getName() + "].");
         }
         Object result = context.getResult();
