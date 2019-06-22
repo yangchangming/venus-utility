@@ -64,13 +64,7 @@ public final class Castor {
      */
     public static Object stringToNonPrimitive(Map<String, String> httpParamMap, Class<?> targetClz){
         if (targetClz!=null && !Clazz.isPrimitive(targetClz)){
-            Object o = Clazz.newInstance(targetClz);
-            for (Field field : targetClz.getDeclaredFields()) {
-                if (httpParamMap.containsKey(field.getName()) && Clazz.isPrimitive(field.getDeclaringClass())){
-                    Clazz.setFieldValue(field, o, stringToClzInstance(httpParamMap.get(field.getName()), field.getDeclaringClass()));
-                }
-            }
-            return o;
+            return Castor.fillBeanByMap(targetClz, httpParamMap);
         }
         return null;
     }
@@ -96,14 +90,7 @@ public final class Castor {
             Iterator<String> iterator = httpParamMap.keySet().iterator();
             while (iterator.hasNext()){
                 String key = iterator.next();
-                Object o = Clazz.newInstance(componentClz);
-                Map<String, String> fieldMap = httpParamMap.get(key);
-                for (Field field : componentClz.getDeclaredFields()) {
-                    if (fieldMap.containsKey(field.getName())){
-                        Clazz.setFieldValue(field, o, stringToClzInstance(fieldMap.get(field.getName()), field.getDeclaringClass()));
-                    }
-                }
-                Array.set(arrObj, index, o);
+                Array.set(arrObj, index, Castor.fillBeanByMap(componentClz, httpParamMap.get(key)));
                 index++;
             }
             return arrObj;
@@ -117,19 +104,31 @@ public final class Castor {
             final Class<?> _comonentClz = componentClz;
             List result = new ArrayList();
             httpParamMap.keySet().stream().forEach(key -> {
-                Object o = Clazz.newInstance(_comonentClz);
-                Map<String, String> fieldMap = httpParamMap.get(key);
-                for (Field field : _comonentClz.getDeclaredFields()) {
-                    if (fieldMap.containsKey(field.getName())){
-                        Clazz.setFieldValue(field, o, stringToClzInstance(fieldMap.get(field.getName()), field.getDeclaringClass()));
-                    }
-                }
-                result.add(o);
+                result.add(Castor.fillBeanByMap(_comonentClz, httpParamMap.get(key)));
             });
             return result;
         }
         return null;
     }
+
+    /**
+     * fill bean field by map
+     * 1. the field class in map must be primitive
+     *
+     * @param targetBeanClz
+     * @param fieldMap
+     * @return
+     */
+    public static Object fillBeanByMap(final Class<?> targetBeanClz, Map<String, String> fieldMap){
+        Object o = Clazz.newInstance(targetBeanClz);
+        for (Field field : targetBeanClz.getDeclaredFields()) {
+            if (fieldMap.containsKey(field.getName()) && Clazz.isPrimitive(field.getType())){
+                Clazz.setFieldValue(field, o, stringToClzInstance(fieldMap.get(field.getName()), field.getType()));
+            }
+        }
+        return o;
+    }
+
 
     /**
      * cast string to primitive value, source must be String

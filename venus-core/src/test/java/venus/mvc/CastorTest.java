@@ -15,7 +15,12 @@
  */
 package venus.mvc;
 
+import org.junit.Assert;
 import org.junit.Test;
+import user.model.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>  </p>
@@ -26,14 +31,33 @@ import org.junit.Test;
 public class CastorTest {
 
     @Test
-    public void testArrayBuild(){
-        String[] arr = new String[]{};
-        Class clz = arr.getClass();
-        if (clz.isArray()){
-            System.out.println("yes");
-        }
-//        System.out.println((String) Clazz.newInstance(clz));
+    public void testPrimitive2Null(){
+        Assert.assertNull(Castor.primitiveToNull(User.class));
+        Assert.assertEquals(false, Castor.primitiveToNull(boolean.class));
+        Assert.assertEquals(0, Castor.primitiveToNull(double.class));
+    }
 
+    @Test
+    public void testString2Primitive(){
+        Assert.assertNull(Castor.stringToPrimitive("", double.class));
+        Assert.assertNotSame(Integer.class, Castor.stringToPrimitive("22", double.class));
+        Assert.assertEquals((float)44, Castor.stringToPrimitive("44", float.class));
+    }
+
+    @Test
+    public void testStringToClzInstance(){
+        Assert.assertEquals(34, Castor.stringToClzInstance("34", Integer.class));
+        Assert.assertNull(Castor.stringToClzInstance("name", User.class));
+    }
+
+    @Test
+    public void testStringToNonPrimitive(){
+        Map<String, String> user = new HashMap<>();
+        user.put("nickName", "ychm");
+        user.put("height", "18");
+        Object o = Castor.stringToNonPrimitive(user, User.class);
+        Assert.assertEquals("ychm", ((User)o).getNickName());
+        Assert.assertEquals(18.0, ((User)o).getHeight(), 0);
     }
 
 }

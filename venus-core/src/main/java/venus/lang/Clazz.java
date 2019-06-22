@@ -124,9 +124,7 @@ public final class Clazz {
             field.setAccessible(true);
         }
         try {
-            if (field.get(target)==null){
-                field.set(target, value);
-            }
+            field.set(target, value);
         } catch (IllegalAccessException e) {
             throw new VenusFrameworkException(e.getMessage());
         }
