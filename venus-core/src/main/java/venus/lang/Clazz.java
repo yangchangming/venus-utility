@@ -153,7 +153,10 @@ public final class Clazz {
                 || clz == byte.class
                 || clz == Byte.class
                 || clz == char.class
-                || clz == Character.class;
+                || clz == Character.class
+                || clz == java.util.Date.class
+                || clz == Void.class
+                || clz == void.class;
     }
 
     /**

@@ -18,9 +18,9 @@ package venus.mvc;
 import org.junit.Assert;
 import org.junit.Test;
 import user.model.User;
+import venus.lang.Clazz;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>  </p>
@@ -55,9 +55,104 @@ public class CastorTest {
         Map<String, String> user = new HashMap<>();
         user.put("nickName", "ychm");
         user.put("height", "18");
+        user.put("birthday", "2018-11-12 12:18:33");
         Object o = Castor.stringToNonPrimitive(user, User.class);
         Assert.assertEquals("ychm", ((User)o).getNickName());
         Assert.assertEquals(18.0, ((User)o).getHeight(), 0);
+        Assert.assertEquals(Date.class, ((User)o).getBirthday().getClass());
     }
+
+    @Test
+    public void testAssembleToArray(){
+        Map<String, Map<String, String>> requestParms = new HashMap<>();
+        Map<String, String> user1 = new HashMap<>();
+        Map<String, String> user2 = new HashMap<>();
+        user1.put("nickName", "ychm");
+        user1.put("height", "18");
+        user1.put("birthday", "2018-11-12 12:18:33");
+        user2.put("nickName", "wujing");
+        user2.put("height", "45");
+        user2.put("birthday", "2011-11-01 10:28:33");
+        requestParms.put("user[0]", user1);
+        requestParms.put("user[1]", user2);
+        User[] users = new User[]{};
+        Object arrObj = Castor.stringToNonPrimitiveSet(requestParms, users.getClass());
+        Assert.assertTrue(arrObj.getClass().isArray());
+    }
+
+    @Test
+    public void testAssembleToList(){
+        Map<String, Map<String, String>> requestParms = new HashMap<>();
+        Map<String, String> user1 = new HashMap<>();
+        Map<String, String> user2 = new HashMap<>();
+        user1.put("nickName", "ychm");
+        user1.put("height", "18");
+        user1.put("birthday", "2018-11-12 12:18:33");
+        user2.put("nickName", "wujing");
+        user2.put("height", "45");
+        user2.put("birthday", "2011-11-01 10:28:33");
+        requestParms.put("user[0]", user1);
+        requestParms.put("user[1]", user2);
+        List<User> userList = new ArrayList<User>();
+        Object obj = Castor.stringToNonPrimitiveSet(requestParms, userList.getClass());
+        Assert.assertTrue(Clazz.isImplementsInterface(obj.getClass(), List.class));
+    }
+
+
+    @Test
+    public void testClassCast(){
+//        if (clazz == null) return;
+//
+//        if (ValueObject.class.isAssignableFrom(clazz)) {
+//            try {
+//                if (parent == null) map.putAll(getQuery((ValueObject)clazz.newInstance(), obj, isConvertName));
+//            } catch (Exception e) {
+//            }
+//            return;
+//
+//        }else if (ValueObject[].class.isAssignableFrom(clazz)) {
+//            clazz = clazz.getComponentType();
+//            try {
+//                if (parent == null) map.putAll(getQuery((ValueObject)clazz.newInstance(), obj, isConvertName));
+//            } catch (Exception e) {
+//            }
+//            return;
+//
+//        }else if ((Set.class.isAssignableFrom(clazz) || List.class.isAssignableFrom(clazz)) && type instanceof ParameterizedType) {
+//            try {
+//                type = ((ParameterizedType)type).getActualTypeArguments()[0];
+//                if (type instanceof GenericArrayType) clazz = (Class<?>)((GenericArrayType)type).getGenericComponentType();
+//                else clazz = (Class<?>)type;
+//                if (ValueObject.class.isAssignableFrom(clazz)) {
+//                    try {
+//                        if (parent == null) map.putAll(getQuery((ValueObject)clazz.newInstance(), obj, isConvertName));
+//                    } catch (Exception e) {
+//                    }
+//                }
+//            }catch(Exception e) {
+//            }
+//            return;
+//
+//        }else if (Map.class.isAssignableFrom(clazz) && type instanceof ParameterizedType) {
+//            try {
+//                type = ((ParameterizedType)type).getActualTypeArguments()[1];
+//                if (type instanceof GenericArrayType) clazz = (Class<?>)((GenericArrayType)type).getGenericComponentType();
+//                else clazz = (Class<?>)type;
+//                if (ValueObject.class.isAssignableFrom(clazz)) {
+//                    try {
+//                        if (parent == null) map.putAll(getQuery((ValueObject)clazz.newInstance(), obj, isConvertName));
+//                    } catch (Exception e) {
+//                    }
+//                }
+//            }catch(Exception e) {
+//            }
+//            return;
+//
+//        }else if (Enum.class.isAssignableFrom(clazz)) return;
+    }
+
+
+
+
 
 }

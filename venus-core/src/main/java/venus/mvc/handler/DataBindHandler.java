@@ -27,7 +27,6 @@ import venus.mvc.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -90,9 +89,14 @@ public class DataBindHandler implements RequestHandler {
                     Object o = Castor.stringToClzInstance(httpParamMap.get(methodParamName), parameterType);
                     methodParams.add(o);
 
-                } else if (Array.class.equals(parameterType) || List.class.equals(parameterType)){
-                    Object o =bindNonPrimitiveSet(httpParamMap, methodParamName, parameterType);
+                } else if (parameterType.isArray()) {
+                    Object o = bindNonPrimitiveSet(httpParamMap, methodParamName, parameterType);
                     methodParams.add(o);
+
+                // set null if parameterType is List
+                }else if (Clazz.isImplementsInterface(parameterType, List.class)){
+//                    Object o = bindNonPrimitiveSet(httpParamMap, methodParamName, parameterType);
+                    methodParams.add(null);
 
                 } else if (!Clazz.isPrimitive(parameterType)){
                     Object o = bindNonPrimitive(httpParamMap, methodParamName, parameterType);
@@ -101,12 +105,11 @@ public class DataBindHandler implements RequestHandler {
                     methodParams.add(null);
                 }
 
+                //name="xxx"&age=22&sex=2&birthday="2018-11-19"
             }else if (parameterType.isAnnotationPresent(RequestBody.class)){
                 String bodyContent = Mvcs.requestBody2Str(context.getRequest());
-
                 if (MIMEType.MIME_TYPE_JSON.equals(context.getRequest().getContentType())){
                     //todo json to object
-
                 }else {
                     Map<String, String> httpBodyMap = new HashMap<>();
                     if (bodyContent!=null && !"".equals(bodyContent)

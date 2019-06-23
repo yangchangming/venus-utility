@@ -11,4 +11,8 @@ public class VenusFrameworkException extends RuntimeException {
     public VenusFrameworkException(String message){
         super(message);
     }
+
+    public VenusFrameworkException(Throwable cause){
+        super(cause);
+    }
 }
