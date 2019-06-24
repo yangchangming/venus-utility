@@ -41,10 +41,9 @@ public final class TomcatBoot {
     private Tomcat server;
     private boolean starting = false;
     private static TomcatBoot instance = new TomcatBoot();
+    private static int port = 9999;
 
-    private TomcatBoot(){
-        init();
-    }
+    private TomcatBoot(){}
 
     private void init(){
         if (server!=null || starting){
@@ -53,15 +52,14 @@ public final class TomcatBoot {
         try {
             this.server = new Tomcat();
             server.setBaseDir("");
-            server.setPort(9999);
+            server.setPort(port);
 
             File root = getRootFolder();
             File webContentFolder = new File(root.getAbsolutePath(), "src/main/resources/");
             if (!webContentFolder.exists()) {
                 webContentFolder = Files.createTempDirectory("venus-doc-base").toFile();
             }
-
-            logger.info("Tomcat:configuring app with basedir: ["+ webContentFolder.getAbsolutePath() +"]");
+            venus.log.Logger.keyInfo(logger, "Tomcat configuring app with basedir: ["+ webContentFolder.getAbsolutePath() +"]");
             StandardContext ctx = (StandardContext) server.addWebapp("", webContentFolder.getAbsolutePath());
             ctx.setParentClassLoader(this.getClass().getClassLoader());
             WebResourceRoot resources = new StandardRoot(ctx);
@@ -80,6 +78,13 @@ public final class TomcatBoot {
         return instance;
     }
 
+    public static TomcatBoot of(int port){
+        if (port>0){
+            TomcatBoot.port = port;
+        }
+        return TomcatBoot.of();
+    }
+
     public void start(){
         if (starting){
             logger.warn("Server is running.");
@@ -92,9 +97,7 @@ public final class TomcatBoot {
             server.start();
             String address = server.getServer().getAddress();
             int port = server.getConnector().getPort();
-//            logger.info("Tomcat is running on [http://"+ address + ":" + port +"]");
             venus.log.Logger.keyInfo(logger, "Tomcat is running on [http://"+ address + ":" + port +"]");
-
             server.getServer().await();
         } catch (LifecycleException e) {
             throw new VenusFrameworkException("Tomcat start failure." + e.getMessage());
@@ -121,7 +124,7 @@ public final class TomcatBoot {
             } else {
                 root = new File(runningJarPath.substring(0, lastIndexOf));
             }
-            logger.info("Tomcat:application resolved root folder: ["+ root.getAbsolutePath() +"]");
+            venus.log.Logger.keyInfo(logger, "Tomcat application resolved root folder: ["+ root.getAbsolutePath() +"]");
             return root;
         } catch (URISyntaxException ex) {
             throw new VenusFrameworkException(ex.getMessage());
@@ -129,6 +132,6 @@ public final class TomcatBoot {
     }
 
     public static void main(String[] args){
-        TomcatBoot.of().start();
+        TomcatBoot.of(8899).start();
     }
 }
