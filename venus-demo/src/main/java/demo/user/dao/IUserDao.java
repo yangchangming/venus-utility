@@ -13,34 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.user.dao;
+package demo.user.dao;
 
-import junit.framework.TestCase;
-import org.junit.Test;
-import venus.init.InitializationFactory;
-import venus.springsupport.BeanFactoryHelper;
-import venus.user.dao.impl.UserDao;
+import demo.user.model.User;
 
 import java.util.List;
 
 /**
- * <p> User dao test </p>
+ * <p>  </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2018-05-30 16:17
+ * @since 2018-05-29 12:08
  */
-public class UserDaoTest extends TestCase {
+public interface IUserDao {
 
-    @Test
-    public void testQueryAll(){
-
-        InitializationFactory.init();
-
-        Object userDao = BeanFactoryHelper.getBean("userDao");
-        List result = ((UserDao)userDao).queryAll("select * from tbl_test");
-
-        System.out.print(result.size());
-
-    }
+    List<User> queryAll(String sql);
 
 }

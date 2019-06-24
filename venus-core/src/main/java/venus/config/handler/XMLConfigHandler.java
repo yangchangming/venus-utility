@@ -15,12 +15,12 @@
  */
 package venus.config.handler;
 
-import venus.common.VenusConstants;
 import venus.config.Config;
 import venus.config.ConfigHandler;
 import venus.config.URL;
 import venus.config.factor.DefaultXMLConfig;
 import venus.core.SpiMeta;
+import venus.util.VenusConstants;
 
 
 /**

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import="venus.user.model.User" %>
+<%@ page import="demo.user.model.User" %>
 <%@ page import="java.util.ArrayList" %>
 
 <%

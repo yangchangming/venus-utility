@@ -9,36 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <artifactId>venus-demo</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.datavens</groupId>
             <artifactId>venus-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.datavens</groupId>
-            <artifactId>venus-oa</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.datavens</groupId>
-            <artifactId>venus-datasource-mysql</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>jstl</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -60,39 +38,9 @@
                     <source>${java.source.version}</source>
                     <target>${java.target.version}</target>
                     <encoding>utf-8</encoding>
-                    <compilerArguments>
-                        <!--<verbose />-->
-                        <bootclasspath>${java.home}/lib/rt.jar</bootclasspath>
-                    </compilerArguments>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <!-- 自动启动 -->
-                <!-- <executions> <execution> <phase>package</phase> <goals> <goal>run</goal>
-                    </goals> </execution> </executions> -->
-                <configuration>
-                    <!--<url>http://localhost:8080/manager/text</url> &lt;!&ndash; tomcat管理路径 &ndash;&gt;-->
-                    <server>Tomcat7</server> <!-- 与settings.xml文件中Server的id相同 -->
-                    <path>/</path> <!-- 应用的部署位置 -->
-                    <port>50050</port>
-                    <uriEncoding>UTF-8</uriEncoding>
-                </configuration>
-            </plugin>
-
         </plugins>
+
     </build>
-
-
 </project>

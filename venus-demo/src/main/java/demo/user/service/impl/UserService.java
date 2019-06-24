@@ -13,20 +13,32 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.user.dao;
+package demo.user.service.impl;
 
-import venus.user.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import demo.user.dao.IUserDao;
+import demo.user.model.User;
+import demo.user.service.IUserService;
 
 import java.util.List;
 
 /**
- * <p>  </p>
+ * <p> User Service implements </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2018-05-29 12:08
+ * @since 2018-06-05 15:02
  */
-public interface IUserDao {
+@Service
+public class UserService implements IUserService {
 
-    List<User> queryAll(String sql);
+    @Autowired
+    private IUserDao userDao;
 
+    @Override
+    @Transactional
+    public List<User> queryAll() {
+     return userDao.queryAll("select * from runnf_user limit 0,40");
+    }
 }

@@ -16,18 +16,14 @@
 package venus.dao.provider;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.RowMapper;
-import venus.VenusHelper;
 import venus.core.SpiMeta;
 import venus.dao.BaseDao;
 import venus.dao.PaginationTemplateDao;
+import venus.ioc.Autowired;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import javax.swing.tree.RowMapper;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.List;

@@ -15,7 +15,8 @@
  */
 package venus.config;
 
-import venus.common.VenusConstants;
+
+import venus.util.VenusConstants;
 
 import java.util.Map;
 

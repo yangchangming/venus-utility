@@ -13,15 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.user.dao.impl;
+package demo.user.dao.impl;
 
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
+import demo.user.dao.IUserDao;
+import demo.user.model.User;
 import venus.dao.provider.BaseTemplateDao;
-import venus.user.dao.IUserDao;
-import venus.user.model.User;
-import venus.util.PopulateUtil;
+import venus.ioc.Repository;
 
+import javax.swing.tree.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -41,7 +40,7 @@ public class UserDao extends BaseTemplateDao implements IUserDao {
             @Override
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
                 User user = new User();
-                PopulateUtil.populate(user, rs);
+//                PopulateUtil.populate(user, rs);
                 return user;
             }
         });

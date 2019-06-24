@@ -16,8 +16,6 @@
 package venus.core.event;
 
 import org.apache.log4j.Logger;
-import org.springframework.aop.support.AopUtils;
-import org.springframework.core.GenericTypeResolver;
 import venus.core.VThreadExecutor;
 import venus.core.VThreadFactory;
 

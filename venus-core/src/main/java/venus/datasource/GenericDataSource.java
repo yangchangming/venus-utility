@@ -16,8 +16,8 @@
 package venus.datasource;
 
 import org.springframework.jdbc.datasource.AbstractDataSource;
-import venus.common.VenusConstants;
 import venus.core.ExtensionLoader;
+import venus.util.VenusConstants;
 
 import java.sql.Connection;
 import java.sql.SQLException;

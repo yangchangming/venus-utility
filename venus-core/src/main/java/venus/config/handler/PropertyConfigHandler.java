@@ -16,15 +16,18 @@
 package venus.config.handler;
 
 import org.apache.log4j.Logger;
-import venus.common.VenusConstants;
 import venus.config.Config;
 import venus.config.ConfigHandler;
 import venus.config.URL;
 import venus.config.factor.DefaultPropertyConfig;
 import venus.core.SpiMeta;
 import venus.exception.VenusFrameworkException;
+import venus.util.VenusConstants;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -15,9 +15,6 @@
  */
 package venus.util;
 
-
-import venus.common.VenusConstants;
-
 import javax.servlet.ServletContext;
 
 /**

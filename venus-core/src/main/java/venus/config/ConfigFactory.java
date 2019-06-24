@@ -16,10 +16,10 @@
 package venus.config;
 
 import org.apache.log4j.Logger;
-import venus.common.VenusConstants;
 import venus.core.ExtensionLoader;
 import venus.exception.VenusFrameworkException;
 import venus.util.ResourceLoader;
+import venus.util.VenusConstants;
 
 import java.io.File;
 import java.net.MalformedURLException;
