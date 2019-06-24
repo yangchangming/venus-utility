@@ -128,8 +128,7 @@ public final class TomcatBoot {
         }
     }
 
-
-
-
-
+    public static void main(String[] args){
+        TomcatBoot.of().start();
+    }
 }

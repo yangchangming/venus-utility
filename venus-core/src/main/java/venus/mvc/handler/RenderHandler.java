@@ -33,20 +33,24 @@ public class RenderHandler implements RequestHandler {
 
     @Override
     public boolean handle(MvcContext context) throws VenusFrameworkException {
-        if (context.getResult()==null && !(context.getResult() instanceof String) && !(context.getResult() instanceof ModelAndView)){
+        Object result = context.getResult();
+        if (result==null){
             throw new VenusFrameworkException("Return value type error for method [" + context.getTargetMethod().getName() + "].");
         }
-        Object result = context.getResult();
+
         if (context.getTargetMethod().isAnnotationPresent(ResponseBody.class)){
             context.setRender(new JsonRender(context.getResult()));
-            //jsp velocity freemarker etc. template engine
+
         }else if (result instanceof ModelAndView || (result instanceof String && !(((String) result).startsWith("redirect:"))
                 && !(((String) result).startsWith("forward:")) )){
-            context.setRender(new ViewRender(context.getResult()));
+            context.setRender(new ViewRender(result));             //jsp velocity freemarker etc. template engine
+
         }else if ((result instanceof String) && ((String) result).startsWith("redirect:")){
-            context.setRender(new RedirectRender(context.getResult()));
+            context.setRender(new RedirectRender(result));
+
         }else if ((result instanceof String) && ((String) result).startsWith("forward:")){
-            context.setRender(new ForwardRender(context.getResult()));
+            context.setRender(new ForwardRender(result));
+
         } else {
             context.setRender(new InternalErrorRender());
         }
