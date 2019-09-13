@@ -88,7 +88,7 @@ public final class Clazz {
         }
         URL url = java.lang.Thread.currentThread().getContextClassLoader().getResource(basePackage.replace(".", "/"));
         if (url==null){
-            throw new VenusFrameworkException("base backage is null. or classpath is null.");
+            throw new VenusFrameworkException("Base package is null. or classpath is null.");
         }
         try {
             if (url.getProtocol().equalsIgnoreCase(Clazz.FILE_PROTOCAL)){

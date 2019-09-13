@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
- * <p> Bean container, must singleton and do not extends and new instance by other class </p>
+ * <p> Bean container, must singleton and do not be extends and new instance by other class </p>
  * usage: Beans.of()......
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
