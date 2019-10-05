@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.2 (2019-10-5)
+
+**重构工程**
+- 删除oa模块和web-oa模块，以及common模块
+- 编写venus-core的mvc和ioc组件
+- 引入nutz-dao作为dao层组件，封装Dos作为dao层操作类
+- 去掉spring框架的依赖（舒服多了）
+
 ## 0.1 (2019-03-17)
 
 **整理oa服务**
