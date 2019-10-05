@@ -15,11 +15,11 @@
  */
 package user.controller;
 
-import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.web.bind.annotation.RequestBody;
 import user.model.User;
 import user.service.IUserService;
-import venus.ioc.Autowired;
-import venus.ioc.Controller;
+import venus.ioc.annotation.Autowired;
+import venus.ioc.annotation.Controller;
 import venus.mvc.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,11 +40,11 @@ public class UserController {
     private IUserService userService;
 
     @RequestMapping("/list")
-//    @RequestChain({"2","4"})
+//    @RequestChain({"handlerName1","handlerName2"})
     @ResponseBody
     public String list(HttpServletRequest request , HttpServletResponse response,
                        @RequestParam(value = "user", required = true) User user,
-                       @RequestBody(required = true) int number, long length){
+                       @RequestBody int number, long length){
         List result = userService.queryAll();
         request.setAttribute("result_list", result);
         return "/jsp/user/list/杨昌明";

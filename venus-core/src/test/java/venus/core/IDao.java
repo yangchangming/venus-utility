@@ -19,7 +19,7 @@ package venus.core;
  * <p>  </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2018-04-28 17:17
+ * @since 2019-10-05 15:50
  */
 @Spi
 public interface IDao {

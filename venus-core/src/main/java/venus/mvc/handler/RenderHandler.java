@@ -24,6 +24,7 @@ import venus.mvc.render.*;
 
 /**
  * <p> Render handler </p>
+ * 1. the last handler for the request
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-06-12 15:24

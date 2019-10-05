@@ -17,7 +17,7 @@ package user.dao.impl;
 
 import user.dao.IUserDao;
 import user.model.User;
-import venus.ioc.Repository;
+import venus.ioc.annotation.Repository;
 
 import java.util.List;
 

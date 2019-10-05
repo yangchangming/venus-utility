@@ -13,22 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package demo.user.dao.impl;
+package venus.ioc.annotation;
 
-import demo.user.dao.IUserDao;
-import demo.user.model.User;
-
-import java.util.List;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * <p> User Dao implements </p>
+ * <p> component annotation for bean </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2018-05-29 12:08
+ * @since 2019-05-29 10:51
  */
-public class UserDao implements IUserDao {
-
-    public List<User> queryAll(String sql) {
-        return null;
-    }
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Component {
 }

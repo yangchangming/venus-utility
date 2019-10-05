@@ -15,12 +15,11 @@
  */
 package demo.user.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import demo.user.dao.IUserDao;
 import demo.user.model.User;
 import demo.user.service.IUserService;
+import venus.ioc.annotation.Autowired;
+import venus.ioc.annotation.Service;
 
 import java.util.List;
 
@@ -37,7 +36,6 @@ public class UserService implements IUserService {
     private IUserDao userDao;
 
     @Override
-    @Transactional
     public List<User> queryAll() {
      return userDao.queryAll("select * from runnf_user limit 0,40");
     }

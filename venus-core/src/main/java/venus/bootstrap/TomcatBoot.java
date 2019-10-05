@@ -87,7 +87,7 @@ public final class TomcatBoot {
 
     public void start(){
         if (starting){
-            logger.warn("Server is running.");
+            logger.warn("Server has running.");
             return;
         }
         if (server==null){
@@ -100,7 +100,7 @@ public final class TomcatBoot {
             venus.log.Logger.keyInfo(logger, "Tomcat is running on [http://"+ address + ":" + port +"]");
             server.getServer().await();
         } catch (LifecycleException e) {
-            throw new VenusFrameworkException("Tomcat start failure." + e.getMessage());
+            throw new VenusFrameworkException("Tomcat start failure." + e.getCause().getMessage());
         }
     }
 

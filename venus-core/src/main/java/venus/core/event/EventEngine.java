@@ -123,13 +123,15 @@ public class EventEngine {
      * @return
      */
     protected boolean supportedEvent(Listener listener, Class<? extends Event> eventClazz) {
-        Class typeArg = GenericTypeResolver.resolveTypeArgument(listener.getClass(), Listener.class);
-        if (typeArg == null || typeArg.equals(Event.class)) {
-            Class targetClass = AopUtils.getTargetClass(listener);
-            if (targetClass != listener.getClass()) {
-                typeArg = GenericTypeResolver.resolveTypeArgument(targetClass, Listener.class);
-            }
-        }
+        //todo 去掉spring依赖
+//        Class typeArg = GenericTypeResolver.resolveTypeArgument(listener.getClass(), Listener.class);
+//        if (typeArg == null || typeArg.equals(Event.class)) {
+//            Class targetClass = AopUtils.getTargetClass(listener);
+//            if (targetClass != listener.getClass()) {
+//                typeArg = GenericTypeResolver.resolveTypeArgument(targetClass, Listener.class);
+//            }
+//        }
+        Class typeArg = null;
         return (typeArg == null || typeArg.isAssignableFrom(eventClazz));
     }
 

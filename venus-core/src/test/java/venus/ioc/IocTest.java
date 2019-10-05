@@ -20,6 +20,7 @@ import org.junit.Test;
 import user.dao.IUserDao;
 import user.dao.impl.UserDao;
 import user.service.impl.UserService;
+import venus.ioc.annotation.Repository;
 
 import java.lang.reflect.Field;
 

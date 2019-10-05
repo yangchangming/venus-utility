@@ -69,9 +69,13 @@ public final class Clazz {
 
     public static Class<?> loadClass(String className){
         try {
-            return Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            throw new VenusFrameworkException(e.getMessage());
+            return Thread.currentThread().getContextClassLoader().loadClass(className);
+        } catch (Throwable e) {
+            try {
+                return Class.forName(className);
+            } catch (ClassNotFoundException ex) {
+                throw new VenusFrameworkException(ex.getCause().getMessage());
+            }
         }
     }
 

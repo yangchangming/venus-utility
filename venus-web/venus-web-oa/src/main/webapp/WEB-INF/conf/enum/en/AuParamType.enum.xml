@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<EnumDef>
-    <name>ParamType</name>
-    <resource></resource>
-    <enums>
-		<enum label="System default" value="0"/>
-        <enum label="Customize" value="1"/>
-    </enums>
-</EnumDef>

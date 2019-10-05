@@ -78,7 +78,7 @@ public class RequestHandlerChain {
             }
             setRender(((MvcContext)context).getRender());
         }catch (Exception e){
-            logger.error("Do request handler chain error. " + e.getCause().toString());
+            logger.error("Do request handler chain error. " + e.getCause().getMessage());
             render = new InternalErrorRender();
         }finally {
             if (render==null){

@@ -17,7 +17,7 @@ package venus.mvc;
 
 /**
  * <p> Request path </p>
- * 1. generate a requestpath instance for every http request
+ * 1. generate a RequestPath instance for every http request
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-05-31 11:37

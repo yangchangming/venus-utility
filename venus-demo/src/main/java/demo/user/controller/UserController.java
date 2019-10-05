@@ -15,10 +15,10 @@
  */
 package demo.user.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import demo.user.service.IUserService;
+import venus.ioc.annotation.Autowired;
+import venus.ioc.annotation.Controller;
+import venus.mvc.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -18,8 +18,8 @@ package user.service.impl;
 import user.dao.IUserDao;
 import user.model.User;
 import user.service.IUserService;
-import venus.ioc.Autowired;
-import venus.ioc.Service;
+import venus.ioc.annotation.Autowired;
+import venus.ioc.annotation.Service;
 
 import java.util.List;
 

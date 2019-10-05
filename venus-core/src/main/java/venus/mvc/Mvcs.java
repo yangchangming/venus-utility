@@ -46,7 +46,7 @@ public class Mvcs {
     private static Logger logger = Logger.getLogger(Mvcs.class);
 
     /**
-     * build RequestPath instance by http request
+     * build RequestPath instance by really http request
      * 1. how to splice base path and method path?
      *
      * @param context

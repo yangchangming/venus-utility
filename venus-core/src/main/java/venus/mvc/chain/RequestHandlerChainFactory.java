@@ -53,7 +53,7 @@ public class RequestHandlerChainFactory {
      * fetch request handler chain
      * 1. after fetch chain, update context in chain
      * 2. every request responding to a request handler chain in chains
-     * 3. two Request Path object equal if http-method and http-path is equals
+     * 3. two RequestPath object is equals when http-method and http-path is equals
      *
      * @param context
      * @return

@@ -40,6 +40,6 @@ public class TomcatBootTest {
 
     @Test
     public void testBoot(){
-//        TomcatBoot.of().start();
+        TomcatBoot.of().start();
     }
 }

@@ -18,6 +18,10 @@ package venus.ioc;
 
 import org.apache.log4j.Logger;
 import venus.aop.Aspect;
+import venus.ioc.annotation.Component;
+import venus.ioc.annotation.Controller;
+import venus.ioc.annotation.Repository;
+import venus.ioc.annotation.Service;
 import venus.lang.Clazz;
 import venus.mvc.annotation.RequestHandler;
 
@@ -27,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
- * <p> Bean container, must singleton and do not be extends and new instance by other class </p>
+ * <p> Bean container, must singleton and can not be extends and new instance by other class </p>
  * usage: Beans.of()......
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
