@@ -15,6 +15,10 @@
  */
 package user.model;
 
+import org.nutz.dao.entity.annotation.Column;
+import org.nutz.dao.entity.annotation.Id;
+import org.nutz.dao.entity.annotation.Table;
+
 import java.util.Date;
 
 /**
@@ -23,10 +27,13 @@ import java.util.Date;
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2018-06-06 09:08
  */
+@Table(value = "venus_user")
 public class User {
 
+    @Id
     private String id;
 
+    @Column("password")
     private String passwd;
 
     private String nickName;

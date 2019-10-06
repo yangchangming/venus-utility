@@ -18,7 +18,11 @@ package venus.dao;
 import org.junit.Assert;
 import org.junit.Test;
 import org.nutz.dao.Chain;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.Record;
+
+import java.util.List;
 
 /**
  * <p> Dos Test </p>
@@ -46,5 +50,12 @@ public class DosTest {
         Dos.of().dao().insert(tableName, Chain.make("id", 3).add("name", "pangwu").add("age", 20));
         Dos.of().dao().insert(tableName, Chain.make("id", 4).add("name", "ywjno").add("age", 10));
         Assert.assertEquals(4, Dos.of().dao().count(tableName));
+    }
+
+    @Test
+    public void query(){
+        String tableName = "venus_user";
+        List<Record> users = Dos.of().dao().query(tableName, Cnd.where("age", "<", 25).desc("age")); // Cnd是最常用的查询构建类
+        Assert.assertEquals(2, users.size());
     }
 }

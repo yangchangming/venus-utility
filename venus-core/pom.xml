@@ -13,32 +13,23 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <!-- 只用到nutz.dao -->
         <dependency>
             <groupId>org.nutz</groupId>
             <artifactId>nutz</artifactId>
             <version>1.r.65</version>
         </dependency>
 
-        <!-- 支持存储表情符号的数据库utf8mb4编码 -->
+        <!-- 支持存储表情符号的数据库,utf8mb4编码 -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.3</version>
         </dependency>
 
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-digester</groupId>
-            <artifactId>commons-digester</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
         </dependency>
 
         <dependency>
