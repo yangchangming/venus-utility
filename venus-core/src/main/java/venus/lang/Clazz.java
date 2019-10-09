@@ -21,12 +21,12 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.JarURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Set;
-import java.util.jar.JarEntry;
 import java.util.stream.Collectors;
 
 /**
@@ -61,12 +61,6 @@ public final class Clazz {
         return loadClass(className);
     }
 
-    public static Class<?> loadClassByJar(JarEntry jarEntry){
-        String jarEntryName = jarEntry.getName();
-        String className = jarEntryName.substring(0, jarEntryName.lastIndexOf(".")).replaceAll("/", ".");
-        return loadClass(className);
-    }
-
     public static Class<?> loadClass(String className){
         try {
             return Thread.currentThread().getContextClassLoader().loadClass(className);
@@ -80,41 +74,57 @@ public final class Clazz {
     }
 
     /**
-     * load all class set, by specified base package
+     * load all class set, by specified base package, such as: com.venus.entity
      * class come from file or jar
      *
      * @param basePackage
      * @return
      */
     public static Set<Class<?>> loadClassByPackage(String  basePackage){
-        if (basePackage==null || "".equals(basePackage)){
+        if (basePackage==null || "".equals(basePackage)) {
             basePackage = "";
         }
         URL url = java.lang.Thread.currentThread().getContextClassLoader().getResource(basePackage.replace(".", "/"));
         if (url==null){
-            throw new VenusFrameworkException("Base package is null. or classpath is null.");
+            try {
+                //如果获取不到jar根目录url，就new一个文件系统的url
+                url = new URL("file", "", venus.lang.Path.fetchRealClassPath());
+            } catch (MalformedURLException e) {
+                throw new VenusFrameworkException("Base package is null. or classpath is null. [" + e.getCause().getMessage() + "]");
+            }
         }
+
         try {
             if (url.getProtocol().equalsIgnoreCase(Clazz.FILE_PROTOCAL)){
                 File file = new File(url.getFile());
                 Path path = file.toPath();
-                final String finalBasePackage = basePackage;
-                return Files.walk(path).filter(_path -> _path.toFile().getName().endsWith(".class"))
-                        .map(_path -> loadClassByPath(_path, path, finalBasePackage))
-                        .collect(Collectors.toSet());
-            }else if(url.getProtocol().equalsIgnoreCase(Clazz.JAR_PROTOCAL)){
+
+                if (url.getPath().endsWith("jar!")){
+                    String jarFilePath = url.getPath();
+                    if (jarFilePath.endsWith("!")){
+                        jarFilePath = jarFilePath.substring(0, jarFilePath.length()-1);
+                    }
+                    if (jarFilePath.startsWith("file:")){
+                        jarFilePath = jarFilePath.substring(jarFilePath.indexOf("file:") + "file:".length());
+                    }
+                    return Jar.loadClassOfJarFile(new File(jarFilePath));
+                }else {
+                    final String finalBasePackage = basePackage;
+                    return Files.walk(path).filter(_path -> _path.toFile().getName().endsWith(".class"))
+                            .map(_path -> loadClassByPath(_path, path, finalBasePackage)).collect(Collectors.toSet());
+                }
+            } else if(url.getProtocol().equalsIgnoreCase(Clazz.JAR_PROTOCAL)){
                 JarURLConnection jarURLConnection = (JarURLConnection)url.openConnection();
                 return jarURLConnection.getJarFile().stream().filter(jarEntry -> jarEntry.getName().endsWith(".class"))
-                        .map(jarEntry -> loadClassByJar(jarEntry))
-                        .collect(Collectors.toSet());
-            }else {
+                        .map(jarEntry -> Jar.loadClassByJarEntry(jarEntry)).collect(Collectors.toSet());
+
+            } else {
                 return Collections.emptySet();
             }
         }catch (IOException exception){
             throw new VenusFrameworkException(exception.getMessage());
         }
     }
-
 
     /**
      * set field value

@@ -13,34 +13,24 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.lang;
+package venus.core;
 
-import venus.exception.VenusFrameworkException;
-
-import java.io.IOException;
+import org.junit.Assert;
+import org.junit.Test;
+import venus.lang.Path;
 
 /**
- * <p> Scanner for system </p>
+ * <p>  </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-05-28 21:39
+ * @since 2019-10-09 10:07
  */
-public class Scanner {
+public class PathTest {
 
-    /**
-     * fetch class path
-     *
-     * @return
-     * @throws IOException
-     */
-    public static String classPath() {
-        String classPath = "";
-        try {
-            classPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        }catch (NullPointerException exception){
-            throw new VenusFrameworkException("Fetch classpath error. " + exception.getMessage());
-        }
-        return classPath;
+    @Test
+    public void testPath(){
+        String classPath = Path.fetchRealClassPath();
+        System.out.println(classPath);
+        Assert.assertNotNull(classPath);
     }
-
 }
