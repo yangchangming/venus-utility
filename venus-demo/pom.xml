@@ -33,6 +33,14 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>${java.source.version}</source>
@@ -40,6 +48,25 @@
                     <encoding>utf-8</encoding>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>7.6.16.v20140903</version>
+                <configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
+                    <webApp>
+                        <contextPath>/</contextPath>
+                    </webApp>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>8899</port>
+                        </connector>
+                    </connectors>
+                </configuration>
+            </plugin>
+
         </plugins>
 
     </build>
