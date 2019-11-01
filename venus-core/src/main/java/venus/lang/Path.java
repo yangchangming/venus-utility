@@ -17,6 +17,8 @@ package venus.lang;
 
 import venus.exception.VenusFrameworkException;
 
+import java.io.File;
+
 /**
  * <p> Path util of web context or jar context </p>
  *
@@ -27,6 +29,7 @@ public class Path {
 
     /**
      * fetch real classpath in file system
+     * bug： 在其他工程中，引入了venus-core，此方法会导致获取到的classpath不是真实工程的，二是venus-core的classpath
      *
      * @return
      */
@@ -66,5 +69,21 @@ public class Path {
         return realClassPath;
     }
 
+
+    public static String fetchAppBase4Web(){
+        String classPath = Path.fetchRealClassPath();
+        if (classPath.endsWith("!")){
+            classPath = classPath.substring(0, classPath.length()-1);
+        }
+        System.out.println("classpath:" + classPath);
+
+        File webContentFolder = new File(classPath);
+        if (!webContentFolder.exists()) {
+            webContentFolder = org.nutz.lang.Files.createDirIfNoExists("");
+        }
+
+//        venus.log.Logger.keyInfo(logger, "Web application docBase: ["+ webContentFolder.getAbsolutePath() +"]");
+        return webContentFolder.getAbsolutePath();
+    }
 
 }

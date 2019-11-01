@@ -20,9 +20,9 @@ import venus.core.Context;
 import venus.exception.VenusFrameworkException;
 import venus.mvc.MvcContext;
 import venus.mvc.bean.RequestHandlerWrapper;
-import venus.mvc.render.DefaultRender;
 import venus.mvc.render.InternalErrorRender;
 import venus.mvc.render.Render;
+import venus.mvc.render.StaticResourceRender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class RequestHandlerChain {
     private static Logger logger = Logger.getLogger(RequestHandlerChain.class);
     private Context context;
     private List<Object> handlerWrapperList = new ArrayList<>(); //RequestHandlerWrapper
-    private Render render = new DefaultRender();
+    private Render render = new StaticResourceRender();
 
     /**
      * Constructor
@@ -82,13 +82,17 @@ public class RequestHandlerChain {
             render = new InternalErrorRender();
         }finally {
             if (render==null){
-                render = new DefaultRender();
+                render = new StaticResourceRender();
             }
             try {
                 render.render((MvcContext) context);
             } catch (Exception e) {
                 logger.error("Render failure. " + e.getMessage());
-                throw new VenusFrameworkException("Render failure");
+                try {
+                    new InternalErrorRender().render((MvcContext)context);
+                } catch (Exception ex) {
+                    throw new VenusFrameworkException("Render failure");
+                }
             }
         }
     }

@@ -13,21 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.mvc.render;
+package demo.starter;
 
-import venus.mvc.HttpStatus;
-import venus.mvc.MvcContext;
+import venus.bootstrap.TomcatBoot;
 
 /**
- * <p> Default Render, 200 </p>
+ * <p>  </p>
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
- * @since 2019-06-03 16:40
+ * @since 2019-10-31 12:32
  */
-public class DefaultRender implements Render {
+public class BootStrapper {
 
-    @Override
-    public void render(MvcContext context) throws Exception {
-        context.getResponse().setStatus(HttpStatus.SC_OK);
+    public static void main(String[] args){
+        TomcatBoot.of(8899).start();
     }
+
 }

@@ -19,6 +19,7 @@ import demo.user.service.IUserService;
 import venus.ioc.annotation.Autowired;
 import venus.ioc.annotation.Controller;
 import venus.mvc.annotation.RequestMapping;
+import venus.mvc.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,12 +38,13 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
+    @ResponseBody
     @RequestMapping("/list")
     public String list(HttpServletRequest request , HttpServletResponse response){
 
         List result = userService.queryAll();
         request.setAttribute("result_list", result);
-        return "user/list";
+        return "{\"venus\":\"中文!\"}";
     }
 
 

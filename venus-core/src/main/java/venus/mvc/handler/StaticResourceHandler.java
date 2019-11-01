@@ -18,15 +18,13 @@ package venus.mvc.handler;
 import venus.exception.VenusFrameworkException;
 import venus.mvc.MvcContext;
 import venus.mvc.annotation.RequestHandlerType;
+import venus.mvc.render.NotFoundRender;
 import venus.mvc.render.Render;
-
-import javax.servlet.RequestDispatcher;
 
 /**
  * <p> Static resource handler </p>
- * 1. handle by defaultServlet of tomcat
- * 2. by xxx of other web container, such as jetty ...
- * 3. all static resource must be below of /static/ directory
+ * 1. by xxx of other web container, such as jetty ...
+ * 2. all static resource must be below of /static/ or /template/ directory
  *
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2019-06-13 10:07
@@ -36,15 +34,13 @@ public class StaticResourceHandler implements RequestHandler {
 
     @Override
     public boolean handle(MvcContext context) throws VenusFrameworkException {
-        if (context.getRequest().getPathInfo().startsWith(Render.ASSET_PATH_PRE)){
-            RequestDispatcher dispatcher = context.getServletContext().getNamedDispatcher(Render.DEFAULT_TOMCAT_DISPACTHER);
-            try {
-                dispatcher.forward(context.getRequest(), context.getResponse());
-                return false;
-            } catch (Exception e){
-                throw new VenusFrameworkException(e.getMessage());
-            }
-        }else if (context.getRequest().getPathInfo().endsWith("favicon.ico")){
+        String pathInfo = context.getRequest().getPathInfo();
+        if (pathInfo.startsWith(Render.ASSET_PATH_PRE) || pathInfo.startsWith(Render.TEMPLATE_PATH_PRE)
+                || pathInfo.endsWith(".css") || pathInfo.endsWith(".jpg") || pathInfo.endsWith(".png")
+                || pathInfo.endsWith(".html") || pathInfo.endsWith(".gif") || pathInfo.endsWith(".js")
+                || pathInfo.endsWith(".ico")){
+//            context.setRender(new StaticResourceRender()); //no handle for all static resource.
+            context.setRender(new NotFoundRender());
             return false;
         }
         return true;

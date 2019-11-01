@@ -16,17 +16,18 @@
 package venus.bootstrap;
 
 import org.apache.catalina.LifecycleException;
-import org.apache.catalina.WebResourceRoot;
+import org.apache.catalina.core.AprLifecycleListener;
 import org.apache.catalina.core.StandardContext;
+import org.apache.catalina.core.StandardServer;
 import org.apache.catalina.startup.Tomcat;
-import org.apache.catalina.webresources.StandardRoot;
 import org.apache.log4j.Logger;
 import venus.exception.VenusFrameworkException;
 import venus.mvc.DispatcherServlet;
 
 import java.io.File;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 
 /**
  * <p> Bootstrap as tomcat </p>
@@ -42,6 +43,7 @@ public final class TomcatBoot {
     private boolean starting = false;
     private static TomcatBoot instance = new TomcatBoot();
     private static int port = 9999;
+    private static int shutdownPort = 9998;
 
     private TomcatBoot(){}
 
@@ -53,19 +55,36 @@ public final class TomcatBoot {
             this.server = new Tomcat();
             server.setBaseDir("");
             server.setPort(port);
+            server.setHostname("localhost");
 
-            File root = getRootFolder();
-            File webContentFolder = new File(root.getAbsolutePath(), "src/main/resources/");
-            if (!webContentFolder.exists()) {
-                webContentFolder = Files.createTempDirectory("venus-doc-base").toFile();
-            }
-            venus.log.Logger.keyInfo(logger, "Tomcat configuring app with basedir: ["+ webContentFolder.getAbsolutePath() +"]");
-            StandardContext ctx = (StandardContext) server.addWebapp("", webContentFolder.getAbsolutePath());
-            ctx.setParentClassLoader(this.getClass().getClassLoader());
-            WebResourceRoot resources = new StandardRoot(ctx);
-            ctx.setResources(resources);
-            server.addServlet("", "dispatcherServlet", new DispatcherServlet()).setLoadOnStartup(0);
-            ctx.addServletMappingDecoded("/*", "dispatcherServlet");
+
+            server.getHost().setAppBase(".");
+            StandardServer standardServer = (StandardServer) server.getServer();
+            AprLifecycleListener listener = new AprLifecycleListener();
+            standardServer.addLifecycleListener(listener);
+            server.getServer().setPort(shutdownPort);
+
+            StandardContext standardContext = new StandardContext();
+            standardContext.setPath("/");           //contextPath
+            standardContext.setDocBase("/");       //文件目录位置
+            standardContext.addLifecycleListener(new Tomcat.DefaultWebXmlListener());
+            standardContext.addLifecycleListener(new Tomcat.FixContextListener());
+            standardContext.setSessionCookieName("venus-session");
+            server.getHost().addChild(standardContext);
+
+//            server.addServlet("/", "defaultServlet", new DefaultServlet()).setLoadOnStartup(0);
+//            standardContext.addServletMapping("/*", "defaultServlet");
+
+            server.addServlet("/", "dispatcherServlet", new DispatcherServlet()).setLoadOnStartup(1);
+            standardContext.addServletMapping("/*", "dispatcherServlet");
+
+//            StandardContext ctx = (StandardContext) server.addWebapp("", Path.fetchAppBase4Web());
+//            ctx.setParentClassLoader(this.getClass().getClassLoader());
+//            WebResourceRoot resources = new StandardRoot(ctx);
+//            ctx.setResources(resources);
+//            server.addServlet("", "dispatcherServlet", new DispatcherServlet()).setLoadOnStartup(0);
+//            ctx.addServletMappingDecoded("/*", "dispatcherServlet");
+
         }catch (Exception e){
             throw new VenusFrameworkException(e.getMessage());
         }
@@ -113,6 +132,18 @@ public final class TomcatBoot {
             }
         }
     }
+
+    public void shutDown() throws Exception{
+        Socket socket = new Socket("localhost", shutdownPort);
+        OutputStream stream = socket.getOutputStream();
+        for(int i = 0;i < "shutdown".length();i++){
+            stream.write("shutdown".charAt(i));
+        }
+        stream.flush();
+        stream.close();
+        socket.close();
+    }
+
 
     private File getRootFolder() {
         try {

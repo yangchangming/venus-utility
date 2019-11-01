@@ -76,7 +76,7 @@ public class Mvcs {
      * build the handlers chain by the method
      * 1. common handler and the handler by RequestChain annotation
      * 2. handler order by annotation field specified by order
-     * 3. fetch static and encoding handler if request static resource or no match method (ugly)
+     * 3. fetch static and encoding handler if request static resource or no match method (ugly), such as static resource etc.
      *
      * @param method
      * @return

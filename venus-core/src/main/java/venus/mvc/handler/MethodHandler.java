@@ -15,6 +15,7 @@
  */
 package venus.mvc.handler;
 
+import org.apache.log4j.Logger;
 import venus.exception.VenusFrameworkException;
 import venus.mvc.MvcContext;
 import venus.mvc.Mvcs;
@@ -30,12 +31,14 @@ import java.lang.reflect.Method;
  */
 @venus.mvc.annotation.RequestHandler(value = "method", type = RequestHandlerType.COMMON, order = 2)
 public class MethodHandler implements RequestHandler {
+    private Logger logger = Logger.getLogger(MethodHandler.class);
 
     @Override
     public boolean handle(MvcContext context) throws VenusFrameworkException {
         Method method = Mvcs.request2Method(context);
         if (method==null){
-            throw new VenusFrameworkException("No method match for this request.");
+            logger.warn("No method match for this request.");
+            return false;
         }else {
             context.setTargetMethod(method);
             return true;

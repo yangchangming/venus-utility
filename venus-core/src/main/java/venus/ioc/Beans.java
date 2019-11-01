@@ -18,6 +18,7 @@ package venus.ioc;
 
 import org.apache.log4j.Logger;
 import venus.aop.Aspect;
+import venus.exception.VenusFrameworkException;
 import venus.ioc.annotation.Component;
 import venus.ioc.annotation.Controller;
 import venus.ioc.annotation.Repository;
@@ -72,7 +73,11 @@ public final class Beans {
             logger.warn("All bean has loading.");
             return;
         }
+        Set<Class<?>> classess = Clazz.loadClassByPackage("venus.mvc");
         Set<Class<?>> classes = Clazz.loadClassByPackage("");
+        if (!classes.addAll(classess)){
+            throw new VenusFrameworkException("Loading class failure.");
+        }
         classes.stream().filter(clz -> {
           for (Class<? extends Annotation> annotation : BEAN_ANNOTATION_TYPE){
               if (clz.isAnnotationPresent(annotation)) {

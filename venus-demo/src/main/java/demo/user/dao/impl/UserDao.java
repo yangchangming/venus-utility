@@ -17,6 +17,7 @@ package demo.user.dao.impl;
 
 import demo.user.dao.IUserDao;
 import demo.user.model.User;
+import venus.ioc.annotation.Repository;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ import java.util.List;
  * @author changming.Y <changming.yang.ah@gmail.com>
  * @since 2018-05-29 12:08
  */
+@Repository
 public class UserDao implements IUserDao {
 
     public List<User> queryAll(String sql) {
