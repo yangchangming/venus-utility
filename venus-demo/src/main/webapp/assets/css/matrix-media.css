@@ -17,7 +17,9 @@ body {
 	border-top: 1px solid #37414b; border-bottom: 1px solid #1f262d;
 }
 #sidebar > ul > li.active {
-    background-color: #27a9e3; border-bottom: 1px solid #27a9e3;  border-top: 1px solid #27a9e3;
+    background-color: #27a9e3;
+	border-bottom: 1px solid #27a9e3;
+	border-top: 1px solid #27a9e3;
 }
 #sidebar > ul > li.active a{ color:#fff; text-decoration:none;}
 

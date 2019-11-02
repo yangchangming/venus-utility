@@ -45,14 +45,22 @@ hr{ border-top-color:#dadada;}
 .bg_lv{ background:#603bbc;}
 .bg_lh{ background:#b6b3b3;}
 
-/* Header */
+/* Header 使用nav-global */
 #header {
-	/*height: 77px;*/
-	height: 38px;
-	position: relative;
-	width: 100%;
-	z-index: -9;
+	/*height: 38px;*/
+	/*position: relative;*/
+	/*width: 100%;*/
+	/*z-index: -9;*/
 }
+
+.nav-global {
+	height: 38px;
+	background: #2E363F;
+	position: fixed;
+	width: 100%;
+	z-index: 19;
+}
+
 #header h1 {
 	/*background: url("../img/logo.png") no-repeat scroll 0 0 transparent;*/
 	height: 31px;
@@ -95,7 +103,8 @@ hr{ border-top-color:#dadada;}
 /* Top user navigation */
 #user-nav {
 	position: absolute;
-	left: 220px;
+	/*left: 220px;*/
+	right: 10px;
 	top:0px;
 	z-index: 20;
 	margin: 0;
@@ -142,16 +151,15 @@ hr{ border-top-color:#dadada;}
 #sidebar {
 	display: block;
 	float: left;
-	position: relative;
-	width: 220px;
+	position: fixed;
+	width: 155px;
 	z-index: 16;
 }
 #sidebar > ul {
 	list-style: none;
-	margin: 0px 0 0;
+	margin: 48px 0 0;
 	padding: 0;
 	position: absolute;
-	/*width: 220px;*/
 	width: 155px;
 }
 #sidebar > ul > li {
@@ -197,7 +205,6 @@ hr{ border-top-color:#dadada;}
 /* Content */
 #content {
 	background: none repeat scroll 0 0 #eeeeee;
-	/*margin-left: 220px;*/
 	margin-left: 155px;
 	margin-right: 0;
 	padding-bottom: 25px;
@@ -1588,5 +1595,57 @@ div.dataTables_wrapper .ui-widget-header {
 .dataTables_filter, .dataTables_paginate {
 	text-align: center;
 }
-#sidebar .content{ display:none;}
+#sidebar .content{
+	display:none;
+}
+}
+
+#sidebar > ul .submenu-icon {
+	margin: 0 20px 0 0;
+	float: right;
+	padding: 3px 5px 2px;
+}
+
+#sidebar > ul.narrow{
+	width: 50px !important;
+	overflow-x: auto;
+}
+
+#content.narrow {
+	margin-left: 50px !important;
+}
+
+.global-toggle .narrow {
+	width: 32px !important;
+}
+
+.global-toggle .toggle-area {
+	position: fixed;
+	left: 8px;
+	bottom: 8px;
+	margin: 0 auto;
+	width: 136px;
+	height: 32px;
+	line-height: 30px;
+	text-align: center;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #202d3a;
+	cursor: pointer;
+}
+
+.global-toggle .fa-nav-toggle {
+	font-size: 16px;
+	color: #fff;
+	vertical-align: middle;
+}
+
+.fa {
+	display: inline-block;
+	font: normal normal normal 12px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
