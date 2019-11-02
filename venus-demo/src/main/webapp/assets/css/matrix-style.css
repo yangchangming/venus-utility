@@ -154,6 +154,7 @@ hr{ border-top-color:#dadada;}
 	position: fixed;
 	width: 155px;
 	z-index: 16;
+	height: 100%;
 }
 #sidebar > ul {
 	list-style: none;
@@ -161,6 +162,8 @@ hr{ border-top-color:#dadada;}
 	padding: 0;
 	position: absolute;
 	width: 155px;
+	background: #2E363F;
+	height:100%;
 }
 #sidebar > ul > li {
 	display: block;
