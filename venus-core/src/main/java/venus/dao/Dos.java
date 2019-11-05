@@ -69,7 +69,7 @@ public final class Dos {
         return Dos.instance;
     }
 
-    protected Dao dao(){
+    public Dao dao(){
         if (nutzDao==null){
             Dos.nutzDao = initial();
         }
@@ -118,14 +118,14 @@ public final class Dos {
             return Dos.dataSource;
         }
         if (druidFactoryClass != null) {
-            logger.debug("build DruidDataSource by props");
+            logger.debug("Build DruidDataSource by props");
             Mirror<?> mirror = Mirror.me(druidFactoryClass);
             DataSource ds = (DataSource) mirror.invoke(null, "createDataSource", properties);
             if (!properties.containsKey("maxWait"))
                 Mirror.me(ds).setValue(ds, "maxWait", 15*1000);
             return ds;
         }
-        logger.debug("build SimpleDataSource by props");
+        logger.debug("Build SimpleDataSource by props");
         return SimpleDataSource.createDataSource(properties);
     }
 
