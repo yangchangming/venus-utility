@@ -221,6 +221,10 @@ public class Mvcs {
     public static String requestBody2Str(HttpServletRequest request){
         try {
             ServletInputStream bodyStream = request.getInputStream();
+            int contentLength = request.getContentLength();
+            if (contentLength==-1){
+                return "";
+            }
             byte[] contentByte = new byte[request.getContentLength()];
             int retVal = -1;
             StringBuilder bodyContent = new StringBuilder();

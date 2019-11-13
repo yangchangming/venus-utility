@@ -46,7 +46,7 @@ public class InvokeHandler implements RequestHandler {
                 }
                 context.setResult(result);
             }catch (Exception e){
-                throw new VenusFrameworkException("Invoke method failure. " + e.getCause());
+                throw new VenusFrameworkException("Invoke method failure. " + e.getCause().getMessage());
             }
         }else {
            throw new VenusFrameworkException("Cannot execute method, no condition.");

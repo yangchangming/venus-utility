@@ -103,10 +103,8 @@ public class DataBindHandler implements RequestHandler {
 
             }else if (parameterType.isAnnotationPresent(RequestBody.class)){
                 String bodyContent = Mvcs.requestBody2Str(context.getRequest());
-
                 if (MIMEType.MIME_TYPE_JSON.equals(context.getRequest().getContentType())){
-                    //todo json to object
-
+                    //todo convert json to object
                 }else {
                     Map<String, String> httpBodyMap = new HashMap<>();
                     if (bodyContent!=null && !"".equals(bodyContent)

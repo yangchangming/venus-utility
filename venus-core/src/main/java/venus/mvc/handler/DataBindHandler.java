@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,10 +76,13 @@ public class DataBindHandler implements RequestHandler {
      */
     protected List<Object> _bind(Method targetMethod, MvcContext context){
         List<Object> methodParams = new ArrayList<>();
-        for (Class<?> parameterType : targetMethod.getParameterTypes()) {
+//        for (Class<?> parameterType : targetMethod.getParameterTypes()) {
 
-            if (parameterType.isAnnotationPresent(RequestParam.class)){
-                String methodParamName = parameterType.getAnnotation(RequestParam.class).value();
+        for (Parameter parameter : targetMethod.getParameters()) {
+            Class parameterType = parameter.getType();
+
+            if (parameter.isAnnotationPresent(RequestParam.class)){
+                String methodParamName = parameter.getAnnotation(RequestParam.class).value();
                 if (methodParamName==null || "".equals(methodParamName)){
                     throw new VenusFrameworkException("The value of RequestParam Annotation is not null.");
                 }
@@ -106,7 +110,7 @@ public class DataBindHandler implements RequestHandler {
                 }
 
                 //name="xxx"&age=22&sex=2&birthday="2018-11-19"
-            }else if (parameterType.isAnnotationPresent(RequestBody.class)){
+            }else if (parameter.isAnnotationPresent(RequestBody.class)){
                 String bodyContent = Mvcs.requestBody2Str(context.getRequest());
                 if (MIMEType.MIME_TYPE_JSON.equals(context.getRequest().getContentType())){
                     //todo json to object
@@ -120,7 +124,12 @@ public class DataBindHandler implements RequestHandler {
                             httpBodyMap.put(keyValue[0], keyValue[1]==null?"":keyValue[1]);
                         }
                     }
-                    Object o = Castor.stringToNonPrimitive(httpBodyMap, parameterType);
+                    Object o = null;
+                    if (Clazz.isPrimitive(parameterType)){
+                        o = Castor.stringToClzInstance(bodyContent, parameterType);
+                    }else {
+                        o = Castor.stringToNonPrimitive(httpBodyMap, parameterType);
+                    }
                     methodParams.add(o);
                 }
 
@@ -150,7 +159,7 @@ public class DataBindHandler implements RequestHandler {
 
     /**
      * bind http param to non-primitive object
-     * user.name="" user.age=11
+     * name=""  age=11
      *
      * @param httpParamMap
      * @param methodParamName
@@ -161,17 +170,14 @@ public class DataBindHandler implements RequestHandler {
         //{(age->18),(name->"中本聪"),...}
         Map<String, String> targetMap = new HashMap<>();
         httpParamMap.keySet().stream().forEach(key -> {
-            if (key.startsWith(methodParamName + ".")){
-                String[] keys  = key.split(".");
-                String postKey = keys[keys.length-1];
-                if (postKey!=null && !"".equals(postKey)){
+                if (key!=null && !"".equals(key)){
                     for (Field declaredField : parameterType.getDeclaredFields()) {
-                        if (declaredField.getName().equals(postKey)){
-                            targetMap.put(postKey, httpParamMap.get(key));
+                        if (declaredField.getName().equals(key)){
+                            targetMap.put(key, httpParamMap.get(key));
                         }
                     }
                 }
-            }
+//            }
         });
         return Castor.stringToNonPrimitive(targetMap, parameterType);
     }
