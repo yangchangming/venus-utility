@@ -21,14 +21,17 @@ import venus.exception.VenusFrameworkException;
 import venus.ioc.Beans;
 import venus.mvc.Mvcs;
 import venus.mvc.RequestPath;
+import venus.mvc.annotation.RequestHandlerType;
 import venus.mvc.annotation.RequestMapping;
 import venus.mvc.bean.RequestHandlerWrapper;
 
 import java.lang.reflect.Method;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * <p> Request chain factory </p>
@@ -67,8 +70,31 @@ public class RequestHandlerChainFactory {
                 return chain;
             }
         }
+        if ("".equals(path.getPath()) || "/".equals(path.getPath())){
+            chains.putIfAbsent(path, buildIndexChain(context));
+            return chains.get(path);
+        }
         chains.putIfAbsent(path, RequestHandlerChainFactory.buildChain(context));
         return chains.get(path);
+    }
+
+    /**
+     * build chain for welcome page http request
+     *
+     * @param context
+     * @return
+     */
+    protected static RequestHandlerChain buildIndexChain(Context context){
+        RequestHandlerChain chain = new RequestHandlerChain(context);
+        List<Object> handlers = allHandlers.stream().filter(wrapper -> {
+            if (String.valueOf(RequestHandlerType.COMMON).equals(wrapper.getType()) &&
+                    ("default".equals(wrapper.getValue()))) {
+                return true;
+            }
+            return false;
+        }).sorted(Comparator.comparing(wrapper -> wrapper.getOrder())).collect(Collectors.toList());
+        chain.setHandlerWrapperList(handlers);
+        return chain;
     }
 
     /**
