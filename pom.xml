@@ -14,8 +14,7 @@
     <url>https://github.com/yangchangming/venus</url>
 
     <modules>
-        <module>venus-core</module>
-        <module>venus-demo</module>
+        <module>venus-utility</module>
     </modules>
 
     <properties>
