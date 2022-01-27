@@ -16,8 +16,9 @@
 package venus.ioc;
 
 
-import org.apache.log4j.Logger;
-import venus.aop.Aspect;
+import com.sun.tools.internal.xjc.outline.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import venus.exception.VenusFrameworkException;
 import venus.ioc.annotation.Component;
 import venus.ioc.annotation.Controller;
@@ -39,7 +40,7 @@ import java.util.stream.Collectors;
  * @since 2019-05-28 17:14
  */
 public final class Beans {
-    private static Logger logger = Logger.getLogger(Beans.class);
+    private static Logger logger = LoggerFactory.getLogger(Beans.class);
     private static Map<Class<?>, Object> beanContainer = new ConcurrentHashMap<>();
     private static Beans instance = new Beans();
     private static boolean hasLoading = false;

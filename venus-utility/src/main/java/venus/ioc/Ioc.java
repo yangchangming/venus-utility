@@ -16,7 +16,6 @@
 package venus.ioc;
 
 import venus.exception.VenusFrameworkException;
-import venus.ioc.annotation.Autowired;
 import venus.lang.Clazz;
 
 import java.lang.reflect.Field;

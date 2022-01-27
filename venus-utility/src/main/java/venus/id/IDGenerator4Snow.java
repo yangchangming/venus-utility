@@ -1,4 +1,4 @@
-package venus.util;
+package venus.id;
 
 /**
  * <p> ID generator, 雪花算法 </p>

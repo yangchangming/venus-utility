@@ -23,7 +23,6 @@ import org.nutz.lang.Files;
 import org.nutz.lang.Mirror;
 import org.nutz.lang.Streams;
 import venus.exception.VenusFrameworkException;
-import venus.lang.Clazz;
 
 import javax.sql.DataSource;
 import java.io.FileInputStream;

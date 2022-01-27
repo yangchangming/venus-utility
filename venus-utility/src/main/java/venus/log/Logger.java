@@ -29,7 +29,6 @@ public class Logger {
         }
     }
 
-
     public static void keyInfo(org.apache.log4j.Logger logger, String message){
         logger.info("");
         logger.info("------------------------------------------------------------------------");
@@ -47,5 +46,4 @@ public class Logger {
         logger.info("------------------------------------------------------------------------");
         logger.info("");
     }
-
 }

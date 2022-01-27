@@ -15,6 +15,8 @@
  */
 package venus.lang;
 
+import org.apache.commons.lang3.StringUtils;
+import venus.base.Platforms;
 import venus.exception.VenusFrameworkException;
 
 import java.io.File;
@@ -81,9 +83,62 @@ public class Path {
         if (!webContentFolder.exists()) {
             webContentFolder = org.nutz.lang.Files.createDirIfNoExists("");
         }
-
-//        venus.log.Logger.keyInfo(logger, "Web application docBase: ["+ webContentFolder.getAbsolutePath() +"]");
         return webContentFolder.getAbsolutePath();
+    }
+
+    /**
+     * 获得参数clazz所在的Jar文件的绝对路径
+     */
+    public static String getJarPath(Class<?> clazz) {
+        return clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
+    }
+
+    public static String getParentPath(String path) {
+        String parentPath = path;
+        if (Platforms.FILE_PATH_SEPARATOR.equals(parentPath)) {
+            return parentPath;
+        }
+        parentPath = Strings.removeEnd(parentPath, Platforms.FILE_PATH_SEPARATOR_CHAR);
+        int idx = parentPath.lastIndexOf(Platforms.FILE_PATH_SEPARATOR_CHAR);
+        if (idx >= 0) {
+            parentPath = parentPath.substring(0, idx + 1);
+        } else {
+            parentPath = Platforms.FILE_PATH_SEPARATOR;
+        }
+        return parentPath;
+    }
+
+    /**
+     * 在Windows环境里，兼容Windows上的路径分割符，将 '/' 转回 '\'
+     */
+    public static String normalizePath(String path) {
+        if (Platforms.FILE_PATH_SEPARATOR_CHAR == Platforms.WINDOWS_FILE_PATH_SEPARATOR_CHAR
+                && StringUtils.indexOf(path, Platforms.LINUX_FILE_PATH_SEPARATOR_CHAR) != -1) {
+            return StringUtils.replaceChars(path, Platforms.LINUX_FILE_PATH_SEPARATOR_CHAR,
+                    Platforms.WINDOWS_FILE_PATH_SEPARATOR_CHAR);
+        }
+        return path;
+    }
+
+    /**
+     * 以拼接路径名
+     */
+    public static String concat(String baseName, String... appendName) {
+        if (appendName.length == 0) {
+            return baseName;
+        }
+        StringBuilder concatName = new StringBuilder();
+        if (Strings.endWith(baseName, Platforms.FILE_PATH_SEPARATOR_CHAR)) {
+            concatName.append(baseName).append(appendName[0]);
+        } else {
+            concatName.append(baseName).append(Platforms.FILE_PATH_SEPARATOR_CHAR).append(appendName[0]);
+        }
+        if (appendName.length > 1) {
+            for (int i = 1; i < appendName.length; i++) {
+                concatName.append(Platforms.FILE_PATH_SEPARATOR_CHAR).append(appendName[i]);
+            }
+        }
+        return concatName.toString();
     }
 
 }
