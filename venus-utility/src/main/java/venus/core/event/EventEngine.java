@@ -15,7 +15,8 @@
  */
 package venus.core.event;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import venus.core.VThreadExecutor;
 import venus.core.VThreadFactory;
 
@@ -30,7 +31,7 @@ import java.util.concurrent.ExecutorService;
  */
 public class EventEngine {
 
-    private static final Logger logger = Logger.getLogger(EventEngine.class);
+    private static final Logger logger = LoggerFactory.getLogger(EventEngine.class);
     private ExecutorService executorService = new VThreadExecutor(new VThreadFactory("event.engine", false, Thread.NORM_PRIORITY));
     private Set<Listener> eventListenerSet = new HashSet<Listener>();
     private Map<Class<? extends Event>,ListenerRegistry> cachedEventListeners = new HashMap<Class<? extends Event>, ListenerRegistry>();

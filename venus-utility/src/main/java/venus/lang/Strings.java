@@ -16,8 +16,8 @@
 package venus.lang;
 
 import com.google.common.base.Utf8;
-import com.sun.istack.internal.Nullable;
 import org.apache.commons.lang3.StringUtils;
+import venus.base.Nullable;
 
 import java.io.Serializable;
 import java.io.Writer;

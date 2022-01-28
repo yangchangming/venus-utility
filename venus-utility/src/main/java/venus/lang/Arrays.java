@@ -19,7 +19,7 @@ import com.google.common.collect.ObjectArrays;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
-import com.sun.istack.internal.Nullable;
+import venus.base.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.Collection;

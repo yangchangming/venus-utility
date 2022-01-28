@@ -15,12 +15,12 @@
  */
 package venus.util;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import venus.base.Charsets;
+import venus.base.NotNull;
+import venus.base.Nullable;
 import venus.base.Platforms;
 
 import java.io.*;

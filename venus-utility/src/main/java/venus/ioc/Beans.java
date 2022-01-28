@@ -16,9 +16,9 @@
 package venus.ioc;
 
 
-import com.sun.tools.internal.xjc.outline.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import venus.aop.Aspect;
 import venus.exception.VenusFrameworkException;
 import venus.ioc.annotation.Component;
 import venus.ioc.annotation.Controller;
@@ -28,7 +28,10 @@ import venus.lang.Clazz;
 import venus.mvc.annotation.RequestHandler;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -44,8 +47,7 @@ public final class Beans {
     private static Map<Class<?>, Object> beanContainer = new ConcurrentHashMap<>();
     private static Beans instance = new Beans();
     private static boolean hasLoading = false;
-    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION_TYPE = Arrays.asList
-            (Component.class, Controller.class, Service.class, Repository.class, Aspect.class, RequestHandler.class);
+    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION_TYPE = java.util.Arrays.asList(Component.class, Controller.class, Service.class, Repository.class, Aspect.class, RequestHandler.class);
 
     /**
      * Constructor

@@ -15,7 +15,8 @@
  */
 package venus.config;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import venus.core.SpiMeta;
 import venus.init.Initialization;
 
@@ -30,7 +31,7 @@ import java.util.Map;
 @SpiMeta(name = "configuration")
 public class ConfigInitialization implements Initialization {
 
-    private static final Logger logger = Logger.getLogger(ConfigInitialization.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConfigInitialization.class);
 
     private static boolean finish = false;
 

@@ -15,14 +15,16 @@
  */
 package venus.dao;
 
-import org.apache.log4j.Logger;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
 import org.nutz.dao.impl.SimpleDataSource;
 import org.nutz.lang.Files;
 import org.nutz.lang.Mirror;
 import org.nutz.lang.Streams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import venus.exception.VenusFrameworkException;
+import venus.lang.Clazz;
 
 import javax.sql.DataSource;
 import java.io.FileInputStream;
@@ -42,7 +44,7 @@ import java.util.Properties;
  * @since 2019-06-27 06:39
  */
 public final class Dos {
-    private static Logger logger = Logger.getLogger(Dos.class);
+    private static Logger logger = LoggerFactory.getLogger(Dos.class);
     private static Dos instance = new Dos();
     private static DataSource dataSource = null;
     private static Dao nutzDao = null;

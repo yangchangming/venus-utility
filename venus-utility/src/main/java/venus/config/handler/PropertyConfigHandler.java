@@ -15,14 +15,15 @@
  */
 package venus.config.handler;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import venus.config.Config;
 import venus.config.ConfigHandler;
 import venus.config.URL;
 import venus.config.factor.DefaultPropertyConfig;
 import venus.core.SpiMeta;
 import venus.exception.VenusFrameworkException;
-import venus.util.VenusConstants;
+//import venus.util.VenusConstants;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,14 +42,14 @@ import java.util.Map;
 @SpiMeta(name = "property")
 public class PropertyConfigHandler implements ConfigHandler {
 
-    private static final Logger logger = Logger.getLogger(PropertyConfigHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(PropertyConfigHandler.class);
 
     public Config loadConfig(URL url) {
         if (url==null){
             return null;
         }
         if (url.getType()==null || "".equals(url.getType())){
-            url.setType(VenusConstants.CONFIG_TYPE_PROPERTY);
+            url.setType(venus.util.VenusConstants.CONFIG_TYPE_PROPERTY);
         }
         Config config = new DefaultPropertyConfig();
         config.setType(url.getType());

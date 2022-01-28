@@ -15,7 +15,8 @@
  */
 package venus.mvc.chain;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import venus.core.Context;
 import venus.exception.VenusFrameworkException;
 import venus.mvc.MvcContext;
@@ -35,7 +36,7 @@ import java.util.List;
  */
 public class RequestHandlerChain {
 
-    private static Logger logger = Logger.getLogger(RequestHandlerChain.class);
+    private static Logger logger = LoggerFactory.getLogger(RequestHandlerChain.class);
     private Context context;
     private List<Object> handlerWrapperList = new ArrayList<>(); //RequestHandlerWrapper
     private Render render = new StaticResourceRender();

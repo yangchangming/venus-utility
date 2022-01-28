@@ -15,7 +15,8 @@
  */
 package venus.init;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import venus.core.ExtensionLoader;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class InitializationFactory {
 
-    private static final Logger logger = Logger.getLogger(InitializationFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(InitializationFactory.class);
 
     private static List<Initialization> initializations = new ArrayList<Initialization>();
 

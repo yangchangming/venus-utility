@@ -15,7 +15,8 @@
  */
 package venus.config;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import venus.core.ExtensionLoader;
 import venus.exception.VenusFrameworkException;
 import venus.util.ResourceLoader;
@@ -42,7 +43,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class ConfigFactory {
 
-    private static final Logger logger = Logger.getLogger(ConfigFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConfigFactory.class);
 
     public static final String DEFAULT_CONFIG_PREFIX_PATH = "WEB-INF/conf/";
 

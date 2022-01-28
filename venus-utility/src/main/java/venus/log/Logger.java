@@ -23,13 +23,13 @@ package venus.log;
  */
 public class Logger {
 
-    public static void debug(org.apache.log4j.Logger logger, String message){
+    public static void debug(org.slf4j.Logger logger, String message){
         if (logger.isDebugEnabled()){
             logger.debug(message);
         }
     }
 
-    public static void keyInfo(org.apache.log4j.Logger logger, String message){
+    public static void keyInfo(org.slf4j.Logger logger, String message){
         logger.info("");
         logger.info("------------------------------------------------------------------------");
         logger.info(message);
@@ -37,7 +37,7 @@ public class Logger {
         logger.info("");
     }
 
-    public static void keyInfos(org.apache.log4j.Logger logger, String[] messages){
+    public static void keyInfos(org.slf4j.Logger logger, String[] messages){
         logger.info("");
         logger.info("------------------------------------------------------------------------");
         for (String message : messages) {

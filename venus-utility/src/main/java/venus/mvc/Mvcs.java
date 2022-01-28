@@ -15,7 +15,8 @@
  */
 package venus.mvc;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import venus.core.Context;
 import venus.exception.VenusFrameworkException;
 import venus.ioc.Beans;
@@ -43,7 +44,7 @@ import java.util.stream.Collectors;
  */
 public class Mvcs {
 
-    private static Logger logger = Logger.getLogger(Mvcs.class);
+    private static Logger logger = LoggerFactory.getLogger(Mvcs.class);
 
     /**
      * build RequestPath instance by really http request

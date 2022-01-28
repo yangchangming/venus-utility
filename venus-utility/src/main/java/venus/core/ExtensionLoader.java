@@ -16,7 +16,8 @@
 package venus.core;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import venus.exception.VenusFrameworkException;
 
 import java.io.BufferedReader;
@@ -43,7 +44,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class ExtensionLoader<T> {
 
-    private static Logger logger = Logger.getLogger(ExtensionLoader.class);
+    private static Logger logger = LoggerFactory.getLogger(ExtensionLoader.class);
 
     private static String PREFIX_EXTENSION = "META-INF/service/";
 

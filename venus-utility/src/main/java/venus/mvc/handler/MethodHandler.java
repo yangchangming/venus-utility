@@ -15,7 +15,8 @@
  */
 package venus.mvc.handler;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import venus.exception.VenusFrameworkException;
 import venus.mvc.MvcContext;
 import venus.mvc.Mvcs;
@@ -31,7 +32,7 @@ import java.lang.reflect.Method;
  */
 @venus.mvc.annotation.RequestHandler(value = "method", type = RequestHandlerType.COMMON, order = 2)
 public class MethodHandler implements RequestHandler {
-    private Logger logger = Logger.getLogger(MethodHandler.class);
+    private Logger logger = LoggerFactory.getLogger(MethodHandler.class);
 
     @Override
     public boolean handle(MvcContext context) throws VenusFrameworkException {
