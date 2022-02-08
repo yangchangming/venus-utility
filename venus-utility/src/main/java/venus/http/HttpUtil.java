@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.util;
+package venus.http;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
