@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -188,6 +189,19 @@ public final class Clazz {
             if (interfaceClz==clzInterface) return true;
         }
         return false;
+    }
+
+    /**
+     * true if clz is array or collection
+     *
+     * @param clz
+     * @return
+     */
+    public static boolean isCollectionOrArray(Class<?> clz){
+        if (clz==null){
+            return Boolean.FALSE;
+        }
+        return clz.isArray() || Collection.class.isAssignableFrom(clz);
     }
 
 }
