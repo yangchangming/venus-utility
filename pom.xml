@@ -52,13 +52,6 @@
     </properties>
 
     <dependencies>
-        <!-- 只用到nutz.dao -->
-        <dependency>
-            <groupId>org.nutz</groupId>
-            <artifactId>nutz</artifactId>
-            <version>1.r.65</version>
-        </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

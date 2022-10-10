@@ -20,8 +20,6 @@ import org.slf4j.LoggerFactory;
 import venus.core.SpiMeta;
 import venus.init.Initialization;
 
-import java.util.Map;
-
 /**
  * <p> Configuration Initialization that all over system </p>
  *
@@ -30,9 +28,7 @@ import java.util.Map;
  */
 @SpiMeta(name = "configuration")
 public class ConfigInitialization implements Initialization {
-
     private static final Logger logger = LoggerFactory.getLogger(ConfigInitialization.class);
-
     private static boolean finish = false;
 
     public void init() {
@@ -40,18 +36,7 @@ public class ConfigInitialization implements Initialization {
             logger.info("Configuration Initialization has finished!");
             return;
         }
-        ConfigFactory.init();
-
-        Map<URL, Config> configs = ConfigFactory.fetchAllConfig();
-        String[] configNames = new String[configs.size()];
-        int index = 0;
-        for (URL url : configs.keySet()) {
-            configNames[index] = url.getUrl().getFile();
-            index++;
-        }
-        finish = true;
-        venus.log.Logger.keyInfos(logger, configNames);
-        venus.log.Logger.keyInfo(logger, "Configuration initial Success!");
+        venus.log.Logger.keyInfo(logger, "Configuration Initial Success(TO DO Nothing)!");
     }
 
     public boolean isFinish() {

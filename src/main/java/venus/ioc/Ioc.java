@@ -39,7 +39,7 @@ public final class Ioc {
 
     /**
      * Ioc util
-     * 1. not recommend do injection by invoke this function
+     * 1. not recommend injection class by invoke this function for outer
      *
      * @param beans
      * @return

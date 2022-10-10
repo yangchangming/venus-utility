@@ -18,6 +18,7 @@ package venus.lang;
 import org.apache.commons.lang3.StringUtils;
 import venus.base.Platforms;
 import venus.exception.VenusFrameworkException;
+import venus.util.FileUtil;
 
 import java.io.File;
 
@@ -31,7 +32,7 @@ public class Path {
 
     /**
      * fetch real classpath in file system
-     * bug： 在其他工程中，引入了venus-core，此方法会导致获取到的classpath不是真实工程的，二是venus-core的classpath
+     * bug： 在其他工程中，引入了venus-core，此方法会导致获取到的classpath不是真实工程的，而是venus-core的classpath
      *
      * @return
      */
@@ -71,17 +72,19 @@ public class Path {
         return realClassPath;
     }
 
-
+    /**
+     * Fetch absolute path for web content root path
+     *
+     * @return
+     */
     public static String fetchAppBase4Web(){
         String classPath = Path.fetchRealClassPath();
         if (classPath.endsWith("!")){
             classPath = classPath.substring(0, classPath.length()-1);
         }
-        System.out.println("classpath:" + classPath);
-
         File webContentFolder = new File(classPath);
-        if (!webContentFolder.exists()) {
-            webContentFolder = org.nutz.lang.Files.createDirIfNoExists("");
+        if (!FileUtil.isDirExists(webContentFolder)) {
+            webContentFolder.mkdir();
         }
         return webContentFolder.getAbsolutePath();
     }

@@ -1,5 +1,0 @@
-venus.config.handler.AnnotationConfigHandler
-venus.config.handler.PropertyConfigHandler
-venus.config.handler.XMLConfigHandler
-venus.config.handler.ZookeeperConfigHandler
-venus.config.handler.YamlConfigHandler

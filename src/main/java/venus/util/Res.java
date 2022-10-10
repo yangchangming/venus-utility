@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用于包装返回的所有数据，包括：响应数据，验证数据等.
- * @author pengshuai
- * @date 2020-02-24 10:50
+ * Response data object, just used to be API
+ *
+ * @author changming.Y <changming.yang.ah@gmail.com>
+ * @since 2020-02-24 10:50
  */
 public class Res extends HashMap<String,Object> {
     private static final long serialVersionUID = 1L;
