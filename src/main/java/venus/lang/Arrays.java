@@ -122,7 +122,7 @@ public class Arrays {
      * @see java.util.Arrays#asList(Object...)
      */
     public static <T> List<T> asList(T... a) {
-        return Arrays.asList(a);
+        return java.util.Arrays.asList(a);
     }
 
     /**
