@@ -75,7 +75,7 @@ public class Datee {
         if (source==null || "".equals(source)){
             return false;
         }
-        return !source.contains(":") && source.contains("-");
+        return !source.contains(":") && source.contains("-") && Strings.split(source, '-').size()==2;
     }
 
     /**
@@ -88,7 +88,8 @@ public class Datee {
         if (source==null || "".equals(source)){
             return false;
         }
-        return source.contains(":") && source.contains("-");
+        return source.contains(":") && Strings.split(source, ':').size()==2
+                && source.contains("-") && Strings.split(source, '-').size()==2;
     }
 
     //////// 日期比较 ///////////
