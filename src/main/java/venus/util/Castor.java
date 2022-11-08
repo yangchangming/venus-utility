@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package venus.mvc;
+package venus.util;
 
 import venus.lang.Clazz;
 import venus.lang.Datee;

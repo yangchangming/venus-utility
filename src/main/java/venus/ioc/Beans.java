@@ -25,7 +25,6 @@ import venus.ioc.annotation.Controller;
 import venus.ioc.annotation.Repository;
 import venus.ioc.annotation.Service;
 import venus.lang.Clazz;
-import venus.mvc.annotation.RequestHandler;
 
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
@@ -47,7 +46,8 @@ public final class Beans {
     private static Map<Class<?>, Object> beanContainer = new ConcurrentHashMap<>();
     private static Beans instance = new Beans();
     private static boolean hasLoading = false;
-    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION_TYPE = java.util.Arrays.asList(Component.class, Controller.class, Service.class, Repository.class, Aspect.class, RequestHandler.class);
+    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION_TYPE = java.util.Arrays.asList(
+            Component.class, Controller.class, Service.class, Repository.class, Aspect.class);
 
     /**
      * Constructor
