@@ -22,6 +22,7 @@ import venus.exception.VenusFrameworkException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -64,6 +65,68 @@ public class Datee {
             throw new VenusFrameworkException(e.getCause());
         }
     }
+
+    public static String dateToStr(Date date, String pattern) {
+        if ((date == null) || (date.equals("")))
+            return null;
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        return formatter.format(date);
+    }
+
+    /**
+     * Date to string
+     *
+     * 1: yyyy/MM
+     * 2: yyyyMMdd
+     * 3: yyyyMM
+     * 4: yyyy/MM/dd HH:mm:ss
+     * 5: yyyyMMddHHmmss
+     * 6: yyyy/MM/dd HH:mm
+     * 7: HH:mm:ss
+     * 8: HH:mm
+     * 9: HHmmss
+     * 10: HHmm
+     * 11: yyyy-MM-dd
+     * 12: yyyy-MM-dd HH:mm:ss
+     *
+     * @param date
+     * @param type
+     * @return
+     */
+    public static String dateToString(Date date, int type) {
+        if (type<=0){
+            type = 11;
+        }
+        switch (type) {
+            case 1:
+                return dateToStr(date, "yyyy/MM");
+            case 2:
+                return dateToStr(date, "yyyyMMdd");
+            case 11:
+                return dateToStr(date, "yyyy-MM-dd");
+            case 3:
+                return dateToStr(date, "yyyyMM");
+            case 4:
+                return dateToStr(date, "yyyy/MM/dd HH:mm:ss");
+            case 5:
+                return dateToStr(date, "yyyyMMddHHmmss");
+            case 6:
+                return dateToStr(date, "yyyy/MM/dd HH:mm");
+            case 7:
+                return dateToStr(date, "HH:mm:ss");
+            case 8:
+                return dateToStr(date, "HH:mm");
+            case 9:
+                return dateToStr(date, "HHmmss");
+            case 10:
+                return dateToStr(date, "HHmm");
+            case 12:
+                return dateToStr(date, "yyyy-MM-dd HH:mm:ss");
+        }
+        throw new IllegalArgumentException("Type undefined : " + type);
+    }
+
+
 
     /**
      * such as "2010-1-11"
